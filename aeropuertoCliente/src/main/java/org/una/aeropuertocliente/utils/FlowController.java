@@ -30,6 +30,7 @@ import org.una.aeropuertocliente.controllers.Controller;
  */
 public class FlowController {
 
+    
     private static FlowController INSTANCE = null; //instancia
     private static Stage mainStage; //El stage es la ventana 
     private static ResourceBundle idioma;
@@ -89,7 +90,7 @@ public class FlowController {
 
     public void goMain() { //muestra la scena de la "base"
         try {
-            this.mainStage.setScene(new Scene(FXMLLoader.load(App.class.getResource("base.fxml"), this.idioma)));
+            this.mainStage.setScene(new Scene(FXMLLoader.load(App.class.getResource("Base.fxml"), this.idioma)));
             this.mainStage.setMinWidth(768);
             this.mainStage.show();
         } catch (Exception ex) {
@@ -235,6 +236,5 @@ public class FlowController {
     public static void eliminar(String viewName){
             loaders.remove(viewName);
     }
-
 
 }
