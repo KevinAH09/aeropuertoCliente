@@ -1,7 +1,7 @@
 module org.una.aeropuertocliente {
     requires javafx.controls;
     requires javafx.fxml;
-    requires lombok;
+    requires com.jfoenix;
     requires com.google.gson;
     requires java.base;
     

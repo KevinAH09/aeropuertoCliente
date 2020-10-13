@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.una.aeropuertocliente.controllers.view;
+package org.una.aeropuertocliente.controllers;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,8 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import org.una.aeropuertocliente.dtos.AuthenticationRequest;
-import org.una.aeropuertocliente.utils.Conexion;
 
 /**
  * FXML Controller class

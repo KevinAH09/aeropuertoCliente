@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.una.aeropuertocliente.controllers.view;
+package org.una.aeropuertocliente.controllers;
 
-import org.una.aeropuertocliente.controllers.view.BaseController;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import org.una.aeropuertocliente.controllers.BaseController;
 import java.io.IOException;
 import org.una.aeropuertocliente.controllers.*;
 import java.net.URL;
@@ -15,6 +18,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -22,7 +26,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import org.una.aeropuertocliente.controllers.Controller;
 import org.una.aeropuertocliente.dtos.AuthenticationRequest;
-import org.una.aeropuertocliente.utils.Conexion;
+import org.una.aeropuertocliente.dtos.AuthenticationResponse;
+import org.una.aeropuertocliente.entitiesServices.LoginService;
+import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -31,22 +37,23 @@ import org.una.aeropuertocliente.utils.Conexion;
  */
 public class LoginController extends Controller implements Initializable {
 
+  
+
+     private final String urlstring = "http://localhost:8099/";
     @FXML
-    private TextField txtUsuario;
+    private JFXTextField txtUsuario;
     @FXML
-    private PasswordField txtPassOculto;
+    private JFXTextField txtPassMostrado;
     @FXML
-    private TextField txtPassMostrado;
+    private JFXPasswordField txtPassOculto;
     @FXML
     private ImageView imgViewPassword;
     @FXML
     private ImageView imgNotPassword;
     @FXML
-    private Button btnCancelar;
+    private JFXButton btnCancelar;
     @FXML
-    private Button btnIngresar;
-
-     private final String urlstring = "http://localhost:8099/";
+    private JFXButton btnIngresar;
 
     /**
      * Initializes the controller class.
@@ -66,19 +73,12 @@ public class LoginController extends Controller implements Initializable {
     private void actionViewPass(MouseEvent event) {
     }
 
-    @FXML
-    private void actionSalir(ActionEvent event) {
-    }
 
-    @FXML
+     @FXML
     private void actionIngresar(ActionEvent event) {
-         try {
-            Conexion conexion = new Conexion();
-            AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
-            System.out.println(conexion.ObjectLogin(urlstring+"login/login", authenticationRequest));
-        } catch (IOException ex) {
-            Logger.getLogger(BaseController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
+         AuthenticationResponse authenticationResponse = LoginService.login(authenticationRequest);
+         System.out.println(authenticationResponse.getJwt());
     }
     
 }

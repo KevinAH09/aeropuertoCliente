@@ -75,7 +75,7 @@ public class FlowController {
             synchronized (FlowController.class) {
                 if (loader == null) {
                     try {
-                        loader = new FXMLLoader(App.class.getResource( name + ".fxml"), this.idioma);
+                        loader = new FXMLLoader(App.class.getResource( "views/"+name + ".fxml"), this.idioma);
                         loader.load();
                         //loaders.put(name, loader);
                     } catch (Exception ex) {
@@ -90,7 +90,7 @@ public class FlowController {
 
     public void goMain() { //muestra la scena de la "base"
         try {
-            this.mainStage.setScene(new Scene(FXMLLoader.load(App.class.getResource("Base.fxml"), this.idioma)));
+            this.mainStage.setScene(new Scene(FXMLLoader.load(App.class.getResource("views/base/Base.fxml"), this.idioma)));
             this.mainStage.setMinWidth(768);
             this.mainStage.show();
         } catch (Exception ex) {
@@ -106,7 +106,7 @@ public class FlowController {
         goView(viewName, "Center", accion);
     }
     public Parent retornaSatge(String viewName) throws IOException{
-        Parent root = FXMLLoader.load(App.class.getResource(viewName+".fxml"));
+        Parent root = FXMLLoader.load(App.class.getResource("views/"+viewName+".fxml"));
         return root;
     }
 
