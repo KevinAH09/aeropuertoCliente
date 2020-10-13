@@ -9,54 +9,51 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.una.aeropuertocliente.dtos.UsuariosDTO;
+import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.sharedService.Conection;
 
 /**
  *
  * @author colo7
  */
-public class UsuariosService {
-    
-    
-    public static List<UsuariosDTO> allUsuarios(){
+public class AreasTrabajosService {
+     public static List<AreasTrabajosDTO> allAreasTrabajos(){
         
-        List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
+        List<AreasTrabajosDTO> listsDTOs = new ArrayList<>();
         try {
-            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("Usuario/",UsuariosDTO.class);
+            listsDTOs = (List<AreasTrabajosDTO>) Conection.listFromConnection("AreaTrabajo/",AreasTrabajosDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return listUsuariosDTOs;
+        return listsDTOs;
     }
-    public static UsuariosDTO idUsuario(Long id){
+    public static AreasTrabajosDTO idAreaTrabajo(Long id){
         
-        UsuariosDTO usuarioDTO = new UsuariosDTO();
+        AreasTrabajosDTO dTO = new AreasTrabajosDTO();
         try {
-            usuarioDTO = (UsuariosDTO) Conection.oneConnection("Usuario/"+id,new TypeToken<UsuariosDTO>() {}.getType());
+            dTO = (AreasTrabajosDTO) Conection.oneConnection("AreaTrabajo/"+id,new TypeToken<AreasTrabajosDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return usuarioDTO;
+        return dTO;
     }
-    public static int createUsuario(UsuariosDTO createUsuario){
+    public static int createAreaTrabajo(AreasTrabajosDTO updateAreasTrabajos){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Usuario/",createUsuario);
+            codeResponse = Conection.createObjectToConnection("AreaTrabajo/",updateAreasTrabajos);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateUsuario(UsuariosDTO createUsuario){
+    public static int updateAreaTrabajo(AreasTrabajosDTO createAreaTrabajo){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Usuario/"+createUsuario.getId(),createUsuario);
+            codeResponse = Conection.updateObjectToConnection("AreaTrabajo/"+createAreaTrabajo.getId(),AreasTrabajosDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

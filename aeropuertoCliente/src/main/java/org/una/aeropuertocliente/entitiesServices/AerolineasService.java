@@ -9,58 +9,54 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.una.aeropuertocliente.dtos.UsuariosDTO;
+import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.sharedService.Conection;
 
 /**
  *
  * @author colo7
  */
-public class UsuariosService {
-    
-    
-    public static List<UsuariosDTO> allUsuarios(){
+public class AerolineasService {
+     public static List<AerolineasDTO> allAerolineas(){
         
-        List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
+        List<AerolineasDTO> listsDTOs = new ArrayList<>();
         try {
-            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("Usuario/",UsuariosDTO.class);
+            listsDTOs = (List<AerolineasDTO>) Conection.listFromConnection("AreaTrabajo/",AerolineasDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return listUsuariosDTOs;
+        return listsDTOs;
     }
-    public static UsuariosDTO idUsuario(Long id){
+    public static AerolineasDTO idAerolinea(Long id){
         
-        UsuariosDTO usuarioDTO = new UsuariosDTO();
+        AerolineasDTO dTO = new AerolineasDTO();
         try {
-            usuarioDTO = (UsuariosDTO) Conection.oneConnection("Usuario/"+id,new TypeToken<UsuariosDTO>() {}.getType());
+            dTO = (AerolineasDTO) Conection.oneConnection("AreaTrabajo/"+id,new TypeToken<AerolineasDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return usuarioDTO;
+        return dTO;
     }
-    public static int createUsuario(UsuariosDTO createUsuario){
+    public static int createAerolinea(AerolineasDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Usuario/",createUsuario);
+            codeResponse = Conection.createObjectToConnection("AreaTrabajo/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateUsuario(UsuariosDTO createUsuario){
+    public static int updateAerolinea(AerolineasDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Usuario/"+createUsuario.getId(),createUsuario);
+            codeResponse = Conection.updateObjectToConnection("AreaTrabajo/"+create.getId(),AerolineasDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    
 }
