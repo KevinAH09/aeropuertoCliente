@@ -114,28 +114,21 @@ public class Conection {
         }
     }
 
-    public static <T> Object fromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
+    public static <T> Object oneConnection(String urlstring, Type listtype) throws MalformedURLException, IOException {
         Gson gson = new Gson();
-        Type listtype = new TypeToken<Object>() {
-        }.getType();
-        URL url = new URL(urlBase + urlstring);
+        URL url = new URL(urlBase+urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json");
         con.setRequestProperty("Authorization", "bearer " + Token.getInstance().getJwt());
-        if (con.getResponseCode() == 200) {
-            try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                StringBuilder response = new StringBuilder();
-                String responseLine;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-                return gson.fromJson(response.toString(), listtype);
-
+        try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+            StringBuilder response = new StringBuilder();
+            String responseLine;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
             }
+            return gson.fromJson(response.toString(), listtype);
 
-        } else {
-            return null;
         }
     }
 

@@ -5,9 +5,11 @@
  */
 package org.una.aeropuertocliente.entitiesServices;
 
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.una.aeropuertocliente.dtos.UsuariosDTO;
@@ -30,6 +32,17 @@ public class UsuariosService {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listUsuariosDTOs;
+    }
+    public static UsuariosDTO idUsuario(Long id){
+        
+        UsuariosDTO usuariosDTOs = new UsuariosDTO();
+        try {
+            usuariosDTOs = (UsuariosDTO) Conection.oneConnection("Usuario/"+id,new TypeToken<UsuariosDTO>() {}.getType());
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usuariosDTOs;
     }
     public static int createUsuario(UsuariosDTO createUsuario){
         int codeResponse=0;
