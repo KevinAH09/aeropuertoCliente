@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.una.aeropuertocliente.controllers.view;
+package org.una.aeropuertocliente.controllers;
 
-import org.una.aeropuertocliente.controllers.view.BaseController;
 import java.io.IOException;
 import org.una.aeropuertocliente.controllers.*;
 import java.net.URL;
@@ -20,7 +19,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import org.una.aeropuertocliente.controllers.Controller;
 import org.una.aeropuertocliente.dtos.AuthenticationRequest;
 import org.una.aeropuertocliente.utils.Conexion;
 
