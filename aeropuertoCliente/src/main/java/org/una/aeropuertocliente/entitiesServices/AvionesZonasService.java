@@ -11,49 +11,49 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.una.aeropuertocliente.dtos.AvionesDTO;
+import org.una.aeropuertocliente.dtos.AvionesZonasDTO;
 import org.una.aeropuertocliente.sharedService.Conection;
 
 /**
  *
  * @author colo7
  */
-public class AvionesService {
-    public static List<AvionesDTO> allAviones(){
+public class AvionesZonasService {
+    public static List<AvionesZonasDTO> allAvionesZonas(){
         
-        List<AvionesDTO> listsDTOs = new ArrayList<>();
+        List<AvionesZonasDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<AvionesDTO>) Conection.listFromConnection("Avion/",AvionesDTO.class);
+            listsDTOs = (List<AvionesZonasDTO>) Conection.listFromConnection("AvionZona/",AvionesZonasDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listsDTOs;
     }
-    public static AvionesDTO idAvion(Long id){
+    public static AvionesZonasDTO idAvionZona(Long id){
         
-        AvionesDTO dTO = new AvionesDTO();
+        AvionesZonasDTO dTO = new AvionesZonasDTO();
         try {
-            dTO = (AvionesDTO) Conection.oneConnection("Avion/"+id,new TypeToken<AvionesDTO>() {}.getType());
+            dTO = (AvionesZonasDTO) Conection.oneConnection("AvionZona/"+id,new TypeToken<AvionesZonasDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return dTO;
     }
-    public static int createAvion(AvionesDTO update){
+    public static int createAvionZona(AvionesZonasDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Avion/",update);
+            codeResponse = Conection.createObjectToConnection("AvionZona/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateAvion(AvionesDTO create){
+    public static int updateAvionZona(AvionesZonasDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Avion/"+create.getId(),AvionesDTO.class);
+            codeResponse = Conection.updateObjectToConnection("AvionZona/"+create.getId(),AvionesZonasDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

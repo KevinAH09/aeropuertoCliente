@@ -19,11 +19,11 @@ import org.una.aeropuertocliente.sharedService.Conection;
  * @author colo7
  */
 public class AerolineasService {
-     public static List<AerolineasDTO> allAerolineas(){
+    public static List<AerolineasDTO> allAerolineas(){
         
         List<AerolineasDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<AerolineasDTO>) Conection.listFromConnection("AreaTrabajo/",AerolineasDTO.class);
+            listsDTOs = (List<AerolineasDTO>) Conection.listFromConnection("Aerolinea/",AerolineasDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class AerolineasService {
         
         AerolineasDTO dTO = new AerolineasDTO();
         try {
-            dTO = (AerolineasDTO) Conection.oneConnection("AreaTrabajo/"+id,new TypeToken<AerolineasDTO>() {}.getType());
+            dTO = (AerolineasDTO) Conection.oneConnection("Aerolinea/"+id,new TypeToken<AerolineasDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class AerolineasService {
     public static int createAerolinea(AerolineasDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("AreaTrabajo/",update);
+            codeResponse = Conection.createObjectToConnection("Aerolinea/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class AerolineasService {
     public static int updateAerolinea(AerolineasDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("AreaTrabajo/"+create.getId(),AerolineasDTO.class);
+            codeResponse = Conection.updateObjectToConnection("Aerolinea/"+create.getId(),AerolineasDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
