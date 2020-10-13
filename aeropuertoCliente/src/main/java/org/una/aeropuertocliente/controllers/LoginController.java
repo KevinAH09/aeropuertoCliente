@@ -81,12 +81,12 @@ public class LoginController extends Controller implements Initializable {
     private void actionIngresar(ActionEvent event) {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
         Token.setInstance(LoginService.login(authenticationRequest));
-         UsuariosDTO usuariosDTO = new UsuariosDTO();
-         usuariosDTO.setId(Long.getLong("3"));
-         usuariosDTO.setCedula("1234");
-         usuariosDTO.setContrasenaEncriptada("aS");
-         usuariosDTO.setNombreCompleto("Kevin");
-        System.out.println(UsuariosService.createUsuario(usuariosDTO));
+//         UsuariosDTO usuariosDTO = new UsuariosDTO();
+//         usuariosDTO.setId(Long.getLong("3"));
+//         usuariosDTO.setCedula("1234");
+//         usuariosDTO.setContrasenaEncriptada("aS");
+//         usuariosDTO.setNombreCompleto("Kevin");
+//        System.out.println(UsuariosService.createUsuario(usuariosDTO));
     }
     
 }
