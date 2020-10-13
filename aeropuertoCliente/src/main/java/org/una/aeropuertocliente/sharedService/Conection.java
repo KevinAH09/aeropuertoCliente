@@ -27,17 +27,15 @@ import org.una.aeropuertocliente.utils.AppContext;
  * @author colo7
  */
 public class Conection {
-    
-    
-    
-     private final static String urlBase = "http://localhost:8099/";
-     
-      public static <T> Object LoginConexion(String urlstring, Object object) throws MalformedURLException, IOException {
-         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+
+    private final static String urlBase = "http://localhost:8099/";
+
+    public static <T> Object LoginConexion(String urlstring, Object object) throws MalformedURLException, IOException {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
         StringBuilder response = new StringBuilder();
         Type type = new TypeToken<AuthenticationResponse>() {
         }.getType();
-        URL url = new URL(urlBase +urlstring);
+        URL url = new URL(urlBase + urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -62,9 +60,10 @@ public class Conection {
         }
         return null;
     }
-     public static void CreateObjectToConnection(String urlstring, Object object) throws MalformedURLException, IOException {
+
+    public static int CreateObjectToConnection(String urlstring, Object object) throws MalformedURLException, IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
-        
+
         URL url = new URL(urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
@@ -79,66 +78,67 @@ public class Conection {
             byte[] input = data.getBytes("utf-8");
             os.write(input, 0, input.length);
         }
-        if (con.getResponseCode() == 200) {
         try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
             String responseLine;
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
+
         }
-        }else{
-            return null;
-        }
+        return con.getResponseCode();
+
     }
+
     public static <T> Object ListFromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
         Gson gson = new Gson();
         Type listtype = new TypeToken<ArrayList<Object>>() {
         }.getType();
-        URL url = new URL(urlBase+urlstring);
+        URL url = new URL(urlBase + urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "bearer " +  Token.getInstance().getJwt());
+        con.setRequestProperty("Authorization", "bearer " + Token.getInstance().getJwt());
         if (con.getResponseCode() == 200) {
-        try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
-            StringBuilder response = new StringBuilder();
-            String responseLine;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
-            }
-            return gson.fromJson(response.toString(), listtype);
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                return gson.fromJson(response.toString(), listtype);
 
-        }
-        }else{
+            }
+        } else {
             return null;
         }
     }
+
     public static <T> Object FromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
         Gson gson = new Gson();
         Type listtype = new TypeToken<Object>() {
         }.getType();
-        URL url = new URL(urlBase+urlstring);
+        URL url = new URL(urlBase + urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "bearer " +  Token.getInstance().getJwt());
+        con.setRequestProperty("Authorization", "bearer " + Token.getInstance().getJwt());
         if (con.getResponseCode() == 200) {
-        try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
-            StringBuilder response = new StringBuilder();
-            String responseLine;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
-            }
-            return gson.fromJson(response.toString(), listtype);
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                return gson.fromJson(response.toString(), listtype);
 
-        }
-        
-        }else{
+            }
+
+        } else {
             return null;
         }
     }
-        
+
     public static int UpdateObjectToConnection(String urlstring, Object object) throws MalformedURLException, IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
         URL url = new URL(urlBase + urlstring);
@@ -146,7 +146,7 @@ public class Conection {
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json; utf-8");
         con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "bearer " +  Token.getInstance().getJwt());
+        con.setRequestProperty("Authorization", "bearer " + Token.getInstance().getJwt());
         con.setDoOutput(true);
 
         String data = gson.toJson(object);

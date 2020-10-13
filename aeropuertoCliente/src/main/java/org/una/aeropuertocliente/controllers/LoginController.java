@@ -80,7 +80,7 @@ public class LoginController extends Controller implements Initializable {
     private void actionIngresar(ActionEvent event) {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
         Token.setInstance(LoginService.login(authenticationRequest));
-         System.out.println(UsuariosService.AllUsuarios());
+        System.out.println(UsuariosService.AllUsuarios());
     }
     
 }
