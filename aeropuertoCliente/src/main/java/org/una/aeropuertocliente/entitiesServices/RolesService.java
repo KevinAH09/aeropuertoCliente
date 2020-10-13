@@ -23,7 +23,7 @@ public class RolesService {
         
         List<RolesDTO> listRolesDTO = new ArrayList<>();
         try {
-            listRolesDTO = (List<RolesDTO>) Conection.listFromConnection("Rol/",RolesDTO.class);
+            listRolesDTO = (List<RolesDTO>) Conection.listFromConnection("rol/",RolesDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class RolesService {
         
         RolesDTO rolesDTO = new RolesDTO();
         try {
-            rolesDTO = (RolesDTO) Conection.oneConnection("Rol/"+id,new TypeToken<RolesDTO>() {}.getType());
+            rolesDTO = (RolesDTO) Conection.oneConnection("rol/"+id,new TypeToken<RolesDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class RolesService {
     public static int createRol(RolesDTO updateRol){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Rol/",updateRol);
+            codeResponse = Conection.createObjectToConnection("rol/",updateRol);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class RolesService {
     public static int updateRol(RolesDTO createRol){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Rol/"+createRol.getId(),RolesDTO.class);
+            codeResponse = Conection.updateObjectToConnection("rol/"+createRol.getId(),RolesDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -26,7 +26,7 @@ public class UsuariosService {
         
         List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
         try {
-            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("Usuario/",UsuariosDTO.class);
+            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/",UsuariosDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -37,7 +37,7 @@ public class UsuariosService {
         
         UsuariosDTO usuarioDTO = new UsuariosDTO();
         try {
-            usuarioDTO = (UsuariosDTO) Conection.oneConnection("Usuario/"+id,new TypeToken<UsuariosDTO>() {}.getType());
+            usuarioDTO = (UsuariosDTO) Conection.oneConnection("usuario/"+id,new TypeToken<UsuariosDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -47,7 +47,7 @@ public class UsuariosService {
     public static int createUsuario(UsuariosDTO createUsuario){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Usuario/",createUsuario);
+            codeResponse = Conection.createObjectToConnection("usuario/",createUsuario);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -56,7 +56,7 @@ public class UsuariosService {
     public static int updateUsuario(UsuariosDTO createUsuario){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Usuario/"+createUsuario.getId(),createUsuario);
+            codeResponse = Conection.updateObjectToConnection("usuario/"+createUsuario.getId(),createUsuario);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -23,7 +23,7 @@ public class DetallesControlesGastosService {
         
         List<DetallesControlesGastosDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<DetallesControlesGastosDTO>) Conection.listFromConnection("DetalleControlGasto/",DetallesControlesGastosDTO.class);
+            listsDTOs = (List<DetallesControlesGastosDTO>) Conection.listFromConnection("detalleControlGasto/",DetallesControlesGastosDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class DetallesControlesGastosService {
         
         DetallesControlesGastosDTO dTO = new DetallesControlesGastosDTO();
         try {
-            dTO = (DetallesControlesGastosDTO) Conection.oneConnection("DetalleControlGasto/"+id,new TypeToken<DetallesControlesGastosDTO>() {}.getType());
+            dTO = (DetallesControlesGastosDTO) Conection.oneConnection("detalleControlGasto/"+id,new TypeToken<DetallesControlesGastosDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class DetallesControlesGastosService {
     public static int createDetalleControlGasto(DetallesControlesGastosDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("DetalleControlGasto/",update);
+            codeResponse = Conection.createObjectToConnection("detalleControlGasto/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class DetallesControlesGastosService {
     public static int updateDetalleControlGasto(DetallesControlesGastosDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("DetalleControlGasto/"+create.getId(),DetallesControlesGastosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("detalleControlGasto/"+create.getId(),DetallesControlesGastosDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -23,7 +23,7 @@ public class ControlGastosService {
         
         List<ControlesGastosDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<ControlesGastosDTO>) Conection.listFromConnection("ControlGasto/",ControlesGastosDTO.class);
+            listsDTOs = (List<ControlesGastosDTO>) Conection.listFromConnection("controlGasto/",ControlesGastosDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class ControlGastosService {
         
         ControlesGastosDTO dTO = new ControlesGastosDTO();
         try {
-            dTO = (ControlesGastosDTO) Conection.oneConnection("ControlGasto/"+id,new TypeToken<ControlesGastosDTO>() {}.getType());
+            dTO = (ControlesGastosDTO) Conection.oneConnection("controlGasto/"+id,new TypeToken<ControlesGastosDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class ControlGastosService {
     public static int createControlGasto(ControlesGastosDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("ControlGasto/",update);
+            codeResponse = Conection.createObjectToConnection("controlGasto/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class ControlGastosService {
     public static int updateControlGasto(ControlesGastosDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("ControlGasto/"+create.getId(),ControlesGastosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("controlGasto/"+create.getId(),ControlesGastosDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

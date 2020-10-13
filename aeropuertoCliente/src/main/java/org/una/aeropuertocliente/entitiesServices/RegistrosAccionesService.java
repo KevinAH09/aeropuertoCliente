@@ -23,7 +23,7 @@ public class RegistrosAccionesService {
         
         List<RegistrosAccionesDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<RegistrosAccionesDTO>) Conection.listFromConnection("RegistroAccion/",RegistrosAccionesDTO.class);
+            listsDTOs = (List<RegistrosAccionesDTO>) Conection.listFromConnection("registroAccion/",RegistrosAccionesDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class RegistrosAccionesService {
         
         RegistrosAccionesDTO dTO = new RegistrosAccionesDTO();
         try {
-            dTO = (RegistrosAccionesDTO) Conection.oneConnection("RegistroAccion/"+id,new TypeToken<RegistrosAccionesDTO>() {}.getType());
+            dTO = (RegistrosAccionesDTO) Conection.oneConnection("registroAccion/"+id,new TypeToken<RegistrosAccionesDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class RegistrosAccionesService {
     public static int createRegistroAccion(RegistrosAccionesDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("RegistroAccion/",update);
+            codeResponse = Conection.createObjectToConnection("registroAccion/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class RegistrosAccionesService {
     public static int updateRegistroAccion(RegistrosAccionesDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("RegistroAccion/"+create.getId(),RegistrosAccionesDTO.class);
+            codeResponse = Conection.updateObjectToConnection("registroAccion/"+create.getId(),RegistrosAccionesDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

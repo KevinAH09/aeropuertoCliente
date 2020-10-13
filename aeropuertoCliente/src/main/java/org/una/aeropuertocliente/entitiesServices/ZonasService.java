@@ -23,7 +23,7 @@ public class ZonasService {
         
         List<ZonasDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<ZonasDTO>) Conection.listFromConnection("Zona/",ZonasDTO.class);
+            listsDTOs = (List<ZonasDTO>) Conection.listFromConnection("zona/",ZonasDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class ZonasService {
         
         ZonasDTO dTO = new ZonasDTO();
         try {
-            dTO = (ZonasDTO) Conection.oneConnection("Zona/"+id,new TypeToken<ZonasDTO>() {}.getType());
+            dTO = (ZonasDTO) Conection.oneConnection("zona/"+id,new TypeToken<ZonasDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class ZonasService {
     public static int createZona(ZonasDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Zona/",update);
+            codeResponse = Conection.createObjectToConnection("zona/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class ZonasService {
     public static int updateZona(ZonasDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Zona/"+create.getId(),ZonasDTO.class);
+            codeResponse = Conection.updateObjectToConnection("zona/"+create.getId(),ZonasDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

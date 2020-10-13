@@ -23,7 +23,7 @@ public class AvionesService {
         
         List<AvionesDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<AvionesDTO>) Conection.listFromConnection("Avion/",AvionesDTO.class);
+            listsDTOs = (List<AvionesDTO>) Conection.listFromConnection("avion/",AvionesDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class AvionesService {
         
         AvionesDTO dTO = new AvionesDTO();
         try {
-            dTO = (AvionesDTO) Conection.oneConnection("Avion/"+id,new TypeToken<AvionesDTO>() {}.getType());
+            dTO = (AvionesDTO) Conection.oneConnection("avion/"+id,new TypeToken<AvionesDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class AvionesService {
     public static int createAvion(AvionesDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Avion/",update);
+            codeResponse = Conection.createObjectToConnection("avion/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class AvionesService {
     public static int updateAvion(AvionesDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Avion/"+create.getId(),AvionesDTO.class);
+            codeResponse = Conection.updateObjectToConnection("avion/"+create.getId(),AvionesDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

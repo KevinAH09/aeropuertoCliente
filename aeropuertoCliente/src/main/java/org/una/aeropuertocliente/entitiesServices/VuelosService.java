@@ -23,7 +23,7 @@ public class VuelosService {
         
         List<VuelosDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<VuelosDTO>) Conection.listFromConnection("Vuelo/",VuelosDTO.class);
+            listsDTOs = (List<VuelosDTO>) Conection.listFromConnection("vuelo/",VuelosDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class VuelosService {
         
         VuelosDTO dTO = new VuelosDTO();
         try {
-            dTO = (VuelosDTO) Conection.oneConnection("Vuelo/"+id,new TypeToken<VuelosDTO>() {}.getType());
+            dTO = (VuelosDTO) Conection.oneConnection("vuelo/"+id,new TypeToken<VuelosDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class VuelosService {
     public static int createVuelo(VuelosDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Vuelo/",update);
+            codeResponse = Conection.createObjectToConnection("vuelo/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class VuelosService {
     public static int updateVuelo(VuelosDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Vuelo/"+create.getId(),VuelosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("vuelo/"+create.getId(),VuelosDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

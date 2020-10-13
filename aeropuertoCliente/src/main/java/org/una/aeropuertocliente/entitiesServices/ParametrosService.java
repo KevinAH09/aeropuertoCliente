@@ -23,7 +23,7 @@ public class ParametrosService {
         
         List<ParametrosDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<ParametrosDTO>) Conection.listFromConnection("Parametro/",ParametrosDTO.class);
+            listsDTOs = (List<ParametrosDTO>) Conection.listFromConnection("parametro/",ParametrosDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class ParametrosService {
         
         ParametrosDTO dTO = new ParametrosDTO();
         try {
-            dTO = (ParametrosDTO) Conection.oneConnection("Parametro/"+id,new TypeToken<ParametrosDTO>() {}.getType());
+            dTO = (ParametrosDTO) Conection.oneConnection("parametro/"+id,new TypeToken<ParametrosDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class ParametrosService {
     public static int createParametro(ParametrosDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("Parametro/",update);
+            codeResponse = Conection.createObjectToConnection("parametro/",update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class ParametrosService {
     public static int updateParametro(ParametrosDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("Parametro/"+create.getId(),ParametrosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("parametro/"+create.getId(),ParametrosDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

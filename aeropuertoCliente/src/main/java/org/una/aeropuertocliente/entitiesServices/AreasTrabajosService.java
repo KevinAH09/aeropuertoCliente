@@ -23,7 +23,7 @@ public class AreasTrabajosService {
         
         List<AreasTrabajosDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<AreasTrabajosDTO>) Conection.listFromConnection("AreaTrabajo/",AreasTrabajosDTO.class);
+            listsDTOs = (List<AreasTrabajosDTO>) Conection.listFromConnection("areaTrabajo/",AreasTrabajosDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -34,7 +34,7 @@ public class AreasTrabajosService {
         
         AreasTrabajosDTO dTO = new AreasTrabajosDTO();
         try {
-            dTO = (AreasTrabajosDTO) Conection.oneConnection("AreaTrabajo/"+id,new TypeToken<AreasTrabajosDTO>() {}.getType());
+            dTO = (AreasTrabajosDTO) Conection.oneConnection("areaTrabajo/"+id,new TypeToken<AreasTrabajosDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +44,7 @@ public class AreasTrabajosService {
     public static int createAreaTrabajo(AreasTrabajosDTO updateAreasTrabajos){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("AreaTrabajo/",updateAreasTrabajos);
+            codeResponse = Conection.createObjectToConnection("areaTrabajo/",updateAreasTrabajos);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +53,7 @@ public class AreasTrabajosService {
     public static int updateAreaTrabajo(AreasTrabajosDTO createAreaTrabajo){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("AreaTrabajo/"+createAreaTrabajo.getId(),AreasTrabajosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("areaTrabajo/"+createAreaTrabajo.getId(),AreasTrabajosDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
