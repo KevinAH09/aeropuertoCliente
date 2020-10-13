@@ -5,22 +5,53 @@
  */
 package org.una.aeropuertocliente.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
 
 /**
  *
  * @author Bosco
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
 public class AerolineasDTO {
     private Long id;
     private String nombreAerolinea;
     private String nombreResponsable;
     private boolean estado;
+
+    public AerolineasDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombreAerolinea() {
+        return nombreAerolinea;
+    }
+
+    public void setNombreAerolinea(String nombreAerolinea) {
+        this.nombreAerolinea = nombreAerolinea;
+    }
+
+    public String getNombreResponsable() {
+        return nombreResponsable;
+    }
+
+    public void setNombreResponsable(String nombreResponsable) {
+        this.nombreResponsable = nombreResponsable;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
 }

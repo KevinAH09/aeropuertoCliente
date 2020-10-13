@@ -5,23 +5,40 @@
  */
 package org.una.aeropuertocliente.dtos;
 
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.una.aeropuertocliente.dtos.UsuariosDTO;
+
+
 
 /**
  *
  * @author colo7
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
 public class AuthenticationResponse {
 
     private String jwt;
     private UsuariosDTO usuario;
+
+    public AuthenticationResponse() {
+    }
+    
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
+    }
+
+    public UsuariosDTO getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuariosDTO usuario) {
+        this.usuario = usuario;
+    }
+    
+    
 
 }

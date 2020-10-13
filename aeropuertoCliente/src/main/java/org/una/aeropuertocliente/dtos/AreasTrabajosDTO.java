@@ -6,19 +6,12 @@
 package org.una.aeropuertocliente.dtos;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  *
  * @author colo7
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor 
-@ToString
+
 public class AreasTrabajosDTO {
      
     
@@ -27,6 +20,41 @@ public class AreasTrabajosDTO {
     private String nombreAreaTrabajo;
     private String descripcion;
     private boolean estado;
+
+    public AreasTrabajosDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombreAreaTrabajo() {
+        return nombreAreaTrabajo;
+    }
+
+    public void setNombreAreaTrabajo(String nombreAreaTrabajo) {
+        this.nombreAreaTrabajo = nombreAreaTrabajo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
     
    
     

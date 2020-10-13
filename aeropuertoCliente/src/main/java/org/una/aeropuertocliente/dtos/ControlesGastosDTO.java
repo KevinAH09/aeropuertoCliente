@@ -6,19 +6,13 @@
 package org.una.aeropuertocliente.dtos;
 
 import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
 
 /**
  *
  * @author colo7
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
 public class ControlesGastosDTO {
 
     private Long id;
@@ -26,5 +20,48 @@ public class ControlesGastosDTO {
     private String empresaContratante;
     private String numeroContrato;
     private Date fechaRegistro;
+
+    public ControlesGastosDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(String responsable) {
+        this.responsable = responsable;
+    }
+
+    public String getEmpresaContratante() {
+        return empresaContratante;
+    }
+
+    public void setEmpresaContratante(String empresaContratante) {
+        this.empresaContratante = empresaContratante;
+    }
+
+    public String getNumeroContrato() {
+        return numeroContrato;
+    }
+
+    public void setNumeroContrato(String numeroContrato) {
+        this.numeroContrato = numeroContrato;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
 
 }

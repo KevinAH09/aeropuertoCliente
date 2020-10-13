@@ -5,23 +5,61 @@
  */
 package org.una.aeropuertocliente.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  *
  * @author Bosco
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
 public class ZonasDTO {
     private Long id;
     private String nombreZona;
     private boolean estado;
     private String codigo;
     private String descripcion;
+
+    public ZonasDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombreZona() {
+        return nombreZona;
+    }
+
+    public void setNombreZona(String nombreZona) {
+        this.nombreZona = nombreZona;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
+    
 }

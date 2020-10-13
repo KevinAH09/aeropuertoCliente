@@ -6,26 +6,59 @@
 package org.una.aeropuertocliente.dtos;
 
 import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.una.aeropuertocliente.dtos.UsuariosDTO;
+
 
 /**
  *
  * @author colo7
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
 public class RegistrosAccionesDTO {
     
     private Long id;
     private UsuariosDTO usuarioId;
     private String accion;
     private Date fechaRegistro;
+
+    public RegistrosAccionesDTO() {
+    }
+
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public UsuariosDTO getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(UsuariosDTO usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public String getAccion() {
+        return accion;
+    }
+
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+    
+    
 
 
 }

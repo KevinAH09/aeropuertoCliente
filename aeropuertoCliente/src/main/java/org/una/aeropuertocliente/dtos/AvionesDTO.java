@@ -5,19 +5,15 @@
  */
 package org.una.aeropuertocliente.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.una.aeropuertocliente.dtos.AerolineasDTO;
+
+
 
 /**
  *
  * @author Bosco
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
 public class AvionesDTO {
     private Long id;
     private String matricula;
@@ -25,4 +21,57 @@ public class AvionesDTO {
     private String horasVuelo;
     private AerolineasDTO aerolineaId;
     private boolean estado;
+
+    public AvionesDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getTipoAvion() {
+        return tipoAvion;
+    }
+
+    public void setTipoAvion(String tipoAvion) {
+        this.tipoAvion = tipoAvion;
+    }
+
+    public String getHorasVuelo() {
+        return horasVuelo;
+    }
+
+    public void setHorasVuelo(String horasVuelo) {
+        this.horasVuelo = horasVuelo;
+    }
+
+    public AerolineasDTO getAerolineaId() {
+        return aerolineaId;
+    }
+
+    public void setAerolineaId(AerolineasDTO aerolineaId) {
+        this.aerolineaId = aerolineaId;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
 }

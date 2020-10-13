@@ -6,19 +6,13 @@
 package org.una.aeropuertocliente.dtos;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
 
 /**
  *
  * @author colo7
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor 
-@ToString
+
 public class RolesDTO {
     
     
@@ -26,5 +20,42 @@ public class RolesDTO {
     private String codigo;
     private String descripcion;
     private boolean estado;
+
+    public RolesDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
     
 }
