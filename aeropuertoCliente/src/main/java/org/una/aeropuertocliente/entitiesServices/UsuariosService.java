@@ -20,16 +20,34 @@ import org.una.aeropuertocliente.sharedService.Conection;
 public class UsuariosService {
     
     
-    public static List<UsuariosDTO> AllUsuarios(){
+    public static List<UsuariosDTO> allUsuarios(){
         
         List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
         try {
-            listUsuariosDTOs = (List<UsuariosDTO>) Conection.ListFromConnection("Usuario/",UsuariosDTO.class);
+            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("Usuario/",UsuariosDTO.class);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listUsuariosDTOs;
+    }
+    public static int createUsuario(UsuariosDTO createUsuario){
+        int codeResponse=0;
+        try {
+            codeResponse = Conection.createObjectToConnection("Usuario/",createUsuario);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return codeResponse;
+    }
+    public static int updateUsuario(UsuariosDTO createUsuario){
+        int codeResponse=0;
+        try {
+            codeResponse = Conection.updateObjectToConnection("Usuario/"+createUsuario.getId(),createUsuario);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return codeResponse;
     }
     
 }

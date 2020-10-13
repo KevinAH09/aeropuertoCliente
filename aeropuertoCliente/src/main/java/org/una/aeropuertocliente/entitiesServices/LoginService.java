@@ -24,7 +24,7 @@ public class LoginService {
     public static AuthenticationResponse login(AuthenticationRequest authenticationRequest){
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         try {
-            authenticationResponse = (AuthenticationResponse) Conection.LoginConexion("login/login", authenticationRequest);
+            authenticationResponse = (AuthenticationResponse) Conection.loginConexion("login/login", authenticationRequest);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);

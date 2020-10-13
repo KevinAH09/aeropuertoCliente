@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import org.una.aeropuertocliente.controllers.Controller;
 import org.una.aeropuertocliente.dtos.AuthenticationRequest;
 import org.una.aeropuertocliente.dtos.AuthenticationResponse;
+import org.una.aeropuertocliente.dtos.UsuariosDTO;
 import org.una.aeropuertocliente.entitiesServices.LoginService;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
 import org.una.aeropuertocliente.sharedService.Token;
@@ -80,7 +81,12 @@ public class LoginController extends Controller implements Initializable {
     private void actionIngresar(ActionEvent event) {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
         Token.setInstance(LoginService.login(authenticationRequest));
-        System.out.println(UsuariosService.AllUsuarios());
+         UsuariosDTO usuariosDTO = new UsuariosDTO();
+         usuariosDTO.setId(Long.getLong("3"));
+         usuariosDTO.setCedula("1234");
+         usuariosDTO.setContrasenaEncriptada("aS");
+         usuariosDTO.setNombreCompleto("Kevin");
+        System.out.println(UsuariosService.createUsuario(usuariosDTO));
     }
     
 }

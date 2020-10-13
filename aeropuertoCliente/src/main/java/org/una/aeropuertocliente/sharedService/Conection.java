@@ -30,7 +30,7 @@ public class Conection {
 
     private final static String urlBase = "http://localhost:8099/";
 
-    public static <T> Object LoginConexion(String urlstring, Object object) throws MalformedURLException, IOException {
+    public static <T> Object loginConexion(String urlstring, Object object) throws MalformedURLException, IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
         StringBuilder response = new StringBuilder();
         Type type = new TypeToken<AuthenticationResponse>() {
@@ -61,10 +61,10 @@ public class Conection {
         return null;
     }
 
-    public static int CreateObjectToConnection(String urlstring, Object object) throws MalformedURLException, IOException {
+    public static int createObjectToConnection(String urlstring, Object object) throws MalformedURLException, IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
 
-        URL url = new URL(urlstring);
+        URL url = new URL(urlBase + urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -90,7 +90,7 @@ public class Conection {
 
     }
 
-    public static <T> Object ListFromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
+    public static <T> Object listFromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
         Gson gson = new Gson();
         Type listtype = new TypeToken<ArrayList<Object>>() {
         }.getType();
@@ -114,7 +114,7 @@ public class Conection {
         }
     }
 
-    public static <T> Object FromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
+    public static <T> Object fromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
         Gson gson = new Gson();
         Type listtype = new TypeToken<Object>() {
         }.getType();
@@ -139,7 +139,7 @@ public class Conection {
         }
     }
 
-    public static int UpdateObjectToConnection(String urlstring, Object object) throws MalformedURLException, IOException {
+    public static int updateObjectToConnection(String urlstring, Object object) throws MalformedURLException, IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
         URL url = new URL(urlBase + urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
