@@ -70,6 +70,7 @@ public class Conection {
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json; utf-8");
         con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("Authorization", "bearer " + Token.getInstance().getJwt());
         con.setDoOutput(true);
 
         String data = gson.toJson(object);
@@ -78,7 +79,7 @@ public class Conection {
             byte[] input = data.getBytes("utf-8");
             os.write(input, 0, input.length);
         }
-
+        if (con.getResponseCode() == 200) {
         try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
             String responseLine;
@@ -86,16 +87,20 @@ public class Conection {
                 response.append(responseLine.trim());
             }
         }
+        }else{
+            return null;
+        }
     }
-    public static <T> List<Optional> ListFromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
+    public static <T> Object ListFromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
         Gson gson = new Gson();
-        Type listtype = new TypeToken<ArrayList<Optional>>() {
+        Type listtype = new TypeToken<ArrayList<Object>>() {
         }.getType();
         URL url = new URL(urlBase+urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json");
-
+        con.setRequestProperty("Authorization", "bearer " +  Token.getInstance().getJwt());
+        if (con.getResponseCode() == 200) {
         try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
             String responseLine;
@@ -105,16 +110,20 @@ public class Conection {
             return gson.fromJson(response.toString(), listtype);
 
         }
+        }else{
+            return null;
+        }
     }
-    public static <T> Optional FromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
+    public static <T> Object FromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
         Gson gson = new Gson();
-        Type listtype = new TypeToken<Optional>() {
+        Type listtype = new TypeToken<Object>() {
         }.getType();
         URL url = new URL(urlBase+urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json");
-
+        con.setRequestProperty("Authorization", "bearer " +  Token.getInstance().getJwt());
+        if (con.getResponseCode() == 200) {
         try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
             String responseLine;
@@ -123,6 +132,10 @@ public class Conection {
             }
             return gson.fromJson(response.toString(), listtype);
 
+        }
+        
+        }else{
+            return null;
         }
     }
         
@@ -133,7 +146,7 @@ public class Conection {
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json; utf-8");
         con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "bearer " + AppContext.getInstance().get("token"));
+        con.setRequestProperty("Authorization", "bearer " +  Token.getInstance().getJwt());
         con.setDoOutput(true);
 
         String data = gson.toJson(object);

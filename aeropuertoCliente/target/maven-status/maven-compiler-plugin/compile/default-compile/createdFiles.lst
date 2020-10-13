@@ -24,6 +24,8 @@ org\una\aeropuertocliente\dtos\AreasTrabajosDTO.class
 org\una\aeropuertocliente\dtos\ControlesGastosDTO.class
 org\una\aeropuertocliente\utils\AppContext.class
 org\una\aeropuertocliente\dtos\BitacorasVuelosDTO.class
+org\una\aeropuertocliente\entitiesServices\UsuariosService.class
+org\una\aeropuertocliente\sharedService\Token.class
 org\una\aeropuertocliente\controllers\Controller.class
 org\una\aeropuertocliente\dtos\AvionesDTO.class
 org\una\aeropuertocliente\dtos\VuelosDTO.class

@@ -28,6 +28,8 @@ import org.una.aeropuertocliente.controllers.Controller;
 import org.una.aeropuertocliente.dtos.AuthenticationRequest;
 import org.una.aeropuertocliente.dtos.AuthenticationResponse;
 import org.una.aeropuertocliente.entitiesServices.LoginService;
+import org.una.aeropuertocliente.entitiesServices.UsuariosService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -77,8 +79,8 @@ public class LoginController extends Controller implements Initializable {
      @FXML
     private void actionIngresar(ActionEvent event) {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
-         AuthenticationResponse authenticationResponse = LoginService.login(authenticationRequest);
-         System.out.println(authenticationResponse.getJwt());
+        Token.setInstance(LoginService.login(authenticationRequest));
+         System.out.println(UsuariosService.AllUsuarios());
     }
     
 }
