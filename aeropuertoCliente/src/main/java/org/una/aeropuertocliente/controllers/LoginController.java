@@ -78,7 +78,7 @@ public class LoginController extends Controller implements Initializable {
     private void actionIngresar(ActionEvent event) {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
          AuthenticationResponse authenticationResponse = LoginService.login(authenticationRequest);
-         System.out.println(authenticationResponse);
+         System.out.println(authenticationResponse.getJwt());
     }
     
 }
