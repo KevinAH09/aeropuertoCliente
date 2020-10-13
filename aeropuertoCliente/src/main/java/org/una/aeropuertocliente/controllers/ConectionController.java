@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.una.laboratorio.controller;
+package org.una.aeropuertocliente.controller;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import org.una.laboratorio.dto.AuthenticationRequest;
-import org.una.laboratorio.service.ConectionService;
+import org.una.aeropuertocliente.dtos.AuthenticationRequest;
+import org.una.aeropuertocliente.service.ConectionService;
 
 /**
  *
