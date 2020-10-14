@@ -32,8 +32,6 @@ public class MantenimientoAerolineasController implements Initializable {
     @FXML
     private JFXComboBox<?> cmbEstado;
     @FXML
-    private JFXButton txtGuardar;
-    @FXML
     private JFXButton btnCancelar;
     @FXML
     private JFXButton btnEditar;
@@ -49,6 +47,38 @@ public class MantenimientoAerolineasController implements Initializable {
     private Label lblNombre;
     @FXML
     private Label lbltxtNombre;
+    @FXML
+    private Label titulo;
+    @FXML
+    private Label id;
+    @FXML
+    private Label nombre;
+    @FXML
+    private Label lblResponsable;
+    @FXML
+    private Label responsable;
+    @FXML
+    private Label lblTxtResponsable;
+    @FXML
+    private Label lblEstado;
+    @FXML
+    private Label estado;
+    @FXML
+    private Label lblCmbEstado;
+    @FXML
+    private Label lblGuardar;
+    @FXML
+    private JFXButton btnGuardar;
+    @FXML
+    private Label lblCancelar;
+    @FXML
+    private Label lblEditar;
+    @FXML
+    private Label lblTable;
+    @FXML
+    private Label lblRegistrar;
+    @FXML
+    private JFXButton btnRegistrar;
 
   
     @Override
@@ -66,6 +96,10 @@ public class MantenimientoAerolineasController implements Initializable {
 
     @FXML
     private void onActionEditar(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionRegistrar(ActionEvent event) {
     }
     
 }
