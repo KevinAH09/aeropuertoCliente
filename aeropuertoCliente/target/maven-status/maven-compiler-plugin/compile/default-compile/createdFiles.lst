@@ -15,12 +15,14 @@ org\una\aeropuertocliente\entitiesServices\ZonasService$1.class
 org\una\aeropuertocliente\dtos\RolesDTO.class
 org\una\aeropuertocliente\sharedService\Conection.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$1.class
+org\una\aeropuertocliente\controllers\CambioDivisasController.class
 org\una\aeropuertocliente\dtos\RegistrosAccionesDTO.class
 org\una\aeropuertocliente\dtos\UsuariosDTO.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService.class
 org\una\aeropuertocliente\entitiesServices\ParametrosService$1.class
 org\una\aeropuertocliente\dtos\AvionesZonasDTO.class
 org\una\aeropuertocliente\dtos\ZonasDTO.class
+org\una\aeropuertocliente\controllers\MantenimientoAerolineasController.class
 org\una\aeropuertocliente\entitiesServices\AvionesService$1.class
 org\una\aeropuertocliente\entitiesServices\AreasTrabajosService$1.class
 org\una\aeropuertocliente\utils\Respuesta.class
