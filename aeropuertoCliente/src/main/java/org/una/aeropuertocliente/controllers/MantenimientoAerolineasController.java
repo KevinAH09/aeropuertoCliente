@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
 /**
@@ -38,6 +39,16 @@ public class MantenimientoAerolineasController implements Initializable {
     private JFXButton btnEditar;
     @FXML
     private TableView<?> tableAviones;
+    @FXML
+    private Label lblTitulo;
+    @FXML
+    private Label lblId;
+    @FXML
+    private Label lbltxtId;
+    @FXML
+    private Label lblNombre;
+    @FXML
+    private Label lbltxtNombre;
 
   
     @Override
