@@ -31,6 +31,7 @@ import org.una.aeropuertocliente.dtos.UsuariosDTO;
 import org.una.aeropuertocliente.entitiesServices.LoginService;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
 import org.una.aeropuertocliente.sharedService.Token;
+import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -79,9 +80,12 @@ public class LoginController extends Controller implements Initializable {
 
      @FXML
     private void actionIngresar(ActionEvent event) {
+        Token.setInstance(null);
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
         Token.setInstance(LoginService.login(authenticationRequest));
-        System.out.println(UsuariosService.idUsuario(Token.getInstance().getUsuario().getId()).getCedula());
+       if(Token.getInstance()!=null){
+           FlowController.getInstance().goView("principal/Principal");
+       }
     }
     
 }
