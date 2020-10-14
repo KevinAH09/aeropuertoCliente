@@ -87,5 +87,9 @@ public class LoginController extends Controller implements Initializable {
            FlowController.getInstance().goView("principal/Principal");
        }
     }
+
+    @FXML
+    private void actionCambioDivisas(ActionEvent event) {
+    }
     
 }
