@@ -19,7 +19,7 @@ import javafx.scene.control.TextField;
  *
  * @author Bosco
  */
-public class MantenimientoAerolineaController implements Initializable {
+public class AerolineaController implements Initializable {
 
     @FXML
     private TextField txtFiltrar;

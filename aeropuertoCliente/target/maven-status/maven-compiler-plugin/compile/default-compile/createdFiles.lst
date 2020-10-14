@@ -5,6 +5,7 @@ org\una\aeropuertocliente\entitiesServices\ControlGastosService$1.class
 org\una\aeropuertocliente\entitiesServices\RegistrosAccionesService.class
 org\una\aeropuertocliente\dtos\AuthenticationResponse.class
 org\una\aeropuertocliente\sharedService\Conection$2.class
+org\una\aeropuertocliente\controllers\AerolineaController.class
 org\una\aeropuertocliente\entitiesServices\LoginService.class
 org\una\aeropuertocliente\dtos\DetallesControlesGastosDTO.class
 org\una\aeropuertocliente\utils\FlowController.class
@@ -18,6 +19,7 @@ org\una\aeropuertocliente\entitiesServices\UsuariosService$1.class
 org\una\aeropuertocliente\controllers\CambioDivisasController.class
 org\una\aeropuertocliente\dtos\RegistrosAccionesDTO.class
 org\una\aeropuertocliente\dtos\UsuariosDTO.class
+org\una\aeropuertocliente\controllers\MantenimientoAvionController.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService.class
 org\una\aeropuertocliente\entitiesServices\ParametrosService$1.class
 org\una\aeropuertocliente\dtos\AvionesZonasDTO.class

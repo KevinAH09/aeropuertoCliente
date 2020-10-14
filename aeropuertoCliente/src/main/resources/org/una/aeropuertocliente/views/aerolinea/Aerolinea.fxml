@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="475.0" prefWidth="724.0" stylesheets="@../../../../../../../../../../../../Laboratorio1Progra3/Laboratorio1Progra3/laboratorio/src/main/resources/org/una/laboratorio/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoAerolineaController">
+<AnchorPane id="AnchorPane" prefHeight="475.0" prefWidth="724.0" stylesheets="@../../../../../../../../../../../../Laboratorio1Progra3/Laboratorio1Progra3/laboratorio/src/main/resources/org/una/laboratorio/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.una.aeropuertocliente.controllers.AerolineaController">
    <children>
       <StackPane prefHeight="475.0" prefWidth="724.0">
          <children>
