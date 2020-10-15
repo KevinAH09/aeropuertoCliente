@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="493.0" prefWidth="700.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoControlGastosController">
+   <children>
+      <StackPane prefHeight="493.0" prefWidth="701.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="lblTitulo" prefHeight="17.0" prefWidth="20.0" />
+                        <Label fx:id="titulo" text="Mantenimiento Control Gastos">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="687.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="lblEmpresa" prefHeight="17.0" prefWidth="24.0" />
+                        <Label fx:id="id" prefHeight="20.0" prefWidth="82.0" text="Empresa:" />
+                        <Label fx:id="lbltxtId" prefHeight="17.0" prefWidth="18.0" />
+                        <JFXTextField fx:id="txtId" prefHeight="29.0" prefWidth="204.0" />
+                        <Label fx:id="lblContrato" prefHeight="17.0" prefWidth="22.0" />
+                        <Label fx:id="nombre" prefHeight="20.0" prefWidth="140.0" text="Número contrato:" />
+                        <Label fx:id="lbltxtNombre" prefHeight="17.0" prefWidth="21.0" />
+                        <JFXTextField fx:id="txtNombre" prefHeight="29.0" prefWidth="170.0" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="lblResponsable" prefHeight="20.0" prefWidth="21.0" />
+                        <Label fx:id="responsable" prefHeight="20.0" prefWidth="105.0" text="Responsable:" />
+                        <Label fx:id="lblTxtResponsable" prefHeight="20.0" prefWidth="16.0" />
+                        <Label />
+                        <JFXTextField fx:id="txtResponsable" prefHeight="29.0" prefWidth="225.0" />
+                        <Label fx:id="lblEstadoPago" prefHeight="20.0" prefWidth="32.0" />
+                        <Label fx:id="estado" prefHeight="20.0" prefWidth="108.0" text="Estado Pago:" />
+                        <Label fx:id="lblCmbEstado" prefHeight="20.0" prefWidth="28.0" />
+                        <JFXComboBox fx:id="cmbEstado" prefHeight="25.0" prefWidth="165.0" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="lblEstado" prefHeight="17.0" prefWidth="26.0">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="estado" prefHeight="20.0" prefWidth="67.0" text="Estado:" />
+                        <Label fx:id="lblcmbEsatdo" prefHeight="17.0" prefWidth="24.0" />
+                        <JFXComboBox fx:id="cmbEstado" prefHeight="25.0" prefWidth="237.0" />
+                        <Label fx:id="lblFecha" prefHeight="17.0" prefWidth="37.0" />
+                        <Label fx:id="fecha" prefHeight="20.0" prefWidth="121.0" text="Fecha registro:" />
+                        <Label fx:id="lblFechaRegistro" prefHeight="17.0" prefWidth="32.0" />
+                        <JFXTextField fx:id="txtFecha" prefHeight="25.0" prefWidth="171.0" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="lblMonto" prefHeight="17.0" prefWidth="25.0" />
+                        <Label fx:id="monto" prefHeight="20.0" prefWidth="81.0" text="Monto:" />
+                        <Label fx:id="lbltxtMonto" prefHeight="17.0" prefWidth="29.0" />
+                        <JFXTextField fx:id="txtMonto" />
+                        <Label fx:id="lblArea" prefHeight="17.0" prefWidth="30.0" />
+                        <Label fx:id="AreaTrabajo" prefHeight="20.0" prefWidth="143.0" text="Area de trabajo:" />
+                        <Label fx:id="lbltxtArea" prefHeight="17.0" prefWidth="28.0" />
+                        <JFXTextField prefHeight="29.0" prefWidth="140.0" />
+                        <Label fx:id="lblbtnArea" prefHeight="17.0" prefWidth="20.0" />
+                        <JFXButton fx:id="btnArea" onAction="#onActionAreas" prefHeight="29.0" prefWidth="138.0" text="Areas trabajo" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="lblTitulo2" prefHeight="20.0" prefWidth="21.0" />
+                        <Label text="Detalle Contol de gastos:" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #808080;">
+                     <children>
+                        <VBox prefHeight="100.0" prefWidth="704.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="706.0" spacing="5.0">
+                                 <children>
+                                    <Label fx:id="lblObservacion" prefHeight="20.0" prefWidth="26.0" />
+                                    <Label fx:id="observacion" prefHeight="20.0" prefWidth="107.0" text="Observacion:" />
+                                    <Label fx:id="lbltxtObservacion" prefHeight="20.0" prefWidth="33.0" />
+                                    <JFXTextField />
+                                    <Label fx:id="lblTipo" prefHeight="20.0" prefWidth="34.0" />
+                                    <Label fx:id="Tiposervico" prefHeight="20.0" prefWidth="109.0" text="Tipo servicio:" />
+                                    <Label fx:id="lbltxtTipo" prefHeight="20.0" prefWidth="32.0" />
+                                    <JFXTextField fx:id="txtTipoServico" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <Label fx:id="lblDuracion" prefHeight="20.0" prefWidth="31.0" />
+                                    <Label fx:id="duracion" prefHeight="20.0" prefWidth="88.0" text="Duración:" />
+                                    <Label fx:id="lbltxtDuracion" prefHeight="20.0" prefWidth="35.0" />
+                                    <JFXTextField fx:id="txtDuracion" />
+                                    <Label fx:id="lblPeridiocidad" prefHeight="20.0" prefWidth="41.0" />
+                                    <Label fx:id="Peridiocidad" prefHeight="20.0" prefWidth="114.0" text="Peridiocidad:" />
+                                    <Label fx:id="lbltxtPeridiocidad" prefHeight="20.0" prefWidth="44.0" />
+                                    <JFXTextField fx:id="txtPeridiocidad" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <Label fx:id="lblGuardar2" prefHeight="20.0" prefWidth="41.0" />
+                                    <JFXButton fx:id="btnGuardar" onAction="#onActionGuardar" text="Guardar" />
+                                    <Label fx:id="lblCancelar" prefHeight="20.0" prefWidth="44.0" />
+                                    <JFXButton fx:id="btnCancelar" onAction="#onActionCancelar" text="Cancelar" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="lblGuardar" prefHeight="20.0" prefWidth="58.0" />
+                        <JFXButton fx:id="btnRegistrar" onAction="#onActionRegistrar" text="Guardar" />
+                     </children>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>
