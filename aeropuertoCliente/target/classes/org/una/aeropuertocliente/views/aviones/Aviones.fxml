@@ -10,10 +10,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="493.0" prefWidth="700.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.una.aeropuertocliente.controllers.AvionesController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AvionesController">
    <children>
-      <StackPane prefHeight="493.0" prefWidth="700.0">
+      <StackPane prefHeight="520.0" prefWidth="560.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -28,9 +27,9 @@
                         <Label fx:id="labTxtFiltro" prefHeight="20.0" prefWidth="24.0" />
                         <Label prefHeight="20.0" prefWidth="64.0" text="Filtrar:" />
                         <Label fx:id="labTxtFild" prefHeight="20.0" prefWidth="22.0" />
-                        <JFXTextField fx:id="txtFilter" prefHeight="27.0" prefWidth="185.0" />
+                        <JFXTextField fx:id="txtFilter" prefHeight="27.0" prefWidth="161.0" />
                         <Label fx:id="labComb" prefHeight="20.0" prefWidth="27.0" />
-                        <JFXComboBox fx:id="combFilter" prefHeight="31.0" prefWidth="143.0" />
+                        <JFXComboBox fx:id="combFilter" prefHeight="31.0" prefWidth="124.0" />
                         <Label fx:id="labBtnFiltrar" prefHeight="20.0" prefWidth="28.0" />
                         <JFXButton fx:id="btnFiltrar" prefHeight="29.0" prefWidth="78.0" text="Filtrar" />
                         <Label fx:id="labBtnCancelar" prefHeight="20.0" prefWidth="28.0" />
