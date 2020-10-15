@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="493.0" prefWidth="700.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoAreasTrabajoController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoAreasTrabajoController">
    <children>
-      <StackPane prefHeight="493.0" prefWidth="701.0">
+      <StackPane prefHeight="520.0" prefWidth="560.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -32,11 +32,11 @@
                         <Label fx:id="lblNombre" prefHeight="20.0" prefWidth="33.0" />
                         <Label fx:id="nombre" prefHeight="20.0" prefWidth="83.0" text="Nombre: " />
                         <Label fx:id="lbltxtNombre" prefHeight="20.0" prefWidth="31.0" />
-                        <JFXTextField fx:id="txtNombre" />
+                        <JFXTextField fx:id="txtNombre" prefHeight="27.0" prefWidth="165.0" />
                         <Label fx:id="lblId" prefHeight="20.0" prefWidth="25.0" />
-                        <Label fx:id="id" text="ID:" />
+                        <Label fx:id="id" prefHeight="20.0" prefWidth="29.0" text="ID:" />
                         <Label fx:id="lbltxtId" prefHeight="20.0" prefWidth="27.0" />
-                        <JFXTextField fx:id="txtId" />
+                        <JFXTextField fx:id="txtId" prefHeight="27.0" prefWidth="153.0" />
                      </children>
                      <padding>
                         <Insets left="10.0" right="10.0" />
@@ -45,11 +45,11 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                      <children>
                         <Label fx:id="lblDescripcion" prefHeight="20.0" prefWidth="41.0" />
-                        <Label fx:id="descripcion" text="Descripcion:" />
+                        <Label fx:id="descripcion" prefHeight="20.0" prefWidth="106.0" text="Descripcion:" />
                         <Label fx:id="lbltxtDescripcion" prefHeight="20.0" prefWidth="29.0" />
-                        <JFXTextField fx:id="txtDescripcion" />
+                        <JFXTextField fx:id="txtDescripcion" prefHeight="27.0" prefWidth="153.0" />
                         <Label fx:id="lblEstado" prefHeight="20.0" prefWidth="34.0" />
-                        <Label fx:id="estado" text="Estado:" />
+                        <Label fx:id="estado" prefHeight="20.0" prefWidth="68.0" text="Estado:" />
                         <Label fx:id="lblcmbEstado" prefHeight="20.0" prefWidth="35.0" />
                         <JFXComboBox fx:id="cmbEstado" prefHeight="25.0" prefWidth="119.0" />
                      </children>
