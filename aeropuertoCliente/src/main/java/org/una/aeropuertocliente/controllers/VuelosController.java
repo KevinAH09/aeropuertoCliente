@@ -8,12 +8,12 @@ package org.una.aeropuertocliente.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 
 /**
  * FXML Controller class
@@ -23,71 +23,71 @@ import javafx.scene.control.Label;
 public class VuelosController implements Initializable {
 
     @FXML
-    private Label labTitulo;
+    private Label lablTitulo;
     @FXML
-    private Label labOrigen;
+    private Label titulo;
     @FXML
-    private Label labtxtOrigen;
+    private Label lblTipoAvion;
     @FXML
-    private JFXTextField txtOrigen;
+    private Label id;
     @FXML
-    private Label labHoraInico;
+    private Label lbltxtId;
     @FXML
-    private Label labtimePikerInicio;
+    private JFXTextField txtId;
     @FXML
-    private JFXTimePicker pikerInicio;
+    private Label labMatricula;
     @FXML
-    private Label labCargaoPasajero;
+    private Label nombre;
     @FXML
-    private Label labCombCargaPasajero;
+    private Label lbltxtNombre;
     @FXML
-    private JFXComboBox<?> combCargaPasajero;
+    private JFXTextField txtNombre;
     @FXML
-    private Label labCargaCombustible;
+    private Label labTxtFiltro;
     @FXML
-    private Label lablabCombCargaCombustible;
+    private Label labTxtFild;
     @FXML
-    private Label labAvion;
+    private JFXTextField txtFilter;
     @FXML
-    private Label labtxtAvion;
+    private Label labComb;
     @FXML
-    private JFXTextField txtAvion;
+    private JFXComboBox<?> combFilter;
     @FXML
-    private Label labbtnAvion;
+    private Label labBtnFiltrar;
     @FXML
-    private JFXButton btnAgregar;
+    private JFXButton btnFiltrar;
     @FXML
-    private Label labDestino;
+    private Label labBtnCancelar;
     @FXML
-    private Label labtxtDestino;
+    private JFXButton btnCancelar;
     @FXML
-    private JFXTextField txtDestino;
+    private Label lblTable;
     @FXML
-    private Label labHoraFinal;
+    private TableView<?> tableAviones;
     @FXML
-    private Label labtimePikerFinal;
+    private Label labTxtFiltro1;
     @FXML
-    private JFXTimePicker pikerFinal;
+    private Label labTxtFild1;
     @FXML
-    private Label labTorre;
+    private JFXTextField txtFilter1;
     @FXML
-    private Label labCombTorre;
+    private Label labComb1;
     @FXML
-    private JFXComboBox<?> combTorre;
+    private JFXComboBox<?> combFilter1;
     @FXML
-    private Label labEstado;
+    private Label labBtnFiltrar1;
     @FXML
-    private Label labCombEstado;
+    private JFXButton btnFiltrar1;
     @FXML
-    private Label labBitacora;
+    private Label labBtnCancelar1;
     @FXML
-    private Label labTxtBitacora;
+    private JFXButton btnCancelar1;
     @FXML
-    private JFXTextField txtBitacora;
+    private Label lblTable1;
     @FXML
-    private Label labBtnAgregarBitacora;
+    private TableView<?> tableAviones1;
     @FXML
-    private JFXButton btnAgregar1;
+    private JFXButton btnGuardar;
 
     /**
      * Initializes the controller class.

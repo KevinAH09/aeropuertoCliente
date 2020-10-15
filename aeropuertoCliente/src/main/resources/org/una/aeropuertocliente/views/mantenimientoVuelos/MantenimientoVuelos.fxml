@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="493.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoVuelosController">
+   <children>
+      <StackPane prefHeight="493.0" prefWidth="700.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="724.0">
+                     <children>
+                        <Label fx:id="labTitulo" prefHeight="20.0" prefWidth="22.0" />
+                        <Label text="Mantenimiento de vuelos" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="444.0" prefWidth="700.0">
+                     <children>
+                        <VBox prefHeight="400.0" prefWidth="350.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="92.0" prefWidth="350.0">
+                                 <children>
+                                    <Label fx:id="labOrigen" prefHeight="21.0" prefWidth="25.0" />
+                                    <Label text="Origen:" />
+                                    <Label fx:id="labtxtOrigen" prefHeight="21.0" prefWidth="22.0" />
+                                    <JFXTextField fx:id="txtOrigen" prefHeight="29.0" prefWidth="222.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="labHoraInico" prefHeight="21.0" prefWidth="20.0" />
+                                    <Label text="Hora inicio:" />
+                                    <Label fx:id="labtimePikerInicio" prefHeight="21.0" prefWidth="24.0" />
+                                    <JFXTimePicker fx:id="pikerInicio" prefHeight="29.0" prefWidth="218.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="labCargaoPasajero" prefHeight="21.0" prefWidth="21.0" />
+                                    <Label prefHeight="21.0" prefWidth="168.0" text="Subió carga o pasajeros " />
+                                    <Label fx:id="labCombCargaPasajero" prefHeight="21.0" prefWidth="21.0" />
+                                    <JFXComboBox fx:id="combCargaPasajero" prefHeight="31.0" prefWidth="135.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="labCargaCombustible" prefHeight="21.0" prefWidth="19.0" />
+                                    <Label text="Carga combustible:" />
+                                    <Label fx:id="lablabCombCargaCombustible" prefHeight="21.0" prefWidth="23.0" />
+                                    <JFXComboBox prefHeight="31.0" prefWidth="149.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="labAvion" prefHeight="21.0" prefWidth="19.0" />
+                                    <Label text="Avion:" />
+                                    <Label fx:id="labtxtAvion" prefHeight="21.0" prefWidth="23.0" />
+                                    <JFXTextField fx:id="txtAvion" prefHeight="29.0" prefWidth="157.0" />
+                                    <Label fx:id="labbtnAvion" prefHeight="21.0" prefWidth="19.0" />
+                                    <JFXButton fx:id="btnAgregar" text="Agregar" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="400.0" prefWidth="349.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="92.0" prefWidth="350.0">
+                                 <children>
+                                    <Label fx:id="labDestino" prefHeight="21.0" prefWidth="25.0" />
+                                    <Label text="Destino:" />
+                                    <Label fx:id="labtxtDestino" prefHeight="21.0" prefWidth="22.0" />
+                                    <JFXTextField fx:id="txtDestino" prefHeight="29.0" prefWidth="222.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="labHoraFinal" prefHeight="21.0" prefWidth="20.0" />
+                                    <Label text="Hora final:" />
+                                    <Label fx:id="labtimePikerFinal" prefHeight="21.0" prefWidth="24.0" />
+                                    <JFXTimePicker fx:id="pikerFinal" prefHeight="29.0" prefWidth="218.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="labTorre" prefHeight="21.0" prefWidth="21.0" />
+                                    <Label prefHeight="21.0" prefWidth="185.0" text="Autorización torre control:" />
+                                    <Label fx:id="labCombTorre" prefHeight="21.0" prefWidth="21.0" />
+                                    <JFXComboBox fx:id="combTorre" prefHeight="31.0" prefWidth="126.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="labEstado" prefHeight="21.0" prefWidth="19.0" />
+                                    <Label text="Estado:" />
+                                    <Label fx:id="labCombEstado" prefHeight="21.0" prefWidth="23.0" />
+                                    <JFXComboBox prefHeight="31.0" prefWidth="149.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="labBitacora" prefHeight="21.0" prefWidth="19.0" />
+                                    <Label prefHeight="21.0" prefWidth="65.0" text="Bitácora:" />
+                                    <Label fx:id="labTxtBitacora" prefHeight="21.0" prefWidth="23.0" />
+                                    <JFXTextField fx:id="txtBitacora" prefHeight="29.0" prefWidth="144.0" />
+                                    <Label fx:id="labBtnAgregarBitacora" prefHeight="21.0" prefWidth="19.0" />
+                                    <JFXButton fx:id="btnAgregar1" text="Agregar" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton fx:id="btnGuardar" text="Guardar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children></StackPane>
+   </children>
+</AnchorPane>
