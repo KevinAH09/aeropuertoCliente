@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="493.0" prefWidth="700.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoZonasController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoZonasController">
    <children>
-      <StackPane prefHeight="493.0" prefWidth="701.0">
+      <StackPane prefHeight="520.0" prefWidth="560.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -31,13 +31,13 @@
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
                      <children>
                         <Label fx:id="lblNombre" prefHeight="20.0" prefWidth="26.0" />
-                        <Label fx:id="nombre" text="Nombre:" />
+                        <Label fx:id="nombre" prefHeight="20.0" prefWidth="80.0" text="Nombre:" />
                         <Label fx:id="lbltxtNombre" prefHeight="20.0" prefWidth="41.0" />
-                        <JFXTextField fx:id="txtNombre" />
+                        <JFXTextField fx:id="txtNombre" prefHeight="27.0" prefWidth="150.0" />
                         <Label fx:id="lblCodigo" prefHeight="20.0" prefWidth="27.0" />
-                        <Label fx:id="codigo" text="Código:" />
+                        <Label fx:id="codigo" prefHeight="20.0" prefWidth="74.0" text="Código:" />
                         <Label fx:id="lbltxtCodigo" prefHeight="20.0" prefWidth="38.0" />
-                        <JFXTextField fx:id="txtCodigo" />
+                        <JFXTextField fx:id="txtCodigo" prefHeight="27.0" prefWidth="150.0" />
                      </children>
                      <padding>
                         <Insets left="10.0" right="10.0" />
@@ -46,13 +46,13 @@
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
                      <children>
                         <Label fx:id="lblEstado" prefHeight="20.0" prefWidth="24.0" />
-                        <Label fx:id="estado" text="Estado:" />
+                        <Label fx:id="estado" prefHeight="20.0" prefWidth="67.0" text="Estado:" />
                         <Label fx:id="lblcmbEstado" prefHeight="20.0" prefWidth="36.0" />
-                        <JFXComboBox fx:id="cmbEstado" prefHeight="25.0" prefWidth="155.0" />
+                        <JFXComboBox fx:id="cmbEstado" prefHeight="31.0" prefWidth="130.0" />
                         <Label fx:id="lblDescripcion" prefHeight="20.0" prefWidth="36.0" />
-                        <Label fx:id="descripcion" text="Descripción:" />
+                        <Label fx:id="descripcion" prefHeight="20.0" prefWidth="101.0" text="Descripción:" />
                         <Label fx:id="lbltxtDescripcion" prefHeight="20.0" prefWidth="46.0" />
-                        <JFXTextField fx:id="txtDescripcion" prefHeight="29.0" prefWidth="191.0" />
+                        <JFXTextField fx:id="txtDescripcion" prefHeight="29.0" prefWidth="150.0" />
                      </children>
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />
@@ -72,13 +72,13 @@
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="687.0" spacing="5.0">
                      <children>
                         <Label fx:id="lbltxtBusqueda" prefHeight="17.0" prefWidth="18.0" />
-                        <JFXTextField fx:id="txtBusqueda" prefHeight="29.0" prefWidth="215.0" promptText="Ingrese su busqueda" />
+                        <JFXTextField fx:id="txtBusqueda" prefHeight="29.0" prefWidth="169.0" promptText="Ingrese su busqueda" />
                         <Label fx:id="lblTipo" prefHeight="17.0" prefWidth="22.0" />
                         <Label fx:id="busqueda" prefHeight="20.0" prefWidth="176.0" text="Tipo de busqueda:" />
                         <Label fx:id="lblCmbFiltro" prefHeight="20.0" prefWidth="36.0" />
                         <JFXComboBox fx:id="cmbFiltro" prefHeight="25.0" prefWidth="165.0" />
                         <Label fx:id="lblFiltrar" prefHeight="20.0" prefWidth="36.0" />
-                        <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" prefHeight="29.0" prefWidth="85.0" text="Filtrar" />
+                        <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" prefHeight="29.0" prefWidth="95.0" text="Filtrar" />
                      </children>
                      <padding>
                         <Insets left="10.0" right="10.0" />
