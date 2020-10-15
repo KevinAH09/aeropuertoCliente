@@ -7,12 +7,14 @@ package org.una.aeropuertocliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 
 /**
@@ -35,18 +37,6 @@ public class MantenimientoVuelosController implements Initializable {
     @FXML
     private Label labtimePikerInicio;
     @FXML
-    private JFXTimePicker pikerInicio;
-    @FXML
-    private Label labCargaoPasajero;
-    @FXML
-    private Label labCombCargaPasajero;
-    @FXML
-    private JFXComboBox<?> combCargaPasajero;
-    @FXML
-    private Label labCargaCombustible;
-    @FXML
-    private Label lablabCombCargaCombustible;
-    @FXML
     private Label labAvion;
     @FXML
     private Label labtxtAvion;
@@ -67,13 +57,7 @@ public class MantenimientoVuelosController implements Initializable {
     @FXML
     private Label labtimePikerFinal;
     @FXML
-    private JFXTimePicker pikerFinal;
-    @FXML
     private Label labTorre;
-    @FXML
-    private Label labCombTorre;
-    @FXML
-    private JFXComboBox<?> combTorre;
     @FXML
     private Label labEstado;
     @FXML
@@ -81,15 +65,35 @@ public class MantenimientoVuelosController implements Initializable {
     @FXML
     private Label labBitacora;
     @FXML
-    private Label labTxtBitacora;
-    @FXML
-    private JFXTextField txtBitacora;
-    @FXML
-    private Label labBtnAgregarBitacora;
-    @FXML
-    private JFXButton btnAgregar1;
-    @FXML
     private JFXButton btnGuardar;
+    @FXML
+    private DatePicker datePikerInicio;
+    @FXML
+    private DatePicker datePikerFinal;
+    @FXML
+    private Label labTipoBitacora;
+    @FXML
+    private Label labTxtTipoBitacora;
+    @FXML
+    private JFXTextField txtTipoBita;
+    @FXML
+    private Label labZona;
+    @FXML
+    private JFXRadioButton radioZona;
+    @FXML
+    private Label labradioCargaPasajero;
+    @FXML
+    private JFXRadioButton radioSubioCargaPasajero;
+    @FXML
+    private Label labRadioCargoCombustible;
+    @FXML
+    private JFXRadioButton radioCargoCombustible;
+    @FXML
+    private Label labHoras;
+    @FXML
+    private JFXRadioButton radioHoras;
+    @FXML
+    private Label labBtnGuardar;
 
     /**
      * Initializes the controller class.
