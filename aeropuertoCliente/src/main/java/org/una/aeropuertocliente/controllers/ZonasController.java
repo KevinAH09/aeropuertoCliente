@@ -47,6 +47,8 @@ public class ZonasController implements Initializable {
     private Label lblRegistrar;
     @FXML
     private JFXButton btnRegistrar;
+    @FXML
+    private Label lblGuardar;
 
     /**
      * Initializes the controller class.
@@ -58,6 +60,10 @@ public class ZonasController implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionGuardar(ActionEvent event) {
     }
     
 }
