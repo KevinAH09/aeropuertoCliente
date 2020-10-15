@@ -23,7 +23,7 @@ import javafx.scene.control.TextField;
  *
  * @author Bosco
  */
-public class AerolineaController implements Initializable {
+public class AerolineasController implements Initializable {
 
     @FXML
     private Button btnFiltrar;
