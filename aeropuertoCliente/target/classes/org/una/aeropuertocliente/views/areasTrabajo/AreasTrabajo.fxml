@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AreasTrabajoController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AreasTrabajoController">
    <children>
       <StackPane prefHeight="520.0" prefWidth="560.0">
          <children>
@@ -58,8 +58,6 @@
                      <children>
                         <Label fx:id="lblRegistrar" prefHeight="20.0" prefWidth="40.0" />
                         <JFXButton fx:id="btnRegistrar" onAction="#onActionRegistrar" text="Registrar Area" />
-                        <Label fx:id="lblGuardar" prefHeight="20.0" prefWidth="40.0" />
-                        <JFXButton fx:id="btnRegistrar" onAction="#onActionGuardar" text="Guardar" />
                      </children>
                      <padding>
                         <Insets right="10.0" />

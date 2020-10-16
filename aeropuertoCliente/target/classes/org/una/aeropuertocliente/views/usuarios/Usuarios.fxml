@@ -12,16 +12,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.ZonasController">
+
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.aeropuertocliente.controllers.UsuariosController">
    <children>
-      <StackPane prefHeight="520.0" prefWidth="560.0">
+      <StackPane prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="lblZonas" prefHeight="17.0" prefWidth="30.0" />
-                        <Label fx:id="titulo" text="Zonas">
+                        <Label fx:id="titulo" text="Usuarios">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -49,7 +50,7 @@
                         <VBox prefHeight="200.0" prefWidth="709.0">
                            <children>
                               <Label fx:id="lblTable" prefHeight="20.0" prefWidth="98.0" />
-                              <TableView fx:id="tableZonas" prefHeight="284.0" prefWidth="540.0" />
+                              <TableView fx:id="tableUsuarios" prefHeight="284.0" prefWidth="540.0" />
                            </children>
                         </VBox>
                      </children>
@@ -57,7 +58,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
                      <children>
                         <Label fx:id="lblRegistrar" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXButton fx:id="btnRegistrar" onAction="#onActionRegistrar" text="Registrar Zona" />
+                        <JFXButton fx:id="btnRegistrar" onAction="#onActionRegistrar" text="Registrar Uusario" />
                      </children>
                      <padding>
                         <Insets right="10.0" />
