@@ -15,6 +15,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -43,10 +47,6 @@ public class MantenimientoUsuariosController implements Initializable {
     private Label lbltxtCorreo;
     @FXML
     private JFXTextField txtCorreo;
-    @FXML
-    private Label lblTxtContrasena;
-    @FXML
-    private JFXPasswordField txtResponsable;
     @FXML
     private Label lblCmbEstado;
     @FXML
@@ -79,6 +79,22 @@ public class MantenimientoUsuariosController implements Initializable {
     private JFXButton btnCancelar;
     @FXML
     private JFXComboBox<?> combJefe;
+    @FXML
+    private Label lbltxtContrasena;
+    @FXML
+    private PasswordField txtPassOculto;
+    @FXML
+    private TextField txtPassMostrado;
+    @FXML
+    private Label lblMostrar;
+    @FXML
+    private ImageView imgViewPassword;
+    @FXML
+    private ImageView imgNotPassword;
+    @FXML
+    private Label lblCambi;
+    @FXML
+    private JFXButton btnCambiarContrasena;
 
     /**
      * Initializes the controller class.
@@ -98,6 +114,14 @@ public class MantenimientoUsuariosController implements Initializable {
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
+    }
+
+    @FXML
+    private void actionViewPass(MouseEvent event) {
+    }
+
+    @FXML
+    private void onActionCambiarContrasena(ActionEvent event) {
     }
     
 }
