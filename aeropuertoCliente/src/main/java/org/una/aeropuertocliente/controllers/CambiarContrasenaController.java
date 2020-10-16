@@ -14,80 +14,60 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
  *
  * @author cfugu
  */
-public class MantenimientoControlGastosController implements Initializable {
+public class CambiarContrasenaController implements Initializable {
 
     @FXML
-    private Label lblTitulo;
+    private Label lblZonas;
     @FXML
     private Label titulo;
-    @FXML
-    private Label lbltxtId;
-    @FXML
-    private JFXTextField txtId;
     @FXML
     private Label lbltxtNombre;
     @FXML
     private JFXTextField txtNombre;
     @FXML
-    private Label lblTxtResponsable;
+    private Label lbltxtCedula;
     @FXML
-    private JFXTextField txtResponsable;
+    private JFXTextField txtCedula;
     @FXML
     private Label lblCmbEstado;
     @FXML
     private JFXComboBox<?> cmbEstado;
     @FXML
-    private Label lblcmbEsatdo;
+    private Label lblcmbRol;
     @FXML
-    private Label lblFechaRegistro;
+    private JFXComboBox<?> cmbRoles;
     @FXML
-    private JFXTextField txtFecha;
+    private Label lblContrasena;
     @FXML
-    private Label lbltxtMonto;
+    private Label lbltxtContrasena;
     @FXML
-    private JFXTextField txtMonto;
+    private PasswordField txtPassOculto;
     @FXML
-    private Label lbltxtArea;
+    private TextField txtPassMostrado;
     @FXML
-    private Label lblbtnArea;
+    private Label lblMostrar;
     @FXML
-    private JFXButton btnArea;
+    private ImageView imgViewPassword;
     @FXML
-    private Label lblTitulo2;
+    private ImageView imgNotPassword;
     @FXML
-    private Label lbltxtObservacion;
+    private Label lblRegistrar;
     @FXML
-    private Label lbltxtTipo;
-    @FXML
-    private JFXTextField txtTipoServico;
-    @FXML
-    private Label lbltxtDuracion;
-    @FXML
-    private JFXTextField txtDuracion;
-    @FXML
-    private Label lbltxtPeridiocidad;
-    @FXML
-    private JFXTextField txtPeridiocidad;
-    @FXML
-    private Label lblGuardar2;
-    @FXML
-    private JFXButton btnGuardar;
+    private JFXButton btnRegistrar;
     @FXML
     private Label lblCancelar;
     @FXML
     private JFXButton btnCancelar;
-    @FXML
-    private Label lblGuardar;
-    @FXML
-    private JFXButton btnRegistrar;
-    @FXML
-    private JFXTextField txtObservacion;
 
     /**
      * Initializes the controller class.
@@ -98,19 +78,15 @@ public class MantenimientoControlGastosController implements Initializable {
     }    
 
     @FXML
-    private void onActionAreas(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionGuardar(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionCancelar(ActionEvent event) {
+    private void actionViewPass(MouseEvent event) {
     }
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionCancelar(ActionEvent event) {
     }
     
 }

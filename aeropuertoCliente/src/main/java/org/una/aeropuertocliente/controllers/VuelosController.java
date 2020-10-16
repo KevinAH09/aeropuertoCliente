@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -27,23 +28,9 @@ public class VuelosController implements Initializable {
     @FXML
     private Label titulo;
     @FXML
-    private Label lblTipoAvion;
-    @FXML
-    private Label id;
-    @FXML
-    private Label lbltxtId;
-    @FXML
     private JFXTextField txtId;
     @FXML
-    private Label labMatricula;
-    @FXML
-    private Label nombre;
-    @FXML
     private Label lbltxtNombre;
-    @FXML
-    private JFXTextField txtNombre;
-    @FXML
-    private Label labTxtFiltro;
     @FXML
     private Label labTxtFild;
     @FXML
@@ -64,8 +51,6 @@ public class VuelosController implements Initializable {
     private Label lblTable;
     @FXML
     private TableView<?> tableAviones;
-    @FXML
-    private Label labTxtFiltro1;
     @FXML
     private Label labTxtFild1;
     @FXML
@@ -88,6 +73,10 @@ public class VuelosController implements Initializable {
     private TableView<?> tableAviones1;
     @FXML
     private JFXButton btnGuardar;
+    @FXML
+    private Label lbltxtTipo;
+    @FXML
+    private JFXTextField txtmatricula;
 
     /**
      * Initializes the controller class.
@@ -96,5 +85,25 @@ public class VuelosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void filtrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void cancelar(ActionEvent event) {
+    }
+
+    @FXML
+    private void filtrar1(ActionEvent event) {
+    }
+
+    @FXML
+    private void cancelar1(ActionEvent event) {
+    }
+
+    @FXML
+    private void registrarVuelos(ActionEvent event) {
+    }
     
 }

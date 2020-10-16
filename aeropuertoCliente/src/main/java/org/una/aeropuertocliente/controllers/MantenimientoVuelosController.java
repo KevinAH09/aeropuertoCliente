@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
@@ -27,17 +28,11 @@ public class MantenimientoVuelosController implements Initializable {
     @FXML
     private Label labTitulo;
     @FXML
-    private Label labOrigen;
-    @FXML
     private Label labtxtOrigen;
     @FXML
     private JFXTextField txtOrigen;
     @FXML
-    private Label labHoraInico;
-    @FXML
     private Label labtimePikerInicio;
-    @FXML
-    private Label labAvion;
     @FXML
     private Label labtxtAvion;
     @FXML
@@ -47,19 +42,13 @@ public class MantenimientoVuelosController implements Initializable {
     @FXML
     private JFXButton btnAgregar;
     @FXML
-    private Label labDestino;
-    @FXML
     private Label labtxtDestino;
     @FXML
     private JFXTextField txtDestino;
     @FXML
-    private Label labHoraFinal;
-    @FXML
     private Label labtimePikerFinal;
     @FXML
     private Label labTorre;
-    @FXML
-    private Label labEstado;
     @FXML
     private Label labCombEstado;
     @FXML
@@ -70,8 +59,6 @@ public class MantenimientoVuelosController implements Initializable {
     private DatePicker datePikerInicio;
     @FXML
     private DatePicker datePikerFinal;
-    @FXML
-    private Label labTipoBitacora;
     @FXML
     private Label labTxtTipoBitacora;
     @FXML
@@ -94,6 +81,10 @@ public class MantenimientoVuelosController implements Initializable {
     private JFXRadioButton radioHoras;
     @FXML
     private Label labBtnGuardar;
+    @FXML
+    private JFXComboBox<?> combEstado;
+    @FXML
+    private JFXRadioButton radioTorre;
 
     /**
      * Initializes the controller class.
@@ -102,5 +93,13 @@ public class MantenimientoVuelosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void agregarAvion(ActionEvent event) {
+    }
+
+    @FXML
+    private void guardar(ActionEvent event) {
+    }
     
 }

@@ -21,8 +21,10 @@ import javafx.scene.control.TableView;
  *
  * @author cfugu
  */
-public class AreasTrabajoController implements Initializable {
+public class UsuariosController implements Initializable {
 
+    @FXML
+    private Label lblZonas;
     @FXML
     private Label titulo;
     @FXML
@@ -40,13 +42,11 @@ public class AreasTrabajoController implements Initializable {
     @FXML
     private Label lblTable;
     @FXML
+    private TableView<?> tableUsuarios;
+    @FXML
     private Label lblRegistrar;
     @FXML
     private JFXButton btnRegistrar;
-    @FXML
-    private Label lblTitulo;
-    @FXML
-    private TableView<?> tableAreas;
 
     /**
      * Initializes the controller class.
@@ -63,6 +63,5 @@ public class AreasTrabajoController implements Initializable {
     @FXML
     private void onActionRegistrar(ActionEvent event) {
     }
-
     
 }

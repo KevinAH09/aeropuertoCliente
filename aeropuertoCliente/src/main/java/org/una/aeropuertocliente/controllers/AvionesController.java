@@ -43,13 +43,9 @@ public class AvionesController implements Initializable {
     @FXML
     private JFXButton btnCancelar;
     @FXML
-    private Label labbtnRegistrarAvion;
-    @FXML
     private Label lblTable;
     @FXML
     private TableView<?> tableZonas;
-    @FXML
-    private JFXButton btnGuardar;
    
     /**
      * Initializes the controller class.
@@ -67,8 +63,5 @@ public class AvionesController implements Initializable {
     private void cancelar(ActionEvent event) {
     }
 
-    @FXML
-    private void guardar(ActionEvent event) {
-    }
 
 }
