@@ -31,17 +31,17 @@ import org.una.aeropuertocliente.controllers.Controller;
 public class FlowController {
 
     
-    private static FlowController INSTANCE = null; //instancia
-    private static Stage mainStage; //El stage es la ventana 
+    private static FlowController INSTANCE = null;
+    private static Stage mainStage; 
     private static ResourceBundle idioma;
-    private static HashMap<String, FXMLLoader> loaders = new HashMap<>(); //FXMLLoader es el que permite cargar los archivos fxml (vistas)
+    private static HashMap<String, FXMLLoader> loaders = new HashMap<>();
     private Stage s;
-    //El objeto loader es un Hashmap que guarda cada objeto de FXMLLoader mediante una llave.
+  
     
     private FlowController() {
     }
 
-    private static void createInstance() { //crea la instancia si no existe
+    private static void createInstance() { 
         if (INSTANCE == null) {
             synchronized (FlowController.class) {
                 if (INSTANCE == null) {
@@ -69,7 +69,7 @@ public class FlowController {
         this.idioma = idioma;
     }
 
-    private FXMLLoader getLoader(String name) { //carga el archivo fxml
+    private FXMLLoader getLoader(String name) { 
         FXMLLoader loader = loaders.get(name);
         if (loader == null) {
             synchronized (FlowController.class) {
@@ -77,10 +77,9 @@ public class FlowController {
                     try {
                         loader = new FXMLLoader(App.class.getResource( "views/"+name + ".fxml"), this.idioma);
                         loader.load();
-                        //loaders.put(name, loader);
                     } catch (Exception ex) {
                         loader = null;
-                        System.out.println("org.una.laboratorio.FlowController.getLoader()"+ex);
+                        System.out.println("org.una.aeropuertocliente.utils.FlowController.goMain()"+ex);
                     }
                 }
             }
@@ -88,17 +87,17 @@ public class FlowController {
         return loader;
     }
 
-    public void goMain() { //muestra la scena de la "base"
+    public void goMain() {
         try {
             this.mainStage.setScene(new Scene(FXMLLoader.load(App.class.getResource("views/base/Base.fxml"), this.idioma)));
             this.mainStage.setMinWidth(768);
             this.mainStage.show();
         } catch (Exception ex) {
-            System.out.println("org.una.laboratorio.FlowController.goMain()"+ex);
+            System.out.println("org.una.aeropuertocliente.utils.FlowController.goMain()"+ex);
         }
     }
 
-    public void goView(String viewName) { //carga la vista dentro de la escena
+    public void goView(String viewName) { 
         goView(viewName, "Center", null);
     }
 
@@ -112,7 +111,7 @@ public class FlowController {
 
     public void goView(String viewName, String location, String accion) {
         FXMLLoader loader = getLoader(viewName);
-        Controller controller = loader.getController(); //se crea el objeto de Controller.
+        Controller controller = loader.getController();
         controller.setAccion(accion);
         controller.initialize();
         Stage stage = controller.getStage();
@@ -125,19 +124,8 @@ public class FlowController {
             case "Center":
 			((StackPane) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().clear();
 			((StackPane) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().add(loader.getRoot()); 
-			//((StackPane) ((StackPane) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().get(1)).getChildren().clear();
-                         //((StackPane) ((StackPane) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().get(1)).getChildren().add(loader.getRoot());
-			/*((StackPane) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().get(1);
-			((StackPane) ((BorderPane) stage.getScene().getRoot()).getCenter()).getChildren().get(1);*/
-
-		//((StackPane)((VBox)((StackPane)principal.getScene().getRoot()).getChildren().get(1)).getChildren().get(1)).getChildren().clear();
-		//((StackPane)((VBox)((StackPane)principal.getScene().getRoot()).getChildren().get(1)).getChildren().get(1)).getChildren().add(pantalla.getRoot());
-			
                 break;
             case "Top":
-				/*((VBox) ((BorderPane) stage.getScene().getRoot()).getTop()).getChildren().clear();
-				((StackPane)stage.getScene().getRoot()).getChildren().clear();
-                ((VBox) ((BorderPane) stage.getScene().getRoot()).getTop()).getChildren().add(loader.getRoot());*/
                 break;
             case "Bottom":
                 break;
@@ -162,8 +150,6 @@ public class FlowController {
         Controller controller = loader.getController();
         controller.initialize();
         Stage stage = new Stage();
-       // stage.getIcons().add(new Image("unaplanilla2/resources/Agregar-48.png"));
-        //stage.setTitle("UNA PLANILLA");
         stage.setOnHidden((WindowEvent event) -> {
             controller.getStage().getScene().setRoot(new Pane());
             controller.setStage(null);
@@ -182,8 +168,6 @@ public class FlowController {
         Controller controller = loader.getController();
         controller.initialize();
         Stage stage = new Stage();
-        //stage.getIcons().add(new Image("unaplanilla2/resources/Agregar-48.png"));
-       // stage.setTitle("UNA PLANILLA");
         stage.setResizable(resizable);
         stage.setOnHidden((WindowEvent event) -> {
             controller.getStage().getScene().setRoot(new Pane());
@@ -205,26 +189,12 @@ public class FlowController {
     public Controller getController(String viewName) {
         return getLoader(viewName).getController();
     }
-	public static void CambiarIdioma(String i) {
-
-        ResourceBundle idiomas ;
-        if (i.equals("E")) {
-            idiomas = ResourceBundle.getBundle("prograiii_tarea_1.resources.i18n/idioma_ES");
-        } else{
-            idiomas = ResourceBundle.getBundle("prograiii_tarea_1.resources.i18n/idioma_EN");
-        }
-        setIdioma(idiomas);
-    }
-    
     public  Stage getStage()
     {
         return FlowController.mainStage;
     }
 	
-    public static void setIdioma(ResourceBundle idioma) {
-		
-        FlowController.idioma = idioma;
-    }
+    
     
     public void initialize() {
         this.loaders.clear();
