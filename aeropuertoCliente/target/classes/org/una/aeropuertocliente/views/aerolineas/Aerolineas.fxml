@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
    <children>
-      <StackPane prefHeight="520.0" prefWidth="560.0">
+      <StackPane prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -29,9 +29,9 @@
                         <Label fx:id="labComb" prefHeight="21.0" prefWidth="43.0" />
                         <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
                         <Label fx:id="labBtnFiltrar" prefHeight="21.0" prefWidth="32.0" />
-                        <JFXButton fx:id="btnFiltrar" onAction="#filtrar" prefHeight="29.0" prefWidth="81.0" text="Filtrar" />
+                        <JFXButton fx:id="btnFiltrar" onAction="#filtrar" prefHeight="29.0" prefWidth="87.0" text="Filtrar" />
                         <Label fx:id="labBtnCancelar" prefHeight="21.0" prefWidth="35.0" />
-                        <JFXButton fx:id="btnCancelar" onAction="#cancelar" prefHeight="29.0" prefWidth="95.0" text="cancelar" />
+                        <JFXButton fx:id="btnCancelar" onAction="#cancelar" prefHeight="29.0" prefWidth="99.0" text="cancelar" />
                      </children>
                   </HBox>
                   <HBox prefHeight="23.0" prefWidth="560.0">
@@ -39,9 +39,9 @@
                         <Label prefHeight="21.0" prefWidth="61.0" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="271.0" prefWidth="724.0">
+                  <HBox VBox.vgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tableview" prefHeight="254.0" prefWidth="700.0" stylesheets="@../../../../../../../../../../../../Laboratorio1Progra3/Laboratorio1Progra3/laboratorio/src/main/resources/org/una/laboratorio/table.css">
+                        <TableView fx:id="tableview" prefHeight="254.0" prefWidth="700.0" stylesheets="@../../../../../../../../../../../../Laboratorio1Progra3/Laboratorio1Progra3/laboratorio/src/main/resources/org/una/laboratorio/table.css" HBox.hgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
