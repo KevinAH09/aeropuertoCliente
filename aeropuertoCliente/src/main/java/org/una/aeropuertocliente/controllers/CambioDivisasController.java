@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -89,6 +90,14 @@ public class CambioDivisasController  extends Controller implements Initializabl
     @Override
     public void initialize() {
        
+    }
+
+    @FXML
+    private void actionComboBox(ActionEvent event) {
+        String itemSelect = cbMoneda.getSelectionModel().getSelectedItem();
+        if(itemSelect!=null){
+            System.out.println("org.una.aeropuertocliente.controllers.CambioDivisasController.actionComboBox()  "+ itemSelect);
+        }
     }
     
 }

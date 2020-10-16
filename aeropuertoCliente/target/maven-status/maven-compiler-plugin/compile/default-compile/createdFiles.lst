@@ -1,5 +1,6 @@
 org\una\aeropuertocliente\entitiesServices\VuelosService.class
 org\una\aeropuertocliente\entitiesServices\AreasTrabajosService.class
+org\una\aeropuertocliente\entitiesServices\serviceCambiosDivisas.class
 org\una\aeropuertocliente\controllers\LoginController.class
 org\una\aeropuertocliente\entitiesServices\LoginService.class
 org\una\aeropuertocliente\dtos\AuthenticationRequest.class
@@ -46,8 +47,10 @@ org\una\aeropuertocliente\controllers\MantenimientoAerolineasController.class
 org\una\aeropuertocliente\controllers\MantenimientoAreasTrabajoController.class
 org\una\aeropuertocliente\entitiesServices\BitacorasVuelosService.class
 org\una\aeropuertocliente\controllers\BaseController.class
+org\una\aeropuertocliente\controllers\UsuariosController.class
 org\una\aeropuertocliente\controllers\AreasTrabajoController.class
 org\una\aeropuertocliente\entitiesServices\AerolineasService.class
+org\una\aeropuertocliente\controllers\CambiarContrasenaController.class
 org\una\aeropuertocliente\controllers\VuelosController.class
 org\una\aeropuertocliente\App.class
 org\una\aeropuertocliente\entitiesServices\AvionesZonasService.class

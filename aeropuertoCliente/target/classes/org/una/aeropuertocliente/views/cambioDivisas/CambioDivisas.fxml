@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" prefHeight="493.0" prefWidth="600.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.CambioDivisasController">
@@ -28,7 +29,7 @@
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0" VBox.vgrow="ALWAYS">
                      <children>
                         <JFXTextField fx:id="txtIngresarMonto" alignment="CENTER" labelFloat="true" prefHeight="30.0" prefWidth="321.0" promptText="Monto" />
-                        <JFXComboBox fx:id="cbMoneda" labelFloat="true" prefHeight="30.0" prefWidth="151.0" promptText="Moneda" />
+                        <JFXComboBox fx:id="cbMoneda" labelFloat="true" onAction="#actionComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Moneda" visibleRowCount="5" />
                      </children>
                      <padding>
                         <Insets left="20.0" right="20.0" />
@@ -43,58 +44,58 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="376.0" prefWidth="119.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Colon" />
-                                          <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                                          <ImageView fx:id="img1" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                                              <image>
                                                 <Image url="@costa-rica.png" />
                                              </image>
                                           </ImageView>
-                                          <Label text="Dolar australiano" />
-                                          <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                                          <Text fx:id="lbl1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Colon" />
+                                          <ImageView fx:id="img2" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                                              <image>
                                                 <Image url="@australia.png" />
                                              </image>
                                           </ImageView>
-                                          <Label text="Dolar canadiense" />
-                                          <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                                          <Text fx:id="lbl2" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Dolar australiano" />
+                                          <ImageView fx:id="img3" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                                              <image>
                                                 <Image url="@canada.png" />
                                              </image>
                                           </ImageView>
-                                          <Label text="Dolar estadounidense" />
-                                          <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+                                          <Text fx:id="lbl3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Dolar canadiense" />
+                                          <ImageView fx:id="img4" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                                              <image>
                                                 <Image url="@estados-unidos-de-america%20(1).png" />
                                              </image>
                                           </ImageView>
+                                          <Text fx:id="lbl4" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Dolar estadounidense" />
                                        </children>
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="376.0" prefWidth="111.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label text="Franco" />
-                                          <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="img5" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@suiza.png" />
                                              </image>
                                           </ImageView>
-                                          <Label text="Libra esterlina" />
-                                          <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <Text fx:id="lbl5" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Franco" />
+                                          <ImageView fx:id="img6" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@reino-unido.png" />
                                              </image>
                                           </ImageView>
-                                          <Label text="Yen" />
-                                          <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <Text fx:id="lbl6" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Libra esterlina" />
+                                          <ImageView fx:id="img7" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@japon.png" />
                                              </image>
                                           </ImageView>
-                                          <Label text="Eurodolar" />
-                                          <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <Text fx:id="lbl7" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Yen" />
+                                          <ImageView fx:id="img8" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@union-europea.png" />
                                              </image>
                                           </ImageView>
+                                          <Text fx:id="lbl8" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Eurodolar" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -102,7 +103,41 @@
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                        <VBox prefHeight="371.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="lblselect" alignment="CENTER" prefHeight="33.0" prefWidth="290.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fx:id="imgSelect" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Text fill="#fffdfd" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Monto">
+                                             <font>
+                                                <Font size="13.0" />
+                                             </font>
+                                          </Text>
+                                          <Label fx:id="lblMontoCambio" alignment="CENTER" prefHeight="40.0" prefWidth="429.0" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="20.0" prefWidth="117.0" text="Monto compra:" />
+                                    <Label fx:id="lblcompra" prefHeight="20.0" prefWidth="94.0" HBox.hgrow="ALWAYS" />
+                                    <Label prefHeight="20.0" prefWidth="103.0" text="Monto venta:" />
+                                    <Label fx:id="lblVenta" prefHeight="20.0" prefWidth="84.0" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                           </children></VBox>
                      </children>
                   </HBox>
                   <Separator prefWidth="200.0" />

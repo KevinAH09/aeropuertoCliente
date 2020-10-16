@@ -89,11 +89,16 @@ and open the template in the editor.
 }
 .jfx-combo-box{
     -fx-prompt-text-fill: -fx-blanco;
-    -fx-text-fill: black;
+    -fx-text-fill: #ffffff;
     -fx-font-family: "century";
     -fx-font-size: 15px;
     -jfx-focus-color: -fx-blanco;
     -jfx-unfocus-color: #000033;
+}
+ .jfx-combo-box .cell{
+    -fx-text-fill: white;
+     -fx-font-size: 13px;
+     -fx-background-color: linear-gradient(to left, #666666, #333333);
 }
 .jfx-password-field{
     -fx-prompt-text-fill: -fx-blanco;
