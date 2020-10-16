@@ -83,7 +83,7 @@ public class CambioDivisasController  extends Controller implements Initializabl
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-                cbMoneda.setItems(FXCollections.observableArrayList("Colon","Eurodolar","Dolar estadounidense","Yen","Dolar canadiense","Libra esterlina","Franco","Dolar australiano","Dolar neozelandes"));
+        cbMoneda.setItems(FXCollections.observableArrayList("Colon","Eurodolar","Dolar estadounidense","Yen","Dolar canadiense","Libra esterlina","Franco","Dolar australiano","Dolar neozelandes"));
                      
     }    
 
