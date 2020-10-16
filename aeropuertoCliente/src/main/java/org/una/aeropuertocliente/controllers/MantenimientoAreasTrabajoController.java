@@ -27,33 +27,17 @@ public class MantenimientoAreasTrabajoController implements Initializable {
     @FXML
     private Label titulo;
     @FXML
-    private Label lblNombre;
-    @FXML
-    private Label nombre;
-    @FXML
     private Label lbltxtNombre;
     @FXML
     private JFXTextField txtNombre;
-    @FXML
-    private Label lblId;
-    @FXML
-    private Label id;
     @FXML
     private Label lbltxtId;
     @FXML
     private JFXTextField txtId;
     @FXML
-    private Label lblDescripcion;
-    @FXML
-    private Label descripcion;
-    @FXML
     private Label lbltxtDescripcion;
     @FXML
     private JFXTextField txtDescripcion;
-    @FXML
-    private Label lblEstado;
-    @FXML
-    private Label estado;
     @FXML
     private Label lblcmbEstado;
     @FXML

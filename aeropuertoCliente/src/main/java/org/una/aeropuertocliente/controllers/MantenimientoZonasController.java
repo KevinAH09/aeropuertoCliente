@@ -28,33 +28,17 @@ public class MantenimientoZonasController implements Initializable {
     @FXML
     private Label titulo;
     @FXML
-    private Label lblNombre;
-    @FXML
-    private Label nombre;
-    @FXML
     private Label lbltxtNombre;
     @FXML
     private JFXTextField txtNombre;
-    @FXML
-    private Label lblCodigo;
-    @FXML
-    private Label codigo;
     @FXML
     private Label lbltxtCodigo;
     @FXML
     private JFXTextField txtCodigo;
     @FXML
-    private Label lblEstado;
-    @FXML
-    private Label estado;
-    @FXML
     private Label lblcmbEstado;
     @FXML
     private JFXComboBox<?> cmbEstado;
-    @FXML
-    private Label lblDescripcion;
-    @FXML
-    private Label descripcion;
     @FXML
     private Label lbltxtDescripcion;
     @FXML
@@ -69,10 +53,6 @@ public class MantenimientoZonasController implements Initializable {
     private Label lbltxtBusqueda;
     @FXML
     private JFXTextField txtBusqueda;
-    @FXML
-    private Label lblTipo;
-    @FXML
-    private Label busqueda;
     @FXML
     private Label lblCmbFiltro;
     @FXML

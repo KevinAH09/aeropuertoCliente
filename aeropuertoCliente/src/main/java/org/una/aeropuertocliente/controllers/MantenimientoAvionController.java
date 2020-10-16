@@ -5,8 +5,12 @@
  */
 package org.una.aeropuertocliente.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -39,25 +43,15 @@ public class MantenimientoAvionController implements Initializable {
     @FXML
     private Label labTituloAviones;
     @FXML
-    private Label labTipoAvion;
-    @FXML
     private Label labTxtFildTipoAvion;
-    @FXML
-    private Label labTxtMatricula;
     @FXML
     private Label labTxtFildMatricula;
     @FXML
-    private Label labTxtEstado;
-    @FXML
     private Label labCombEstado;
-    @FXML
-    private Label labTxtZona;
     @FXML
     private Label labTxtFildZona;
     @FXML
     private Label labBtnAgregar;
-    @FXML
-    private Label labTxtVuelo;
     @FXML
     private Label labTxtFildVuelo;
     @FXML
@@ -70,6 +64,14 @@ public class MantenimientoAvionController implements Initializable {
     private Label labTable;
     @FXML
     private Label labBtn;
+    @FXML
+    private JFXTextField txtMatricula;
+    @FXML
+    private JFXComboBox<?> combEstado;
+    @FXML
+    private JFXComboBox<?> combFiltro;
+    @FXML
+    private JFXButton btnGuardar;
 
     /**
      * Initializes the controller class.
@@ -78,5 +80,29 @@ public class MantenimientoAvionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void agregarZona(ActionEvent event) {
+    }
+
+    @FXML
+    private void filtrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void combFiltro(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnFiltrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnCancelar(ActionEvent event) {
+    }
+
+    @FXML
+    private void guardar(ActionEvent event) {
+    }
     
 }

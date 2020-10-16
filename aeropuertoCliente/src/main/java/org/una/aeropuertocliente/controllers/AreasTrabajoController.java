@@ -30,10 +30,6 @@ public class AreasTrabajoController implements Initializable {
     @FXML
     private JFXTextField txtBusqueda;
     @FXML
-    private Label lblTipo;
-    @FXML
-    private Label busqueda;
-    @FXML
     private Label lblCmbFiltro;
     @FXML
     private JFXComboBox<?> cmbFiltro;

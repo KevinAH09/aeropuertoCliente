@@ -80,11 +80,20 @@ and open the template in the editor.
 }
 .jfx-text-field, .jfx-text-area{
     -fx-prompt-text-fill: -fx-blanco;
+    -fx-text-fill: -fx-blanco;
+    -fx-font-family: "century";
+    -fx-font-size: 15px;
+    -jfx-focus-color: #000033;
+    -jfx-focus-text-fill: -fx-blanco;
+    -jfx-unfocus-color: #000033;
+}
+.jfx-combo-box{
+    -fx-prompt-text-fill: -fx-blanco;
     -fx-text-fill: black;
     -fx-font-family: "century";
     -fx-font-size: 15px;
     -jfx-focus-color: -fx-blanco;
-    -jfx-unfocus-color: -fx-azul;
+    -jfx-unfocus-color: #000033;
 }
 .jfx-password-field{
     -fx-prompt-text-fill: -fx-blanco;
@@ -94,7 +103,7 @@ and open the template in the editor.
     -jfx-unfocus-color: -fx-azul;
 }
 
-/*.datePicker{
+.datePicker{
     -fx-font-family: "century";
     -jfx-focus-color: -fx-verde;
     -jfx-unfocus-color: -fx-verde;
@@ -109,7 +118,7 @@ and open the template in the editor.
         -fx-unfocus-color: -fx-celeste;
     -fx-selected-color: -fx-celeste;
     -fx-unselected-color: -fx-celeste;
-}*/
+}
 
 
 /*.radioButtonFX .radio-button .radio:selected {

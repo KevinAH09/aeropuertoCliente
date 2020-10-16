@@ -12,16 +12,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancgor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="768.0" onMouseMoved="#actionTamano" prefHeight="550.0" prefWidth="768.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.PrincipalController">
+<AnchorPane fx:id="ancgor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="768.0" onMouseMoved="#actionTamano" prefHeight="550.0" prefWidth="820.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.PrincipalController">
    <children>
       <BorderPane prefHeight="555.0" prefWidth="788.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <VBox fx:id="vboxPrincipal" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+            <VBox fx:id="vboxPrincipal" alignment="CENTER" prefHeight="520.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
          </center>
          <left>
-            <VBox prefHeight="522.0" prefWidth="230.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="520.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <TreeView fx:id="treeAcciones" prefHeight="538.0" prefWidth="230.0" stylesheets="@../shared/Style2.css" VBox.vgrow="ALWAYS" />
+                  <TreeView fx:id="treeAcciones" prefHeight="520.0" prefWidth="195.0" stylesheets="@../shared/Style2.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </left>

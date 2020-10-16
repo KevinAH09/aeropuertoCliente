@@ -40,29 +40,13 @@ public class MantenimientoAerolineasController implements Initializable {
     @FXML
     private Label lblTitulo;
     @FXML
-    private Label lblId;
-    @FXML
     private Label lbltxtId;
-    @FXML
-    private Label lblNombre;
     @FXML
     private Label lbltxtNombre;
     @FXML
     private Label titulo;
     @FXML
-    private Label id;
-    @FXML
-    private Label nombre;
-    @FXML
-    private Label lblResponsable;
-    @FXML
-    private Label responsable;
-    @FXML
     private Label lblTxtResponsable;
-    @FXML
-    private Label lblEstado;
-    @FXML
-    private Label estado;
     @FXML
     private Label lblCmbEstado;
     @FXML

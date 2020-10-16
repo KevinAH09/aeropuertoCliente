@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -38,8 +39,6 @@ public class AerolineasController implements Initializable {
     @FXML
     private Label labTitulo;
     @FXML
-    private Label labTxtFiltro;
-    @FXML
     private Label labTxtFild;
     @FXML
     private Label labComb;
@@ -49,6 +48,8 @@ public class AerolineasController implements Initializable {
     private Label labBtnCancelar;
     @FXML
     private Label labbtnRegistrarAvion;
+    @FXML
+    private JFXButton btnRegistrarAvion;
 
     /**
      * Initializes the controller class.
@@ -57,5 +58,17 @@ public class AerolineasController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void filtrar(ActionEvent event) {
+    }
+
+    @FXML
+    private void cancelar(ActionEvent event) {
+    }
+
+    @FXML
+    private void registrarAvion(ActionEvent event) {
+    }
     
 }
