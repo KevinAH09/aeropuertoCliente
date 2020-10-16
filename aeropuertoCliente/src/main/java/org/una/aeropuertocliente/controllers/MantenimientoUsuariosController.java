@@ -28,73 +28,35 @@ public class MantenimientoUsuariosController implements Initializable {
     @FXML
     private Label titulo;
     @FXML
-    private Label lblId;
-    @FXML
-    private Label id;
-    @FXML
     private Label lbltxtId;
     @FXML
     private JFXTextField txtId;
-    @FXML
-    private Label lblNombre;
-    @FXML
-    private Label nombre;
     @FXML
     private Label lbltxtNombre;
     @FXML
     private JFXTextField txtNombre;
     @FXML
-    private Label lblCedula;
-    @FXML
-    private Label cedula;
-    @FXML
     private Label lbltxtCedula;
     @FXML
     private JFXTextField txtCedula;
-    @FXML
-    private Label lblCorreo;
-    @FXML
-    private Label correo;
     @FXML
     private Label lbltxtCorreo;
     @FXML
     private JFXTextField txtCorreo;
     @FXML
-    private Label lblcontrasena;
-    @FXML
-    private Label contrasena;
-    @FXML
     private Label lblTxtContrasena;
     @FXML
     private JFXPasswordField txtResponsable;
-    @FXML
-    private Label lblEstado;
-    @FXML
-    private Label estado;
     @FXML
     private Label lblCmbEstado;
     @FXML
     private JFXComboBox<?> cmbEstado;
     @FXML
-    private Label lblRol;
-    @FXML
-    private Label rol;
-    @FXML
     private Label lblcmbRol;
     @FXML
     private JFXComboBox<?> cmbRoles;
     @FXML
-    private Label lblbtnRol;
-    @FXML
-    private Label lblJefe;
-    @FXML
-    private Label jefe;
-    @FXML
     private Label lblcmbJefe;
-    @FXML
-    private Label lblArea;
-    @FXML
-    private Label area;
     @FXML
     private Label lbltxtArea;
     @FXML
@@ -103,10 +65,6 @@ public class MantenimientoUsuariosController implements Initializable {
     private Label lblbtnArea;
     @FXML
     private JFXButton btnArea;
-    @FXML
-    private Label lblfecha;
-    @FXML
-    private Label fecha;
     @FXML
     private Label lbltxtFecha;
     @FXML
@@ -119,6 +77,8 @@ public class MantenimientoUsuariosController implements Initializable {
     private Label lblCancelar;
     @FXML
     private JFXButton btnCancelar;
+    @FXML
+    private JFXComboBox<?> combJefe;
 
     /**
      * Initializes the controller class.

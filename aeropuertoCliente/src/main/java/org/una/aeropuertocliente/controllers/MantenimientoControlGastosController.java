@@ -27,61 +27,31 @@ public class MantenimientoControlGastosController implements Initializable {
     @FXML
     private Label titulo;
     @FXML
-    private Label lblEmpresa;
-    @FXML
-    private Label id;
-    @FXML
     private Label lbltxtId;
     @FXML
     private JFXTextField txtId;
-    @FXML
-    private Label lblContrato;
-    @FXML
-    private Label nombre;
     @FXML
     private Label lbltxtNombre;
     @FXML
     private JFXTextField txtNombre;
     @FXML
-    private Label lblResponsable;
-    @FXML
-    private Label responsable;
-    @FXML
     private Label lblTxtResponsable;
     @FXML
     private JFXTextField txtResponsable;
-    @FXML
-    private Label lblEstadoPago;
-    @FXML
-    private Label estado;
     @FXML
     private Label lblCmbEstado;
     @FXML
     private JFXComboBox<?> cmbEstado;
     @FXML
-    private Label lblEstado;
-    @FXML
     private Label lblcmbEsatdo;
-    @FXML
-    private Label lblFecha;
-    @FXML
-    private Label fecha;
     @FXML
     private Label lblFechaRegistro;
     @FXML
     private JFXTextField txtFecha;
     @FXML
-    private Label lblMonto;
-    @FXML
-    private Label monto;
-    @FXML
     private Label lbltxtMonto;
     @FXML
     private JFXTextField txtMonto;
-    @FXML
-    private Label lblArea;
-    @FXML
-    private Label AreaTrabajo;
     @FXML
     private Label lbltxtArea;
     @FXML
@@ -91,31 +61,15 @@ public class MantenimientoControlGastosController implements Initializable {
     @FXML
     private Label lblTitulo2;
     @FXML
-    private Label lblObservacion;
-    @FXML
-    private Label observacion;
-    @FXML
     private Label lbltxtObservacion;
-    @FXML
-    private Label lblTipo;
-    @FXML
-    private Label Tiposervico;
     @FXML
     private Label lbltxtTipo;
     @FXML
     private JFXTextField txtTipoServico;
     @FXML
-    private Label lblDuracion;
-    @FXML
-    private Label duracion;
-    @FXML
     private Label lbltxtDuracion;
     @FXML
     private JFXTextField txtDuracion;
-    @FXML
-    private Label lblPeridiocidad;
-    @FXML
-    private Label Peridiocidad;
     @FXML
     private Label lbltxtPeridiocidad;
     @FXML
@@ -132,6 +86,8 @@ public class MantenimientoControlGastosController implements Initializable {
     private Label lblGuardar;
     @FXML
     private JFXButton btnRegistrar;
+    @FXML
+    private JFXTextField txtObservacion;
 
     /**
      * Initializes the controller class.

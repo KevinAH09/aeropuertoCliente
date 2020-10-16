@@ -28,36 +28,30 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="560.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="45.0" prefWidth="560.0" spacing="5.0">
                      <children>
-                        <Label fx:id="lblTipoAvion" prefHeight="17.0" prefWidth="24.0" />
-                        <Label fx:id="id" prefHeight="20.0" prefWidth="97.0" text="Tipo avión:" />
-                        <Label fx:id="lbltxtId" prefHeight="20.0" prefWidth="25.0" />
-                        <JFXTextField fx:id="txtId" prefHeight="27.0" prefWidth="149.0" />
-                        <Label fx:id="labMatricula" prefHeight="17.0" prefWidth="22.0" />
-                        <Label fx:id="nombre" prefHeight="20.0" prefWidth="89.0" text="Matrícula:" />
-                        <Label fx:id="lbltxtNombre" prefHeight="17.0" prefWidth="21.0" />
-                        <JFXTextField fx:id="txtNombre" prefHeight="27.0" prefWidth="166.0" />
+                        <Label fx:id="lbltxtTipo" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXTextField fx:id="txtId" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de avión" />
+                        <Label fx:id="lbltxtNombre" prefHeight="17.0" prefWidth="30.0" />
+                        <JFXTextField fx:id="txtmatricula" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Matrícula del avión" />
                      </children>
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="53.0" prefWidth="560.0">
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="560.0">
                      <children>
-                        <Label fx:id="labTxtFiltro" prefHeight="20.0" prefWidth="24.0" />
-                        <Label prefHeight="20.0" prefWidth="62.0" text="Filtrar:" />
-                        <Label fx:id="labTxtFild" prefHeight="20.0" prefWidth="22.0" />
-                        <JFXTextField fx:id="txtFilter" prefHeight="27.0" prefWidth="141.0" />
-                        <Label fx:id="labComb" prefHeight="20.0" prefWidth="27.0" />
-                        <JFXComboBox fx:id="combFilter" prefHeight="31.0" prefWidth="126.0" />
-                        <Label fx:id="labBtnFiltrar" prefHeight="20.0" prefWidth="28.0" />
-                        <JFXButton fx:id="btnFiltrar" prefHeight="29.0" prefWidth="78.0" text="Filtrar" />
-                        <Label fx:id="labBtnCancelar" prefHeight="20.0" prefWidth="28.0" />
-                        <JFXButton fx:id="btnCancelar" prefHeight="29.0" prefWidth="85.0" text="cancelar" />
+                        <Label fx:id="labTxtFild" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXTextField fx:id="txtFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <Label fx:id="labComb" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
+                        <Label fx:id="labBtnFiltrar" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXButton fx:id="btnFiltrar" onAction="#filtrar" prefHeight="31.0" prefWidth="70.0" text="Filtrar" />
+                        <Label fx:id="labBtnCancelar" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXButton fx:id="btnCancelar" onAction="#cancelar" prefHeight="31.0" prefWidth="88.0" text="cancelar" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="173.0" prefWidth="560.0" spacing="20.0">
+                  <HBox prefHeight="160.0" prefWidth="560.0" spacing="20.0">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
@@ -70,26 +64,24 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="560.0">
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="560.0">
                      <children>
-                        <Label fx:id="labTxtFiltro1" prefHeight="20.0" prefWidth="24.0" />
-                        <Label prefHeight="20.0" prefWidth="72.0" text="Filtrar:" />
-                        <Label fx:id="labTxtFild1" prefHeight="20.0" prefWidth="28.0" />
-                        <JFXTextField fx:id="txtFilter1" prefHeight="27.0" prefWidth="141.0" />
-                        <Label fx:id="labComb1" prefHeight="20.0" prefWidth="27.0" />
-                        <JFXComboBox fx:id="combFilter1" prefHeight="31.0" prefWidth="126.0" />
-                        <Label fx:id="labBtnFiltrar1" prefHeight="20.0" prefWidth="28.0" />
-                        <JFXButton fx:id="btnFiltrar1" prefHeight="29.0" prefWidth="78.0" text="Filtrar" />
-                        <Label fx:id="labBtnCancelar1" prefHeight="20.0" prefWidth="28.0" />
-                        <JFXButton fx:id="btnCancelar1" prefHeight="29.0" prefWidth="95.0" text="cancelar" />
+                        <Label fx:id="labTxtFild1" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXTextField fx:id="txtFilter1" labelFloat="true" onAction="#filtrar1" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <Label fx:id="labComb1" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXComboBox fx:id="combFilter1" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
+                        <Label fx:id="labBtnFiltrar1" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXButton fx:id="btnFiltrar1" onAction="#filtrar1" prefHeight="29.0" prefWidth="78.0" text="Filtrar" />
+                        <Label fx:id="labBtnCancelar1" prefHeight="20.0" prefWidth="30.0" />
+                        <JFXButton fx:id="btnCancelar1" onAction="#cancelar1" prefHeight="29.0" prefWidth="95.0" text="cancelar" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="178.0" prefWidth="560.0" spacing="20.0">
+                  <HBox prefHeight="160.0" prefWidth="560.0" spacing="20.0">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
                      <children>
-                        <VBox prefHeight="184.0" prefWidth="540.0">
+                        <VBox prefHeight="164.0" prefWidth="540.0">
                            <children>
                               <Label fx:id="lblTable1" prefHeight="20.0" prefWidth="98.0" />
                               <TableView fx:id="tableAviones1" prefHeight="230.0" prefWidth="681.0" />
@@ -99,7 +91,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="560.0">
                      <children>
-                        <JFXButton fx:id="btnGuardar" text="Registrar vuelos" />
+                        <JFXButton fx:id="btnGuardar" onAction="#registrarVuelos" text="Registrar vuelos" />
                      </children>
                   </HBox>
                </children>

@@ -32,10 +32,6 @@ public class ZonasController implements Initializable {
     @FXML
     private JFXTextField txtBusqueda;
     @FXML
-    private Label lblTipo;
-    @FXML
-    private Label busqueda;
-    @FXML
     private Label lblCmbFiltro;
     @FXML
     private JFXComboBox<?> cmbFiltro;
@@ -49,6 +45,10 @@ public class ZonasController implements Initializable {
     private JFXButton btnRegistrar;
     @FXML
     private Label lblGuardar;
+    @FXML
+    private Label lblFiltrar;
+    @FXML
+    private JFXButton btnFiltrar;
 
     /**
      * Initializes the controller class.
@@ -64,6 +64,10 @@ public class ZonasController implements Initializable {
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionFiltrar(ActionEvent event) {
     }
     
 }
