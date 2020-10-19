@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.una.aeropuertocliente.dtos.AuthenticationResponse;
+import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.utils.AppContext;
 
 /**
@@ -90,10 +91,8 @@ public class Conection {
 
     }
 
-    public static <T> Object listFromConnection(String urlstring, Class<T> type) throws MalformedURLException, IOException {
+    public static <T> Object listFromConnection(String urlstring, Type listtype) throws MalformedURLException, IOException {
         Gson gson = new Gson();
-        Type listtype = new TypeToken<ArrayList<Object>>() {
-        }.getType();
         URL url = new URL(urlBase + urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");

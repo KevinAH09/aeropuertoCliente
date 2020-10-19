@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -59,7 +60,7 @@ public class ZonasController extends Controller implements Initializable {
     @FXML
     private JFXButton btnFiltrar;
     ZonasDTO zonas;
-    public List<ZonasDTO> zonasList;
+    public List<ZonasDTO> zonasList = new ArrayList<ZonasDTO>();
     ZonasService zonSer;
 
     /**
@@ -83,8 +84,8 @@ public class ZonasController extends Controller implements Initializable {
     }
 
     private void llenarZonas() {
-        TableColumn<ZonasDTO, String> colId = new TableColumn("Id");
-        colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
+//        TableColumn<ZonasDTO, String> colId = new TableColumn("Id");
+//        colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
         TableColumn<ZonasDTO, String> colNombre = new TableColumn("Nombre");
         colNombre.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreZona()));
         TableColumn<ZonasDTO, String> colEstado = new TableColumn("Estado");
@@ -93,11 +94,11 @@ public class ZonasController extends Controller implements Initializable {
         colCodigo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getCodigo()));
         TableColumn<ZonasDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
-        tableZonas.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion);
+        tableZonas.getColumns().addAll(/*colId,*/ colNombre, colEstado, colCodigo, colDescripcion);
 
         try {         
             zonasList = ZonasService.allZonas();
-            System.out.println(zonasList);
+            System.out.println("----------------------------------------------------------------------------"+zonasList);
             if (zonasList != null && !zonasList.isEmpty()) {
                 System.out.println("Entró");
                 tableZonas.setItems(FXCollections.observableArrayList(zonasList));

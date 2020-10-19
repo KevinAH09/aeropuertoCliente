@@ -16,6 +16,7 @@ org\una\aeropuertocliente\entitiesServices\AreasTrabajosService$1.class
 org\una\aeropuertocliente\controllers\AvionesController.class
 org\una\aeropuertocliente\utils\Respuesta.class
 module-info.class
+org\una\aeropuertocliente\entitiesServices\ZonasService$2.class
 org\una\aeropuertocliente\entitiesServices\AerolineasService$1.class
 org\una\aeropuertocliente\entitiesServices\BitacorasVuelosService$1.class
 org\una\aeropuertocliente\entitiesServices\AvionesZonasService$1.class
@@ -30,7 +31,6 @@ org\una\aeropuertocliente\dtos\VuelosDTO.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService$1.class
 org\una\aeropuertocliente\entitiesServices\RegistrosAccionesService.class
 org\una\aeropuertocliente\dtos\AuthenticationResponse.class
-org\una\aeropuertocliente\sharedService\Conection$2.class
 org\una\aeropuertocliente\controllers\MantenimientoUsuariosController.class
 org\una\aeropuertocliente\dtos\DetallesControlesGastosDTO.class
 org\una\aeropuertocliente\utils\FlowController.class

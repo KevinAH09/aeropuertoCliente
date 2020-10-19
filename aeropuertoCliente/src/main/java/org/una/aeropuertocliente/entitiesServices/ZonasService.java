@@ -19,15 +19,16 @@ import org.una.aeropuertocliente.sharedService.Conection;
  * @author colo7
  */
 public class ZonasService {
-    public static List<ZonasDTO> allZonas(){
+    public static  List<ZonasDTO> allZonas(){
         
         List<ZonasDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<ZonasDTO>) Conection.listFromConnection("zona/",ZonasDTO.class);
+            listsDTOs =  (List<ZonasDTO>) Conection.listFromConnection("zona/",new TypeToken<ArrayList<ZonasDTO>>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return listsDTOs;
     }
     public static ZonasDTO idZona(Long id){
