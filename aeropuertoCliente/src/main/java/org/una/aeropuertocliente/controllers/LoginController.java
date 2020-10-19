@@ -84,7 +84,7 @@ public class LoginController extends Controller implements Initializable {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
         Token.setInstance(LoginService.login(authenticationRequest));
        if(Token.getInstance()!=null){
-           FlowController.getInstance().goView("principal/Principal");
+           FlowController.getInstance().goView("zonas/Zonas");
        }
     }
 
