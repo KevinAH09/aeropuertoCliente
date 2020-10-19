@@ -102,7 +102,7 @@ public class FlowController {
     }
 
     public void goView(String viewName, String accion) {
-        goView(viewName, "Center", accion);
+        goView(viewName, "Center", accion); 
     }
     public Parent retornaSatge(String viewName) throws IOException{
         Parent root = FXMLLoader.load(App.class.getResource("views/"+viewName+".fxml"));
