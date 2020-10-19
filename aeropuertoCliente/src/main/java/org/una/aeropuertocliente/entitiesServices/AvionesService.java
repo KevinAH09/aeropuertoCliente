@@ -23,7 +23,7 @@ public class AvionesService {
         
         List<AvionesDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<AvionesDTO>) Conection.listFromConnection("avion/",AvionesDTO.class);
+            listsDTOs = (List<AvionesDTO>) Conection.listFromConnection("avion/",new TypeToken<ArrayList<AvionesDTO>>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
