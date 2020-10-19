@@ -16,14 +16,20 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
+import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -54,8 +60,6 @@ public class ZonasController extends Controller implements Initializable {
     @FXML
     private JFXButton btnRegistrar;
     @FXML
-    private Label lblGuardar;
-    @FXML
     private Label lblFiltrar;
     @FXML
     private JFXButton btnFiltrar;
@@ -68,24 +72,23 @@ public class ZonasController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        actionZonasClick();
         llenarZonas();
+        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado","Nombre","Código"));
     }
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
     }
 
-    @FXML
-    private void onActionGuardar(ActionEvent event) {
-    }
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
     }
 
     private void llenarZonas() {
-//        TableColumn<ZonasDTO, String> colId = new TableColumn("Id");
-//        colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
+        TableColumn<ZonasDTO, String> colId = new TableColumn("Id");
+        colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
         TableColumn<ZonasDTO, String> colNombre = new TableColumn("Nombre");
         colNombre.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreZona()));
         TableColumn<ZonasDTO, String> colEstado = new TableColumn("Estado");
@@ -94,24 +97,34 @@ public class ZonasController extends Controller implements Initializable {
         colCodigo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getCodigo()));
         TableColumn<ZonasDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
-        tableZonas.getColumns().addAll(/*colId,*/ colNombre, colEstado, colCodigo, colDescripcion);
+        tableZonas.getColumns().addAll(/*colId,*/colNombre, colEstado, colCodigo, colDescripcion);
 
-        try {         
+        try {
             zonasList = ZonasService.allZonas();
-            System.out.println("----------------------------------------------------------------------------"+zonasList);
             if (zonasList != null && !zonasList.isEmpty()) {
                 System.out.println("Entró");
                 tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-//                for (int i = 0; i < zonasList.size(); i++) {
-//                    System.out.println(zonasList.get(i).getNombreZona());
-//                }
-                System.out.println(zonasList.size());
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
             }
         } catch (Exception e) {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
         }
+    }
+
+    private void actionZonasClick() {
+        tableZonas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2 && tableZonas.selectionModelProperty().get().getSelectedItem() != null) {
+                    ZonasDTO zona = (ZonasDTO) tableZonas.selectionModelProperty().get().getSelectedItem();
+                    AppContext.getInstance().set("zon", zona);
+                    System.out.println(zona.getNombreZona());
+//                    ((Stage) btnFiltrar.getScene().getWindow()).close();
+                }
+
+            }
+        });
     }
 
     @Override
