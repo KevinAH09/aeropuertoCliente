@@ -26,7 +26,7 @@ public class UsuariosService {
         
         List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
         try {
-            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/",UsuariosDTO.class);
+            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/",new TypeToken<ArrayList<UsuariosDTO>>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);

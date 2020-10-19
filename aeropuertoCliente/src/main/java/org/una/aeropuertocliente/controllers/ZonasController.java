@@ -97,7 +97,7 @@ public class ZonasController extends Controller implements Initializable {
         colCodigo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getCodigo()));
         TableColumn<ZonasDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
-        tableZonas.getColumns().addAll(/*colId,*/colNombre, colEstado, colCodigo, colDescripcion);
+        tableZonas.getColumns().addAll(colId,colNombre, colEstado, colCodigo, colDescripcion);
 
         try {
             zonasList = ZonasService.allZonas();

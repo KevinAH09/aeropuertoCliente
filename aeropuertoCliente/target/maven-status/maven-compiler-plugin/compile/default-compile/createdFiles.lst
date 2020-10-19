@@ -3,6 +3,7 @@ org\una\aeropuertocliente\entitiesServices\AreasTrabajosService.class
 org\una\aeropuertocliente\entitiesServices\serviceCambiosDivisas.class
 org\una\aeropuertocliente\controllers\LoginController.class
 org\una\aeropuertocliente\entitiesServices\LoginService.class
+org\una\aeropuertocliente\entitiesServices\UsuariosService$2.class
 org\una\aeropuertocliente\dtos\AuthenticationRequest.class
 org\una\aeropuertocliente\dtos\RolesDTO.class
 org\una\aeropuertocliente\controllers\CambioDivisasController.class
@@ -15,6 +16,7 @@ org\una\aeropuertocliente\entitiesServices\AvionesService$1.class
 org\una\aeropuertocliente\entitiesServices\AreasTrabajosService$1.class
 org\una\aeropuertocliente\controllers\AvionesController.class
 org\una\aeropuertocliente\utils\Respuesta.class
+org\una\aeropuertocliente\entitiesServices\AerolineasService$2.class
 module-info.class
 org\una\aeropuertocliente\entitiesServices\ZonasService$2.class
 org\una\aeropuertocliente\entitiesServices\AerolineasService$1.class
@@ -30,6 +32,7 @@ org\una\aeropuertocliente\dtos\AvionesDTO.class
 org\una\aeropuertocliente\dtos\VuelosDTO.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService$1.class
 org\una\aeropuertocliente\entitiesServices\RegistrosAccionesService.class
+org\una\aeropuertocliente\controllers\ZonasController$1.class
 org\una\aeropuertocliente\dtos\AuthenticationResponse.class
 org\una\aeropuertocliente\controllers\MantenimientoUsuariosController.class
 org\una\aeropuertocliente\dtos\DetallesControlesGastosDTO.class
