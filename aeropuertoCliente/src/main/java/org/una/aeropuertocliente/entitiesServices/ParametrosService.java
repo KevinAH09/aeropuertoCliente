@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.una.aeropuertocliente.dtos.ParametrosDTO;
+import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.sharedService.Conection;
 
 /**
@@ -19,41 +20,72 @@ import org.una.aeropuertocliente.sharedService.Conection;
  * @author colo7
  */
 public class ParametrosService {
-    public static List<ParametrosDTO> allParametros(){
-        
+
+    public static List<ParametrosDTO> allParametros() {
+
         List<ParametrosDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<ParametrosDTO>) Conection.listFromConnection("parametro/",ParametrosDTO.class);
-            
+            listsDTOs = (List<ParametrosDTO>) Conection.listFromConnection("parametro/", new TypeToken<ArrayList<ParametrosDTO>>() {
+            }.getType());
+
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listsDTOs;
     }
-    public static ParametrosDTO idParametro(Long id){
-        
+
+    public static List<ParametrosDTO> estadoParametros(Boolean estado) {
+
+        List<ParametrosDTO> listsDTOs = new ArrayList<>();
+        try {
+            listsDTOs = (List<ParametrosDTO>) Conection.listFromConnection("parametro/estado/" + estado, new TypeToken<ArrayList<ParametrosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listsDTOs;
+    }
+    public static List<ParametrosDTO> nombreParametros(String nombre) {
+
+        List<ParametrosDTO> listsDTOs = new ArrayList<>();
+        try {
+            listsDTOs = (List<ParametrosDTO>) Conection.listFromConnection("parametro/nombre_parametro/" + nombre, new TypeToken<ArrayList<ParametrosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listsDTOs;
+    }
+
+    public static ParametrosDTO idParametro(Long id) {
+
         ParametrosDTO dTO = new ParametrosDTO();
         try {
-            dTO = (ParametrosDTO) Conection.oneConnection("parametro/"+id,new TypeToken<ParametrosDTO>() {}.getType());
-            
+            dTO = (ParametrosDTO) Conection.oneConnection("parametro/" + id, new TypeToken<ParametrosDTO>() {
+            }.getType());
+
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return dTO;
     }
-    public static int createParametro(ParametrosDTO update){
-        int codeResponse=0;
+
+    public static int createParametro(ParametrosDTO create) {
+        int codeResponse = 0;
         try {
-            codeResponse = Conection.createObjectToConnection("parametro/",update);
+            codeResponse = Conection.createObjectToConnection("parametro/", create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateParametro(ParametrosDTO create){
-        int codeResponse=0;
+
+    public static int updateParametro(ParametrosDTO update) {
+        int codeResponse = 0;
         try {
-            codeResponse = Conection.updateObjectToConnection("parametro/"+create.getId(),ParametrosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("parametro/" + update.getId(), update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
