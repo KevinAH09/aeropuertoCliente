@@ -59,4 +59,41 @@ public class AerolineasService {
         }
         return codeResponse;
     }
+    
+    public static List<AerolineasDTO> estadoAerolinea(Boolean estado) {
+
+        List<AerolineasDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<AerolineasDTO>) Conection.listFromConnection("aerolinea/estado/" +estado, new TypeToken<ArrayList<AerolineasDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    public static List<AerolineasDTO> nombreAerolinea(String nombreAeroliena) {
+
+        List<AerolineasDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<AerolineasDTO>) Conection.listFromConnection("aerolinea/nombre_aerolinea/" +nombreAeroliena, new TypeToken<ArrayList<AerolineasDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    public static List<AerolineasDTO> nombreResponsable(String nombreResponsable) {
+
+        List<AerolineasDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<AerolineasDTO>) Conection.listFromConnection("aerolinea/nombre_responsable/" +nombreResponsable, new TypeToken<ArrayList<AerolineasDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
 }

@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -25,9 +26,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.entitiesServices.AerolineasService;
+import org.una.aeropuertocliente.utils.AppContext;
+import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -46,7 +51,7 @@ public class AerolineasController extends Controller implements Initializable {
     @FXML
     private JFXTextField txtFilter;
     @FXML
-    private JFXComboBox<AerolineasDTO> combFilter;
+    private JFXComboBox<String> combFilter;
     @FXML
     private Label labTitulo;
     @FXML
@@ -65,13 +70,17 @@ public class AerolineasController extends Controller implements Initializable {
     AerolineasService aerolineaService;
 
     AerolineasDTO aerolinea;
+    AerolineasDTO aerolineaFil;
     public List<AerolineasDTO> aerolineaList = new ArrayList<AerolineasDTO>();
     @FXML
     private AnchorPane AnchorPane;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        actionAerolineaClick();
         llenarAerolineas();
+        combFilter.setItems(FXCollections.observableArrayList("Id", "Nombre Responsable","Nombre Aerolinea","Estado"));
+
     }    
 
     private void llenarAerolineas() {
@@ -97,8 +106,58 @@ public class AerolineasController extends Controller implements Initializable {
         }
     }
     
+    private void actionAerolineaClick() {
+        tableview.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2 && tableview.selectionModelProperty().get().getSelectedItem() != null) {
+                    AerolineasDTO aerolinea = (AerolineasDTO) tableview.selectionModelProperty().get().getSelectedItem();
+                    AppContext.getInstance().set("aerolinea", aerolinea);
+                    FlowController.getInstance().goView("mantenimientoAerolineas/MantenimientoAerolineas");
+                    //System.out.println(zona.getNombreZona());
+                    //((Stage) btnRegistrarAvion.getScene().getWindow()).close();
+                } 
+
+            }
+        });
+    }
+    
     @FXML
     private void filtrar(ActionEvent event) {
+        
+         if (txtFilter.getText() == null || txtFilter.getText().isEmpty()) {
+            tableview.getItems().clear();
+            aerolineaList = AerolineasService.allAerolineas();
+            tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+        }
+        if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
+            tableview.getItems().clear();
+            aerolineaFil = AerolineasService.idAerolinea(Long.valueOf(txtFilter.getText()));
+            tableview.setItems(FXCollections.observableArrayList(aerolineaFil));
+        }
+        if (combFilter.getValue().equals("Estado")&& !txtFilter.getText().isEmpty()) {
+            if (txtFilter.getText().equals("true")) {
+                tableview.getItems().clear();
+                aerolineaList = AerolineasService.estadoAerolinea(true);
+                tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+            }
+            if (txtFilter.getText().equals("false")) {
+                tableview.getItems().clear();
+                aerolineaList = AerolineasService.estadoAerolinea(false);
+                tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+            }
+        }
+        if (combFilter.getValue().equals("Nombre Responsable")&& !txtFilter.getText().isEmpty()) {
+            tableview.getItems().clear();
+            aerolineaList = AerolineasService.nombreResponsable(txtFilter.getText());
+            tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+        }
+        if (combFilter.getValue().equals("Nombre Aerolinea")&& !txtFilter.getText().isEmpty()) {
+            tableview.getItems().clear();
+            aerolineaList = AerolineasService.nombreAerolinea(txtFilter.getText());
+            tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+        }
+        
     }
 
     @FXML
@@ -107,6 +166,9 @@ public class AerolineasController extends Controller implements Initializable {
 
     @FXML
     private void registrarAvion(ActionEvent event) {
+         FlowController.getInstance().goView("mantenimientoAerolineas/MantenimientoAerolineas");
+        //((Stage) btnRegistrarAvion.getScene().getWindow()).close();
+       
     }
 
     @Override

@@ -24,7 +24,7 @@ import javafx.scene.control.TextField;
  *
  * @author Bosco
  */
-public class MantenimientoAvionController implements Initializable {
+public class MantenimientoAvionController extends Controller implements Initializable {
 
     @FXML
     private TextField txtTipoAvion;
@@ -103,6 +103,11 @@ public class MantenimientoAvionController implements Initializable {
 
     @FXML
     private void guardar(ActionEvent event) {
+    }
+
+    @Override
+    public void initialize() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

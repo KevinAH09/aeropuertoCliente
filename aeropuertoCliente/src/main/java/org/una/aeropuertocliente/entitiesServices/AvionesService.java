@@ -59,4 +59,41 @@ public class AvionesService {
         }
         return codeResponse;
     }
+    
+    public static List<AvionesDTO> TipoAvion(String nombre) {
+
+        List<AvionesDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<AvionesDTO>) Conection.listFromConnection("avion/tipo_avion/" +nombre, new TypeToken<ArrayList<AvionesDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    public static List<AvionesDTO> matricula(String codigo) {
+
+        List<AvionesDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<AvionesDTO>) Conection.listFromConnection("avion/matricula/" +codigo, new TypeToken<ArrayList<AvionesDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    public static List<AvionesDTO> aerolinea(Long id) {
+
+        List<AvionesDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<AvionesDTO>) Conection.listFromConnection("avion/aerolinea/" +id, new TypeToken<ArrayList<AvionesDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
 }
