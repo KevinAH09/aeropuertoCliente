@@ -104,6 +104,18 @@ public class UsuariosService {
         }
         return listUsuariosDTOs;
     }
+    public static List<UsuariosDTO>areaTrabajoUsuarios(Long id) {
+
+        List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
+        try {
+            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/areaTrabajo/" + id, new TypeToken<ArrayList<UsuariosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listUsuariosDTOs;
+    }
 
     public static UsuariosDTO cedulaUsuarios(String cedula) {
 

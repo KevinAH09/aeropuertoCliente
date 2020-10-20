@@ -74,7 +74,7 @@ public class UsuariosController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         actionUsuariosClick();
-        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol"));
+        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
         llenarUsuarios();
     }
 
@@ -112,6 +112,18 @@ public class UsuariosController extends Controller implements Initializable {
             usuariosFilt = UsuariosService.cedulaUsuarios(txtBusqueda.getText());
             tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
         }
+        if (cmbFiltro.getValue().equals("Area Trabajo") && !txtBusqueda.getText().isEmpty()) {
+            tableUsuarios.getItems().clear();
+            usuariosList = UsuariosService.allUsuarios();
+            for (int i = 0; i < usuariosList.size(); i++) {
+                if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(txtBusqueda.getText().toUpperCase())) {
+                    System.out.println("Entró");
+                    usuariosList2 = UsuariosService.areaTrabajoUsuarios(usuariosList.get(i).getAreaTrabajoId().getId());
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
+                }
+
+            }
+        }
         if (cmbFiltro.getValue().equals("Rol") && !txtBusqueda.getText().isEmpty()) {
             tableUsuarios.getItems().clear();
             usuariosList = UsuariosService.allUsuarios();
@@ -147,7 +159,9 @@ public class UsuariosController extends Controller implements Initializable {
         colFecha.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaRegistro()));
         TableColumn<UsuariosDTO, String> colRol = new TableColumn("Rol");
         colRol.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getRolId().getDescripcion()));
-        tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol);
+        TableColumn<UsuariosDTO, String> colArea = new TableColumn("Area Trabajo");
+        colArea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getAreaTrabajoId().getNombreAreaTrabajo()));
+        tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol, colArea);
 
         try {
             usuariosList = UsuariosService.allUsuarios();
