@@ -92,7 +92,9 @@ public class VuelosController extends Controller implements Initializable {
     @FXML
     private JFXTextField txtmatricula;
     AvionesDTO aviones;
+    AvionesDTO avionesFil;
     public List<AvionesDTO> avionesList = new ArrayList<AvionesDTO>();
+    public List<AvionesDTO> avionesList2 = new ArrayList<AvionesDTO>();
     /**
      * Initializes the controller class.
      */
@@ -100,7 +102,7 @@ public class VuelosController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         actionAvionClick();
         llenarAviones();
-        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Horas de vuelo","Estado","Aerolinea"));
+        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Aerolinea"));
         
     }    
 
@@ -133,6 +135,54 @@ public class VuelosController extends Controller implements Initializable {
     
     @FXML
     private void filtrar(ActionEvent event) {
+        if (txtFilter.getText() == null || txtFilter.getText().isEmpty()) {
+            tableAviones.getItems().clear();
+            avionesList = AvionesService.allAviones();
+            tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+        }
+        if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
+            tableAviones.getItems().clear();
+            avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
+            tableAviones.setItems(FXCollections.observableArrayList(avionesFil));
+        }
+        if (combFilter.getValue().equals("Estado")&& !txtFilter.getText().isEmpty()) {
+            if (txtFilter.getText().equals("true")) {
+                tableAviones.getItems().clear();
+                avionesList = AvionesService.estado(true);
+                tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+            }
+            if (txtFilter.getText().equals("false")) {
+                tableAviones.getItems().clear();
+                avionesList = AvionesService.estado(false);
+                tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+            }
+        }
+        if (combFilter.getValue().equals("Matrícula")&& !txtFilter.getText().isEmpty()) {
+            tableAviones.getItems().clear();
+            avionesList = AvionesService.matricula(txtFilter.getText());
+            tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+        }
+        if (combFilter.getValue().equals("Tipo de avión")&& !txtFilter.getText().isEmpty()) {
+            tableAviones.getItems().clear();
+            avionesList = AvionesService.TipoAvion(txtFilter.getText());
+            tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+        }
+        if (combFilter.getValue().equals("Aerolinea")&& !txtFilter.getText().isEmpty()) {
+            
+            tableAviones.getItems().clear();
+            avionesList = AvionesService.allAviones();
+            for (int i = 0; i < avionesList.size(); i++) {
+                if (avionesList.get(i).getAerolineaId().getNombreAerolinea().equals(txtFilter.getText())) {
+                    avionesList2 = AvionesService.aerolinea(avionesList.get(i).getAerolineaId().getId());
+                    
+                }
+
+            }
+            if (!avionesList2.isEmpty()) {
+                tableAviones.setItems(FXCollections.observableArrayList(avionesList2));
+            }
+        }
+        
     }
 
     @FXML

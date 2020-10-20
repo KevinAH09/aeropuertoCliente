@@ -41,7 +41,10 @@
                   </HBox>
                   <HBox prefHeight="300.0" prefWidth="560.0">
                      <children>
-                        <TableView fx:id="tableview" prefHeight="229.0" prefWidth="560.0" HBox.hgrow="ALWAYS" />
+                        <TableView fx:id="tableview" prefHeight="229.0" prefWidth="560.0" HBox.hgrow="ALWAYS">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy></TableView>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="700.0">

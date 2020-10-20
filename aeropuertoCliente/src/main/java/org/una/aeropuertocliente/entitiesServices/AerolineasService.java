@@ -41,19 +41,19 @@ public class AerolineasService {
         }
         return dTO;
     }
-    public static int createAerolinea(AerolineasDTO update){
+    public static int createAerolinea(AerolineasDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("aerolinea/",update);
+            codeResponse = Conection.createObjectToConnection("aerolinea/",create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateAerolinea(AerolineasDTO create){
+    public static int updateAerolinea(AerolineasDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("aerolinea/"+create.getId(),AerolineasDTO.class);
+            codeResponse = Conection.updateObjectToConnection("aerolinea/"+update.getId(),update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
