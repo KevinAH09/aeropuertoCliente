@@ -110,7 +110,6 @@ public class MantenimientoZonasController extends Controller implements Initiali
     @FXML
     private void onActionGuardar(ActionEvent event){
         if (zonas == null) {
-            System.out.println("org.una.laboratorio.AddEditWatchDepartamentoController.actionguardar()");
             if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtCodigo.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
                 zonas=new ZonasDTO();
                 if (cmbEstado.getValue().equals("Activo")) {
