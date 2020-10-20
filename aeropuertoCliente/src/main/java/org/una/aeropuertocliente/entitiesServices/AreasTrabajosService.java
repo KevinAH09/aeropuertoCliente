@@ -19,45 +19,64 @@ import org.una.aeropuertocliente.sharedService.Conection;
  * @author colo7
  */
 public class AreasTrabajosService {
-     public static List<AreasTrabajosDTO> allAreasTrabajos(){
-        
+
+    public static List<AreasTrabajosDTO> allAreasTrabajos() {
+
         List<AreasTrabajosDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<AreasTrabajosDTO>) Conection.listFromConnection("areaTrabajo/",AreasTrabajosDTO.class);
-            
+            listsDTOs = (List<AreasTrabajosDTO>) Conection.listFromConnection("areaTrabajo", new TypeToken<ArrayList<AreasTrabajosDTO>>() {
+            }.getType());
+
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listsDTOs;
     }
-    public static AreasTrabajosDTO idAreaTrabajo(Long id){
-        
+
+    public static AreasTrabajosDTO idAreaTrabajo(Long id) {
+
         AreasTrabajosDTO dTO = new AreasTrabajosDTO();
         try {
-            dTO = (AreasTrabajosDTO) Conection.oneConnection("areaTrabajo/"+id,new TypeToken<AreasTrabajosDTO>() {}.getType());
-            
+            dTO = (AreasTrabajosDTO) Conection.oneConnection("areaTrabajo/" + id, new TypeToken<AreasTrabajosDTO>() {
+            }.getType());
+
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return dTO;
     }
-    public static int createAreaTrabajo(AreasTrabajosDTO updateAreasTrabajos){
-        int codeResponse=0;
+
+    public static int createAreaTrabajo(AreasTrabajosDTO updateAreasTrabajos) {
+        int codeResponse = 0;
         try {
-            codeResponse = Conection.createObjectToConnection("areaTrabajo/",updateAreasTrabajos);
+            codeResponse = Conection.createObjectToConnection("areaTrabajo/", updateAreasTrabajos);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateAreaTrabajo(AreasTrabajosDTO createAreaTrabajo){
-        int codeResponse=0;
+
+    public static int updateAreaTrabajo(AreasTrabajosDTO createAreaTrabajo) {
+        int codeResponse = 0;
         try {
-            codeResponse = Conection.updateObjectToConnection("areaTrabajo/"+createAreaTrabajo.getId(),AreasTrabajosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("areaTrabajo/" + createAreaTrabajo.getId(), AreasTrabajosDTO.class);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    
+
+    public static List<AreasTrabajosDTO> nombreAreasTrabajos(String nombre) {
+
+        List<AreasTrabajosDTO> listsDTOs = new ArrayList<>();
+        try {
+            listsDTOs = (List<AreasTrabajosDTO>) Conection.listFromConnection("areaTrabajo/nombre_area_trabajo/"+nombre, new TypeToken<ArrayList<AreasTrabajosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listsDTOs;
+    }
+
 }
