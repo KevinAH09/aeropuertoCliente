@@ -70,6 +70,7 @@ public class AerolineasController extends Controller implements Initializable {
     AerolineasService aerolineaService;
 
     AerolineasDTO aerolinea;
+    AerolineasDTO aerolinea1;
     AerolineasDTO aerolineaFil;
     public List<AerolineasDTO> aerolineaList = new ArrayList<AerolineasDTO>();
     @FXML
@@ -77,6 +78,7 @@ public class AerolineasController extends Controller implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        aerolinea=null;
         actionAerolineaClick();
         llenarAerolineas();
         combFilter.setItems(FXCollections.observableArrayList("Id", "Nombre Responsable","Nombre Aerolinea","Estado"));
@@ -90,7 +92,7 @@ public class AerolineasController extends Controller implements Initializable {
         colNombreAerolinea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreAerolinea()));
         TableColumn<AerolineasDTO, String> colResponsable = new TableColumn("Nombre Responsable");
         colResponsable.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreResponsable()));
-        TableColumn<AerolineasDTO, String> colEstado = new TableColumn("Estado");
+        TableColumn<AerolineasDTO, String> colEstado = new TableColumn("Estado\nActivo(true)Inactivo(False)");
         colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
         tableview.getColumns().addAll(colId, colNombreAerolinea, colResponsable,colEstado);
 
@@ -99,23 +101,22 @@ public class AerolineasController extends Controller implements Initializable {
             if (aerolineaList != null && !aerolineaList.isEmpty()) {
                 tableview.setItems(FXCollections.observableArrayList(aerolineaList));
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Información", null, "no cuenta con aerolinea");
             }
         } catch (Exception e) {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de aerolinea", null, "Hubo un error al obtener los datos a cargar");
         }
     }
     
     private void actionAerolineaClick() {
+        aerolinea=null;
         tableview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount() == 2 && tableview.selectionModelProperty().get().getSelectedItem() != null) {
-                    AerolineasDTO aerolinea = (AerolineasDTO) tableview.selectionModelProperty().get().getSelectedItem();
+                    aerolinea = (AerolineasDTO) tableview.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("aerolinea", aerolinea);
                     FlowController.getInstance().goView("mantenimientoAerolineas/MantenimientoAerolineas");
-                    //System.out.println(zona.getNombreZona());
-                    //((Stage) btnRegistrarAvion.getScene().getWindow()).close();
                 } 
 
             }
@@ -166,7 +167,10 @@ public class AerolineasController extends Controller implements Initializable {
 
     @FXML
     private void registrarAvion(ActionEvent event) {
-         FlowController.getInstance().goView("mantenimientoAerolineas/MantenimientoAerolineas");
+        aerolinea=null;
+        AppContext.getInstance().set("aerolinea", aerolinea);
+        FlowController.getInstance().goView("mantenimientoAerolineas/MantenimientoAerolineas");
+         
         //((Stage) btnRegistrarAvion.getScene().getWindow()).close();
        
     }

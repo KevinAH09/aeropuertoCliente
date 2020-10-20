@@ -74,7 +74,7 @@ public class AvionesController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         actionAvionClick();
         llenarAviones();
-        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Aerolinea"));
+        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Aerolinea"));
 
     }    
 
@@ -91,18 +91,18 @@ public class AvionesController extends Controller implements Initializable {
             avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
             tableAvion.setItems(FXCollections.observableArrayList(avionesFil));
         }
-//        if (combFilter.getValue().equals("Estado")&& !txtFilter.getText().isEmpty()) {
-//            if (txtFilter.getText().equals("true")) {
-//                tableAviones.getItems().clear();
-//                avionesList = AvionesService.estadoAerolinea(true);
-//                tableAviones.setItems(FXCollections.observableArrayList(avionesList));
-//            }
-//            if (txtFilter.getText().equals("false")) {
-//                tableAviones.getItems().clear();
-//                avionesList = AvionesService.estadoAerolinea(false);
-//                tableAviones.setItems(FXCollections.observableArrayList(avionesList));
-//            }
-//        }
+        if (combFilter.getValue().equals("Estado")&& !txtFilter.getText().isEmpty()) {
+            if (txtFilter.getText().equals("true")) {
+                tableAvion.getItems().clear();
+                avionesList = AvionesService.estado(true);
+                tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+            }
+            if (txtFilter.getText().equals("false")) {
+                tableAvion.getItems().clear();
+                avionesList = AvionesService.estado(false);
+                tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+            }
+        }
         if (combFilter.getValue().equals("Matrícula")&& !txtFilter.getText().isEmpty()) {
             tableAvion.getItems().clear();
             avionesList = AvionesService.matricula(txtFilter.getText());
@@ -160,7 +160,7 @@ public class AvionesController extends Controller implements Initializable {
         colTipoAvion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getTipoAvion()));
         TableColumn<AvionesDTO, String> colHoraVuelo = new TableColumn("Horas de vuelo");
         colHoraVuelo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getHorasVuelo()));
-        TableColumn<AvionesDTO, String> colEstado = new TableColumn("Estado");
+        TableColumn<AvionesDTO, String> colEstado = new TableColumn("Activo(true)Inactivo(False)");
         colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
         TableColumn<AvionesDTO, String> colAerolinea = new TableColumn("Aerolinea");
         colAerolinea.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getAerolineaId().getNombreAerolinea()));

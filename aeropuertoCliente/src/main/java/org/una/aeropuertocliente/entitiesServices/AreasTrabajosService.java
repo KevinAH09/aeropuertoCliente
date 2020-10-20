@@ -46,20 +46,20 @@ public class AreasTrabajosService {
         return dTO;
     }
 
-    public static int createAreaTrabajo(AreasTrabajosDTO updateAreasTrabajos) {
+    public static int createAreaTrabajo(AreasTrabajosDTO createAreasTrabajos) {
         int codeResponse = 0;
         try {
-            codeResponse = Conection.createObjectToConnection("areaTrabajo/", updateAreasTrabajos);
+            codeResponse = Conection.createObjectToConnection("areaTrabajo/", createAreasTrabajos);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
 
-    public static int updateAreaTrabajo(AreasTrabajosDTO createAreaTrabajo) {
+    public static int updateAreaTrabajo(AreasTrabajosDTO updateAreaTrabajo) {
         int codeResponse = 0;
         try {
-            codeResponse = Conection.updateObjectToConnection("areaTrabajo/" + createAreaTrabajo.getId(), AreasTrabajosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("areaTrabajo/" + updateAreaTrabajo.getId(), updateAreaTrabajo);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

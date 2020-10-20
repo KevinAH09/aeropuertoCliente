@@ -41,19 +41,19 @@ public class AvionesService {
         }
         return dTO;
     }
-    public static int createAvion(AvionesDTO update){
+    public static int createAvion(AvionesDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("avion/",update);
+            codeResponse = Conection.createObjectToConnection("avion/",create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateAvion(AvionesDTO create){
+    public static int updateAvion(AvionesDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("avion/"+create.getId(),AvionesDTO.class);
+            codeResponse = Conection.updateObjectToConnection("avion/"+update.getId(),update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,6 +89,18 @@ public class AvionesService {
         List<AvionesDTO> dtos = new ArrayList<>();
         try {
             dtos = (List<AvionesDTO>) Conection.listFromConnection("avion/aerolinea/" +id, new TypeToken<ArrayList<AvionesDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    public static List<AvionesDTO> estado(boolean estado) {
+
+        List<AvionesDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<AvionesDTO>) Conection.listFromConnection("avion/estado/" +estado, new TypeToken<ArrayList<AvionesDTO>>() {
             }.getType());
 
         } catch (IOException ex) {
