@@ -113,7 +113,7 @@ public class LoginController extends Controller implements Initializable {
             }
 
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", null, "Por favor complete todos campos");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", null, "Por favor complete todos los campos");
         }
     }
 

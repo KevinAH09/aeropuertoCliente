@@ -145,7 +145,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="41.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <JFXButton fx:id="btnSalir" prefHeight="29.0" prefWidth="110.0" text="Salir">
+                              <JFXButton fx:id="btnSalir" onAction="#actionSalir" prefHeight="29.0" prefWidth="110.0" text="Salir">
                                  <graphic>
                                     <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

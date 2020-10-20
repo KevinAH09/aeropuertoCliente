@@ -63,7 +63,7 @@
                         <AnchorPane prefHeight="100.0" prefWidth="300.0">
                            <children>
                               <JFXTextField fx:id="txtPassMostrado" layoutX="-2.0" layoutY="20.0" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" />
-                              <JFXPasswordField fx:id="txtPassOculto" layoutX="-2.0" layoutY="20.0" prefHeight="47.0" prefWidth="300.0" visible="false" />
+                              <JFXPasswordField fx:id="txtPassOculto" labelFloat="true" layoutX="-2.0" layoutY="20.0" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" visible="false" />
                            </children>
                         </AnchorPane>
                         <StackPane prefHeight="30.0" prefWidth="30.0">
@@ -84,8 +84,22 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="btnCancelar" onAction="#actionSalir" prefHeight="29.0" prefWidth="102.0" text="SALIR" />
-                        <JFXButton fx:id="btnIngresar" onAction="#actionIngresar" text="INGRESAR" />
+                        <JFXButton fx:id="btnCancelar" contentDisplay="RIGHT" onAction="#actionSalir" prefHeight="29.0" prefWidth="102.0" text="SALIR">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../shared/salir.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
+                        <JFXButton fx:id="btnIngresar" alignment="CENTER_RIGHT" contentDisplay="RIGHT" onAction="#actionIngresar" text="INGRESAR">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../shared/salir.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
                      </children>
                   </HBox>
                </children>

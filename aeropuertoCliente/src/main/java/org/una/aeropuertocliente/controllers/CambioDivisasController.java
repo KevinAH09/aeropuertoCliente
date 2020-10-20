@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.una.aeropuertocliente.apiForex.TiposMonedasServices;
 import org.una.aeropuertocliente.utils.Mensaje;
 
@@ -140,6 +141,7 @@ public class CambioDivisasController extends Controller implements Initializable
             txtIngresarMonto.setText(null);
             lblMontoCambio.setText(null);
             lblselect.setText(null);
+            imgSelect.setImage(null);
             llenarImages();
         }
     }
@@ -317,329 +319,326 @@ public class CambioDivisasController extends Controller implements Initializable
     @FXML
     private void actionImg1(MouseEvent event) {
 
-        llenarMonto(lbl1.getText());
-        llenarImgSelect(lbl1.getText());
-        lblselect.setText(lbl1.getText());
+        llenarDatos(lbl1.getText());
     }
 
     @FXML
     private void actionImg2(MouseEvent event) {
 
-        llenarMonto(lbl2.getText());
-        llenarImgSelect(lbl2.getText());
-        lblselect.setText(lbl2.getText());
+        llenarDatos(lbl2.getText());
     }
 
     @FXML
     private void actionImg3(MouseEvent event) {
 
-        llenarMonto(lbl3.getText());
-        llenarImgSelect(lbl3.getText());
-        lblselect.setText(lbl3.getText());
+        llenarDatos(lbl3.getText());
     }
 
     @FXML
     private void actionImg4(MouseEvent event) {
-        llenarMonto(lbl4.getText());
-        llenarImgSelect(lbl4.getText());
-        lblselect.setText(lbl4.getText());
+        llenarDatos(lbl4.getText());
     }
 
     @FXML
     private void actionImg5(MouseEvent event) {
-        llenarMonto(lbl5.getText());
-        llenarImgSelect(lbl5.getText());
-        lblselect.setText(lbl5.getText());
+        llenarDatos(lbl5.getText());
     }
 
     @FXML
     private void actionImg6(MouseEvent event) {
-        llenarMonto(lbl6.getText());
-        llenarImgSelect(lbl6.getText());
-        lblselect.setText(lbl6.getText());
+        llenarDatos(lbl6.getText());
     }
 
     @FXML
     private void actionImg7(MouseEvent event) {
-        llenarMonto(lbl7.getText());
-        llenarImgSelect(lbl7.getText());
-        lblselect.setText(lbl7.getText());
+        llenarDatos(lbl7.getText());
     }
 
     @FXML
     private void actionImg8(MouseEvent event) {
-        llenarMonto(lbl8.getText());
-        llenarImgSelect(lbl8.getText());
-        lblselect.setText(lbl8.getText());
+        llenarDatos(lbl8.getText());
     }
 
-    private void llenarImgSelect(String selectImg) {
+    private void llenarDatos(String monedaSelect) {
         if (!txtIngresarMonto.getText().isEmpty() && cbMoneda.getValue() != null) {
-            if (selectImg.equals("Colon")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            } else if (selectImg.equals("Eurodolar")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            } else if (selectImg.equals("Dolar estadounidense")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            } else if (selectImg.equals("Yen")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            } else if (selectImg.equals("Dolar canadiense")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            } else if (selectImg.equals("Libra esterlina")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            } else if (selectImg.equals("Franco")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            } else if (selectImg.equals("Dolar australiano")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-                imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-
-            }
+            llenarMonto(monedaSelect);
+            llenarImgSelect(monedaSelect);
+            lblselect.setText(monedaSelect);
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Error al calcular monto", null, "Monto no digitado");
         }
+
+    }
+
+    private void llenarImgSelect(String selectImg) {
+        if (selectImg.equals("Colon")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        } else if (selectImg.equals("Eurodolar")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        } else if (selectImg.equals("Yen")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        } else if (selectImg.equals("Dolar canadiense")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        } else if (selectImg.equals("Libra esterlina")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        } else if (selectImg.equals("Franco")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        } else if (selectImg.equals("Dolar australiano")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+            imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+
+        }
+
     }
 
     private void llenarMonto(String selectImg) {
-        if (!txtIngresarMonto.getText().isEmpty() && cbMoneda.getValue() != null) {
-            double monto = Double.valueOf(txtIngresarMonto.getText());
-            if (itemSelect.equals("Colon")) {
-                if (selectImg.equals("Eurodolar")) {
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDEuros));
-                } else if (selectImg.equals("Dolar estadounidense")) {
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
-                } else if (selectImg.equals("Yen")) {
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDYen));
-                } else if (selectImg.equals("Dolar canadiense")) {
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDCanada));
-                } else if (selectImg.equals("Libra esterlina")) {
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDLibraEstaerlina));
-                } else if (selectImg.equals("Franco")) {
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDFranco));
-                } else if (selectImg.equals("Dolar australiano")) {
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDAustralia));
-                } else if (selectImg.equals("Dolar neozelandes")) {
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDNuevaZelanda));
-                }
 
-            } else if (itemSelect.equals("Eurodolar")) {
-                if (selectImg.equals("Colon")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDCostaRica));
-                } else if (selectImg.equals("Dolar estadounidense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros)));
-                } else if (selectImg.equals("Yen")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDYen));
-                } else if (selectImg.equals("Dolar canadiense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDCanada));
-                } else if (selectImg.equals("Libra esterlina")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDLibraEstaerlina));
-                } else if (selectImg.equals("Franco")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDFranco));
-                } else if (selectImg.equals("Dolar australiano")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDAustralia));
-                } else if (selectImg.equals("Dolar neozelandes")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDNuevaZelanda));
-                }
-
-            } else if (itemSelect.equals("Dolar estadounidense")) {
-                if (selectImg.equals("Colon")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
-                } else if (selectImg.equals("Eurodolar")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros)));
-                } else if (selectImg.equals("Yen")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen)));
-                } else if (selectImg.equals("Dolar canadiense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada)));
-                } else if (selectImg.equals("Libra esterlina")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina)));
-                } else if (selectImg.equals("Franco")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco)));
-                } else if (selectImg.equals("Dolar australiano")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia)));
-                } else if (selectImg.equals("Dolar neozelandes")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda)));
-                }
-            } else if (itemSelect.equals("Yen")) {
-                if (selectImg.equals("Colon")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDCostaRica));
-                } else if (selectImg.equals("Dolar estadounidense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen)));
-                } else if (selectImg.equals("Eurodolar")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDEuros));
-                } else if (selectImg.equals("Dolar canadiense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDCanada));
-                } else if (selectImg.equals("Libra esterlina")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDLibraEstaerlina));
-                } else if (selectImg.equals("Franco")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDFranco));
-                } else if (selectImg.equals("Dolar australiano")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDAustralia));
-                } else if (selectImg.equals("Dolar neozelandes")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDNuevaZelanda));
-                }
-
-            } else if (itemSelect.equals("Dolar canadiense")) {
-                if (selectImg.equals("Colon")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDCostaRica));
-                } else if (selectImg.equals("Dolar estadounidense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada)));
-                } else if (selectImg.equals("Eurodolar")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDEuros));
-                } else if (selectImg.equals("Yen")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDYen));
-                } else if (selectImg.equals("Libra esterlina")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDLibraEstaerlina));
-                } else if (selectImg.equals("Franco")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDFranco));
-                } else if (selectImg.equals("Dolar australiano")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDAustralia));
-                } else if (selectImg.equals("Dolar neozelandes")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDNuevaZelanda));
-                }
-
-            } else if (itemSelect.equals("Libra esterlina")) {
-                if (selectImg.equals("Colon")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDCostaRica));
-                } else if (selectImg.equals("Dolar estadounidense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina)));
-                } else if (selectImg.equals("Eurodolar")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDEuros));
-                } else if (selectImg.equals("Dolar canadiense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDCanada));
-                } else if (selectImg.equals("Yen")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDYen));
-                } else if (selectImg.equals("Franco")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDFranco));
-                } else if (selectImg.equals("Dolar australiano")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDAustralia));
-                } else if (selectImg.equals("Dolar neozelandes")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDNuevaZelanda));
-                }
-
-            } else if (itemSelect.equals("Franco")) {
-                if (selectImg.equals("Colon")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDCostaRica));
-                } else if (selectImg.equals("Dolar estadounidense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco)));
-                } else if (selectImg.equals("Eurodolar")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDEuros));
-                } else if (selectImg.equals("Yen")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDYen));
-                } else if (selectImg.equals("Libra esterlina")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDLibraEstaerlina));
-                } else if (selectImg.equals("Dolar canadiense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDCanada));
-                } else if (selectImg.equals("Dolar australiano")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDAustralia));
-                } else if (selectImg.equals("Dolar neozelandes")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDNuevaZelanda));
-                }
-
-            } else if (itemSelect.equals("Dolar australiano")) {
-                if (selectImg.equals("Colon")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDCostaRica));
-                } else if (selectImg.equals("Dolar estadounidense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia)));
-                } else if (selectImg.equals("Eurodolar")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDEuros));
-                } else if (selectImg.equals("Dolar canadiense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDCanada));
-                } else if (selectImg.equals("Yen")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDYen));
-                } else if (selectImg.equals("Franco")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDFranco));
-                } else if (selectImg.equals("Libra esterlina")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDLibraEstaerlina));
-                } else if (selectImg.equals("Dolar neozelandes")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDNuevaZelanda));
-                }
-
-            } else if (itemSelect.equals("Dolar neozelandes")) {
-                if (selectImg.equals("Colon")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDCostaRica));
-                } else if (selectImg.equals("Dolar estadounidense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda)));
-                } else if (selectImg.equals("Eurodolar")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDEuros));
-                } else if (selectImg.equals("Yen")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDYen));
-                } else if (selectImg.equals("Libra esterlina")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDLibraEstaerlina));
-                } else if (selectImg.equals("Dolar canadiense")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDCanada));
-                } else if (selectImg.equals("Dolar australiano")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDAustralia));
-                } else if (selectImg.equals("Franco")) {
-
-                    lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDFranco));
-                }
-
+        double monto = Double.valueOf(txtIngresarMonto.getText());
+        if (itemSelect.equals("Colon")) {
+            if (selectImg.equals("Eurodolar")) {
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDEuros));
+            } else if (selectImg.equals("Dolar estadounidense")) {
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
+            } else if (selectImg.equals("Yen")) {
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDYen));
+            } else if (selectImg.equals("Dolar canadiense")) {
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDCanada));
+            } else if (selectImg.equals("Libra esterlina")) {
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDLibraEstaerlina));
+            } else if (selectImg.equals("Franco")) {
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDFranco));
+            } else if (selectImg.equals("Dolar australiano")) {
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDAustralia));
+            } else if (selectImg.equals("Dolar neozelandes")) {
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDNuevaZelanda));
             }
-        } else {
-             new Mensaje().showModal(Alert.AlertType.ERROR, "Error al calcular monto", null, "Monto no digitado");
+
+        } else if (itemSelect.equals("Eurodolar")) {
+            if (selectImg.equals("Colon")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDCostaRica));
+            } else if (selectImg.equals("Dolar estadounidense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros)));
+            } else if (selectImg.equals("Yen")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDYen));
+            } else if (selectImg.equals("Dolar canadiense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDCanada));
+            } else if (selectImg.equals("Libra esterlina")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDLibraEstaerlina));
+            } else if (selectImg.equals("Franco")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDFranco));
+            } else if (selectImg.equals("Dolar australiano")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDAustralia));
+            } else if (selectImg.equals("Dolar neozelandes")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDNuevaZelanda));
+            }
+
+        } else if (itemSelect.equals("Dolar estadounidense")) {
+            if (selectImg.equals("Colon")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
+            } else if (selectImg.equals("Eurodolar")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros)));
+            } else if (selectImg.equals("Yen")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen)));
+            } else if (selectImg.equals("Dolar canadiense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada)));
+            } else if (selectImg.equals("Libra esterlina")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina)));
+            } else if (selectImg.equals("Franco")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco)));
+            } else if (selectImg.equals("Dolar australiano")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia)));
+            } else if (selectImg.equals("Dolar neozelandes")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda)));
+            }
+        } else if (itemSelect.equals("Yen")) {
+            if (selectImg.equals("Colon")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDCostaRica));
+            } else if (selectImg.equals("Dolar estadounidense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen)));
+            } else if (selectImg.equals("Eurodolar")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDEuros));
+            } else if (selectImg.equals("Dolar canadiense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDCanada));
+            } else if (selectImg.equals("Libra esterlina")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDLibraEstaerlina));
+            } else if (selectImg.equals("Franco")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDFranco));
+            } else if (selectImg.equals("Dolar australiano")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDAustralia));
+            } else if (selectImg.equals("Dolar neozelandes")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDNuevaZelanda));
+            }
+
+        } else if (itemSelect.equals("Dolar canadiense")) {
+            if (selectImg.equals("Colon")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDCostaRica));
+            } else if (selectImg.equals("Dolar estadounidense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada)));
+            } else if (selectImg.equals("Eurodolar")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDEuros));
+            } else if (selectImg.equals("Yen")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDYen));
+            } else if (selectImg.equals("Libra esterlina")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDLibraEstaerlina));
+            } else if (selectImg.equals("Franco")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDFranco));
+            } else if (selectImg.equals("Dolar australiano")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDAustralia));
+            } else if (selectImg.equals("Dolar neozelandes")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDNuevaZelanda));
+            }
+
+        } else if (itemSelect.equals("Libra esterlina")) {
+            if (selectImg.equals("Colon")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDCostaRica));
+            } else if (selectImg.equals("Dolar estadounidense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina)));
+            } else if (selectImg.equals("Eurodolar")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDEuros));
+            } else if (selectImg.equals("Dolar canadiense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDCanada));
+            } else if (selectImg.equals("Yen")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDYen));
+            } else if (selectImg.equals("Franco")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDFranco));
+            } else if (selectImg.equals("Dolar australiano")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDAustralia));
+            } else if (selectImg.equals("Dolar neozelandes")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDNuevaZelanda));
+            }
+
+        } else if (itemSelect.equals("Franco")) {
+            if (selectImg.equals("Colon")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDCostaRica));
+            } else if (selectImg.equals("Dolar estadounidense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco)));
+            } else if (selectImg.equals("Eurodolar")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDEuros));
+            } else if (selectImg.equals("Yen")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDYen));
+            } else if (selectImg.equals("Libra esterlina")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDLibraEstaerlina));
+            } else if (selectImg.equals("Dolar canadiense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDCanada));
+            } else if (selectImg.equals("Dolar australiano")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDAustralia));
+            } else if (selectImg.equals("Dolar neozelandes")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDNuevaZelanda));
+            }
+
+        } else if (itemSelect.equals("Dolar australiano")) {
+            if (selectImg.equals("Colon")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDCostaRica));
+            } else if (selectImg.equals("Dolar estadounidense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia)));
+            } else if (selectImg.equals("Eurodolar")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDEuros));
+            } else if (selectImg.equals("Dolar canadiense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDCanada));
+            } else if (selectImg.equals("Yen")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDYen));
+            } else if (selectImg.equals("Franco")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDFranco));
+            } else if (selectImg.equals("Libra esterlina")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDLibraEstaerlina));
+            } else if (selectImg.equals("Dolar neozelandes")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDNuevaZelanda));
+            }
+
+        } else if (itemSelect.equals("Dolar neozelandes")) {
+            if (selectImg.equals("Colon")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDCostaRica));
+            } else if (selectImg.equals("Dolar estadounidense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda)));
+            } else if (selectImg.equals("Eurodolar")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDEuros));
+            } else if (selectImg.equals("Yen")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDYen));
+            } else if (selectImg.equals("Libra esterlina")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDLibraEstaerlina));
+            } else if (selectImg.equals("Dolar canadiense")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDCanada));
+            } else if (selectImg.equals("Dolar australiano")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDAustralia));
+            } else if (selectImg.equals("Franco")) {
+
+                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDFranco));
+            }
+
+        }
+
+    }
+
+    @FXML
+    private void actionSalir(ActionEvent event) {
+        if(new Mensaje().showConfirmation("Cerrar cambio divisas", ((Stage) lblMontoCambio.getScene().getWindow()), "Desea salir de cambio de divisas")){
+             ((Stage) lblMontoCambio.getScene().getWindow()).close();
         }
     }
 

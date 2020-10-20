@@ -102,10 +102,12 @@ and open the template in the editor.
 }
 .jfx-password-field{
     -fx-prompt-text-fill: -fx-blanco;
+    -fx-text-fill: -fx-blanco;
     -fx-font-family: "century";
     -fx-font-size: 15px;
-    -jfx-focus-color: -fx-blanco;
-    -jfx-unfocus-color: -fx-azul;
+    -jfx-focus-color: #000033;
+    -jfx-focus-text-fill: -fx-blanco;
+    -jfx-unfocus-color: #000033;
 }
 
 .datePicker{
