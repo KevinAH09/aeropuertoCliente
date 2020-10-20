@@ -84,7 +84,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="btnCancelar" text="CANCELAR" />
+                        <JFXButton fx:id="btnCancelar" onAction="#actionSalir" prefHeight="29.0" prefWidth="102.0" text="SALIR" />
                         <JFXButton fx:id="btnIngresar" onAction="#actionIngresar" text="INGRESAR" />
                      </children>
                   </HBox>

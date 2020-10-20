@@ -24,6 +24,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.una.aeropuertocliente.controllers.Controller;
 import org.una.aeropuertocliente.dtos.AuthenticationRequest;
 import org.una.aeropuertocliente.dtos.AuthenticationResponse;
@@ -41,9 +42,7 @@ import org.una.aeropuertocliente.utils.Mensaje;
  */
 public class LoginController extends Controller implements Initializable {
 
-  
-
-     private final String urlstring = "http://localhost:8099/";
+    private final String urlstring = "http://localhost:8099/";
     @FXML
     private JFXTextField txtUsuario;
     @FXML
@@ -59,13 +58,18 @@ public class LoginController extends Controller implements Initializable {
     @FXML
     private JFXButton btnIngresar;
 
+    private String pass;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        // TODO
+        txtPassMostrado.setVisible(false);
+        txtPassOculto.setText(txtPassMostrado.getText());
+        txtPassOculto.setVisible(true);
+        imgNotPassword.setVisible(false);
+        imgViewPassword.setVisible(true);
     }
 
     @Override
@@ -75,22 +79,54 @@ public class LoginController extends Controller implements Initializable {
 
     @FXML
     private void actionViewPass(MouseEvent event) {
+        if (txtPassMostrado.isVisible()) {
+            txtPassMostrado.setVisible(false);
+            txtPassOculto.setText(txtPassMostrado.getText());
+            txtPassOculto.setVisible(true);
+            imgNotPassword.setVisible(false);
+            imgViewPassword.setVisible(true);
+
+        } else {
+            txtPassOculto.setVisible(false);
+            txtPassMostrado.setText(txtPassOculto.getText());
+            txtPassMostrado.setVisible(true);
+            imgNotPassword.setVisible(true);
+            imgViewPassword.setVisible(false);
+        }
     }
 
-
-     @FXML
+    @FXML
     private void actionIngresar(ActionEvent event) {
-        Token.setInstance(null);
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
-        Token.setInstance(LoginService.login(authenticationRequest));
-       if(Token.getInstance()!=null){
-           FlowController.getInstance().goView("zonas/Zonas");
-       }
+        if (txtPassMostrado.isVisible()) {
+            pass = txtPassMostrado.getText();
+        } else {
+            pass = txtPassOculto.getText();
+        }
+        if (!txtPassMostrado.getText().isEmpty() && ((!txtPassMostrado.getText().isEmpty())) || (!txtPassOculto.getText().isEmpty())) {
+            Token.setInstance(null);
+            AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
+            Token.setInstance(LoginService.login(authenticationRequest));
+            if (Token.getInstance() != null) {
+                FlowController.getInstance().goView("principal/Principal");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", null, "La contraseña o cedula estan incorecctas");
+            }
+
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", null, "Por favor complete todos campos");
+        }
     }
 
     @FXML
     private void actionCambioDivisas(ActionEvent event) {
-        FlowController.getInstance().goView("cambioDivisas/CambioDivisas");
+        FlowController.getInstance().goViewInWindowModal("cambioDivisas/CambioDivisas", ((Stage) txtPassOculto.getScene().getWindow()), true);
     }
-    
+
+    @FXML
+    private void actionSalir(ActionEvent event) {
+        if (new Mensaje().showConfirmation("Cerrar aplicacion", ((Stage) btnCancelar.getScene().getWindow()), "Desea salir de la aplicacion")) {
+            ((Stage) btnCancelar.getScene().getWindow()).close();
+        }
+    }
+
 }
