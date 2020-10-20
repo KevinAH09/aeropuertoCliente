@@ -30,6 +30,7 @@ org\una\aeropuertocliente\controllers\MantenimientoZonasController.class
 org\una\aeropuertocliente\controllers\ZonasController.class
 org\una\aeropuertocliente\dtos\AvionesDTO.class
 org\una\aeropuertocliente\dtos\VuelosDTO.class
+org\una\aeropuertocliente\entitiesServices\ZonasService$3.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService$1.class
 org\una\aeropuertocliente\entitiesServices\RegistrosAccionesService.class
 org\una\aeropuertocliente\controllers\ZonasController$1.class
@@ -37,6 +38,8 @@ org\una\aeropuertocliente\dtos\AuthenticationResponse.class
 org\una\aeropuertocliente\controllers\MantenimientoUsuariosController.class
 org\una\aeropuertocliente\dtos\DetallesControlesGastosDTO.class
 org\una\aeropuertocliente\utils\FlowController.class
+org\una\aeropuertocliente\entitiesServices\ZonasService$4.class
+org\una\aeropuertocliente\controllers\VuelosController$1.class
 org\una\aeropuertocliente\dtos\ParametrosDTO.class
 org\una\aeropuertocliente\entitiesServices\VuelosService$1.class
 org\una\aeropuertocliente\entitiesServices\ZonasService$1.class
@@ -44,10 +47,12 @@ org\una\aeropuertocliente\sharedService\Conection.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$1.class
 org\una\aeropuertocliente\dtos\RegistrosAccionesDTO.class
 org\una\aeropuertocliente\dtos\UsuariosDTO.class
+org\una\aeropuertocliente\entitiesServices\AvionesService$2.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService.class
 org\una\aeropuertocliente\controllers\AerolineasController.class
 org\una\aeropuertocliente\controllers\MantenimientoAerolineasController.class
 org\una\aeropuertocliente\controllers\MantenimientoAreasTrabajoController.class
+org\una\aeropuertocliente\entitiesServices\ZonasService$5.class
 org\una\aeropuertocliente\entitiesServices\BitacorasVuelosService.class
 org\una\aeropuertocliente\controllers\BaseController.class
 org\una\aeropuertocliente\controllers\UsuariosController.class
@@ -60,12 +65,14 @@ org\una\aeropuertocliente\entitiesServices\AvionesZonasService.class
 org\una\aeropuertocliente\entitiesServices\DetallesControlesGastosService$1.class
 org\una\aeropuertocliente\utils\Mensaje.class
 org\una\aeropuertocliente\dtos\AerolineasDTO.class
+org\una\aeropuertocliente\controllers\UsuariosController$1.class
 org\una\aeropuertocliente\entitiesServices\AvionesService.class
 org\una\aeropuertocliente\controllers\MantenimientoVuelosController.class
 org\una\aeropuertocliente\sharedService\Conection$1.class
 org\una\aeropuertocliente\dtos\AreasTrabajosDTO.class
 org\una\aeropuertocliente\entitiesServices\DetallesControlesGastosService.class
 org\una\aeropuertocliente\dtos\ControlesGastosDTO.class
+org\una\aeropuertocliente\controllers\AvionesController$1.class
 org\una\aeropuertocliente\entitiesServices\ParametrosService.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService.class
 org\una\aeropuertocliente\entitiesServices\ZonasService.class

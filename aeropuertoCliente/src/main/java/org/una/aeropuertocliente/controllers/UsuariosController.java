@@ -27,6 +27,10 @@ import org.una.aeropuertocliente.utils.Mensaje;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.scene.input.MouseEvent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import org.una.aeropuertocliente.utils.AppContext;
 
 /**
  * FXML Controller class
@@ -59,19 +63,31 @@ public class UsuariosController extends Controller implements Initializable {
     private Label lblRegistrar;
     @FXML
     private JFXButton btnRegistrar;
-    public List <UsuariosDTO> usuariosList = new ArrayList<UsuariosDTO>();
-
+    public List<UsuariosDTO> usuariosList = new ArrayList<UsuariosDTO>();
+    public UsuariosDTO usuariosFilt = new UsuariosDTO();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        actionUsuariosClick();
+        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol"));
         llenarUsuarios();
     }
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
+            tableUsuarios.getItems().clear();
+            usuariosList = UsuariosService.allUsuarios();
+            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+        }
+        if(cmbFiltro.getValue().equals("Id")&&!txtBusqueda.getText().isEmpty()){
+            tableUsuarios.getItems().clear();
+            usuariosFilt=UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
+            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+        }
     }
 
     @FXML
@@ -93,7 +109,7 @@ public class UsuariosController extends Controller implements Initializable {
         colFecha.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaRegistro()));
         TableColumn<UsuariosDTO, String> colRol = new TableColumn("Rol");
         colRol.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getRolId().getDescripcion()));
-        tableUsuarios.getColumns().addAll(colId,colNombre, colEstado, colCedula, colCorreo,colFecha,colRol);
+        tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol);
 
         try {
             usuariosList = UsuariosService.allUsuarios();
@@ -107,6 +123,21 @@ public class UsuariosController extends Controller implements Initializable {
         } catch (Exception e) {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Error de Usuario", null, "Hubo un error al obtener los datos a cargar");
         }
+    }
+
+    private void actionUsuariosClick() {
+        tableUsuarios.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2 && tableUsuarios.selectionModelProperty().get().getSelectedItem() != null) {
+                    UsuariosDTO usuario = (UsuariosDTO) tableUsuarios.selectionModelProperty().get().getSelectedItem();
+                    AppContext.getInstance().set("usu", usuario);
+                    System.out.println(usuario.getNombreCompleto());
+//                    ((Stage) btnFiltrar.getScene().getWindow()).close();
+                }
+
+            }
+        });
     }
 
     @Override
