@@ -47,20 +47,20 @@ public class ZonasService {
         return dTO;
     }
 
-    public static int createZona(ZonasDTO update) {
+    public static int createZona(ZonasDTO create) {
         int codeResponse = 0;
         try {
-            codeResponse = Conection.createObjectToConnection("zona/", update);
+            codeResponse = Conection.createObjectToConnection("zona/", create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
 
-    public static int updateZona(ZonasDTO create) {
+    public static int updateZona(ZonasDTO update) {
         int codeResponse = 0;
         try {
-            codeResponse = Conection.updateObjectToConnection("zona/" + create.getId(), ZonasDTO.class);
+            codeResponse = Conection.updateObjectToConnection("zona/" + update.getId(), update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

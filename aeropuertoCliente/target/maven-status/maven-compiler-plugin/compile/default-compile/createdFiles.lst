@@ -87,6 +87,7 @@ org\una\aeropuertocliente\controllers\UsuariosController$1.class
 org\una\aeropuertocliente\entitiesServices\AvionesService.class
 org\una\aeropuertocliente\controllers\MantenimientoVuelosController.class
 org\una\aeropuertocliente\sharedService\Conection$1.class
+org\una\aeropuertocliente\controllers\MantenimientoZonasController$1.class
 org\una\aeropuertocliente\dtos\AreasTrabajosDTO.class
 org\una\aeropuertocliente\entitiesServices\DetallesControlesGastosService.class
 org\una\aeropuertocliente\dtos\ControlesGastosDTO.class
