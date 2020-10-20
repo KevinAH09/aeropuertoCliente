@@ -38,8 +38,6 @@ import org.una.aeropuertocliente.utils.Mensaje;
  *
  * @author cfugu
  */
-
-
 public class MantenimientoZonasController extends Controller implements Initializable {
 
     @FXML
@@ -108,10 +106,10 @@ public class MantenimientoZonasController extends Controller implements Initiali
     }
 
     @FXML
-    private void onActionGuardar(ActionEvent event){
+    private void onActionGuardar(ActionEvent event) {
         if (zonas == null) {
             if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtCodigo.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
-                zonas=new ZonasDTO();
+                zonas = new ZonasDTO();
                 if (cmbEstado.getValue().equals("Activo")) {
                     zonas.setEstado(true);
                 } else {
@@ -128,7 +126,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Zona", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
             }
-            
+
         } else {
             if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtCodigo.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
                 if (cmbEstado.getValue().equals("Activo")) {
@@ -148,6 +146,9 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
             }
         }
+        tableZonas.getItems().clear();
+        zonasList = ZonasService.allZonas();
+        tableZonas.setItems(FXCollections.observableArrayList(zonasList));
     }
 
     @FXML
