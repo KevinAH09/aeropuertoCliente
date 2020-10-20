@@ -123,12 +123,12 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             txtNombre.setText(aerolinea.getNombreAerolinea());
             txtId.setText(aerolinea.getId().toString());
             txtResponsable.setText(aerolinea.getNombreResponsable());
-            System.out.println("--------------------------------1"+AvionesService.aerolinea(aerolinea.getId()));
             if (AvionesService.aerolinea(aerolinea.getId()).isEmpty()) {
                 txtFilter.setVisible(false);
                 combFilter.setVisible(false);
                 btnFiltrar.setVisible(false);
                 btnCancelar.setVisible(false);
+                tableAviones.setVisible(false);
             }
             btnCancelar.setVisible(false);
             btnEditar.setVisible(true);
@@ -140,13 +140,11 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             txtResponsable.setText("");
             cmbEstado.setValue("Activo");
 
-            System.out.println("--------------------------------2"+AvionesService.aerolinea(aerolinea.getId()));
-            if (AvionesService.aerolinea(aerolinea.getId()).isEmpty()) {
-                txtFilter.setVisible(false);
-                combFilter.setVisible(false);
-                btnFiltrar.setVisible(false);
-                btnCancelar.setVisible(false);
-            }
+            txtFilter.setVisible(false);
+            combFilter.setVisible(false);
+            btnFiltrar.setVisible(false);
+            btnCancelar.setVisible(false);
+            tableAviones.setVisible(false);
 
             txtNombre.setDisable(false);
             txtId.setDisable(true);
@@ -303,7 +301,6 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             tableAviones.setItems(FXCollections.observableArrayList(avionesList));
         }
     }
-
 
     @FXML
     private void volver(ActionEvent event) {
