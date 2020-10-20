@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
@@ -97,6 +99,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+        AppContext.getInstance().set("area", null);
         FlowController.getInstance().goView("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
     }
 
@@ -107,8 +110,10 @@ public class AreasTrabajoController extends Controller implements Initializable 
         colNombre.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreAreaTrabajo()));
         TableColumn<AreasTrabajosDTO, String> colDescrpcion = new TableColumn("Descripción");
         colDescrpcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
+        TableColumn<AreasTrabajosDTO, String> colEstado = new TableColumn("Descripción");
+        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
 
-        tableAreas.getColumns().addAll(colId, colNombre, colDescrpcion);
+        tableAreas.getColumns().addAll(colId, colNombre, colDescrpcion,colEstado);
 
         try {
             areasList = areaService.allAreasTrabajos();
@@ -130,6 +135,8 @@ public class AreasTrabajoController extends Controller implements Initializable 
                     AreasTrabajosDTO area = (AreasTrabajosDTO) tableAreas.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("area", area);
                     System.out.println(area.getNombreAreaTrabajo());
+//                    FlowController.getInstance().goViewInWindowModal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo", ((Stage) btnRegistrar.getScene().getWindow()), false);
+                    FlowController.getInstance().goView("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
 //                    ((Stage) btnFiltrar.getScene().getWindow()).close();
                 }
 
