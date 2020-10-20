@@ -5,6 +5,7 @@ org\una\aeropuertocliente\entitiesServices\serviceCambiosDivisas.class
 org\una\aeropuertocliente\controllers\LoginController.class
 org\una\aeropuertocliente\entitiesServices\AvionesService$3.class
 org\una\aeropuertocliente\entitiesServices\LoginService.class
+org\una\aeropuertocliente\entitiesServices\AvionesService$6.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$2.class
 org\una\aeropuertocliente\dtos\AuthenticationRequest.class
 org\una\aeropuertocliente\apiForex\TiposMonedasServices$7.class

@@ -374,7 +374,7 @@ public class CambioDivisasController extends Controller implements Initializable
     }
 
     private void llenarImgSelect(String selectImg) {
-        if (txtIngresarMonto.getText() != null && cbMoneda.getValue() != null) {
+        if (!txtIngresarMonto.getText().isEmpty() && cbMoneda.getValue() != null) {
             if (selectImg.equals("Colon")) {
                 imgSelect.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
             } else if (selectImg.equals("Eurodolar")) {
@@ -401,7 +401,7 @@ public class CambioDivisasController extends Controller implements Initializable
     }
 
     private void llenarMonto(String selectImg) {
-        if (txtIngresarMonto.getText() != null && cbMoneda.getValue() != null) {
+        if (!txtIngresarMonto.getText().isEmpty() && cbMoneda.getValue() != null) {
             double monto = Double.valueOf(txtIngresarMonto.getText());
             if (itemSelect.equals("Colon")) {
                 if (selectImg.equals("Eurodolar")) {

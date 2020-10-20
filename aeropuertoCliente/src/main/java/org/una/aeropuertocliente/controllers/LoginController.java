@@ -104,7 +104,7 @@ public class LoginController extends Controller implements Initializable {
         }
         if (!txtPassMostrado.getText().isEmpty() && ((!txtPassMostrado.getText().isEmpty())) || (!txtPassOculto.getText().isEmpty())) {
             Token.setInstance(null);
-            AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), txtPassMostrado.getText());
+            AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), pass);
             Token.setInstance(LoginService.login(authenticationRequest));
             if (Token.getInstance() != null) {
                 FlowController.getInstance().goView("principal/Principal");
