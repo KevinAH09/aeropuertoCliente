@@ -20,7 +20,9 @@ import java.net.URL;
  */
 public class ConectionApiForex {
     
-     private final static String urlBase = "https://www.freeforexapi.com/api/live?pairs=USDCRC";
+    
+    
+     private final static String urlBase = "https://www.freeforexapi.com/api/live?pairs=";
      
       public static <T> Object listFromConnection(String urlstring, Type listtype) throws MalformedURLException, IOException {
         Gson gson = new Gson();

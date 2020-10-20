@@ -7,6 +7,7 @@ org\una\aeropuertocliente\entitiesServices\AvionesService$3.class
 org\una\aeropuertocliente\entitiesServices\LoginService.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$2.class
 org\una\aeropuertocliente\dtos\AuthenticationRequest.class
+org\una\aeropuertocliente\apiForex\TiposMonedasServices$7.class
 org\una\aeropuertocliente\dtos\RolesDTO.class
 org\una\aeropuertocliente\entitiesServices\AerolineasService$3.class
 org\una\aeropuertocliente\controllers\CambioDivisasController.class
@@ -30,15 +31,21 @@ org\una\aeropuertocliente\entitiesServices\AerolineasService$1.class
 org\una\aeropuertocliente\entitiesServices\BitacorasVuelosService$1.class
 org\una\aeropuertocliente\entitiesServices\AvionesZonasService$1.class
 org\una\aeropuertocliente\utils\AppContext.class
+org\una\aeropuertocliente\apiForex\TiposMonedasServices$2.class
 org\una\aeropuertocliente\controllers\PrincipalController.class
 org\una\aeropuertocliente\dtos\BitacorasVuelosDTO.class
 org\una\aeropuertocliente\entitiesServices\RolesService$1.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$6.class
+org\una\aeropuertocliente\apiForex\TiposMonedasServices$8.class
 org\una\aeropuertocliente\controllers\MantenimientoZonasController.class
 org\una\aeropuertocliente\controllers\ZonasController.class
 org\una\aeropuertocliente\dtos\AvionesDTO.class
 org\una\aeropuertocliente\dtos\VuelosDTO.class
 org\una\aeropuertocliente\entitiesServices\ZonasService$3.class
+<<<<<<< Updated upstream
+=======
+org\una\aeropuertocliente\apiForex\TiposMonedasServices$6.class
+>>>>>>> Stashed changes
 org\una\aeropuertocliente\apiForex\TiposMonedasServices.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService$1.class
 org\una\aeropuertocliente\entitiesServices\RegistrosAccionesService.class
@@ -56,6 +63,7 @@ org\una\aeropuertocliente\entitiesServices\VuelosService$1.class
 org\una\aeropuertocliente\entitiesServices\ZonasService$1.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$4.class
 org\una\aeropuertocliente\sharedService\Conection.class
+org\una\aeropuertocliente\apiForex\TiposMonedasServices$3.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$1.class
 org\una\aeropuertocliente\dtos\RegistrosAccionesDTO.class
 org\una\aeropuertocliente\dtos\UsuariosDTO.class
@@ -83,6 +91,7 @@ org\una\aeropuertocliente\entitiesServices\AvionesZonasService.class
 org\una\aeropuertocliente\entitiesServices\DetallesControlesGastosService$1.class
 org\una\aeropuertocliente\utils\Mensaje.class
 org\una\aeropuertocliente\dtos\AerolineasDTO.class
+org\una\aeropuertocliente\apiForex\TiposMonedasServices$4.class
 org\una\aeropuertocliente\controllers\UsuariosController$1.class
 org\una\aeropuertocliente\entitiesServices\AvionesService.class
 org\una\aeropuertocliente\controllers\MantenimientoVuelosController.class
@@ -99,4 +108,5 @@ org\una\aeropuertocliente\sharedService\Token.class
 org\una\aeropuertocliente\apiForex\ConectionApiForex.class
 org\una\aeropuertocliente\entitiesServices\RolesService.class
 org\una\aeropuertocliente\entitiesServices\RegistrosAccionesService$1.class
+org\una\aeropuertocliente\apiForex\TiposMonedasServices$5.class
 org\una\aeropuertocliente\controllers\Controller.class
