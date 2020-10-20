@@ -113,24 +113,17 @@ public class UsuariosController extends Controller implements Initializable {
             tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
         }
         if (cmbFiltro.getValue().equals("Rol") && !txtBusqueda.getText().isEmpty()) {
-            boolean band = true;
             tableUsuarios.getItems().clear();
             usuariosList = UsuariosService.allUsuarios();
-            for (int i = 0; i < usuariosList.size() || band == true; i++) {
+            for (int i = 0; i < usuariosList.size(); i++) {
                 if (usuariosList.get(i).getRolId().getDescripcion().equals(txtBusqueda.getText().toUpperCase())) {
                     System.out.println("Entró");
-                    System.out.println(usuariosList.get(i).getRolId().getDescripcion());
                     usuariosList2 = UsuariosService.rolUsuarios(usuariosList.get(i).getRolId().getId());
-                    System.out.println(usuariosList2.get(0).getNombreCompleto());
-                    band = false;
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
                 }
 
             }
-            band = true;
-            System.out.println(usuariosList2.size());
-            if (!usuariosList2.isEmpty() || usuariosList2 != null) {
-                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
-            }
+
         }
     }
 
