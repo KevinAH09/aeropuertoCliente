@@ -90,7 +90,7 @@ public class LoginController extends Controller implements Initializable {
 
     @FXML
     private void actionCambioDivisas(ActionEvent event) {
-        
+        FlowController.getInstance().goView("cambioDivisas/CambioDivisas");
     }
     
 }
