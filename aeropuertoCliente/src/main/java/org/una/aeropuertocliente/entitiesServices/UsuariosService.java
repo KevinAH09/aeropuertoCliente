@@ -20,47 +20,102 @@ import org.una.aeropuertocliente.sharedService.Conection;
  * @author colo7
  */
 public class UsuariosService {
-    
-    
-    public static List<UsuariosDTO> allUsuarios(){
-        
+
+    public static List<UsuariosDTO> allUsuarios() {
+
         List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
         try {
-            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/",new TypeToken<ArrayList<UsuariosDTO>>() {}.getType());
-            
+            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/", new TypeToken<ArrayList<UsuariosDTO>>() {
+            }.getType());
+
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listUsuariosDTOs;
     }
-    public static UsuariosDTO idUsuario(Long id){
-        
+
+    public static UsuariosDTO idUsuario(Long id) {
+
         UsuariosDTO usuarioDTO = new UsuariosDTO();
         try {
-            usuarioDTO = (UsuariosDTO) Conection.oneConnection("usuario/"+id,new TypeToken<UsuariosDTO>() {}.getType());
-            
+            usuarioDTO = (UsuariosDTO) Conection.oneConnection("usuario/" + id, new TypeToken<UsuariosDTO>() {
+            }.getType());
+
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return usuarioDTO;
     }
-    public static int createUsuario(UsuariosDTO createUsuario){
-        int codeResponse=0;
+
+    public static int createUsuario(UsuariosDTO createUsuario) {
+        int codeResponse = 0;
         try {
-            codeResponse = Conection.createObjectToConnection("usuario/",createUsuario);
+            codeResponse = Conection.createObjectToConnection("usuario/", createUsuario);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateUsuario(UsuariosDTO createUsuario){
-        int codeResponse=0;
+
+    public static int updateUsuario(UsuariosDTO createUsuario) {
+        int codeResponse = 0;
         try {
-            codeResponse = Conection.updateObjectToConnection("usuario/"+createUsuario.getId(),createUsuario);
+            codeResponse = Conection.updateObjectToConnection("usuario/" + createUsuario.getId(), createUsuario);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    
+
+    public static List<UsuariosDTO> estadoUsuarios(Boolean estado) {
+
+        List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
+        try {
+            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/estado/" + estado, new TypeToken<ArrayList<UsuariosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listUsuariosDTOs;
+    }
+
+    public static List<UsuariosDTO> nombreUsuarios(String nombre) {
+
+        List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
+        try {
+            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/nombre/" + nombre, new TypeToken<ArrayList<UsuariosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listUsuariosDTOs;
+    }
+    public static List<UsuariosDTO>rolUsuarios(Long id) {
+
+        List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
+        try {
+            listUsuariosDTOs = (List<UsuariosDTO>) Conection.listFromConnection("usuario/rol/" + id, new TypeToken<ArrayList<UsuariosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listUsuariosDTOs;
+    }
+
+    public static UsuariosDTO cedulaUsuarios(String cedula) {
+
+        UsuariosDTO listUsuariosDTOs = new UsuariosDTO();
+        try {
+            listUsuariosDTOs = (UsuariosDTO) Conection.oneConnection("usuario/cedula/" + cedula, new TypeToken<UsuariosDTO>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listUsuariosDTOs;
+    }
+
 }

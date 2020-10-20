@@ -31,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import org.una.aeropuertocliente.utils.AppContext;
+import org.una.aeropuertocliente.utils.FlowController;
 
 /**
  * FXML Controller class
@@ -64,6 +65,7 @@ public class UsuariosController extends Controller implements Initializable {
     @FXML
     private JFXButton btnRegistrar;
     public List<UsuariosDTO> usuariosList = new ArrayList<UsuariosDTO>();
+    public List<UsuariosDTO> usuariosList2 = new ArrayList<UsuariosDTO>();
     public UsuariosDTO usuariosFilt = new UsuariosDTO();
 
     /**
@@ -83,15 +85,58 @@ public class UsuariosController extends Controller implements Initializable {
             usuariosList = UsuariosService.allUsuarios();
             tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
         }
-        if(cmbFiltro.getValue().equals("Id")&&!txtBusqueda.getText().isEmpty()){
+        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableUsuarios.getItems().clear();
-            usuariosFilt=UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
+            usuariosFilt = UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
             tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+        }
+        if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
+            if (txtBusqueda.getText().equals("true")) {
+                tableUsuarios.getItems().clear();
+                usuariosList = UsuariosService.estadoUsuarios(true);
+                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+            }
+            if (txtBusqueda.getText().equals("false")) {
+                tableUsuarios.getItems().clear();
+                usuariosList = UsuariosService.estadoUsuarios(false);
+                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+            }
+        }
+        if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
+            tableUsuarios.getItems().clear();
+            usuariosList = UsuariosService.nombreUsuarios(txtBusqueda.getText());
+            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+        }
+        if (cmbFiltro.getValue().equals("Cedula") && !txtBusqueda.getText().isEmpty()) {
+            tableUsuarios.getItems().clear();
+            usuariosFilt = UsuariosService.cedulaUsuarios(txtBusqueda.getText());
+            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+        }
+        if (cmbFiltro.getValue().equals("Rol") && !txtBusqueda.getText().isEmpty()) {
+            boolean band = true;
+            tableUsuarios.getItems().clear();
+            usuariosList = UsuariosService.allUsuarios();
+            for (int i = 0; i < usuariosList.size() || band == true; i++) {
+                if (usuariosList.get(i).getRolId().getDescripcion().equals(txtBusqueda.getText().toUpperCase())) {
+                    System.out.println("Entró");
+                    System.out.println(usuariosList.get(i).getRolId().getDescripcion());
+                    usuariosList2 = UsuariosService.rolUsuarios(usuariosList.get(i).getRolId().getId());
+                    System.out.println(usuariosList2.get(0).getNombreCompleto());
+                    band = false;
+                }
+
+            }
+            band = true;
+            System.out.println(usuariosList2.size());
+            if (!usuariosList2.isEmpty() || usuariosList2 != null) {
+                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
+            }
         }
     }
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+        FlowController.getInstance().goView("mantenimientoUsuarios/MantenimientoUsuarios");
     }
 
     private void llenarUsuarios() {
@@ -115,7 +160,6 @@ public class UsuariosController extends Controller implements Initializable {
             usuariosList = UsuariosService.allUsuarios();
             System.out.println(usuariosList);
             if (usuariosList != null && !usuariosList.isEmpty()) {
-                System.out.println("Entró");
                 tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error de Usuario", null, "La lista está nula o vacía");

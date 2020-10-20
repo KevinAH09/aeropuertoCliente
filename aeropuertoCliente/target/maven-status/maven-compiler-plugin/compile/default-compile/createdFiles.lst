@@ -1,5 +1,6 @@
 org\una\aeropuertocliente\entitiesServices\VuelosService.class
 org\una\aeropuertocliente\entitiesServices\AreasTrabajosService.class
+org\una\aeropuertocliente\entitiesServices\UsuariosService$5.class
 org\una\aeropuertocliente\entitiesServices\serviceCambiosDivisas.class
 org\una\aeropuertocliente\controllers\LoginController.class
 org\una\aeropuertocliente\entitiesServices\LoginService.class
@@ -26,6 +27,7 @@ org\una\aeropuertocliente\utils\AppContext.class
 org\una\aeropuertocliente\controllers\PrincipalController.class
 org\una\aeropuertocliente\dtos\BitacorasVuelosDTO.class
 org\una\aeropuertocliente\entitiesServices\RolesService$1.class
+org\una\aeropuertocliente\entitiesServices\UsuariosService$6.class
 org\una\aeropuertocliente\controllers\MantenimientoZonasController.class
 org\una\aeropuertocliente\controllers\ZonasController.class
 org\una\aeropuertocliente\dtos\AvionesDTO.class
@@ -43,6 +45,7 @@ org\una\aeropuertocliente\controllers\VuelosController$1.class
 org\una\aeropuertocliente\dtos\ParametrosDTO.class
 org\una\aeropuertocliente\entitiesServices\VuelosService$1.class
 org\una\aeropuertocliente\entitiesServices\ZonasService$1.class
+org\una\aeropuertocliente\entitiesServices\UsuariosService$4.class
 org\una\aeropuertocliente\sharedService\Conection.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$1.class
 org\una\aeropuertocliente\dtos\RegistrosAccionesDTO.class
@@ -56,6 +59,7 @@ org\una\aeropuertocliente\entitiesServices\ZonasService$5.class
 org\una\aeropuertocliente\entitiesServices\BitacorasVuelosService.class
 org\una\aeropuertocliente\controllers\BaseController.class
 org\una\aeropuertocliente\controllers\UsuariosController.class
+org\una\aeropuertocliente\entitiesServices\UsuariosService$3.class
 org\una\aeropuertocliente\controllers\AreasTrabajoController.class
 org\una\aeropuertocliente\entitiesServices\AerolineasService.class
 org\una\aeropuertocliente\controllers\CambiarContrasenaController.class
