@@ -134,6 +134,7 @@ public class RolesController extends Controller implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+         AppContext.getInstance().set("rol", null);
         cambiarVistaPrincipal("mantenimientoRoles/MantenimientoRoles");
     }
 
