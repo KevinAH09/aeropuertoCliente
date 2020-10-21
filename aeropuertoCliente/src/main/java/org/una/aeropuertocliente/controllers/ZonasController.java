@@ -65,6 +65,7 @@ public class ZonasController extends Controller implements Initializable {
     ZonasDTO zonasFilt;
     public List<ZonasDTO> zonasList = new ArrayList<ZonasDTO>();
     ZonasService zonSer;
+    String mensaje;
 
     /**
      * Initializes the controller class.
@@ -78,27 +79,29 @@ public class ZonasController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-//        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
-//            tableZonas.getItems().clear();
-//            zonasList = ZonasService.allZonas();
-//            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-//        }
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()|| cmbFiltro.getValue().isEmpty()) {
+            tableZonas.getItems().clear();
+            mensaje="Por favor debe ingresar un datos en el campo de búsqueda";
+            notificar(0);
+        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableZonas.getItems().clear();
             zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
             if (zonasFilt != null) {
                 tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
             } else {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().toLowerCase().equals("true")) {
+            if (txtBusqueda.getText().equals("true")) {
                 tableZonas.getItems().clear();
                 zonasList = ZonasService.estadoZona(true);
                 if (zonasList != null) {
                     tableZonas.setItems(FXCollections.observableArrayList(zonasList));
                 } else {
+                    mensaje="No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -108,10 +111,12 @@ public class ZonasController extends Controller implements Initializable {
                 if (zonasList != null) {
                     tableZonas.setItems(FXCollections.observableArrayList(zonasList));
                 } else {
+                    mensaje="No se encontró coincidencias";
                     notificar(0);
                 }
             }
             if (zonasList == null) {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -121,6 +126,7 @@ public class ZonasController extends Controller implements Initializable {
             if (zonasList != null) {
                 tableZonas.setItems(FXCollections.observableArrayList(zonasList));
             } else {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -130,6 +136,7 @@ public class ZonasController extends Controller implements Initializable {
             if (zonasList != null) {
                 tableZonas.setItems(FXCollections.observableArrayList(zonasList));
             } else {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -188,7 +195,7 @@ public class ZonasController extends Controller implements Initializable {
             tableZonas.setPlaceholder(box);
         } else {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);

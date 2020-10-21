@@ -72,6 +72,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
     public AreasTrabajosService areaService;
     public List<AreasTrabajosDTO> areasList = new ArrayList<AreasTrabajosDTO>();
     public AreasTrabajosDTO areasFilt;
+    String mensaje;
 
     /**
      * Initializes the controller class.
@@ -85,11 +86,10 @@ public class AreasTrabajoController extends Controller implements Initializable 
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-//        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
-//            tableAreas.getItems().clear();
-//            areasList = areaService.allAreasTrabajos();
-//            tableAreas.setItems(FXCollections.observableArrayList(areasList));
-//        }
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()|| cmbFiltro.getValue().isEmpty()) {
+            tableAreas.getItems().clear();
+            mensaje="Por favor debe ingresar un datos en el campo de búsqueda";
+        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             System.out.println("Entro Areas");
             tableAreas.getItems().clear();
@@ -97,6 +97,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
             if (areasFilt != null) {
                 tableAreas.setItems(FXCollections.observableArrayList(areasFilt));
             }else{
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -106,6 +107,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
            if (areasList != null) {
                 tableAreas.setItems(FXCollections.observableArrayList(areasList));
             }else{
+               mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -171,7 +173,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
             tableAreas.setPlaceholder(box);
         } else {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);

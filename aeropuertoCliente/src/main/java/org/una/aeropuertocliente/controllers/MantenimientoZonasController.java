@@ -91,6 +91,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
     ZonasDTO zonas;
     ZonasDTO zonasFilt;
     public List<ZonasDTO> zonasList = new ArrayList<ZonasDTO>();
+    String mensaje;
 
     /**
      * Initializes the controller class.
@@ -159,17 +160,17 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-//        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
-//            tableZonas.getItems().clear();
-//            zonasList = ZonasService.allZonas();
-//            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-//        }
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()|| cmbFiltro.getValue().isEmpty()) {
+            tableZonas.getItems().clear();
+            mensaje="Por favor debe ingresar un datos en el campo de búsqueda";
+        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableZonas.getItems().clear();
             zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
             if (zonasFilt != null) {
                 tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
             } else {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -180,6 +181,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 if (zonasList != null) {
                     tableZonas.setItems(FXCollections.observableArrayList(zonasList));
                 } else {
+                    mensaje="No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -189,10 +191,12 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 if (zonasList != null) {
                     tableZonas.setItems(FXCollections.observableArrayList(zonasList));
                 } else {
+                    mensaje="No se encontró coincidencias";
                     notificar(0);
                 }
             }
             if (zonasList != null) {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -243,17 +247,17 @@ public class MantenimientoZonasController extends Controller implements Initiali
         TableColumn<ZonasDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableZonas.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion);
-
-        try {
-            zonasList = ZonasService.allZonas();
-            if (zonasList != null && !zonasList.isEmpty()) {
-                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
-            }
-        } catch (Exception e) {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
-        }
+        notificar(1);
+//        try {
+//            zonasList = ZonasService.allZonas();
+//            if (zonasList != null && !zonasList.isEmpty()) {
+//                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+//            } else {
+//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
+//            }
+//        } catch (Exception e) {
+//            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
+//        }
     }
 
     private void editar() {
@@ -284,7 +288,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
             tableZonas.setPlaceholder(box);
         } else {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);

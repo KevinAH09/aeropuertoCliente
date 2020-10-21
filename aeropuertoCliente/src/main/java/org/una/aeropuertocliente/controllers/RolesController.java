@@ -68,6 +68,7 @@ public class RolesController extends Controller implements Initializable {
     private JFXButton btnRegistrar;
     RolesDTO rolesFilt;
     RolesDTO roles;
+    String mensaje;
 
     public List<RolesDTO> rolesList = new ArrayList<RolesDTO>();
 
@@ -79,32 +80,33 @@ public class RolesController extends Controller implements Initializable {
         actionRolesClick();
         llenarRoles();
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Código"));
-
+        mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
     }
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-//        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
-//            tableZonas.getItems().clear();
-//            zonasList = ZonasService.allZonas();
-//            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-//        }
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+            tableRoles.getItems().clear();
+            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableRoles.getItems().clear();
             rolesFilt = RolesService.idRole(Long.valueOf(txtBusqueda.getText()));
             if (rolesFilt != null) {
                 tableRoles.setItems(FXCollections.observableArrayList(rolesFilt));
             } else {
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().toLowerCase().equals("true")) {
+            if (txtBusqueda.getText().equals("true")) {
                 tableRoles.getItems().clear();
                 rolesList = RolesService.estadoRoles(true);
                 if (rolesList != null) {
                     tableRoles.setItems(FXCollections.observableArrayList(rolesList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -114,10 +116,12 @@ public class RolesController extends Controller implements Initializable {
                 if (rolesList != null) {
                     tableRoles.setItems(FXCollections.observableArrayList(rolesList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
             if (rolesList != null) {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -127,6 +131,7 @@ public class RolesController extends Controller implements Initializable {
             if (rolesList != null) {
                 tableRoles.setItems(FXCollections.observableArrayList(rolesList));
             } else {
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -134,7 +139,7 @@ public class RolesController extends Controller implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
-         AppContext.getInstance().set("rol", null);
+        AppContext.getInstance().set("rol", null);
         cambiarVistaPrincipal("mantenimientoRoles/MantenimientoRoles");
     }
 
@@ -189,7 +194,7 @@ public class RolesController extends Controller implements Initializable {
             tableRoles.setPlaceholder(box);
         } else {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);

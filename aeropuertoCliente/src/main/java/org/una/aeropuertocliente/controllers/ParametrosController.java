@@ -87,6 +87,7 @@ public class ParametrosController extends Controller implements Initializable {
     ParametrosDTO parametros;
     ParametrosDTO parametrosFilt;
     public List<ParametrosDTO> parametrosList = new ArrayList<ParametrosDTO>();
+    String mensaje;
 
     /**
      * Initializes the controller class.
@@ -166,7 +167,7 @@ public class ParametrosController extends Controller implements Initializable {
             tableParametros.setPlaceholder(box);
         } else {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);
@@ -178,22 +179,28 @@ public class ParametrosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+            tableParametros.getItems().clear();
+            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableParametros.getItems().clear();
             parametrosFilt = ParametrosService.idParametro(Long.valueOf(txtBusqueda.getText()));
             if (parametrosFilt != null) {
                 tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
             } else {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().toLowerCase().equals("true")) {
+            if (txtBusqueda.getText().equals("true")) {
                 tableParametros.getItems().clear();
                 parametrosList = ParametrosService.estadoParametros(true);
                 if (parametrosList != null) {
                     tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
                 } else {
+                    mensaje="No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -203,10 +210,12 @@ public class ParametrosController extends Controller implements Initializable {
                 if (parametrosList != null) {
                     tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
                 } else {
+                    mensaje="No se encontró coincidencias";
                     notificar(0);
                 }
             }
             if (parametrosList != null) {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -216,6 +225,7 @@ public class ParametrosController extends Controller implements Initializable {
             if (parametrosList != null) {
                 tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
             } else {
+                mensaje="No se encontró coincidencias";
                 notificar(0);
             }
         }
