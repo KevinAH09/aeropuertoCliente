@@ -41,23 +41,75 @@ public class VuelosService {
         }
         return dTO;
     }
-    public static int createVuelo(VuelosDTO update){
+    public static int createVuelo(VuelosDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("vuelo/",update);
+            codeResponse = Conection.createObjectToConnection("vuelo/",create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateVuelo(VuelosDTO create){
+    public static int updateVuelo(VuelosDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("vuelo/"+create.getId(),VuelosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("vuelo/"+update.getId(),update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
+    
+    public static List<VuelosDTO> Destino(String destino) {
+
+        List<VuelosDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<VuelosDTO>) Conection.listFromConnection("vuelo/destino/" +destino, new TypeToken<ArrayList<VuelosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    public static List<VuelosDTO> Origen(String origen) {
+
+        List<VuelosDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<VuelosDTO>) Conection.listFromConnection("vuelo/origen/" +origen, new TypeToken<ArrayList<VuelosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    
+    public static List<VuelosDTO> estado(boolean estado) {
+
+        List<VuelosDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<VuelosDTO>) Conection.listFromConnection("vuelo/estado/" +estado, new TypeToken<ArrayList<VuelosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    
+    public static List<VuelosDTO> vuelos(Long id) {
+
+        List<VuelosDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<VuelosDTO>) Conection.listFromConnection("vuelo/avion/" +id, new TypeToken<ArrayList<VuelosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    
     
 }

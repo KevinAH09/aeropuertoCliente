@@ -169,10 +169,7 @@ public class AerolineasController extends Controller implements Initializable {
     private void registrarAvion(ActionEvent event) {
         aerolinea=null;
         AppContext.getInstance().set("aerolinea", aerolinea);
-        FlowController.getInstance().goView("mantenimientoAerolineas/MantenimientoAerolineas");
-         
-        //((Stage) btnRegistrarAvion.getScene().getWindow()).close();
-       
+        PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas"); 
     }
 
     @Override

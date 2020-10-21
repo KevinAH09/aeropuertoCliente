@@ -170,7 +170,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 if (mouseEvent.getClickCount() == 2 && tableAviones.selectionModelProperty().get().getSelectedItem() != null) {
                      aviones = (AvionesDTO) tableAviones.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("agregarAvion", aviones);
-                    FlowController.getInstance().goView("mantenimientoAviones/MantenimientoAvion");
+                    PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion"); 
                 }
             }
         });
@@ -250,9 +250,6 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
-        txtNombre.clear();
-        txtResponsable.clear();
-        aerolinea = null;
     }
 
     @FXML
@@ -272,8 +269,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     private void onActionRegistrar(ActionEvent event) {
         aviones=null;
         AppContext.getInstance().set("agregarAvion", aviones);
-        FlowController.getInstance().goView("mantenimientoAviones/MantenimientoAvion");
-        
+        PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion"); 
     }
 
     @Override
@@ -323,7 +319,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @FXML
     private void volver(ActionEvent event) {
-        FlowController.getInstance().goView("aerolineas/Aerolineas");
+        PrincipalController.cambiarVistaPrincipal("aerolineas/Aerolineas"); 
     }
 
 }
