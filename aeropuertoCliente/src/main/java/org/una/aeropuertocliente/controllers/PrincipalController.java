@@ -126,7 +126,7 @@ public class PrincipalController extends Controller implements Initializable {
                 TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
                 itemAdministracion.setGraphic(imgAdmin);
                 root.getChildren().add(itemAdministracion);
-                TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Control de gastos de manteniento");
+                TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Gastos de manteniento");
                 itemAdministracion.getChildren().add(itemGastoMantenimientos);
             }
         }
@@ -142,9 +142,23 @@ public class PrincipalController extends Controller implements Initializable {
                     if (item.getValue().equals("Aerolineas")) {
                         cambiarVistaPrincipal("aerolineas/Aerolineas");
                     } else if (item.getValue().equals("Parametros del sistema")) {
-                        cambiarVistaPrincipal("aerolineas/Aerolineas");
+                        cambiarVistaPrincipal("parametros/Parametros");
                     } else if (item.getValue().equals("Registro de Acciones")) {
                         cambiarVistaPrincipal("registroAcciones/RegistroAcciones");
+                    } else if (item.getValue().equals("Zonas")) {
+                        cambiarVistaPrincipal("zonas/Zonas");
+                    } else if (item.getValue().equals("Aviones")) {
+                        cambiarVistaPrincipal("aviones/Aviones");
+                    } else if (item.getValue().equals("Registrar vuelos")) {
+                        cambiarVistaPrincipal("vuelos/Vuelos");
+                    } else if (item.getValue().equals("Gastos de manteniento")) {
+                        cambiarVistaPrincipal("controlGastos/ControlGastos");
+                    } else if (item.getValue().equals("Usuarios")) {
+                        cambiarVistaPrincipal("usuarios/Usuarios");
+                    } else if (item.getValue().equals("Roles")) {
+                        cambiarVistaPrincipal("roles/Roles");
+                    } else if (item.getValue().equals("Areas de Trabajo")) {
+                        cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
                     }
 
                 }
