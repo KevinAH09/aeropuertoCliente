@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.una.aeropuertocliente.App;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.FlowController;
 
 /**
@@ -62,15 +63,73 @@ public class PrincipalController extends Controller implements Initializable {
         TreeItem<String> root = new TreeItem<>("Funciones");
         root.setGraphic(imgroot);
         treeAcciones.setRoot(root);
-        TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
-        itemInformacion.setGraphic(imgInformacion);
-        root.getChildren().add(itemInformacion);
-        TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
-        itemAdministracion.setGraphic(imgAdmin);
-        root.getChildren().add(itemAdministracion);
-
-        TreeItem<String> itemTramites = new TreeItem<>("Aerolineas");
-        itemInformacion.getChildren().add(itemTramites);
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            TreeItem<String> itemParametros = new TreeItem<>("Parametros del sistema");
+            root.getChildren().add(itemParametros);
+            TreeItem<String> itemRegistroAcciones = new TreeItem<>("Registro de Acciones");
+            root.getChildren().add(itemRegistroAcciones);
+        } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_AUDITOR")) {
+            TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
+            itemInformacion.setGraphic(imgInformacion);
+            root.getChildren().add(itemInformacion);
+            TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
+            itemAdministracion.setGraphic(imgAdmin);
+            root.getChildren().add(itemAdministracion);
+            TreeItem<String> itemUsuarios = new TreeItem<>("Usuarios");
+            itemInformacion.getChildren().add(itemUsuarios);
+            TreeItem<String> itemRoles = new TreeItem<>("Roles");
+            itemInformacion.getChildren().add(itemRoles);
+            TreeItem<String> itemAreaTrabajo = new TreeItem<>("Areas de Trabajo");
+            itemInformacion.getChildren().add(itemAreaTrabajo);
+            TreeItem<String> itemAerolinea = new TreeItem<>("Aerolineas");
+            itemInformacion.getChildren().add(itemAerolinea);
+            TreeItem<String> itemZonas = new TreeItem<>("Zonas");
+            itemInformacion.getChildren().add(itemZonas);
+            TreeItem<String> itemAvion = new TreeItem<>("Aviones");
+            itemInformacion.getChildren().add(itemAvion);
+            TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Control de gastos de manteniento");
+            itemAdministracion.getChildren().add(itemGastoMantenimientos);
+            TreeItem<String> itemRegistroVuelo = new TreeItem<>("Registro Vuelos");
+            itemAdministracion.getChildren().add(itemRegistroVuelo);
+        } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GERENTE")) {
+            if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_RRHH")) {
+                TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
+                itemInformacion.setGraphic(imgInformacion);
+                root.getChildren().add(itemInformacion);
+                TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
+                itemAdministracion.setGraphic(imgAdmin);
+                root.getChildren().add(itemAdministracion);
+                TreeItem<String> itemUsuarios = new TreeItem<>("Usuarios");
+                itemInformacion.getChildren().add(itemUsuarios);
+                TreeItem<String> itemRoles = new TreeItem<>("Roles");
+                itemInformacion.getChildren().add(itemRoles);
+                TreeItem<String> itemAreaTrabajo = new TreeItem<>("Areas de Trabajo");
+                itemInformacion.getChildren().add(itemAreaTrabajo);
+                TreeItem<String> itemCambioContrasena = new TreeItem<>("Cambio de Contraseña");
+                itemInformacion.getChildren().add(itemCambioContrasena);
+            } else if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_OPER_AERO")) {
+                TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
+                itemInformacion.setGraphic(imgInformacion);
+                root.getChildren().add(itemInformacion);
+                TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
+                itemAdministracion.setGraphic(imgAdmin);
+                root.getChildren().add(itemAdministracion);
+                TreeItem<String> itemAerolinea = new TreeItem<>("Aerolineas");
+                itemInformacion.getChildren().add(itemAerolinea);
+                TreeItem<String> itemZonas = new TreeItem<>("Zonas");
+                itemInformacion.getChildren().add(itemZonas);
+                TreeItem<String> itemAvion = new TreeItem<>("Aviones");
+                itemInformacion.getChildren().add(itemAvion);
+                TreeItem<String> itemRegistroVuelo = new TreeItem<>("Registro Vuelos");
+                itemAdministracion.getChildren().add(itemRegistroVuelo);
+            } else if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_GAST_MANT")) {
+                TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
+                itemAdministracion.setGraphic(imgAdmin);
+                root.getChildren().add(itemAdministracion);
+                TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Control de gastos de manteniento");
+                itemAdministracion.getChildren().add(itemGastoMantenimientos);
+            }
+        }
 
         treeAcciones.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -82,6 +141,10 @@ public class PrincipalController extends Controller implements Initializable {
 
                     if (item.getValue().equals("Aerolineas")) {
                         cambiarVistaPrincipal("aerolineas/Aerolineas");
+                    } else if (item.getValue().equals("Parametros del sistema")) {
+                        cambiarVistaPrincipal("aerolineas/Aerolineas");
+                    } else if (item.getValue().equals("Registro de Acciones")) {
+                        cambiarVistaPrincipal("registroAcciones/RegistroAcciones");
                     }
 
                 }
@@ -105,7 +168,7 @@ public class PrincipalController extends Controller implements Initializable {
         try {
             vboxPrincipalStatic.getChildren().clear();
             Parent root = FXMLLoader.load(App.class
-                    .getResource("views/"+ruta+".fxml"));
+                    .getResource("views/" + ruta + ".fxml"));
             vboxPrincipalStatic.getChildren()
                     .add(root);
         } catch (IOException ex) {

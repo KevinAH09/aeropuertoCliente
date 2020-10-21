@@ -110,7 +110,7 @@ public class LoginController extends Controller implements Initializable {
                 if (authenticationResponse != null) {
                     Token.setInstance(authenticationResponse);
                     System.out.println(Token.getInstance());
-                    FlowController.getInstance().goView("parametros/Parametros");
+                    FlowController.getInstance().goView("principal/Principal");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
                 }
