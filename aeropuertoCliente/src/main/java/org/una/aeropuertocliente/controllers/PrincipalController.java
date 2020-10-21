@@ -44,12 +44,14 @@ public class PrincipalController extends Controller implements Initializable {
     @FXML
     private VBox vboxPrincipal;
 
+    public static VBox vboxPrincipalStatic;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        vboxPrincipalStatic = vboxPrincipal;
     }
 
     @Override
@@ -77,13 +79,11 @@ public class PrincipalController extends Controller implements Initializable {
                 if (mouseEvent.getClickCount() == 2) {
                     TreeItem<String> item = (TreeItem<String>) treeAcciones.getSelectionModel()
                             .getSelectedItem();
-                    try {
-                        if (item.getValue().equals("Aerolineas")) {
-                            cambiarAerolineas();
-                        }
-                    } catch (IOException ex) {
-                        Logger.getLogger(PrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+
+                    if (item.getValue().equals("Aerolineas")) {
+                        cambiarVistaPrincipal("aerolineas/Aerolineas");
                     }
+
                 }
 
             }
@@ -101,12 +101,16 @@ public class PrincipalController extends Controller implements Initializable {
     private void actionTamano(MouseEvent event) {
     }
 
-    void cambiarAerolineas() throws IOException {
-        vboxPrincipal.getChildren().clear();
-        Parent root = FXMLLoader.load(App.class
-                .getResource("views/aerolineas/Aerolineas.fxml"));
-        vboxPrincipal.getChildren()
-                .add(root);
+    public static void cambiarVistaPrincipal(String ruta) {
+        try {
+            vboxPrincipalStatic.getChildren().clear();
+            Parent root = FXMLLoader.load(App.class
+                    .getResource("views/"+ruta+".fxml"));
+            vboxPrincipalStatic.getChildren()
+                    .add(root);
+        } catch (IOException ex) {
+            Logger.getLogger(PrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
