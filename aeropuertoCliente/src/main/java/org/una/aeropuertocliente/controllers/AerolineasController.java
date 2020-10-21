@@ -116,7 +116,7 @@ public class AerolineasController extends Controller implements Initializable {
                 if (mouseEvent.getClickCount() == 2 && tableview.selectionModelProperty().get().getSelectedItem() != null) {
                     aerolinea = (AerolineasDTO) tableview.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("aerolinea", aerolinea);
-                    FlowController.getInstance().goView("mantenimientoAerolineas/MantenimientoAerolineas");
+                    PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");                
                 } 
 
             }
