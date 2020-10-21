@@ -57,15 +57,6 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
-                     <children>
-                        <Label fx:id="lblRegistrar" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXButton fx:id="btnRegistrar" onAction="#onActionRegistrar" text="Registrar Zona" />
-                     </children>
-                     <padding>
-                        <Insets right="10.0" />
-                     </padding>
-                  </HBox>
                </children>
             </VBox>
          </children>

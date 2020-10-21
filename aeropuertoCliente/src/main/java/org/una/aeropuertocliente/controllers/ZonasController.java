@@ -58,10 +58,6 @@ public class ZonasController extends Controller implements Initializable {
     @FXML
     private TableView<ZonasDTO> tableZonas;
     @FXML
-    private Label lblRegistrar;
-    @FXML
-    private JFXButton btnRegistrar;
-    @FXML
     private Label lblFiltrar;
     @FXML
     private JFXButton btnFiltrar;
@@ -78,11 +74,6 @@ public class ZonasController extends Controller implements Initializable {
         actionZonasClick();
         llenarZonas();
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Código"));
-    }
-
-    @FXML
-    private void onActionRegistrar(ActionEvent event) {
-        PrincipalController.cambiarVistaPrincipal("mantenimientoZonas/MantenimientoZonas");
     }
 
     @FXML
