@@ -114,7 +114,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
         AppContext.getInstance().set("area", null);
-        FlowController.getInstance().goView("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
+        PrincipalController.cambiarVistaPrincipal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
     }
 
     private void llenarAreas() {
@@ -150,7 +150,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
                     AppContext.getInstance().set("area", area);
                     System.out.println(area.getNombreAreaTrabajo());
 //                    FlowController.getInstance().goViewInWindowModal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo", ((Stage) btnRegistrar.getScene().getWindow()), false);
-                    FlowController.getInstance().goView("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
+                     PrincipalController.cambiarVistaPrincipal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
 //                    ((Stage) btnFiltrar.getScene().getWindow()).close();
                 }
 

@@ -93,7 +93,7 @@ public class MantenimientoRolesController extends Controller implements Initiali
         txtCodigo.clear();
         txtDescripcion.clear();
         roles = null;
-        FlowController.getInstance().goView("roles/Roles");
+        PrincipalController.cambiarVistaPrincipal("roles/Roles");
     }
 
     @FXML
@@ -110,7 +110,7 @@ public class MantenimientoRolesController extends Controller implements Initiali
                 roles.setCodigo(txtCodigo.getText());
                 if (RolesService.createRol(roles) == 201) {
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
-                    FlowController.getInstance().goView("areasTrabajo/AreasTrabajo");
+                    PrincipalController.cambiarVistaPrincipal("roles/Roles");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se guardó correctamente");
                 }
@@ -129,7 +129,7 @@ public class MantenimientoRolesController extends Controller implements Initiali
                 roles.setCodigo(txtCodigo.getText());
                 if (RolesService.updateRol(roles) == 200) {
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
-                     FlowController.getInstance().goView("roles/Roles");
+                    PrincipalController.cambiarVistaPrincipal("roles/Roles");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se guardó correctamente");
                 }

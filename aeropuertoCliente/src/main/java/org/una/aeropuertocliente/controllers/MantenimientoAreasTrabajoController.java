@@ -93,7 +93,7 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
         txtDescripcion.clear();
         txtId.clear();
         txtNombre.clear();
-        FlowController.getInstance().goView("areasTrabajo/AreasTrabajo");
+        PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
 //        ((Stage) txtId.getScene().getWindow()).close();
     }
 
@@ -111,7 +111,7 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                 areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
                 if (AreasTrabajosService.createAreaTrabajo(areaTrabajoDTO) == 201) {
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                    FlowController.getInstance().goView("areasTrabajo/AreasTrabajo");
+                    PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
@@ -130,7 +130,7 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                 areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
                 if (AreasTrabajosService.updateAreaTrabajo(areaTrabajoDTO) == 200) {
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                     FlowController.getInstance().goView("areasTrabajo/AreasTrabajo");
+                     PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }

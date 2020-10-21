@@ -82,7 +82,7 @@ public class ZonasController extends Controller implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
-        FlowController.getInstance().goView("mantenimientoZonas/MantenimientoZonas");
+        PrincipalController.cambiarVistaPrincipal("mantenimientoZonas/MantenimientoZonas");
     }
 
     @FXML

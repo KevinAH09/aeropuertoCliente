@@ -29,6 +29,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import static org.una.aeropuertocliente.controllers.PrincipalController.cambiarVistaPrincipal;
 import org.una.aeropuertocliente.dtos.RolesDTO;
 import org.una.aeropuertocliente.entitiesServices.RolesService;
 import org.una.aeropuertocliente.utils.AppContext;
@@ -133,7 +134,7 @@ public class RolesController extends Controller implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
-        FlowController.getInstance().goView("mantenimientoRoles/MantenimientoRoles");
+        cambiarVistaPrincipal("mantenimientoRoles/MantenimientoRoles");
     }
 
     private void llenarRoles() {
@@ -167,8 +168,7 @@ public class RolesController extends Controller implements Initializable {
                     RolesDTO rol = (RolesDTO) tableRoles.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("rol", rol);
                     System.out.println(rol.getDescripcion());
-                    FlowController.getInstance().goView("mantenimientoRoles/MantenimientoRoles");
-//                    ((Stage) btnFiltrar.getScene().getWindow()).close();
+                    cambiarVistaPrincipal("mantenimientoRoles/MantenimientoRoles");
                 }
 
             }
