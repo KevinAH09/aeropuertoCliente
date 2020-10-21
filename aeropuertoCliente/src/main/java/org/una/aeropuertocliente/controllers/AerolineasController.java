@@ -92,7 +92,7 @@ public class AerolineasController extends Controller implements Initializable {
         colNombreAerolinea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreAerolinea()));
         TableColumn<AerolineasDTO, String> colResponsable = new TableColumn("Nombre Responsable");
         colResponsable.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreResponsable()));
-        TableColumn<AerolineasDTO, String> colEstado = new TableColumn("Estado\nActivo(true)Inactivo(False)");
+        TableColumn<AerolineasDTO, String> colEstado = new TableColumn("Estado\nActivo(True)Inactivo(False)");
         colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
         tableview.getColumns().addAll(colId, colNombreAerolinea, colResponsable,colEstado);
 
