@@ -50,21 +50,13 @@ public class MantenimientoUsuariosController implements Initializable {
     @FXML
     private Label lblCmbEstado;
     @FXML
-    private JFXComboBox<?> cmbEstado;
+    private JFXComboBox<String> cmbEstado;
     @FXML
     private Label lblcmbRol;
     @FXML
     private JFXComboBox<?> cmbRoles;
     @FXML
     private Label lblcmbJefe;
-    @FXML
-    private Label lbltxtArea;
-    @FXML
-    private JFXTextField txtArea;
-    @FXML
-    private Label lblbtnArea;
-    @FXML
-    private JFXButton btnArea;
     @FXML
     private Label lbltxtFecha;
     @FXML
@@ -78,7 +70,7 @@ public class MantenimientoUsuariosController implements Initializable {
     @FXML
     private JFXButton btnCancelar;
     @FXML
-    private JFXComboBox<?> combJefe;
+    private JFXComboBox<String> combJefe;
     @FXML
     private Label lbltxtContrasena;
     @FXML
@@ -95,6 +87,10 @@ public class MantenimientoUsuariosController implements Initializable {
     private Label lblCambi;
     @FXML
     private JFXButton btnCambiarContrasena;
+    @FXML
+    private Label lblcmbArea;
+    @FXML
+    private JFXComboBox<?> cmbArea;
 
     /**
      * Initializes the controller class.
@@ -104,9 +100,6 @@ public class MantenimientoUsuariosController implements Initializable {
         // TODO
     }    
 
-    @FXML
-    private void onActionAreas(ActionEvent event) {
-    }
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
