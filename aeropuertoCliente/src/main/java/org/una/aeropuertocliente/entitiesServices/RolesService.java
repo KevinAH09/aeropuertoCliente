@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.una.aeropuertocliente.dtos.RolesDTO;
+import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.sharedService.Conection;
 
 /**
@@ -23,7 +24,32 @@ public class RolesService {
         
         List<RolesDTO> listRolesDTO = new ArrayList<>();
         try {
-            listRolesDTO = (List<RolesDTO>) Conection.listFromConnection("rol/",RolesDTO.class);
+            listRolesDTO = (List<RolesDTO>) Conection.listFromConnection("rol/",new TypeToken<ArrayList<RolesDTO>>() {
+            }.getType());
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listRolesDTO;
+    }
+     public static List<RolesDTO> estadoRoles(Boolean estado){
+        
+        List<RolesDTO> listRolesDTO = new ArrayList<>();
+        try {
+            listRolesDTO = (List<RolesDTO>) Conection.listFromConnection("rol/estado/"+estado,new TypeToken<ArrayList<RolesDTO>>() {
+            }.getType());
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listRolesDTO;
+    }
+     public static List<RolesDTO> codigoRoles(String codigo){
+        
+        List<RolesDTO> listRolesDTO = new ArrayList<>();
+        try {
+            listRolesDTO = (List<RolesDTO>) Conection.listFromConnection("rol/codigo/"+codigo,new TypeToken<ArrayList<RolesDTO>>() {
+            }.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -41,19 +67,19 @@ public class RolesService {
         }
         return rolesDTO;
     }
-    public static int createRol(RolesDTO updateRol){
+    public static int createRol(RolesDTO createRol){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("rol/",updateRol);
+            codeResponse = Conection.createObjectToConnection("rol/",createRol);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateRol(RolesDTO createRol){
+    public static int updateRol(RolesDTO updateRol){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("rol/"+createRol.getId(),RolesDTO.class);
+            codeResponse = Conection.updateObjectToConnection("rol/"+updateRol.getId(),updateRol);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
