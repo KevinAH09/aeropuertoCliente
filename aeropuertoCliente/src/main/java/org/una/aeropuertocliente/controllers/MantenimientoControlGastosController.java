@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
  *
  * @author cfugu
  */
-public class MantenimientoControlGastosController implements Initializable {
+public class MantenimientoControlGastosController extends Controller implements Initializable {
 
     @FXML
     private Label lblTitulo;
@@ -41,7 +41,7 @@ public class MantenimientoControlGastosController implements Initializable {
     @FXML
     private Label lblCmbEstado;
     @FXML
-    private JFXComboBox<?> cmbEstado;
+    private JFXComboBox<String> cmbEstado;
     @FXML
     private Label lblcmbEsatdo;
     @FXML
@@ -75,10 +75,6 @@ public class MantenimientoControlGastosController implements Initializable {
     @FXML
     private JFXTextField txtPeridiocidad;
     @FXML
-    private Label lblGuardar2;
-    @FXML
-    private JFXButton btnGuardar;
-    @FXML
     private Label lblCancelar;
     @FXML
     private JFXButton btnCancelar;
@@ -88,6 +84,8 @@ public class MantenimientoControlGastosController implements Initializable {
     private JFXButton btnRegistrar;
     @FXML
     private JFXTextField txtObservacion;
+    @FXML
+    private JFXComboBox<String> cmbEstadoPago;
 
     /**
      * Initializes the controller class.
@@ -101,9 +99,6 @@ public class MantenimientoControlGastosController implements Initializable {
     private void onActionAreas(ActionEvent event) {
     }
 
-    @FXML
-    private void onActionGuardar(ActionEvent event) {
-    }
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
@@ -111,6 +106,11 @@ public class MantenimientoControlGastosController implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+    }
+
+    @Override
+    public void initialize() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

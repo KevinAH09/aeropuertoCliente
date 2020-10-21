@@ -8,6 +8,7 @@ package org.una.aeropuertocliente.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.ParametrosDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
@@ -149,34 +156,68 @@ public class ParametrosController extends Controller implements Initializable {
         tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
     }
 
+    private void notificar(int num) {
+        tableParametros.getItems().clear();
+        if (num == 1) {
+            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView);
+            box.getChildren().add(lab);
+            tableParametros.setPlaceholder(box);
+        } else {
+            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+            Text lab = new Text("No se encontró coincidencias");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView2);
+            box.getChildren().add(lab);
+            tableParametros.setPlaceholder(box);
+        }
+    }
+
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
-            tableParametros.getItems().clear();
-            parametrosList = ParametrosService.allParametros();
-            tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
-        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableParametros.getItems().clear();
             parametrosFilt = ParametrosService.idParametro(Long.valueOf(txtBusqueda.getText()));
-            tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+            if (parametrosFilt != null) {
+                tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+            } else {
+                notificar(0);
+            }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
             if (txtBusqueda.getText().equals("true")) {
                 tableParametros.getItems().clear();
                 parametrosList = ParametrosService.estadoParametros(true);
-                tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
+                if (parametrosList != null) {
+                    tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+                } else {
+                    notificar(0);
+                }
             }
             if (txtBusqueda.getText().equals("false")) {
                 tableParametros.getItems().clear();
                 parametrosList = ParametrosService.estadoParametros(false);
-                tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
+                if (parametrosList != null) {
+                    tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+                } else {
+                    notificar(0);
+                }
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
             tableParametros.getItems().clear();
             parametrosList = ParametrosService.nombreParametros(txtBusqueda.getText());
-            tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
+            if (parametrosList != null) {
+                tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+            } else {
+                notificar(0);
+            }
         }
     }
 
@@ -209,17 +250,7 @@ public class ParametrosController extends Controller implements Initializable {
         TableColumn<ParametrosDTO, String> colFecha = new TableColumn("Fecha registro");
         colFecha.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaRegistro()));
         tableParametros.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion, colFecha);
-
-        try {
-            parametrosList = ParametrosService.allParametros();
-            if (parametrosList != null && !parametrosList.isEmpty()) {
-                tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de parametros", null, "La lista está nula o vacía");
-            }
-        } catch (Exception e) {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de parametros", null, "Hubo un error al obtener los datos a cargar");
-        }
+        notificar(1);
     }
 
     private void editar() {

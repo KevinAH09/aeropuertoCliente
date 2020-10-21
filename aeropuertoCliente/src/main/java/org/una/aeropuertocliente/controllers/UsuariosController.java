@@ -30,6 +30,12 @@ import javafx.collections.FXCollections;
 import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 
@@ -80,37 +86,52 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
-            tableUsuarios.getItems().clear();
-            usuariosList = UsuariosService.allUsuarios();
-            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
-        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableUsuarios.getItems().clear();
             usuariosFilt = UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
-            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+            if (usuariosFilt != null) {
+                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+            } else {
+                notificar(0);
+            }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
             if (txtBusqueda.getText().equals("true")) {
                 tableUsuarios.getItems().clear();
                 usuariosList = UsuariosService.estadoUsuarios(true);
-                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                if (usuariosList != null) {
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                } else {
+                    notificar(0);
+                }
             }
             if (txtBusqueda.getText().equals("false")) {
                 tableUsuarios.getItems().clear();
                 usuariosList = UsuariosService.estadoUsuarios(false);
-                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                if (usuariosList != null) {
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                } else {
+                    notificar(0);
+                }
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
             tableUsuarios.getItems().clear();
             usuariosList = UsuariosService.nombreUsuarios(txtBusqueda.getText());
-            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+            if (usuariosList != null) {
+                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+            } else {
+                notificar(0);
+            }
         }
         if (cmbFiltro.getValue().equals("Cedula") && !txtBusqueda.getText().isEmpty()) {
             tableUsuarios.getItems().clear();
             usuariosFilt = UsuariosService.cedulaUsuarios(txtBusqueda.getText());
-            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+            if (usuariosFilt != null) {
+                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+            } else {
+                notificar(0);
+            }
         }
         if (cmbFiltro.getValue().equals("Area Trabajo") && !txtBusqueda.getText().isEmpty()) {
             tableUsuarios.getItems().clear();
@@ -119,7 +140,11 @@ public class UsuariosController extends Controller implements Initializable {
                 if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(txtBusqueda.getText().toUpperCase())) {
                     System.out.println("Entró");
                     usuariosList2 = UsuariosService.areaTrabajoUsuarios(usuariosList.get(i).getAreaTrabajoId().getId());
-                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
+                    if (usuariosList2 != null) {
+                        tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
+                    } else {
+                        notificar(0);
+                    }
                 }
 
             }
@@ -131,7 +156,11 @@ public class UsuariosController extends Controller implements Initializable {
                 if (usuariosList.get(i).getRolId().getDescripcion().equals(txtBusqueda.getText().toUpperCase())) {
                     System.out.println("Entró");
                     usuariosList2 = UsuariosService.rolUsuarios(usuariosList.get(i).getRolId().getId());
-                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
+                    if (usuariosList2 != null) {
+                        tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
+                    } else {
+                        notificar(0);
+                    }
                 }
 
             }
@@ -162,18 +191,18 @@ public class UsuariosController extends Controller implements Initializable {
         TableColumn<UsuariosDTO, String> colArea = new TableColumn("Area Trabajo");
         colArea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getAreaTrabajoId().getNombreAreaTrabajo()));
         tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol, colArea);
-
-        try {
-            usuariosList = UsuariosService.allUsuarios();
-            System.out.println(usuariosList);
-            if (usuariosList != null && !usuariosList.isEmpty()) {
-                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de Usuario", null, "La lista está nula o vacía");
-            }
-        } catch (Exception e) {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de Usuario", null, "Hubo un error al obtener los datos a cargar");
-        }
+        notificar(1);
+//        try {
+//            usuariosList = UsuariosService.allUsuarios();
+//            System.out.println(usuariosList);
+//            if (usuariosList != null && !usuariosList.isEmpty()) {
+//                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+//            } else {
+//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de Usuario", null, "La lista está nula o vacía");
+//            }
+//        } catch (Exception e) {
+//            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de Usuario", null, "Hubo un error al obtener los datos a cargar");
+//        }
     }
 
     private void actionUsuariosClick() {
@@ -189,6 +218,29 @@ public class UsuariosController extends Controller implements Initializable {
 
             }
         });
+    }
+
+    private void notificar(int num) {
+        tableUsuarios.getItems().clear();
+        if (num == 1) {
+            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView);
+            box.getChildren().add(lab);
+            tableUsuarios.setPlaceholder(box);
+        } else {
+            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+            Text lab = new Text("No se encontró coincidencias");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView2);
+            box.getChildren().add(lab);
+            tableUsuarios.setPlaceholder(box);
+        }
     }
 
     @Override

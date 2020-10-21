@@ -19,11 +19,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
@@ -79,21 +85,29 @@ public class AreasTrabajoController extends Controller implements Initializable 
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
-            tableAreas.getItems().clear();
-            areasList = areaService.allAreasTrabajos();
-            tableAreas.setItems(FXCollections.observableArrayList(areasList));
-        }
+//        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
+//            tableAreas.getItems().clear();
+//            areasList = areaService.allAreasTrabajos();
+//            tableAreas.setItems(FXCollections.observableArrayList(areasList));
+//        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             System.out.println("Entro Areas");
             tableAreas.getItems().clear();
             areasFilt = areaService.idAreaTrabajo(Long.valueOf(txtBusqueda.getText()));
-            tableAreas.setItems(FXCollections.observableArrayList(areasFilt));
+            if (areasFilt != null) {
+                tableAreas.setItems(FXCollections.observableArrayList(areasFilt));
+            }else{
+                notificar(0);
+            }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
             tableAreas.getItems().clear();
             areasList = areaService.nombreAreasTrabajos(txtBusqueda.getText().toUpperCase());
-            tableAreas.setItems(FXCollections.observableArrayList(areasList));
+           if (areasList != null) {
+                tableAreas.setItems(FXCollections.observableArrayList(areasList));
+            }else{
+                notificar(0);
+            }
         }
     }
 
@@ -113,18 +127,18 @@ public class AreasTrabajoController extends Controller implements Initializable 
         TableColumn<AreasTrabajosDTO, String> colEstado = new TableColumn("Descripción");
         colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
 
-        tableAreas.getColumns().addAll(colId, colNombre, colDescrpcion,colEstado);
-
-        try {
-            areasList = areaService.allAreasTrabajos();
-            if (areasList != null && !areasList.isEmpty()) {
-                tableAreas.setItems(FXCollections.observableArrayList(areasList));
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
-            }
-        } catch (Exception e) {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
-        }
+        tableAreas.getColumns().addAll(colId, colNombre, colDescrpcion, colEstado);
+        notificar(1);
+//        try {
+//            areasList = areaService.allAreasTrabajos();
+//            if (areasList != null && !areasList.isEmpty()) {
+//                tableAreas.setItems(FXCollections.observableArrayList(areasList));
+//            } else {
+//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
+//            }
+//        } catch (Exception e) {
+//            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
+//        }
     }
 
     private void actionZonasClick() {
@@ -142,6 +156,29 @@ public class AreasTrabajoController extends Controller implements Initializable 
 
             }
         });
+    }
+
+    private void notificar(int num) {
+        tableAreas.getItems().clear();
+        if (num == 1) {
+            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView);
+            box.getChildren().add(lab);
+            tableAreas.setPlaceholder(box);
+        } else {
+            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+            Text lab = new Text("No se encontró coincidencias");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView2);
+            box.getChildren().add(lab);
+            tableAreas.setPlaceholder(box);
+        }
     }
 
     @Override

@@ -23,11 +23,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
@@ -153,38 +159,57 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
-            tableZonas.getItems().clear();
-            zonasList = ZonasService.allZonas();
-            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-        }
+//        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()) {
+//            tableZonas.getItems().clear();
+//            zonasList = ZonasService.allZonas();
+//            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+//        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableZonas.getItems().clear();
             zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
-            tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
+            if (zonasFilt != null) {
+                tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
+            } else {
+                notificar(0);
+            }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
             if (txtBusqueda.getText().equals("true")) {
                 tableZonas.getItems().clear();
                 zonasList = ZonasService.estadoZona(true);
-                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+                if (zonasList != null) {
+                    tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+                } else {
+                    notificar(0);
+                }
             }
             if (txtBusqueda.getText().equals("false")) {
                 tableZonas.getItems().clear();
                 zonasList = ZonasService.estadoZona(false);
-                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+                if (zonasList != null) {
+                    tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+                } else {
+                    notificar(0);
+                }
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
             tableZonas.getItems().clear();
             zonasList = ZonasService.nombreZona(txtBusqueda.getText());
-            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+            if (zonasList != null) {
+                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+            } else {
+                notificar(0);
+            }
         }
         if (cmbFiltro.getValue().equals("Código") && !txtBusqueda.getText().isEmpty()) {
             tableZonas.getItems().clear();
             zonasList = ZonasService.codigoZona(txtBusqueda.getText());
-            System.out.println(zonasList.size());
-            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+            if (zonasList != null) {
+                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+            } else {
+                notificar(0);
+            }
         }
     }
 
@@ -241,6 +266,29 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
         }
 
+    }
+
+    private void notificar(int num) {
+        tableZonas.getItems().clear();
+        if (num == 1) {
+            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView);
+            box.getChildren().add(lab);
+            tableZonas.setPlaceholder(box);
+        } else {
+            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+            Text lab = new Text("No se encontró coincidencias");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView2);
+            box.getChildren().add(lab);
+            tableZonas.setPlaceholder(box);
+        }
     }
 
     @Override
