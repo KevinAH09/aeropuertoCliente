@@ -5,12 +5,18 @@
  */
 package org.una.aeropuertocliente.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -19,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.una.aeropuertocliente.App;
 import org.una.aeropuertocliente.utils.FlowController;
 
 /**
@@ -54,23 +61,52 @@ public class PrincipalController extends Controller implements Initializable {
         root.setGraphic(imgroot);
         treeAcciones.setRoot(root);
         TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
-            itemInformacion.setGraphic(imgInformacion);
-            root.getChildren().add(itemInformacion);
-            TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
-            itemAdministracion.setGraphic(imgAdmin);
-            root.getChildren().add(itemAdministracion);
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        itemInformacion.setGraphic(imgInformacion);
+        root.getChildren().add(itemInformacion);
+        TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
+        itemAdministracion.setGraphic(imgAdmin);
+        root.getChildren().add(itemAdministracion);
+
+        TreeItem<String> itemTramites = new TreeItem<>("Aerolineas");
+        itemInformacion.getChildren().add(itemTramites);
+
+        treeAcciones.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                if (mouseEvent.getClickCount() == 2) {
+                    TreeItem<String> item = (TreeItem<String>) treeAcciones.getSelectionModel()
+                            .getSelectedItem();
+                    try {
+                        if (item.getValue().equals("Aerolineas")) {
+                            cambiarAerolineas();
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(PrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+        });
     }
 
     @FXML
     private void actionCerrarSesion(ActionEvent event) {
-       FlowController.getInstance().goMain();
+        FlowController.getInstance().goMain();
         FlowController.eliminar("login/Login");
         FlowController.getInstance().goView("login/Login");
     }
 
     @FXML
     private void actionTamano(MouseEvent event) {
+    }
+
+    void cambiarAerolineas() throws IOException {
+        vboxPrincipal.getChildren().clear();
+        Parent root = FXMLLoader.load(App.class
+                .getResource("views/aerolineas/Aerolineas.fxml"));
+        vboxPrincipal.getChildren()
+                .add(root);
     }
 
 }
