@@ -174,7 +174,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
             }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("true")) {
+            if (txtBusqueda.getText().toLowerCase().equals("true")) {
                 tableZonas.getItems().clear();
                 zonasList = ZonasService.estadoZona(true);
                 if (zonasList != null) {
@@ -191,6 +191,9 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 } else {
                     notificar(0);
                 }
+            }
+            if (zonasList != null) {
+                notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {

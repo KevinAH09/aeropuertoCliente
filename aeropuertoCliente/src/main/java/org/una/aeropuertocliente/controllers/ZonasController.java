@@ -102,7 +102,7 @@ public class ZonasController extends Controller implements Initializable {
             }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("true")) {
+            if (txtBusqueda.getText().toLowerCase().equals("true")) {
                 tableZonas.getItems().clear();
                 zonasList = ZonasService.estadoZona(true);
                 if (zonasList != null) {
@@ -119,6 +119,9 @@ public class ZonasController extends Controller implements Initializable {
                 } else {
                     notificar(0);
                 }
+            }
+            if (zonasList == null) {
+                notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {

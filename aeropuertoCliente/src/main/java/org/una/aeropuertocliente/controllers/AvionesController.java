@@ -90,7 +90,7 @@ public class AvionesController extends Controller implements Initializable {
             tableAvion.setItems(FXCollections.observableArrayList(avionesFil));
         }
         if (combFilter.getValue().equals("Estado")&& !txtFilter.getText().isEmpty()) {
-            if (txtFilter.getText().equals("true")) {
+            if (txtFilter.getText().toLowerCase().equals("true")) {
                 tableAvion.getItems().clear();
                 avionesList = AvionesService.estado(true);
                 tableAvion.setItems(FXCollections.observableArrayList(avionesList));

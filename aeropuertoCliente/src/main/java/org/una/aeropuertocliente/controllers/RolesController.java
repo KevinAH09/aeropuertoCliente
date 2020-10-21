@@ -98,7 +98,7 @@ public class RolesController extends Controller implements Initializable {
             }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("true")) {
+            if (txtBusqueda.getText().toLowerCase().equals("true")) {
                 tableRoles.getItems().clear();
                 rolesList = RolesService.estadoRoles(true);
                 if (rolesList != null) {
@@ -115,6 +115,9 @@ public class RolesController extends Controller implements Initializable {
                 } else {
                     notificar(0);
                 }
+            }
+            if (rolesList != null) {
+                notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Código") && !txtBusqueda.getText().isEmpty()) {

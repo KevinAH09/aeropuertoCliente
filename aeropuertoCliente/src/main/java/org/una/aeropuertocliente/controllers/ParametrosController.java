@@ -188,7 +188,7 @@ public class ParametrosController extends Controller implements Initializable {
             }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("true")) {
+            if (txtBusqueda.getText().toLowerCase().equals("true")) {
                 tableParametros.getItems().clear();
                 parametrosList = ParametrosService.estadoParametros(true);
                 if (parametrosList != null) {
@@ -205,6 +205,9 @@ public class ParametrosController extends Controller implements Initializable {
                 } else {
                     notificar(0);
                 }
+            }
+            if (parametrosList != null) {
+                notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
