@@ -50,7 +50,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="700.0">
                      <children>
                         <Label fx:id="labbtnRegistrarAvion" prefHeight="20.0" prefWidth="22.0" />
-                        <JFXButton fx:id="btnRegistrarAvion" onAction="#registrarAvion" text="Registrar avión" />
+                        <JFXButton fx:id="btnRegistrarAvion" onAction="#registrarAvion" text="Registrar Aerolinea" />
                      </children>
                   </HBox>
                </children>

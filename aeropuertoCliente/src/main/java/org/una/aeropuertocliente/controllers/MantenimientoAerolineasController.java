@@ -20,12 +20,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
@@ -110,6 +112,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula", "Tipo de avión", "Estado", "Aerolinea"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         if (aerolinea != null) {
+            actionAvionClick();
             llenarAviones();
             if (aerolinea.isEstado()) {
                 cmbEstado.setValue("Activo");
@@ -160,6 +163,19 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     }
 
+    private void actionAvionClick() {
+        tableAviones.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2 && tableAviones.selectionModelProperty().get().getSelectedItem() != null) {
+                     aviones = (AvionesDTO) tableAviones.selectionModelProperty().get().getSelectedItem();
+                    AppContext.getInstance().set("agregarAvion", aviones);
+                    FlowController.getInstance().goView("mantenimientoAviones/MantenimientoAvion");
+                }
+            }
+        });
+    }
+    
     private void llenarAviones() {
         TableColumn<AvionesDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
@@ -254,7 +270,10 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+        aviones=null;
+        AppContext.getInstance().set("agregarAvion", aviones);
         FlowController.getInstance().goView("mantenimientoAviones/MantenimientoAvion");
+        
     }
 
     @Override

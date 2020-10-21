@@ -64,8 +64,6 @@ public class AvionesController extends Controller implements Initializable {
     public List<AvionesDTO> avionesList = new ArrayList<AvionesDTO>();
     public List<AvionesDTO> avionesList2 = new ArrayList<AvionesDTO>();
     @FXML
-    private AnchorPane AnchorPane;
-    @FXML
     private TableView<AvionesDTO> tableAvion;
     /**
      * Initializes the controller class.
