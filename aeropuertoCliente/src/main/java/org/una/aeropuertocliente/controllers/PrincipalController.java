@@ -87,10 +87,12 @@ public class PrincipalController extends Controller implements Initializable {
             itemInformacion.getChildren().add(itemZonas);
             TreeItem<String> itemAvion = new TreeItem<>("Aviones");
             itemInformacion.getChildren().add(itemAvion);
-            TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Control de gastos de manteniento");
+            TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Gastos de manteniento");
             itemAdministracion.getChildren().add(itemGastoMantenimientos);
-            TreeItem<String> itemRegistroVuelo = new TreeItem<>("Registro Vuelos");
+            TreeItem<String> itemRegistroVuelo = new TreeItem<>("Vuelos");
             itemAdministracion.getChildren().add(itemRegistroVuelo);
+            TreeItem<String> itemRegistroAcciones = new TreeItem<>("Registro de Acciones");
+            root.getChildren().add(itemRegistroAcciones);
         } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GERENTE")) {
             if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_RRHH")) {
                 TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
@@ -120,7 +122,7 @@ public class PrincipalController extends Controller implements Initializable {
                 itemInformacion.getChildren().add(itemZonas);
                 TreeItem<String> itemAvion = new TreeItem<>("Aviones");
                 itemInformacion.getChildren().add(itemAvion);
-                TreeItem<String> itemRegistroVuelo = new TreeItem<>("Registro Vuelos");
+                TreeItem<String> itemRegistroVuelo = new TreeItem<>("Vuelos");
                 itemAdministracion.getChildren().add(itemRegistroVuelo);
             } else if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_GAST_MANT")) {
                 TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
@@ -149,7 +151,7 @@ public class PrincipalController extends Controller implements Initializable {
                         cambiarVistaPrincipal("zonas/Zonas");
                     } else if (item.getValue().equals("Aviones")) {
                         cambiarVistaPrincipal("aviones/Aviones");
-                    } else if (item.getValue().equals("Registrar vuelos")) {
+                    } else if (item.getValue().equals("Vuelos")) {
                         cambiarVistaPrincipal("vuelos/Vuelos");
                     } else if (item.getValue().equals("Gastos de manteniento")) {
                         cambiarVistaPrincipal("controlGastos/ControlGastos");
