@@ -103,17 +103,21 @@ public class LoginController extends Controller implements Initializable {
             pass = txtPassOculto.getText();
         }
         if (!txtPassMostrado.getText().isEmpty() && ((!txtPassMostrado.getText().isEmpty())) || (!txtPassOculto.getText().isEmpty())) {
-            Token.setInstance(null);
-            AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), pass);
-            Token.setInstance(LoginService.login(authenticationRequest));
-            if (Token.getInstance() != null) {
-                FlowController.getInstance().goView("principal/Principal");
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", null, "La contraseña o cedula estan incorecctas");
-            }
+            
+                Token.setInstance(null);
+                AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), pass);
+                AuthenticationResponse authenticationResponse = LoginService.login(authenticationRequest);
+                if (authenticationResponse != null) {
+                    Token.setInstance(authenticationResponse);
+                    System.out.println(Token.getInstance());
+                    FlowController.getInstance().goView("principal/Principal");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+                }
+           
 
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", null, "Por favor complete todos los campos");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "Por favor complete todos los campos");
         }
     }
 

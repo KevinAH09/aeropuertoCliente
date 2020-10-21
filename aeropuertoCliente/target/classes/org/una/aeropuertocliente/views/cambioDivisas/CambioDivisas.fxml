@@ -119,17 +119,21 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Text fill="#fffdfd" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Monto">
+                                          <Text fill="#fffdfd" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Monto convertido">
                                              <font>
                                                 <Font size="13.0" />
                                              </font>
                                           </Text>
-                                          <Label fx:id="lblMontoCambio" alignment="CENTER" prefHeight="40.0" prefWidth="429.0" VBox.vgrow="ALWAYS" />
+                                          <Text fx:id="lblMontoCambio" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="360.13671875">
+                                             <font>
+                                                <Font size="25.0" />
+                                             </font>
+                                          </Text>
                                        </children>
                                     </VBox>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <HBox alignment="CENTER" prefHeight="48.0" prefWidth="382.0">
                                  <children>
                                     <Label prefHeight="20.0" prefWidth="117.0" text="Monto compra:" />
                                     <Label fx:id="lblcompra" prefHeight="20.0" prefWidth="94.0" HBox.hgrow="ALWAYS" />

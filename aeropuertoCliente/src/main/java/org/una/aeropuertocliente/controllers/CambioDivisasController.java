@@ -82,7 +82,7 @@ public class CambioDivisasController extends Controller implements Initializable
     @FXML
     private ImageView imgSelect;
     @FXML
-    private Label lblMontoCambio;
+    private Text lblMontoCambio;
     @FXML
     private Label lblcompra;
     @FXML
@@ -122,6 +122,7 @@ public class CambioDivisasController extends Controller implements Initializable
         USDNuevaZelanda = TiposMonedasServices.valorMonedaDolarVSNuevaZelandaDolar().valorMoneda();
 
         listaMonedas = Arrays.asList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes");
+        
         cbMoneda.setItems(FXCollections.observableArrayList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes"));
         cbMoneda.setValue("Colon");
         itemSelect = "Colon";
@@ -309,7 +310,6 @@ public class CambioDivisasController extends Controller implements Initializable
             img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
             lbl8.setText("Dolar australiano");
         }
-
     }
 
     @FXML

@@ -48,6 +48,8 @@ public class Conection {
         try ( OutputStream os = con.getOutputStream()) {
             byte[] input = data.getBytes("utf-8");
             os.write(input, 0, input.length);
+        } catch (Exception e) {
+            return null;
         }
         if (con.getResponseCode() == 200) {
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
@@ -78,6 +80,8 @@ public class Conection {
         try ( OutputStream os = con.getOutputStream()) {
             byte[] input = data.getBytes("utf-8");
             os.write(input, 0, input.length);
+        } catch (Exception e) {
+            return 0;
         }
         try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
@@ -107,6 +111,8 @@ public class Conection {
                 }
                 return gson.fromJson(response.toString(), listtype);
 
+            } catch (Exception e) {
+                return null;
             }
         } else {
             return null;
@@ -115,7 +121,7 @@ public class Conection {
 
     public static <T> Object oneConnection(String urlstring, Type listtype) throws MalformedURLException, IOException {
         Gson gson = new Gson();
-        URL url = new URL(urlBase+urlstring);
+        URL url = new URL(urlBase + urlstring);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json");
@@ -128,6 +134,8 @@ public class Conection {
             }
             return gson.fromJson(response.toString(), listtype);
 
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -146,6 +154,8 @@ public class Conection {
         try ( OutputStream os = con.getOutputStream()) {
             byte[] input = data.getBytes("utf-8");
             os.write(input, 0, input.length);
+        } catch (Exception e) {
+            return 0;
         }
         if (con.getResponseCode() == 200) {
 
