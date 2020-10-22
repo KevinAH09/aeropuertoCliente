@@ -137,6 +137,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 combFilter.setVisible(false);
                 btnFiltrar.setVisible(false);
                 btnCancelar.setVisible(false);
+                //btnRegistrar.setDisable(true);
                 //tableAviones.setVisible(false);
                 notificar(2);
             }
@@ -154,16 +155,19 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             combFilter.setVisible(false);
             btnFiltrar.setVisible(false);
             btnCancelar.setVisible(false);
-            //tableAviones.setVisible(false);
+            
+               
+          
             notificar(2);
             txtNombre.setDisable(false);
             txtId.setDisable(true);
             txtResponsable.setDisable(false);
             cmbEstado.setDisable(true);
-
+            btnRegistrar.setDisable(true);
             btnCancelar.setVisible(false);
             btnEditar.setDisable(true);
             btnGuardar.setVisible(true);
+            
 
             tableAviones.getItems().clear();
         }
@@ -212,6 +216,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 }
                 aerolinea.setNombreResponsable(txtResponsable.getText());
                 aerolinea.setNombreAerolinea(txtNombre.getText());
+                //if(AvionesService.aerolinea(aerolinea.getId()).isEmpty())
                 if (AerolineasService.createAerolinea(aerolinea) == 201) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
                 } else {

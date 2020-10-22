@@ -119,4 +119,16 @@ public class AvionesService {
         }
         return dtos;
     }
+    public static List<AvionesDTO> aerolineaMatricula(Long id,String matricula) {
+
+        List<AvionesDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<AvionesDTO>) Conection.listFromConnection("avion/aerolinea/"+id+"/matricula/"+matricula, new TypeToken<ArrayList<AvionesDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
 }
