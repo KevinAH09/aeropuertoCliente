@@ -133,11 +133,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
             if (avionZonaList != null) {
                 txtZona.setText(avionZonaList.getZona().getNombreZona());
             }
-            if (AppContext.getInstance().get("zon") != null) {
-                ZonasDTO zon;
-                zon = (ZonasDTO) AppContext.getInstance().get("zon");
-                txtZona.setText(zon.getNombreZona());
-            }
+
             txtTipoAvion.setDisable(true);
             txtMatricula.setDisable(true);
             txtZona.setDisable(true);
@@ -157,6 +153,12 @@ public class MantenimientoAvionController extends Controller implements Initiali
             btnGuardarEditar.setDisable(true);
             btnZona.setDisable(true);
             btnZona.setDisable(true);
+            if (AppContext.getInstance().get("zon") != null) {
+                ZonasDTO zon;
+                zon = (ZonasDTO) AppContext.getInstance().get("zon");
+                txtZona.setText(zon.getNombreZona());
+                //btnGuardarEditar.setDisable(false);
+            }
 
         } else {
             txtTipoAvion.setText("");
@@ -354,9 +356,13 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     avionesDTO = AvionesService.matriculaUnicaAvion(txtMatricula.getText());
                     avionZona.avion = avionesDTO;
                     avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
+
                     if (AvionesZonasService.createAvionZona(avionZona) == 201) {
+                        btnGuardarEditar.setDisable(true);
+                        btnEditar.setDisable(false);
+                        
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aviones", ((Stage) txtMatricula.getScene().getWindow()), "Se guardó correctamente");
-                    }else{
+                    } else {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la zona del avion", ((Stage) txtMatricula.getScene().getWindow()), "No se guardó correctamente");
                     }
 
@@ -385,6 +391,10 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     btnEditar.setDisable(false);
                     btnGuardarEditar.setDisable(true);
                     btnVolver.setDisable(false);
+                    btnZona.setDisable(true);
+                    txtTipoAvion.setDisable(true);
+                    txtMatricula.setDisable(true);
+                    combEstado.setDisable(true);
                     // }
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Avion", ((Stage) txtMatricula.getScene().getWindow()), "No se editó correctamente");
