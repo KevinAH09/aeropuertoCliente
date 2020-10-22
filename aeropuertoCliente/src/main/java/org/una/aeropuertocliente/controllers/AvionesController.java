@@ -70,9 +70,9 @@ public class AvionesController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        actionAvionClick();
-        llenarAviones();
-        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Aerolinea"));
+        //actionAvionClick();
+        //llenarAviones();
+        //combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Aerolinea"));
 
     }    
 

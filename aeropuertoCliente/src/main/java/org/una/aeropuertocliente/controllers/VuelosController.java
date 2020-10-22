@@ -45,25 +45,8 @@ public class VuelosController extends Controller implements Initializable {
     private JFXTextField txtId;
     @FXML
     private Label lbltxtNombre;
-    @FXML
-    private Label labTxtFild;
-    @FXML
     private JFXTextField txtFilter;
-    @FXML
-    private Label labComb;
-    @FXML
     private JFXComboBox<String> combFilter;
-    @FXML
-    private Label labBtnFiltrar;
-    @FXML
-    private JFXButton btnFiltrar;
-    @FXML
-    private Label labBtnCancelar;
-    @FXML
-    private JFXButton btnCancelar;
-    @FXML
-    private Label lblTable;
-    @FXML
     private TableView<AvionesDTO> tableAviones;
     @FXML
     private Label labTxtFild1;
@@ -95,15 +78,18 @@ public class VuelosController extends Controller implements Initializable {
     AvionesDTO avionesFil;
     public List<AvionesDTO> avionesList = new ArrayList<AvionesDTO>();
     public List<AvionesDTO> avionesList2 = new ArrayList<AvionesDTO>();
+    @FXML
+    private Label lbltxtTipo1;
+    @FXML
+    private Label lbltxtNombre1;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        actionAvionClick();
-        llenarAviones();
-        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Aerolinea"));
-        
+        //actionAvionClick();
+        //llenarAviones();
+        //combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Aerolinea"));
     }    
 
     private void llenarAviones() {
@@ -133,7 +119,6 @@ public class VuelosController extends Controller implements Initializable {
         }
     }
     
-    @FXML
     private void filtrar(ActionEvent event) {
         if (txtFilter.getText() == null || txtFilter.getText().isEmpty()) {
             tableAviones.getItems().clear();
@@ -185,9 +170,6 @@ public class VuelosController extends Controller implements Initializable {
         
     }
 
-    @FXML
-    private void cancelar(ActionEvent event) {
-    }
 
     @FXML
     private void filtrar1(ActionEvent event) {
@@ -220,5 +202,10 @@ public class VuelosController extends Controller implements Initializable {
 
             }
         });
+    }
+
+    @FXML
+    private void buscarAvion(ActionEvent event) {
+        PrincipalController.cambiarVistaPrincipal("aviones/Aviones");
     }
 } 

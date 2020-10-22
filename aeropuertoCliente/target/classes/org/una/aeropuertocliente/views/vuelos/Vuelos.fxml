@@ -42,7 +42,7 @@
                   <HBox alignment="TOP_CENTER" prefHeight="47.0" prefWidth="560.0" spacing="5.0">
                      <children>
                         <Label fx:id="lbltxtTipo1" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXButton fx:id="btnFiltrar11" onAction="#filtrar1" prefHeight="29.0" prefWidth="115.0" text="Buscar Avión" />
+                        <JFXButton onAction="#buscarAvion" prefHeight="29.0" prefWidth="115.0" text="Buscar Avión" />
                         <Label fx:id="lbltxtNombre1" prefHeight="17.0" prefWidth="30.0" />
                      </children>
                      <padding>
