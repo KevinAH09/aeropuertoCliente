@@ -23,7 +23,7 @@ public class AvionesZonasService {
         
         List<AvionesZonasDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<AvionesZonasDTO>) Conection.listFromConnection("avionZona/",AvionesZonasDTO.class);
+            listsDTOs = (List<AvionesZonasDTO>) Conection.listFromConnection("avionZona/",new TypeToken<AvionesZonasDTO>() {}.getType());
             
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
@@ -41,22 +41,32 @@ public class AvionesZonasService {
         }
         return dTO;
     }
-    public static int createAvionZona(AvionesZonasDTO update){
+    public static int createAvionZona(AvionesZonasDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("avionZona/",update);
+            codeResponse = Conection.createObjectToConnection("avionZona/",create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateAvionZona(AvionesZonasDTO create){
+    public static int updateAvionZona(AvionesZonasDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("avionZona/"+create.getId(),AvionesZonasDTO.class);
+            codeResponse = Conection.updateObjectToConnection("avionZona/"+update.getId(),update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
+    }
+    public static AvionesZonasDTO zonaReciente(Long idAvion) {
+
+        AvionesZonasDTO dtos = new AvionesZonasDTO();
+        try {
+            dtos = (AvionesZonasDTO) Conection.oneConnection("avionZona/avionZonaReciente/" +idAvion, new TypeToken<AvionesZonasDTO>() {}.getType());
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
     }
 }

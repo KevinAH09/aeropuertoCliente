@@ -23,11 +23,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
@@ -131,7 +137,8 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 combFilter.setVisible(false);
                 btnFiltrar.setVisible(false);
                 btnCancelar.setVisible(false);
-                tableAviones.setVisible(false);
+                //tableAviones.setVisible(false);
+                notificar(2);
             }
             btnCancelar.setVisible(false);
             btnEditar.setVisible(true);
@@ -147,8 +154,8 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             combFilter.setVisible(false);
             btnFiltrar.setVisible(false);
             btnCancelar.setVisible(false);
-            tableAviones.setVisible(false);
-
+            //tableAviones.setVisible(false);
+            notificar(2);
             txtNombre.setDisable(false);
             txtId.setDisable(true);
             txtResponsable.setDisable(false);
@@ -168,14 +175,14 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount() == 2 && tableAviones.selectionModelProperty().get().getSelectedItem() != null) {
-                     aviones = (AvionesDTO) tableAviones.selectionModelProperty().get().getSelectedItem();
+                    aviones = (AvionesDTO) tableAviones.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("agregarAvion", aviones);
-                    PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion"); 
+                    PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion");
                 }
             }
         });
     }
-    
+
     private void llenarAviones() {
         TableColumn<AvionesDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
@@ -190,17 +197,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         TableColumn<AvionesDTO, String> colAerolinea = new TableColumn("Aerolinea");
         colAerolinea.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getAerolineaId().getNombreAerolinea()));
         tableAviones.getColumns().addAll(colId, colMatricula, colTipoAvion, colHoraVuelo, colEstado, colAerolinea);
-
-        try {
-            avionesList = AvionesService.aerolinea(aerolinea.getId());
-            if (avionesList != null && !avionesList.isEmpty()) {
-                tableAviones.setItems(FXCollections.observableArrayList(avionesList));
-            } else {
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de mantenimiento de aerolinea", null, "La aerolinea no tiene aviones");
-            }
-        } catch (Exception e) {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de mantenimiento de aerolinea", null, "Hubo un error al obtener los datos a cargar");
-        }
+        notificar(1);
     }
 
     @FXML
@@ -267,9 +264,9 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
-        aviones=null;
+        aviones = null;
         AppContext.getInstance().set("agregarAvion", aviones);
-        PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion"); 
+        PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion");
     }
 
     @Override
@@ -279,47 +276,102 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @FXML
     private void filtrar(ActionEvent event) {
-        if (txtFilter.getText() == null || txtFilter.getText().isEmpty()) {
-            tableAviones.getItems().clear();
-            avionesList = AvionesService.aerolinea(aerolinea.getId());
-            tableAviones.setItems(FXCollections.observableArrayList(avionesList));
-        }
-        if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
-            tableAviones.getItems().clear();
-            avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
-            tableAviones.setItems(FXCollections.observableArrayList(avionesFil));
-        }
-        if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-            if (txtFilter.getText().equals("true")) {
+        if (combFilter.getValue().isEmpty() || txtFilter.getText().isEmpty()) {
+            notificar(0);
+        } else {
+
+            if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
                 tableAviones.getItems().clear();
-                avionesList = AvionesService.estado(true);
-                tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+                avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
+
+                if (avionesFil != null) {
+                    tableAviones.setItems(FXCollections.observableArrayList(avionesFil));
+                } else {
+                    notificar(0);
+                }
             }
-            if (txtFilter.getText().equals("false")) {
+            if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
+                if (txtFilter.getText().equals("true")) {
+                    tableAviones.getItems().clear();
+                    avionesList = AvionesService.estado(true);
+                    if (avionesList != null) {
+                        tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+                    } else {
+                        notificar(0);
+                    }
+                }
+                if (txtFilter.getText().equals("false")) {
+                    tableAviones.getItems().clear();
+                    avionesList = AvionesService.estado(false);
+                    if (avionesList != null) {
+                        tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+                    } else {
+                        notificar(0);
+                    }
+                }
+                if (avionesList == null) {
+                    notificar(0);
+                }
+            }
+            if (combFilter.getValue().equals("Matrícula") && !txtFilter.getText().isEmpty()) {
                 tableAviones.getItems().clear();
-                avionesList = AvionesService.estado(false);
-                tableAviones.setItems(FXCollections.observableArrayList(avionesList));
-            } else {
+                avionesList = AvionesService.matricula(txtFilter.getText());
+                if (avionesList != null) {
+                    tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+                } else {
+                    notificar(0);
+                }
+            }
+            if (combFilter.getValue().equals("Tipo de avión") && !txtFilter.getText().isEmpty()) {
                 tableAviones.getItems().clear();
-                avionesList = AvionesService.aerolinea(aerolinea.getId());
-                tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+                avionesList = AvionesService.TipoAvion(txtFilter.getText());
+                if (avionesList != null) {
+                    tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+                } else {
+                    notificar(0);
+                }
             }
         }
-        if (combFilter.getValue().equals("Matrícula") && !txtFilter.getText().isEmpty()) {
-            tableAviones.getItems().clear();
-            avionesList = AvionesService.matricula(txtFilter.getText());
-            tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+    }
+
+    private void notificar(int num) {
+        tableAviones.getItems().clear();
+        if (num == 1) {
+            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView);
+            box.getChildren().add(lab);
+            tableAviones.setPlaceholder(box);
         }
-        if (combFilter.getValue().equals("Tipo de avión") && !txtFilter.getText().isEmpty()) {
-            tableAviones.getItems().clear();
-            avionesList = AvionesService.TipoAvion(txtFilter.getText());
-            tableAviones.setItems(FXCollections.observableArrayList(avionesList));
+        if (num == 0) {
+            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+            Text lab = new Text("No se encontró coincidencias");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView2);
+            box.getChildren().add(lab);
+            tableAviones.setPlaceholder(box);
+        }
+        if (num == 2) {
+            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+            Text lab = new Text("No hay aviones en esta aerolinea, porfavor regitrar aviones");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView2);
+            box.getChildren().add(lab);
+            tableAviones.setPlaceholder(box);
+
         }
     }
 
     @FXML
     private void volver(ActionEvent event) {
-        PrincipalController.cambiarVistaPrincipal("aerolineas/Aerolineas"); 
+        PrincipalController.cambiarVistaPrincipal("aerolineas/Aerolineas");
     }
 
 }

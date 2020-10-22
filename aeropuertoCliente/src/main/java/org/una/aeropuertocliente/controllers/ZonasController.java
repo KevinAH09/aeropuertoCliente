@@ -174,7 +174,7 @@ public class ZonasController extends Controller implements Initializable {
                 if (mouseEvent.getClickCount() == 2 && tableZonas.selectionModelProperty().get().getSelectedItem() != null) {
                     ZonasDTO zona = (ZonasDTO) tableZonas.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("zon", zona);
-                    System.out.println(zona.getNombreZona());
+                    PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion");
 //                    ((Stage) btnFiltrar.getScene().getWindow()).close();
                 }
 

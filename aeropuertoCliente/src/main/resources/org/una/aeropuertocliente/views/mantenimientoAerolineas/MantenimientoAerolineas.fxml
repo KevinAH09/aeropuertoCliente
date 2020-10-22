@@ -67,6 +67,15 @@
                         <Insets right="10.0" />
                      </padding>
                   </HBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="45.0" prefWidth="560.0" spacing="5.0">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                     <children>
+                        <Label fx:id="labTituloAviones" prefHeight="20.0" prefWidth="33.0" />
+                        <Label text="Aviones" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER" prefHeight="61.0" prefWidth="560.0">
                      <children>
                         <Label fx:id="labTxtFild" prefHeight="21.0" prefWidth="40.0" />

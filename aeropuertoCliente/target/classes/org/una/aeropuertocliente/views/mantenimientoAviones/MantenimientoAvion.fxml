@@ -58,7 +58,7 @@
                         <Insets right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="BOTTOM_CENTER" prefHeight="59.0" prefWidth="724.0">
+                  <HBox alignment="CENTER" prefHeight="59.0" prefWidth="724.0">
                      <children>
                         <Label fx:id="labVuelos" prefHeight="20.0" prefWidth="37.0" />
                         <Label text="Vuelos" />
