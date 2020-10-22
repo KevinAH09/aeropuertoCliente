@@ -55,6 +55,11 @@ public class AreasTrabajosDTO {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return this.nombreAreaTrabajo; //To change body of generated methods, choose Tools | Templates.
+    }
     
    
     

@@ -170,7 +170,8 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
-        FlowController.getInstance().goView("mantenimientoUsuarios/MantenimientoUsuarios");
+        AppContext.getInstance().set("usu", null);
+        PrincipalController.cambiarVistaPrincipal("mantenimientoUsuarios/MantenimientoUsuarios");
     }
 
     private void llenarUsuarios() {
@@ -189,20 +190,14 @@ public class UsuariosController extends Controller implements Initializable {
         TableColumn<UsuariosDTO, String> colRol = new TableColumn("Rol");
         colRol.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getRolId().getDescripcion()));
         TableColumn<UsuariosDTO, String> colArea = new TableColumn("Area Trabajo");
-        colArea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getAreaTrabajoId().getNombreAreaTrabajo()));
+        colArea.setCellValueFactory((param) -> {
+            if(param.getValue().getAreaTrabajoId()!= null){
+               return new SimpleStringProperty(param.getValue().getAreaTrabajoId().getNombreAreaTrabajo());
+            }
+            return new SimpleStringProperty("no tiene");
+        });
         tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol, colArea);
         notificar(1);
-//        try {
-//            usuariosList = UsuariosService.allUsuarios();
-//            System.out.println(usuariosList);
-//            if (usuariosList != null && !usuariosList.isEmpty()) {
-//                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
-//            } else {
-//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de Usuario", null, "La lista está nula o vacía");
-//            }
-//        } catch (Exception e) {
-//            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de Usuario", null, "Hubo un error al obtener los datos a cargar");
-//        }
     }
 
     private void actionUsuariosClick() {
@@ -212,8 +207,7 @@ public class UsuariosController extends Controller implements Initializable {
                 if (mouseEvent.getClickCount() == 2 && tableUsuarios.selectionModelProperty().get().getSelectedItem() != null) {
                     UsuariosDTO usuario = (UsuariosDTO) tableUsuarios.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("usu", usuario);
-                    System.out.println(usuario.getNombreCompleto());
-//                    ((Stage) btnFiltrar.getScene().getWindow()).close();
+                    PrincipalController.cambiarVistaPrincipal("mantenimientoUsuarios/MantenimientoUsuarios");
                 }
 
             }
