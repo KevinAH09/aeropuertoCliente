@@ -32,6 +32,7 @@ import javafx.scene.text.Text;
 import static org.una.aeropuertocliente.controllers.PrincipalController.cambiarVistaPrincipal;
 import org.una.aeropuertocliente.dtos.RolesDTO;
 import org.una.aeropuertocliente.entitiesServices.RolesService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 
@@ -77,6 +78,13 @@ public class RolesController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+        } else {
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+        }
         actionRolesClick();
         llenarRoles();
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Código"));
@@ -121,7 +129,7 @@ public class RolesController extends Controller implements Initializable {
                 }
             }
             if (rolesList != null) {
-                mensaje="No se encontró coincidencias";
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -170,11 +178,13 @@ public class RolesController extends Controller implements Initializable {
         tableRoles.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount() == 2 && tableRoles.selectionModelProperty().get().getSelectedItem() != null) {
-                    RolesDTO rol = (RolesDTO) tableRoles.selectionModelProperty().get().getSelectedItem();
-                    AppContext.getInstance().set("rol", rol);
-                    System.out.println(rol.getDescripcion());
-                    cambiarVistaPrincipal("mantenimientoRoles/MantenimientoRoles");
+                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+                    if (mouseEvent.getClickCount() == 2 && tableRoles.selectionModelProperty().get().getSelectedItem() != null) {
+                        RolesDTO rol = (RolesDTO) tableRoles.selectionModelProperty().get().getSelectedItem();
+                        AppContext.getInstance().set("rol", rol);
+                        System.out.println(rol.getDescripcion());
+                        cambiarVistaPrincipal("mantenimientoRoles/MantenimientoRoles");
+                    }
                 }
 
             }
