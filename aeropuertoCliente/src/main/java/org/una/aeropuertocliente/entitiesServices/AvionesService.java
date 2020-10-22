@@ -41,6 +41,18 @@ public class AvionesService {
         }
         return dTO;
     }
+    public static AvionesDTO matriculaUnicaAvion(String matricula){
+        
+        AvionesDTO dTO = new AvionesDTO();
+        try {
+            dTO = (AvionesDTO) Conection.oneConnection("avion/matriculaUnica/"+matricula,new TypeToken<AvionesDTO>() {}.getType());
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(dTO);
+        return dTO;
+    }
     public static int createAvion(AvionesDTO create){
         int codeResponse=0;
         try {

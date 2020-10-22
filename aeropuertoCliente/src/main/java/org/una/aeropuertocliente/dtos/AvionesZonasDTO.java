@@ -19,9 +19,11 @@ public class AvionesZonasDTO {
     private Long id;
     private Date fechaIngreso;
     private ZonasDTO zona;
-    private AvionesDTO avion;
+    public AvionesDTO avion;
 
     public AvionesZonasDTO() {
+        avion = new AvionesDTO();
+        zona = new ZonasDTO();
     }
 
     public Long getId() {

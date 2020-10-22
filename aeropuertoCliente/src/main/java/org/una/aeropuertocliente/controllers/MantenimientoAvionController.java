@@ -336,6 +336,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
 
     @FXML
     private void onActionGuardarEditar(ActionEvent event) {
+        avionZona = new AvionesZonasDTO();
         if (avion == null) {
             if (!txtMatricula.getText().isEmpty() && !combEstado.getValue().isEmpty() && !txtTipoAvion.getText().isEmpty() && !txtZona.getText().isEmpty()) {
                 avion = new AvionesDTO();
@@ -347,13 +348,18 @@ public class MantenimientoAvionController extends Controller implements Initiali
 
                 avion.setMatricula(txtMatricula.getText());
                 avion.setTipoAvion(txtTipoAvion.getText());
-                //avionZona.setAvion(avion);
-                //avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
-
+                avion.setAerolineaId((AerolineasDTO) AppContext.getInstance().get("aerolinea"));
                 if (AvionesService.createAvion(avion) == 201) {
-                    //if (AvionesZonasService.createAvionZona(avionZona) == 201) {
+                    AvionesDTO avionesDTO = new AvionesDTO();
+                    avionesDTO = AvionesService.matriculaUnicaAvion(txtMatricula.getText());
+                    System.out.println(avionesDTO);
+                    avionZona.avion = avionesDTO;
+                    avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
+                    if (AvionesZonasService.createAvionZona(avionZona) == 201) {
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aviones", ((Stage) txtMatricula.getScene().getWindow()), "Se guardó correctamente");
-                    //}
+                    }else{
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la zona del avion", ((Stage) txtMatricula.getScene().getWindow()), "No se guardó correctamente");
+                    }
 
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar los Aviones", ((Stage) txtMatricula.getScene().getWindow()), "No se guardó correctamente");
@@ -376,11 +382,11 @@ public class MantenimientoAvionController extends Controller implements Initiali
 
                 if (AvionesService.updateAvion(avion) == 200) {
                     //if (AvionesZonasService.updateAvionZona(avionZona) == 200) {
-                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Avion", ((Stage) txtMatricula.getScene().getWindow()), "Se editó correctamente");
-                        btnEditar.setDisable(false);
-                        btnGuardarEditar.setDisable(true);
-                        btnVolver.setDisable(false);
-                   // }
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Avion", ((Stage) txtMatricula.getScene().getWindow()), "Se editó correctamente");
+                    btnEditar.setDisable(false);
+                    btnGuardarEditar.setDisable(true);
+                    btnVolver.setDisable(false);
+                    // }
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Avion", ((Stage) txtMatricula.getScene().getWindow()), "No se editó correctamente");
                 }
