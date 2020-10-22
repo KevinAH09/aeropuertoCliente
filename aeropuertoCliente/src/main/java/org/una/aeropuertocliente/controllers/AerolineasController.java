@@ -20,13 +20,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -34,12 +31,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.entitiesServices.AerolineasService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
-import org.una.aeropuertocliente.utils.FlowController;
-import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -84,6 +79,13 @@ public class AerolineasController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrarAvion.setVisible(false);
+            btnRegistrarAvion.setDisable(true);
+        } else {
+            btnRegistrarAvion.setVisible(true);
+            btnRegistrarAvion.setDisable(false);
+        }
         aerolinea = null;
         actionAerolineaClick();
         llenarAerolineas();
@@ -106,15 +108,18 @@ public class AerolineasController extends Controller implements Initializable {
 
     private void actionAerolineaClick() {
         aerolinea = null;
+
         tableview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount() == 2 && tableview.selectionModelProperty().get().getSelectedItem() != null) {
-                    aerolinea = (AerolineasDTO) tableview.selectionModelProperty().get().getSelectedItem();
-                    AppContext.getInstance().set("aerolinea", aerolinea);
-                    PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");
-                }
+                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+                    if (mouseEvent.getClickCount() == 2 && tableview.selectionModelProperty().get().getSelectedItem() != null) {
+                        aerolinea = (AerolineasDTO) tableview.selectionModelProperty().get().getSelectedItem();
+                        AppContext.getInstance().set("aerolinea", aerolinea);
+                        PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");
+                    }
 
+                }
             }
         });
     }
@@ -209,9 +214,11 @@ public class AerolineasController extends Controller implements Initializable {
 
     @FXML
     private void registrarAvion(ActionEvent event) {
-        aerolinea = null;
-        AppContext.getInstance().set("aerolinea", aerolinea);
-        PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            aerolinea = null;
+            AppContext.getInstance().set("aerolinea", aerolinea);
+            PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");
+        }
     }
 
     @Override

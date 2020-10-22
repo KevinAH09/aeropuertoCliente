@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
    <children>
       <StackPane prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -32,11 +32,6 @@
                         <JFXButton fx:id="btnFiltrar" onAction="#filtrar" prefHeight="29.0" prefWidth="87.0" text="Filtrar" />
                         <Label fx:id="labBtnCancelar" prefHeight="21.0" prefWidth="35.0" />
                         <JFXButton fx:id="btnCancelar" onAction="#cancelar" prefHeight="29.0" prefWidth="99.0" text="cancelar" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="23.0" prefWidth="560.0">
-                     <children>
-                        <Label prefHeight="21.0" prefWidth="61.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="300.0" prefWidth="560.0">
