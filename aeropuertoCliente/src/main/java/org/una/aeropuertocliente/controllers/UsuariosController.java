@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class UsuariosController extends Controller implements Initializable {
             }
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("true")) {
+            if (txtBusqueda.getText().equals("Activo")) {
                 tableUsuarios.getItems().clear();
                 usuariosList = UsuariosService.estadoUsuarios(true);
                 if (usuariosList != null) {
@@ -105,7 +106,7 @@ public class UsuariosController extends Controller implements Initializable {
                     notificar(0);
                 }
             }
-            if (txtBusqueda.getText().equals("false")) {
+            if (txtBusqueda.getText().equals("Inactivo")) {
                 tableUsuarios.getItems().clear();
                 usuariosList = UsuariosService.estadoUsuarios(false);
                 if (usuariosList != null) {
@@ -180,13 +181,18 @@ public class UsuariosController extends Controller implements Initializable {
         TableColumn<UsuariosDTO, String> colNombre = new TableColumn("Nombre");
         colNombre.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreCompleto()));
         TableColumn<UsuariosDTO, String> colEstado = new TableColumn("Estado");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
+        colEstado.setCellValueFactory((param) ->{
+            if(param.getValue().isEstado()){
+               return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         TableColumn<UsuariosDTO, String> colCedula = new TableColumn("Cédula");
         colCedula.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getCedula()));
         TableColumn<UsuariosDTO, String> colCorreo = new TableColumn("Correo");
         colCorreo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getCorreo()));
         TableColumn<UsuariosDTO, String> colFecha = new TableColumn("Fecha Registro");
-        colFecha.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaRegistro()));
+        colFecha.setCellValueFactory((param) -> new SimpleObjectProperty(new SimpleDateFormat("dd-MM-yyyy").format(param.getValue().getFechaRegistro())));
         TableColumn<UsuariosDTO, String> colRol = new TableColumn("Rol");
         colRol.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getRolId().getDescripcion()));
         TableColumn<UsuariosDTO, String> colArea = new TableColumn("Area Trabajo");
