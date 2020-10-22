@@ -33,6 +33,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.ParametrosDTO;
 import org.una.aeropuertocliente.entitiesServices.ParametrosService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -88,6 +89,8 @@ public class ParametrosController extends Controller implements Initializable {
     ParametrosDTO parametrosFilt;
     public List<ParametrosDTO> parametrosList = new ArrayList<ParametrosDTO>();
     String mensaje;
+    @FXML
+    private JFXButton btnCancelar;
 
     /**
      * Initializes the controller class.
@@ -189,7 +192,7 @@ public class ParametrosController extends Controller implements Initializable {
             if (parametrosFilt != null) {
                 tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
             } else {
-                mensaje="No se encontró coincidencias";
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -200,7 +203,7 @@ public class ParametrosController extends Controller implements Initializable {
                 if (parametrosList != null) {
                     tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
                 } else {
-                    mensaje="No se encontró coincidencias";
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -210,12 +213,12 @@ public class ParametrosController extends Controller implements Initializable {
                 if (parametrosList != null) {
                     tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
                 } else {
-                    mensaje="No se encontró coincidencias";
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
             if (parametrosList != null) {
-                mensaje="No se encontró coincidencias";
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -225,7 +228,7 @@ public class ParametrosController extends Controller implements Initializable {
             if (parametrosList != null) {
                 tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
             } else {
-                mensaje="No se encontró coincidencias";
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
