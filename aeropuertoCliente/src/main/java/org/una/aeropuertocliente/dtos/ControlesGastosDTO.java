@@ -7,12 +7,10 @@ package org.una.aeropuertocliente.dtos;
 
 import java.util.Date;
 
-
 /**
  *
  * @author colo7
  */
-
 public class ControlesGastosDTO {
 
     private Long id;
@@ -20,6 +18,15 @@ public class ControlesGastosDTO {
     private String empresaContratante;
     private String numeroContrato;
     private Date fechaRegistro;
+    private DetallesControlesGastosDTO detalleControlGastoId;
+
+    public DetallesControlesGastosDTO getDetalleControlGastoId() {
+        return detalleControlGastoId;
+    }
+
+    public void setDetalleControlGastoId(DetallesControlesGastosDTO detalleControlGastoId) {
+        this.detalleControlGastoId = detalleControlGastoId;
+    }
 
     public ControlesGastosDTO() {
     }

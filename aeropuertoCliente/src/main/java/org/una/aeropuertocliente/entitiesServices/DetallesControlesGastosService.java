@@ -19,41 +19,47 @@ import org.una.aeropuertocliente.sharedService.Conection;
  * @author colo7
  */
 public class DetallesControlesGastosService {
-    public static List<DetallesControlesGastosDTO> allDetallesControlesGastos(){
-        
+
+    public static List<DetallesControlesGastosDTO> allDetallesControlesGastos() {
+
         List<DetallesControlesGastosDTO> listsDTOs = new ArrayList<>();
         try {
-            listsDTOs = (List<DetallesControlesGastosDTO>) Conection.listFromConnection("detalleControlGasto/",DetallesControlesGastosDTO.class);
-            
+            listsDTOs = (List<DetallesControlesGastosDTO>) Conection.listFromConnection("detalleControlGasto/", new TypeToken<ArrayList<DetallesControlesGastosDTO>>() {
+            }.getType());
+
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listsDTOs;
     }
-    public static DetallesControlesGastosDTO idDetalleControlGasto(Long id){
-        
+
+    public static DetallesControlesGastosDTO idDetalleControlGasto(Long id) {
+
         DetallesControlesGastosDTO dTO = new DetallesControlesGastosDTO();
         try {
-            dTO = (DetallesControlesGastosDTO) Conection.oneConnection("detalleControlGasto/"+id,new TypeToken<DetallesControlesGastosDTO>() {}.getType());
-            
+            dTO = (DetallesControlesGastosDTO) Conection.oneConnection("detalleControlGasto/" + id, new TypeToken<DetallesControlesGastosDTO>() {
+            }.getType());
+
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return dTO;
     }
-    public static int createDetalleControlGasto(DetallesControlesGastosDTO update){
-        int codeResponse=0;
+
+    public static int createDetalleControlGasto(DetallesControlesGastosDTO create) {
+        int codeResponse = 0;
         try {
-            codeResponse = Conection.createObjectToConnection("detalleControlGasto/",update);
+            codeResponse = Conection.createObjectToConnection("detalleControlGasto/", create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateDetalleControlGasto(DetallesControlesGastosDTO create){
-        int codeResponse=0;
+
+    public static int updateDetalleControlGasto(DetallesControlesGastosDTO update) {
+        int codeResponse = 0;
         try {
-            codeResponse = Conection.updateObjectToConnection("detalleControlGasto/"+create.getId(),DetallesControlesGastosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("detalleControlGasto/" + update.getId(), update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
