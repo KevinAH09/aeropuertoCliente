@@ -37,6 +37,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 
@@ -80,6 +81,13 @@ public class UsuariosController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+        } else {
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+        }
         actionUsuariosClick();
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
         llenarUsuarios();
@@ -181,9 +189,9 @@ public class UsuariosController extends Controller implements Initializable {
         TableColumn<UsuariosDTO, String> colNombre = new TableColumn("Nombre");
         colNombre.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreCompleto()));
         TableColumn<UsuariosDTO, String> colEstado = new TableColumn("Estado");
-        colEstado.setCellValueFactory((param) ->{
-            if(param.getValue().isEstado()){
-               return new SimpleStringProperty("Activo");
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
             }
             return new SimpleStringProperty("Inactivo");
         });
@@ -197,8 +205,8 @@ public class UsuariosController extends Controller implements Initializable {
         colRol.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getRolId().getDescripcion()));
         TableColumn<UsuariosDTO, String> colArea = new TableColumn("Area Trabajo");
         colArea.setCellValueFactory((param) -> {
-            if(param.getValue().getAreaTrabajoId()!= null){
-               return new SimpleStringProperty(param.getValue().getAreaTrabajoId().getNombreAreaTrabajo());
+            if (param.getValue().getAreaTrabajoId() != null) {
+                return new SimpleStringProperty(param.getValue().getAreaTrabajoId().getNombreAreaTrabajo());
             }
             return new SimpleStringProperty("no tiene");
         });
@@ -210,10 +218,12 @@ public class UsuariosController extends Controller implements Initializable {
         tableUsuarios.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount() == 2 && tableUsuarios.selectionModelProperty().get().getSelectedItem() != null) {
-                    UsuariosDTO usuario = (UsuariosDTO) tableUsuarios.selectionModelProperty().get().getSelectedItem();
-                    AppContext.getInstance().set("usu", usuario);
-                    PrincipalController.cambiarVistaPrincipal("mantenimientoUsuarios/MantenimientoUsuarios");
+                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+                    if (mouseEvent.getClickCount() == 2 && tableUsuarios.selectionModelProperty().get().getSelectedItem() != null) {
+                        UsuariosDTO usuario = (UsuariosDTO) tableUsuarios.selectionModelProperty().get().getSelectedItem();
+                        AppContext.getInstance().set("usu", usuario);
+                        PrincipalController.cambiarVistaPrincipal("mantenimientoUsuarios/MantenimientoUsuarios");
+                    }
                 }
 
             }
