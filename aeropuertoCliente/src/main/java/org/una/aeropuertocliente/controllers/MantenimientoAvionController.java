@@ -352,7 +352,6 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 if (AvionesService.createAvion(avion) == 201) {
                     AvionesDTO avionesDTO = new AvionesDTO();
                     avionesDTO = AvionesService.matriculaUnicaAvion(txtMatricula.getText());
-                    System.out.println(avionesDTO);
                     avionZona.avion = avionesDTO;
                     avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
                     if (AvionesZonasService.createAvionZona(avionZona) == 201) {

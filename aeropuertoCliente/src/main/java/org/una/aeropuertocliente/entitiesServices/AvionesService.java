@@ -50,7 +50,6 @@ public class AvionesService {
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(dTO);
         return dTO;
     }
     public static int createAvion(AvionesDTO create){
