@@ -60,6 +60,7 @@ public class PrincipalController extends Controller implements Initializable {
         Node imgroot = new ImageView(new Image("org/una/aeropuertocliente/views/principal/menu.png"));
         Node imgInformacion = new ImageView(new Image("org/una/aeropuertocliente/views/principal/informacion.png"));
         Node imgAdmin = new ImageView(new Image("org/una/aeropuertocliente/views/principal/lengueta.png"));
+        Node imgCambioDiv = new ImageView(new Image("org/una/aeropuertocliente/views/principal/intercambio.png"));
         TreeItem<String> root = new TreeItem<>("Funciones");
         root.setGraphic(imgroot);
         treeAcciones.setRoot(root);
@@ -92,7 +93,7 @@ public class PrincipalController extends Controller implements Initializable {
             TreeItem<String> itemRegistroVuelo = new TreeItem<>("Vuelos");
             itemAdministracion.getChildren().add(itemRegistroVuelo);
             TreeItem<String> itemRegistroAcciones = new TreeItem<>("Registro de Acciones");
-            root.getChildren().add(itemRegistroAcciones);
+            itemInformacion.getChildren().add(itemRegistroAcciones);
         } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GERENTE")) {
             if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_RRHH")) {
                 TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
@@ -136,7 +137,11 @@ public class PrincipalController extends Controller implements Initializable {
                 TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Gastos de manteniento");
                 itemAdministracion.getChildren().add(itemGastoMantenimientos);
             }
+
         }
+        TreeItem<String> itemCambioDivisas = new TreeItem<>("Cambio de Divisas");
+        itemCambioDivisas.setGraphic(imgCambioDiv);
+        root.getChildren().add(itemCambioDivisas);
 
         treeAcciones.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -166,6 +171,8 @@ public class PrincipalController extends Controller implements Initializable {
                         cambiarVistaPrincipal("roles/Roles");
                     } else if (item.getValue().equals("Areas de Trabajo")) {
                         cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
+                    } else if (item.getValue().equals("Cambio de Divisas")) {
+                        cambiarVistaPrincipal("cambioDivisas/CambioDivisas");
                     }
 
                 }
