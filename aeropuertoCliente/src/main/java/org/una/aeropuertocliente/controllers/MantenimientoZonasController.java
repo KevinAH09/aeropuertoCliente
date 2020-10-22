@@ -37,6 +37,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -92,12 +93,25 @@ public class MantenimientoZonasController extends Controller implements Initiali
     ZonasDTO zonasFilt;
     public List<ZonasDTO> zonasList = new ArrayList<ZonasDTO>();
     String mensaje;
+    @FXML
+    private JFXButton btnCancelar;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+            btnCancelar.setVisible(false);
+            btnCancelar.setDisable(true);
+        } else {
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+            btnCancelar.setVisible(true);
+            btnCancelar.setDisable(false);
+        }
         actionZonasClick();
         llenarZonas();
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Código"));

@@ -18,10 +18,10 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="27.0" prefWidth="560.0">
                      <children>
                         <Label fx:id="lblZonas" prefHeight="21.0" prefWidth="24.0" />
-                        <Label fx:id="titulo" text="Mantenimiento de zonas">
+                        <Label fx:id="titulo" text="Zonas">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -53,7 +53,7 @@
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="5.0">
                      <children>
                         <Label fx:id="lblCancelar" prefHeight="20.0" prefWidth="40.0" />
-                        <JFXButton fx:id="btnRegistrar" onAction="#onActionCancelar" text="Cancelar" />
+                        <JFXButton fx:id="btnCancelar" onAction="#onActionCancelar" text="Cancelar" />
                         <Label fx:id="lblGuardar" prefHeight="20.0" prefWidth="40.0" />
                         <JFXButton fx:id="btnRegistrar" onAction="#onActionGuardar" text="Guardar" />
                      </children>

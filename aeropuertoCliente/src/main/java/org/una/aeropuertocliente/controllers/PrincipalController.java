@@ -158,7 +158,7 @@ public class PrincipalController extends Controller implements Initializable {
                     } else if (item.getValue().equals("Registro de Acciones")) {
                         cambiarVistaPrincipal("registroAcciones/RegistroAcciones");
                     } else if (item.getValue().equals("Zonas")) {
-                        cambiarVistaPrincipal("zonas/Zonas");
+                        cambiarVistaPrincipal("mantenimientoZonas/MantenimientoZonas");
                     } else if (item.getValue().equals("Aviones")) {
                         cambiarVistaPrincipal("aviones/Aviones");
                     } else if (item.getValue().equals("Vuelos")) {
