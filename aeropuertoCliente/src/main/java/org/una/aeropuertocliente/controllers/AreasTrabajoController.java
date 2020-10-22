@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -79,6 +80,13 @@ public class AreasTrabajoController extends Controller implements Initializable 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+        } else {
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+        }
         actionZonasClick();
         llenarAreas();
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Nombre"));
@@ -86,9 +94,9 @@ public class AreasTrabajoController extends Controller implements Initializable 
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()|| cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
             tableAreas.getItems().clear();
-            mensaje="Por favor debe ingresar un datos en el campo de búsqueda";
+            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
         }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             System.out.println("Entro Areas");
@@ -96,18 +104,18 @@ public class AreasTrabajoController extends Controller implements Initializable 
             areasFilt = areaService.idAreaTrabajo(Long.valueOf(txtBusqueda.getText()));
             if (areasFilt != null) {
                 tableAreas.setItems(FXCollections.observableArrayList(areasFilt));
-            }else{
-                mensaje="No se encontró coincidencias";
+            } else {
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
             tableAreas.getItems().clear();
             areasList = areaService.nombreAreasTrabajos(txtBusqueda.getText().toUpperCase());
-           if (areasList != null) {
+            if (areasList != null) {
                 tableAreas.setItems(FXCollections.observableArrayList(areasList));
-            }else{
-               mensaje="No se encontró coincidencias";
+            } else {
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -147,15 +155,17 @@ public class AreasTrabajoController extends Controller implements Initializable 
         tableAreas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount() == 2 && tableAreas.selectionModelProperty().get().getSelectedItem() != null) {
-                    AreasTrabajosDTO area = (AreasTrabajosDTO) tableAreas.selectionModelProperty().get().getSelectedItem();
-                    AppContext.getInstance().set("area", area);
-                    System.out.println(area.getNombreAreaTrabajo());
+                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+                    if (mouseEvent.getClickCount() == 2 && tableAreas.selectionModelProperty().get().getSelectedItem() != null) {
+                        AreasTrabajosDTO area = (AreasTrabajosDTO) tableAreas.selectionModelProperty().get().getSelectedItem();
+                        AppContext.getInstance().set("area", area);
+                        System.out.println(area.getNombreAreaTrabajo());
 //                    FlowController.getInstance().goViewInWindowModal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo", ((Stage) btnRegistrar.getScene().getWindow()), false);
-                     PrincipalController.cambiarVistaPrincipal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
+                        PrincipalController.cambiarVistaPrincipal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
 //                    ((Stage) btnFiltrar.getScene().getWindow()).close();
-                }
+                    }
 
+                }
             }
         });
     }

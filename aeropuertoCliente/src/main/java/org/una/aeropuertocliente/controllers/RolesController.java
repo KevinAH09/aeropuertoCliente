@@ -162,16 +162,6 @@ public class RolesController extends Controller implements Initializable {
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableRoles.getColumns().addAll(colId, colEstado, colCodigo, colDescripcion);
         notificar(1);
-//        try {
-//            zonasList = ZonasService.allZonas();
-//            if (zonasList != null && !zonasList.isEmpty()) {
-//                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-//            } else {
-//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
-//            }
-//        } catch (Exception e) {
-//            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
-//        }
     }
 
     private void actionRolesClick() {
