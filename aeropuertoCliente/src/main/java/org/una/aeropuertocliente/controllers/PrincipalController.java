@@ -125,6 +125,11 @@ public class PrincipalController extends Controller implements Initializable {
                 TreeItem<String> itemRegistroVuelo = new TreeItem<>("Vuelos");
                 itemAdministracion.getChildren().add(itemRegistroVuelo);
             } else if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_GAST_MANT")) {
+                TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
+                itemInformacion.setGraphic(imgInformacion);
+                root.getChildren().add(itemInformacion);
+                TreeItem<String> itemAreaTrabajo = new TreeItem<>("Areas de Trabajo");
+                itemInformacion.getChildren().add(itemAreaTrabajo);
                 TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
                 itemAdministracion.setGraphic(imgAdmin);
                 root.getChildren().add(itemAdministracion);
