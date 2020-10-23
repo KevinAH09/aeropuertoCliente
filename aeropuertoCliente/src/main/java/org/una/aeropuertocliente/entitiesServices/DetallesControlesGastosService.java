@@ -46,14 +46,16 @@ public class DetallesControlesGastosService {
         return dTO;
     }
 
-    public static int createDetalleControlGasto(DetallesControlesGastosDTO create) {
+    public static DetallesControlesGastosDTO createDetalleControlGasto(DetallesControlesGastosDTO create) {
         int codeResponse = 0;
+        DetallesControlesGastosDTO detalle = new DetallesControlesGastosDTO();
         try {
-            codeResponse = Conection.createObjectToConnection("detalleControlGasto/", create);
+            detalle = (DetallesControlesGastosDTO) Conection.createObjectToConnectionReturnObject("detalleControlGasto/", create, new TypeToken<DetallesControlesGastosDTO>() {
+            }.getType());
         } catch (IOException ex) {
-            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuariosService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return codeResponse;
+        return detalle;
     }
 
     public static int updateDetalleControlGasto(DetallesControlesGastosDTO update) {
