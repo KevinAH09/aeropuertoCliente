@@ -58,7 +58,7 @@ public class AreasTrabajosDTO {
 
     @Override
     public String toString() {
-        return this.nombreAreaTrabajo; //To change body of generated methods, choose Tools | Templates.
+        return nombreAreaTrabajo; //To change body of generated methods, choose Tools | Templates.
     }
     
    

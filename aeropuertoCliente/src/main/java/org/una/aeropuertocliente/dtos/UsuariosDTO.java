@@ -29,6 +29,8 @@ public class UsuariosDTO {
     private boolean jefeId;
 
     public UsuariosDTO() {
+        rolId = new RolesDTO();
+        areaTrabajoId =  new AreasTrabajosDTO();
     }
 
     public Long getId() {
@@ -109,6 +111,11 @@ public class UsuariosDTO {
 
     public void setJefeId(boolean jefeId) {
         this.jefeId = jefeId;
+    }
+
+    @Override
+    public String toString() {
+        return "UsuariosDTO{" + "id=" + id + ", nombreCompleto=" + nombreCompleto + ", contrasenaEncriptada=" + contrasenaEncriptada + ", cedula=" + cedula + ", correo=" + correo + ", estado=" + estado + ", rolId=" + rolId + ", areaTrabajoId=" + areaTrabajoId + ", fechaRegistro=" + fechaRegistro + ", jefeId=" + jefeId + '}';
     }
 
     
