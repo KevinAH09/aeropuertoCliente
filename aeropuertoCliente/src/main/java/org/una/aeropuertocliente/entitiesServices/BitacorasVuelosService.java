@@ -41,23 +41,33 @@ public class BitacorasVuelosService {
         }
         return dTO;
     }
-    public static int createBitacoraVuelo(BitacorasVuelosDTO update){
+    public static int createBitacoraVuelo(BitacorasVuelosDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("bitacoraVuelo/",update);
+            codeResponse = Conection.createObjectToConnection("bitacoraVuelo/",create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
-    public static int updateBitacoraVuelo(BitacorasVuelosDTO create){
+    public static int updateBitacoraVuelo(BitacorasVuelosDTO update){
         int codeResponse=0;
         try {
-            codeResponse = Conection.updateObjectToConnection("bitacoraVuelo/"+create.getId(),BitacorasVuelosDTO.class);
+            codeResponse = Conection.updateObjectToConnection("bitacoraVuelo/"+update.getId(),update);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return codeResponse;
     }
     
+    public static BitacorasVuelosDTO createBitacoraVueloExpecial(BitacorasVuelosDTO create){
+        BitacorasVuelosDTO Object = new BitacorasVuelosDTO();
+        try {
+            Object =  (BitacorasVuelosDTO) Conection.createObjectToConnectionReturnObject("bitacoraVuelo/",create,new TypeToken<BitacorasVuelosDTO>() 
+            {}.getType());
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Object;
+    }
 }
