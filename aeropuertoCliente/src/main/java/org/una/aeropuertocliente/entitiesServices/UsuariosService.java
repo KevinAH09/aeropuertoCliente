@@ -68,6 +68,15 @@ public class UsuariosService {
         }
         return codeResponse;
     }
+    public static int updateContrasenaUsuario(UsuariosDTO createUsuario) {
+        int codeResponse = 0;
+        try {
+            codeResponse = Conection.updateObjectToConnection("usuario/cambioContrasena/" + createUsuario.getId(), createUsuario);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return codeResponse;
+    }
 
     public static List<UsuariosDTO> estadoUsuarios(Boolean estado) {
 
