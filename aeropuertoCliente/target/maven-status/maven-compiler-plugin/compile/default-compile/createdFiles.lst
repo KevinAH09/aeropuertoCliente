@@ -117,6 +117,7 @@ org\una\aeropuertocliente\controllers\VuelosController$1.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$4.class
 org\una\aeropuertocliente\sharedService\Conection.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$1.class
+org\una\aeropuertocliente\entitiesServices\DetallesControlesGastosService$3.class
 org\una\aeropuertocliente\dtos\RegistrosAccionesDTO.class
 org\una\aeropuertocliente\entitiesServices\AreasTrabajosService$3.class
 org\una\aeropuertocliente\entitiesServices\ZonasService$5.class

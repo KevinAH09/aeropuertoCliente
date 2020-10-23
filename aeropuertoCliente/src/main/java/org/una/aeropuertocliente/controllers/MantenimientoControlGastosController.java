@@ -92,6 +92,7 @@ public class MantenimientoControlGastosController extends Controller implements 
     @FXML
     private JFXComboBox<String> cmbAreas;
     public List<AreasTrabajosDTO> areasList = new ArrayList<AreasTrabajosDTO>();
+    public List<DetallesControlesGastosDTO> detallesList = new ArrayList<DetallesControlesGastosDTO>();
     AreasTrabajosDTO areaTrabajoDTO;
     ControlesGastosDTO controlesGastosDTO;
     DetallesControlesGastosDTO detallesGastosDTO;
@@ -189,9 +190,10 @@ public class MantenimientoControlGastosController extends Controller implements 
                         detallesGastosDTO.setAreaTrabajoId(areasTrabajosDTO);
                     }
                 }
+                detallesGastosDTO2 = DetallesControlesGastosService.createDetalleControlGasto(detallesGastosDTO);
+                if (detallesGastosDTO2 != null) {
+                    controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO2);
 
-                if (DetallesControlesGastosService.createDetalleControlGasto(detallesGastosDTO) == 201) {
-                    controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO);
                     if (ControlGastosService.createControlGasto(controlesGastosDTO) == 201) {
                         new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
                         PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
@@ -234,7 +236,7 @@ public class MantenimientoControlGastosController extends Controller implements 
                     } else {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
                     }
-                }else {
+                } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
