@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -174,9 +176,9 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty()|| cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
             tableZonas.getItems().clear();
-            mensaje="Por favor debe ingresar un datos en el campo de búsqueda";
+            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
         }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             tableZonas.getItems().clear();
@@ -184,7 +186,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
             if (zonasFilt != null) {
                 tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
             } else {
-                mensaje="No se encontró coincidencias";
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -195,7 +197,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 if (zonasList != null) {
                     tableZonas.setItems(FXCollections.observableArrayList(zonasList));
                 } else {
-                    mensaje="No se encontró coincidencias";
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -205,12 +207,12 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 if (zonasList != null) {
                     tableZonas.setItems(FXCollections.observableArrayList(zonasList));
                 } else {
-                    mensaje="No se encontró coincidencias";
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
             if (zonasList != null) {
-                mensaje="No se encontró coincidencias";
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -262,16 +264,25 @@ public class MantenimientoZonasController extends Controller implements Initiali
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableZonas.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion);
         notificar(1);
-//        try {
-//            zonasList = ZonasService.allZonas();
-//            if (zonasList != null && !zonasList.isEmpty()) {
-//                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-//            } else {
-//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
-//            }
-//        } catch (Exception e) {
-//            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
-//        }
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Nombre") {
+                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
+                }
+                if (t1 == "Código") {
+                    txtBusqueda.setPromptText("Ingrese el código");
+                }
+                if (t1 == "Estado") {
+                    txtBusqueda.setPromptText("Ingrese true o false");
+                }
+            }
+
+        }
+        );
     }
 
     private void editar() {

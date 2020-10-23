@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -188,6 +190,33 @@ public class ControlGastosController extends Controller implements Initializable
         colArea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDetalleControlGastoId().getAreaTrabajoId().getNombreAreaTrabajo()));
         tableGastos.getColumns().addAll(colId, colEmpresa, colContrato, colResponsable, colFecha, colTipo, colEstado, colArea);
         notificar(1);
+
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Empresa") {
+                    txtBusqueda.setPromptText("Ingrese el nombre de la empresa");
+                }
+                if (t1 == "Contrato") {
+                    txtBusqueda.setPromptText("Ingrese el número de contrato");
+                }
+                if (t1 == "Tipo") {
+                    txtBusqueda.setPromptText("Ingrese el tipo de gasto");
+                }
+                if (t1 == "Estado") {
+                    txtBusqueda.setPromptText("Ingrese true o false");
+                }
+
+                if (t1 == "Intervalo Fechas") {
+                    txtBusqueda.setPromptText("inicio/fin formato yyyy-mm-dd");
+                }
+            }
+
+        }
+        );
     }
 
     private void actionControlClick() {

@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -157,16 +159,26 @@ public class ZonasController extends Controller implements Initializable {
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableZonas.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion);
         notificar(1);
-//        try {
-//            zonasList = ZonasService.allZonas();
-//            if (zonasList != null && !zonasList.isEmpty()) {
-//                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-//            } else {
-//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
-//            }
-//        } catch (Exception e) {
-//            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
-//        }
+
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Nombre") {
+                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
+                }
+                if (t1 == "Código") {
+                    txtBusqueda.setPromptText("Ingrese el código");
+                }
+                if (t1 == "Estado") {
+                    txtBusqueda.setPromptText("Ingrese true o false");
+                }
+            }
+
+        }
+        );
     }
 
     private void actionZonasClick() {
@@ -177,7 +189,6 @@ public class ZonasController extends Controller implements Initializable {
                     ZonasDTO zona = (ZonasDTO) tableZonas.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("zon", zona);
                     PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion");
-//                    ((Stage) btnFiltrar.getScene().getWindow()).close();
                 }
 
             }

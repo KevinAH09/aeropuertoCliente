@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -139,16 +141,19 @@ public class AreasTrabajoController extends Controller implements Initializable 
 
         tableAreas.getColumns().addAll(colId, colNombre, colDescrpcion, colEstado);
         notificar(1);
-//        try {
-//            areasList = areaService.allAreasTrabajos();
-//            if (areasList != null && !areasList.isEmpty()) {
-//                tableAreas.setItems(FXCollections.observableArrayList(areasList));
-//            } else {
-//                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
-//            }
-//        } catch (Exception e) {
-//            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
-//        }
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Nombre") {
+                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
+                }
+            }
+
+        }
+        );
     }
 
     private void actionZonasClick() {

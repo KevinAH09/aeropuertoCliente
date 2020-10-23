@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -162,6 +164,23 @@ public class RolesController extends Controller implements Initializable {
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableRoles.getColumns().addAll(colId, colEstado, colCodigo, colDescripcion);
         notificar(1);
+        
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Código") {
+                    txtBusqueda.setPromptText("Ingrese el código");
+                }
+                if (t1 == "Estado") {
+                    txtBusqueda.setPromptText("Ingrese true o false");
+                }
+            }
+
+        }
+        );
     }
 
     private void actionRolesClick() {
