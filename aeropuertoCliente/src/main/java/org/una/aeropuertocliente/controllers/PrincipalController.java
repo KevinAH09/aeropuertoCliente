@@ -109,8 +109,6 @@ public class PrincipalController extends Controller implements Initializable {
                 itemInformacion.getChildren().add(itemRoles);
                 TreeItem<String> itemAreaTrabajo = new TreeItem<>("Areas de Trabajo");
                 itemInformacion.getChildren().add(itemAreaTrabajo);
-                TreeItem<String> itemCambioContrasena = new TreeItem<>("Cambio de Contraseña");
-                itemInformacion.getChildren().add(itemCambioContrasena);
             } else if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_OPER_AERO")) {
                 TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
                 itemInformacion.setGraphic(imgInformacion);
