@@ -104,18 +104,20 @@ public class LoginController extends Controller implements Initializable {
             pass = txtPassOculto.getText();
         }
         if (!txtPassMostrado.getText().isEmpty() && ((!txtPassMostrado.getText().isEmpty())) || (!txtPassOculto.getText().isEmpty())) {
-            
-                Token.setInstance(null);
-                AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), pass);
-                AuthenticationResponse authenticationResponse = LoginService.login(authenticationRequest);
-                if (authenticationResponse != null) {
-                    Token.setInstance(authenticationResponse);
-                    System.out.println(Token.getInstance());
+
+            Token.setInstance(null);
+            AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), pass);
+            AuthenticationResponse authenticationResponse = LoginService.login(authenticationRequest);
+            if (authenticationResponse != null) {
+                Token.setInstance(authenticationResponse);
+                if (Token.getInstance().getUsuario().isEstado()) {
                     FlowController.getInstance().goView("principal/Principal");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "El usuario esta inactivo");
                 }
-           
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+            }
 
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "Por favor complete todos los campos");

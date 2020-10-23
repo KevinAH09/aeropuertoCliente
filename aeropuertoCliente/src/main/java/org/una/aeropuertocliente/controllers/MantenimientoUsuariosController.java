@@ -239,6 +239,7 @@ public class MantenimientoUsuariosController implements Initializable {
 
     @FXML
     private void onActionCancelar(ActionEvent event) {
+        PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
     }
 
     @FXML

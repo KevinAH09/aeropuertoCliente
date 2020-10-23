@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.UsuariosDTO;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
+import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -45,6 +46,7 @@ public class CambioContrasenaController extends Controller implements Initializa
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        usuDto = (UsuariosDTO) AppContext.getInstance().get("usuarioContrasena");
         lblNombre.setText(usuDto.getNombreCompleto());
         lblCedula.setText(usuDto.getCedula());
     }
