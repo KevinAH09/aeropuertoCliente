@@ -83,7 +83,7 @@ public class ControlGastosController extends Controller implements Initializable
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Empresa", /*"Fecha",*/ "Contrato", "Estado", "Tipo"));
+        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Empresa", "Intervalo Fechas", "Contrato", "Estado", "Tipo"));
         actionControlClick();
         llenarGastos();
     }
@@ -146,15 +146,11 @@ public class ControlGastosController extends Controller implements Initializable
             }
         }
 
-        if (cmbFiltro.getValue().equals("Fecha") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue().equals("Intervalo Fechas") && !txtBusqueda.getText().isEmpty()) {
             tableGastos.getItems().clear();
             String data = txtBusqueda.getText();
             String sDate1 = data.substring(0, 10);
             String sDate2 = data.substring(11, 21);
-//            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(sDate1);
-//            Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(sDate2);
-//            System.out.println(date1);
-//            System.out.println(date2);
 
             gastosList = ControlGastosService.fechaControlesGastos(sDate1, sDate2);
             if (gastosList != null) {
@@ -191,7 +187,7 @@ public class ControlGastosController extends Controller implements Initializable
         TableColumn<ControlesGastosDTO, String> colArea = new TableColumn("Area");
         colArea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDetalleControlGastoId().getAreaTrabajoId().getNombreAreaTrabajo()));
         tableGastos.getColumns().addAll(colId, colEmpresa, colContrato, colResponsable, colFecha, colTipo, colEstado, colArea);
-        notificar(1); 
+        notificar(1);
     }
 
     private void actionControlClick() {
