@@ -271,7 +271,7 @@ public class VuelosController extends Controller implements Initializable {
         }
         if (num == 2) {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No hay vuelos en este avion, porfavor regitrar vuelos");
+            Text lab = new Text("No hay vuelos en este avion");
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);

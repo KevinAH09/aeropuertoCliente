@@ -245,7 +245,7 @@ public class MantenimientoUsuariosController implements Initializable {
 
     @FXML
     private void onActionCambiarContrasena(ActionEvent event) {
-        
+
         AppContext.getInstance().set("usuarioContrasena", usuario);
         FlowController.getInstance().goViewInWindowModal("cambioContrasena/cambioContrasena", ((Stage) txtCorreo.getScene().getWindow()), Boolean.TRUE);
     }

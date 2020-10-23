@@ -100,8 +100,6 @@ public class PrincipalController extends Controller implements Initializable {
             itemInformacion.getChildren().add(itemAerolinea);
             TreeItem<String> itemZonas = new TreeItem<>("Zonas");
             itemInformacion.getChildren().add(itemZonas);
-            TreeItem<String> itemAvion = new TreeItem<>("Aviones");
-            itemInformacion.getChildren().add(itemAvion);
             TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Gastos de manteniento");
             itemAdministracion.getChildren().add(itemGastoMantenimientos);
             TreeItem<String> itemRegistroVuelo = new TreeItem<>("Vuelos");
@@ -133,8 +131,6 @@ public class PrincipalController extends Controller implements Initializable {
                 itemInformacion.getChildren().add(itemAerolinea);
                 TreeItem<String> itemZonas = new TreeItem<>("Zonas");
                 itemInformacion.getChildren().add(itemZonas);
-                TreeItem<String> itemAvion = new TreeItem<>("Aviones");
-                itemInformacion.getChildren().add(itemAvion);
                 TreeItem<String> itemRegistroVuelo = new TreeItem<>("Vuelos");
                 itemAdministracion.getChildren().add(itemRegistroVuelo);
             } else if (Token.getInstance().getUsuario().getAreaTrabajoId().getNombreAreaTrabajo().equals("_GAST_MANT")) {
