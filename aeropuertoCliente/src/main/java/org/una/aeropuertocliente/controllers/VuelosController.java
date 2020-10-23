@@ -91,11 +91,13 @@ public class VuelosController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Objetoaviones = null;
         Objetoaviones = (AvionesDTO) AppContext.getInstance().get("avionAVuelos");
-        
-        //actionAvionClick();
 
+        actionVueloClick();
         combFilter.setItems(FXCollections.observableArrayList("Id", "Destino", "Origen", "Estado", "Matricula del Avión"));
+        txtTipoAvion.setText("");
+        txtmatricula.setText("");
         if (Objetoaviones != null) {
             System.err.println(Objetoaviones.getTipoAvion());
             llenarVuelos();
@@ -105,11 +107,12 @@ public class VuelosController extends Controller implements Initializable {
             txtmatricula.setDisable(true);
         } else {
             notificar(2);
+            txtTipoAvion.setText("");
+            txtmatricula.setText("");
             txtTipoAvion.setDisable(true);
             txtmatricula.setDisable(true);
             tableView.setDisable(true);
         }
-
     }
 
     private void actionVueloClick() {
@@ -223,7 +226,7 @@ public class VuelosController extends Controller implements Initializable {
         if (Objetoaviones != null) {
             AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
         }
-        
+
         PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
     }
 
