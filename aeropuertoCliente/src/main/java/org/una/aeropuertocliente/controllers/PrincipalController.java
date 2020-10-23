@@ -25,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.una.aeropuertocliente.App;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
@@ -40,24 +41,36 @@ public class PrincipalController extends Controller implements Initializable {
     @FXML
     private AnchorPane ancgor;
     @FXML
-    private Label lblHora;
-    @FXML
     private TreeView<String> treeAcciones;
     @FXML
     private VBox vboxPrincipal;
 
     public static VBox vboxPrincipalStatic;
+    @FXML
+    private Text textInfoNombre;
+    @FXML
+    private Text textInfoRol;
+    @FXML
+    private Text textInfoArea;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         vboxPrincipalStatic = vboxPrincipal;
     }
 
     @Override
     public void initialize() {
+        textInfoNombre.setText(" "+Token.getInstance().getUsuario().getNombreCompleto());
+        textInfoRol.setText(" "+Token.getInstance().getUsuario().getRolId().getDescripcion());
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_AUDITOR")) {
+            textInfoArea.setText(" "+Token.getInstance().getUsuario().getAreaTrabajoId().getDescripcion());
+        }else{
+            textInfoArea.setText(" No posee");
+        }
         Node imgroot = new ImageView(new Image("org/una/aeropuertocliente/views/principal/menu.png"));
         Node imgInformacion = new ImageView(new Image("org/una/aeropuertocliente/views/principal/informacion.png"));
         Node imgAdmin = new ImageView(new Image("org/una/aeropuertocliente/views/principal/lengueta.png"));
