@@ -210,24 +210,19 @@ public class MantenimientoControlGastosController extends Controller implements 
         } else {
             if (!txtEmpresa.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtContrato.getText().isEmpty() && !txtResponsable.getText().isEmpty() && !txtObservacion.getText().isEmpty() && !txtTipoServico.getText().isEmpty()
                     && !txtDuracion.getText().isEmpty() && !txtPeridiocidad.getText().isEmpty() && !cmbEstadoPago.getValue().isEmpty() && !cmbAreas.getValue().isEmpty()) {
-//                controlesGastosDTO = new ControlesGastosDTO();
+
                 controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
                 controlesGastosDTO.setResponsable(txtResponsable.getText());
                 controlesGastosDTO.setNumeroContrato(txtContrato.getText());
 
-//                detallesGastosDTO = new DetallesControlesGastosDTO();
+
                 detallesGastosDTO.setObservacion(txtObservacion.getText());
                 detallesGastosDTO.setTipoServicio(txtTipoServico.getText());
                 detallesGastosDTO.setDuracion(Long.parseLong(txtDuracion.getText()));
                 detallesGastosDTO.setPeriodicidad(Long.parseLong(txtPeridiocidad.getText()));
                 detallesGastosDTO.setEstado(cmbEstado.getValue());
                 detallesGastosDTO.setEstadoPago(cmbEstadoPago.getValue());
-
-                for (AreasTrabajosDTO areasTrabajosDTO : areasList) {
-                    if (cmbAreas.getValue() == areasTrabajosDTO.getNombreAreaTrabajo()) {
-                        detallesGastosDTO.setAreaTrabajoId(areasTrabajosDTO);
-                    }
-                }
+             
                 if (DetallesControlesGastosService.updateDetalleControlGasto(detallesGastosDTO) == 200) {
                     controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO);
                     if (ControlGastosService.updateControlGasto(controlesGastosDTO) == 200) {

@@ -174,8 +174,6 @@ public class ControlGastosController extends Controller implements Initializable
 
     private void llenarGastos() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-// Aqui usamos la instancia formatter para darle el formato a la fecha. Es importante ver que el resultado es un string.
-//        String fechaTexto = formatter.format(fecha);
         TableColumn<ControlesGastosDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
         TableColumn<ControlesGastosDTO, String> colEmpresa = new TableColumn("Empresa");
@@ -193,17 +191,7 @@ public class ControlGastosController extends Controller implements Initializable
         TableColumn<ControlesGastosDTO, String> colArea = new TableColumn("Area");
         colArea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDetalleControlGastoId().getAreaTrabajoId().getNombreAreaTrabajo()));
         tableGastos.getColumns().addAll(colId, colEmpresa, colContrato, colResponsable, colFecha, colTipo, colEstado, colArea);
-//        notificar(1); 
-        try {
-            gastosList = ControlGastosService.allControlesGastos();
-            if (gastosList != null && !gastosList.isEmpty()) {
-                tableGastos.setItems(FXCollections.observableArrayList(gastosList));
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
-            }
-        } catch (Exception e) {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
-        }
+        notificar(1); 
     }
 
     private void actionControlClick() {
@@ -215,7 +203,6 @@ public class ControlGastosController extends Controller implements Initializable
                     AppContext.getInstance().set("control", control);
                     System.out.println(control.getNumeroContrato());
                     PrincipalController.cambiarVistaPrincipal("mantenimientoControlGastos/MantenimientoControlGastos");
-//                    ((Stage) btnFiltrar.getScene().getWindow()).close();
                 }
 
             }
