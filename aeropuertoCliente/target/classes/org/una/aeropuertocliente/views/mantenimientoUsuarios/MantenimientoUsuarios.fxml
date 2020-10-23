@@ -4,12 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -22,7 +17,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <HBox alignment="TOP_CENTER" prefHeight="53.0" prefWidth="560.0">
+                  <HBox alignment="CENTER" prefHeight="36.0" prefWidth="560.0">
                      <children>
                         <Label fx:id="lblTitulo" prefHeight="17.0" prefWidth="20.0" />
                         <Label fx:id="titulo" prefHeight="20.0" prefWidth="224.0" text="Mantenimiento de Usuarios">
@@ -32,18 +27,18 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Label fx:id="lbltxtId" prefHeight="20.0" prefWidth="40.0" />
                         <JFXTextField fx:id="txtId" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="ID" />
                         <Label fx:id="lbltxtNombre" prefHeight="20.0" prefWidth="40.0" />
-                        <JFXTextField fx:id="txtNombre" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Nombre" />
+                        <JFXTextField fx:id="txtNombre" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Nombre completo" />
                      </children>
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Label fx:id="lbltxtCedula" prefHeight="20.0" prefWidth="40.0" />
                         <JFXTextField fx:id="txtCedula" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Cédula" />
@@ -54,7 +49,7 @@
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Label fx:id="lbltxtFecha" prefHeight="20.0" prefWidth="40.0" />
                         <JFXTextField fx:id="txtFecha" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Fecha de registro" />
@@ -65,7 +60,7 @@
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Label fx:id="lblcmbRol" prefHeight="20.0" prefWidth="40.0" />
                         <JFXComboBox fx:id="cmbRoles" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Rol" />
@@ -76,54 +71,25 @@
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="560.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label fx:id="lblcmbArea" prefHeight="20.0" prefWidth="40.0" />
-                        <JFXComboBox fx:id="cmbArea" prefWidth="190.0" promptText="Area de trabajo" />
-                        <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="105.0" text="Button" visible="false" />
+                        <Label fx:id="lblcmbArea" prefHeight="20.0" prefWidth="29.0" />
+                        <JFXComboBox fx:id="cmbArea" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Area de trabajo" />
+                        <Label fx:id="lbltextPass" prefHeight="20.0" prefWidth="40.0" />
+                        <JFXTextField fx:id="txtPassMostrado" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Contraseña" />
                      </children>
                      <padding>
-                        <Insets left="45.0" right="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0" spacing="10.0">
-                     <children>
-                        <Label fx:id="lbltxtContrasena" prefHeight="20.0" prefWidth="40.0" />
-                        <AnchorPane prefHeight="83.0" prefWidth="238.0">
-                           <children>
-                              <PasswordField fx:id="txtPassOculto" layoutY="25.0" prefHeight="38.0" prefWidth="240.0" promptText="Contraseña" />
-                              <TextField fx:id="txtPassMostrado" layoutY="26.0" prefHeight="38.0" prefWidth="240.0" promptText="Contraseña" />
-                           </children>
-                        </AnchorPane>
-                        <Label fx:id="lblMostrar" prefHeight="20.0" prefWidth="23.0" />
-                        <StackPane prefHeight="30.0" prefWidth="30.0">
-                           <children>
-                              <ImageView fx:id="imgViewPassword" fitHeight="46.0" fitWidth="30.0" onMouseClicked="#actionViewPass" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../../../../../../../../Laboratorio/Laboratorio1Progra3/laboratorio/src/main/resources/org/una/laboratorio/icons/password.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="imgNotPassword" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#actionViewPass" pickOnBounds="true" preserveRatio="true" visible="false">
-                                 <image>
-                                    <Image url="@../../../../../../../../../../../Laboratorio/Laboratorio1Progra3/laboratorio/src/main/resources/org/una/laboratorio/icons/wrong.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </StackPane>
-                        <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="157.0" text="Button" visible="false" />
-                     </children>
-                     <padding>
-                        <Insets left="45.0" right="10.0" />
+                        <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="560.0" spacing="5.0">
                      <children>
                         <Label fx:id="lblCambi" prefHeight="20.0" prefWidth="26.0" />
                         <JFXButton fx:id="btnCambiarContrasena" onAction="#onActionCambiarContrasena" text="Cambiar contraseña" />
-                        <Label fx:id="lblGuardar" prefHeight="20.0" prefWidth="13.0" />
-                        <JFXButton fx:id="btnGuardar" onAction="#onActionGuardar" text="Guardar" />
                         <Label fx:id="lblCancelar" prefHeight="20.0" prefWidth="19.0" />
                         <JFXButton fx:id="btnCancelar" onAction="#onActionCancelar" text="Cancelar" />
+                        <Label fx:id="lblGuardar" prefHeight="20.0" prefWidth="13.0" />
+                        <JFXButton fx:id="btnGuardar" onAction="#onActionGuardar" text="Guardar" />
                      </children>
                      <padding>
                         <Insets right="10.0" />

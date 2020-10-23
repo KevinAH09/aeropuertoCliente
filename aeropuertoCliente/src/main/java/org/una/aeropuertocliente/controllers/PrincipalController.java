@@ -27,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.una.aeropuertocliente.App;
 import org.una.aeropuertocliente.sharedService.Token;
+import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 
 /**
@@ -172,6 +173,7 @@ public class PrincipalController extends Controller implements Initializable {
                     } else if (item.getValue().equals("Areas de Trabajo")) {
                         cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
                     } else if (item.getValue().equals("Cambio de Divisas")) {
+                        AppContext.getInstance().set("cambiodivisas", false);
                         cambiarVistaPrincipal("cambioDivisas/CambioDivisas");
                     }
 

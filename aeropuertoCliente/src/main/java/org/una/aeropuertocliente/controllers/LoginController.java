@@ -32,6 +32,7 @@ import org.una.aeropuertocliente.dtos.UsuariosDTO;
 import org.una.aeropuertocliente.entitiesServices.LoginService;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
 import org.una.aeropuertocliente.sharedService.Token;
+import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
 
@@ -123,6 +124,7 @@ public class LoginController extends Controller implements Initializable {
 
     @FXML
     private void actionCambioDivisas(ActionEvent event) {
+        AppContext.getInstance().set("cambiodivisas", true);
         FlowController.getInstance().goViewInWindowModal("cambioDivisas/CambioDivisas", ((Stage) txtPassOculto.getScene().getWindow()), true);
     }
 

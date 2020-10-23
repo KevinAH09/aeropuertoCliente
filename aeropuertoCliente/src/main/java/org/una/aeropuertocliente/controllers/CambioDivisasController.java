@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.apiForex.TiposMonedasServices;
+import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -104,6 +105,13 @@ public class CambioDivisasController extends Controller implements Initializable
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (!(boolean) AppContext.getInstance().get("cambiodivisas")) {
+            btnSalir.setDisable(true);
+            btnSalir.setVisible(false);
+        } else {
+            btnSalir.setDisable(false);
+            btnSalir.setVisible(true);
+        }
 
         USDCostaRica = TiposMonedasServices.valorMonedaDolarVSColon().valorMoneda();
 
@@ -122,7 +130,7 @@ public class CambioDivisasController extends Controller implements Initializable
         USDNuevaZelanda = TiposMonedasServices.valorMonedaDolarVSNuevaZelandaDolar().valorMoneda();
 
         listaMonedas = Arrays.asList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes");
-        
+
         cbMoneda.setItems(FXCollections.observableArrayList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes"));
         cbMoneda.setValue("Colon");
         itemSelect = "Colon";
@@ -637,8 +645,8 @@ public class CambioDivisasController extends Controller implements Initializable
 
     @FXML
     private void actionSalir(ActionEvent event) {
-        if(new Mensaje().showConfirmation("Cerrar cambio divisas", ((Stage) lblMontoCambio.getScene().getWindow()), "Desea salir de cambio de divisas")){
-             ((Stage) lblMontoCambio.getScene().getWindow()).close();
+        if (new Mensaje().showConfirmation("Cerrar cambio divisas", ((Stage) lblMontoCambio.getScene().getWindow()), "Desea salir de cambio de divisas")) {
+            ((Stage) lblMontoCambio.getScene().getWindow()).close();
         }
     }
 
