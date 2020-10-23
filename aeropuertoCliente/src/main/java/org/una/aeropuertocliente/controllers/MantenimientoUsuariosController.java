@@ -224,6 +224,7 @@ public class MantenimientoUsuariosController implements Initializable {
                 }
                 if (UsuariosService.updateUsuario(usuario) == 200) {
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
+                    PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
                 }
