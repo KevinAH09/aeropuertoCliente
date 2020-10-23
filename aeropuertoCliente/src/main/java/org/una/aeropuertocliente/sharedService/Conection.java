@@ -83,15 +83,54 @@ public class Conection {
         } catch (Exception e) {
             return 0;
         }
-        try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
-            StringBuilder response = new StringBuilder();
-            String responseLine;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
-            }
+        if (con.getResponseCode() == 201) {
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
 
+            }
         }
         return con.getResponseCode();
+
+    }
+
+    public static <T> Object createObjectToConnectionReturnObject(String urlstring, Object object,  Type listtype) throws MalformedURLException, IOException {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
+
+        URL url = new URL(urlBase + urlstring);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json; utf-8");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("Authorization", "bearer " + Token.getInstance().getJwt());
+        con.setDoOutput(true);
+
+        String data = gson.toJson(object);
+
+        try ( OutputStream os = con.getOutputStream()) {
+            byte[] input = data.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        } catch (Exception e) {
+            return 0;
+        }
+        if (con.getResponseCode() == 201) {
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                return gson.fromJson(response.toString(), listtype);
+
+            } catch (Exception e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
 
     }
 

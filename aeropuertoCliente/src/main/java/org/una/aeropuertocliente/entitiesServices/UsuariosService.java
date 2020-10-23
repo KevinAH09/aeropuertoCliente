@@ -47,14 +47,16 @@ public class UsuariosService {
         return usuarioDTO;
     }
 
-    public static int createUsuario(UsuariosDTO createUsuario) {
+    public static UsuariosDTO createUsuario(UsuariosDTO createUsuario) {
         int codeResponse = 0;
+        UsuariosDTO usucreado = new UsuariosDTO();
         try {
-            codeResponse = Conection.createObjectToConnection("usuario/", createUsuario);
+            usucreado = (UsuariosDTO) Conection.createObjectToConnectionReturnObject("usuario/", createUsuario, new TypeToken<UsuariosDTO>() {
+            }.getType());
         } catch (IOException ex) {
-            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuariosService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return codeResponse;
+        return usucreado;
     }
 
     public static int updateUsuario(UsuariosDTO createUsuario) {
@@ -92,7 +94,8 @@ public class UsuariosService {
         }
         return listUsuariosDTOs;
     }
-    public static List<UsuariosDTO>rolUsuarios(Long id) {
+
+    public static List<UsuariosDTO> rolUsuarios(Long id) {
 
         List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
         try {
@@ -104,7 +107,8 @@ public class UsuariosService {
         }
         return listUsuariosDTOs;
     }
-    public static List<UsuariosDTO>areaTrabajoUsuarios(Long id) {
+
+    public static List<UsuariosDTO> areaTrabajoUsuarios(Long id) {
 
         List<UsuariosDTO> listUsuariosDTOs = new ArrayList<>();
         try {
