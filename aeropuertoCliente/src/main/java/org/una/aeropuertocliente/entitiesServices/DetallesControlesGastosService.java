@@ -45,7 +45,8 @@ public class DetallesControlesGastosService {
         }
         return dTO;
     }
- public static DetallesControlesGastosDTO createDetalleControlGasto(DetallesControlesGastosDTO create) {
+
+    public static DetallesControlesGastosDTO createDetalleControlGasto(DetallesControlesGastosDTO create) {
         int codeResponse = 0;
         DetallesControlesGastosDTO detalle = new DetallesControlesGastosDTO();
         try {
@@ -56,15 +57,6 @@ public class DetallesControlesGastosService {
         }
         return detalle;
     }
-//    public static int createDetalleControlGasto(DetallesControlesGastosDTO create) {
-//        int codeResponse = 0;
-//        try {
-//            codeResponse = Conection.createObjectToConnection("detalleControlGasto/", create);
-//        } catch (IOException ex) {
-//            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return codeResponse;
-//    }
 
     public static int updateDetalleControlGasto(DetallesControlesGastosDTO update) {
         int codeResponse = 0;
