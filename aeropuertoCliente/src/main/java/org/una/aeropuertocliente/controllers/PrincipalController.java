@@ -64,11 +64,11 @@ public class PrincipalController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        textInfoNombre.setText(" "+Token.getInstance().getUsuario().getNombreCompleto());
-        textInfoRol.setText(" "+Token.getInstance().getUsuario().getRolId().getDescripcion());
+        textInfoNombre.setText(" " + Token.getInstance().getUsuario().getNombreCompleto());
+        textInfoRol.setText(" " + Token.getInstance().getUsuario().getRolId().getDescripcion());
         if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_AUDITOR")) {
-            textInfoArea.setText(" "+Token.getInstance().getUsuario().getAreaTrabajoId().getDescripcion());
-        }else{
+            textInfoArea.setText(" " + Token.getInstance().getUsuario().getAreaTrabajoId().getDescripcion());
+        } else {
             textInfoArea.setText(" No posee");
         }
         Node imgroot = new ImageView(new Image("org/una/aeropuertocliente/views/principal/menu.png"));
@@ -170,6 +170,7 @@ public class PrincipalController extends Controller implements Initializable {
                     } else if (item.getValue().equals("Aviones")) {
                         cambiarVistaPrincipal("aviones/Aviones");
                     } else if (item.getValue().equals("Vuelos")) {
+                        AppContext.getInstance().set("avionAVuelos", null);
                         cambiarVistaPrincipal("vuelos/Vuelos");
                     } else if (item.getValue().equals("Gastos de manteniento")) {
                         cambiarVistaPrincipal("controlGastos/ControlGastos");
@@ -191,6 +192,7 @@ public class PrincipalController extends Controller implements Initializable {
     }
 
     @FXML
+
     private void actionCerrarSesion(ActionEvent event) {
         FlowController.getInstance().goMain();
         FlowController.eliminar("login/Login");
