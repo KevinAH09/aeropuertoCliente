@@ -83,7 +83,7 @@ public class ControlGastosController extends Controller implements Initializable
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Empresa", "Fecha", "Contrato", "Estado", "Tipo"));
+        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Empresa", /*"Fecha",*/ "Contrato", "Estado", "Tipo"));
         actionControlClick();
         llenarGastos();
     }
@@ -168,6 +168,7 @@ public class ControlGastosController extends Controller implements Initializable
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+        AppContext.getInstance().set("control", null);
         PrincipalController.cambiarVistaPrincipal("mantenimientoControlGastos/MantenimientoControlGastos");
     }
 
