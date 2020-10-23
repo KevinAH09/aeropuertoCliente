@@ -85,7 +85,7 @@ public class VuelosController extends Controller implements Initializable {
     @FXML
     private JFXButton btnRegistrarVuelos;
     AvionesDTO Objetoaviones;
-
+    public List<VuelosDTO> A2 = new ArrayList<VuelosDTO>();
     /**
      * Initializes the controller class.
      */
@@ -99,10 +99,14 @@ public class VuelosController extends Controller implements Initializable {
         txtTipoAvion.setText("");
         txtmatricula.setText("");
         if (Objetoaviones != null) {
-            System.err.println(Objetoaviones.getTipoAvion());
             llenarVuelos();
             txtTipoAvion.setText(Objetoaviones.getTipoAvion());
             txtmatricula.setText(Objetoaviones.getMatricula());
+            A2=VuelosService.vuelos(Objetoaviones.getId());
+            if(A2.isEmpty())
+            {
+                notificar(2);
+            }
             txtTipoAvion.setDisable(true);
             txtmatricula.setDisable(true);
         } else {
@@ -225,8 +229,8 @@ public class VuelosController extends Controller implements Initializable {
     private void registrarVuelos(ActionEvent event) {
         if (Objetoaviones != null) {
             AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
+            AppContext.getInstance().set("VueloAMantenimientoVuelo", null);
         }
-
         PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
     }
 

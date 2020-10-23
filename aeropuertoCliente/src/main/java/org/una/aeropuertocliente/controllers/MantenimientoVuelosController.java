@@ -121,31 +121,47 @@ public class MantenimientoVuelosController extends Controller implements Initial
             } else {
                 combEstado.setValue("Inactivo");
             }
-            LocalDate localDateFinal = datePikerFinal.getValue();
-            datePikerFinal.setValue(localDateFinal);
-            LocalDate localDateInicio = datePikerInicio.getValue();
-            datePikerInicio.setValue(localDateInicio);
+            Date date1 = vuelos.getFechaFinal();
+            LocalDate localdate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            datePikerFinal.setValue(localdate1);
+
+            Date date2 = vuelos.getFechaInicio();
+            LocalDate localdate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            datePikerInicio.setValue(localdate2);
+
             txtTipoBita.setText(vuelos.getBitacoraVueloId().getTipoBitacora());
 
             if (vuelos.getBitacoraVueloId().isCargaCombustible() == true) {
-                radioCargoCombustible.isSelected();
+                radioCargoCombustible.setSelected(true);
             }
             if (vuelos.getBitacoraVueloId().isHorasVuelo() == true) {
-                radioHoras.isSelected();
+                radioHoras.setSelected(true);
             }
             if (vuelos.getBitacoraVueloId().isCargaPasajero() == true) {
-                radioSubioCargaPasajero.isSelected();
+                radioSubioCargaPasajero.setSelected(true);
             }
-            if (vuelos.getBitacoraVueloId().isAutorizacionTorreControl()== true) {
-                radioTorre.isSelected();
+            if (vuelos.getBitacoraVueloId().isAutorizacionTorreControl() == true) {
+                radioTorre.setSelected(true);
             }
-            if (vuelos.getBitacoraVueloId().isZonaDescarga()== true) {
-               radioZona.isSelected();
+            if (vuelos.getBitacoraVueloId().isZonaDescarga() == true) {
+                radioZona.setSelected(true);
             }
         } else {
             txtAvion.setText(aviones.getTipoAvion());
             txtAvion.setDisable(true);
-            
+            txtDestino.setText("");
+            txtOrigen.setText("");
+            txtTipoBita.setText("");
+            combEstado.setValue("Activo");
+            combEstado.setDisable(true);
+            datePikerFinal.setValue(null);
+            datePikerInicio.setValue(null);
+            radioZona.setSelected(false);
+            radioTorre.setSelected(false);
+            radioSubioCargaPasajero.setSelected(false);
+            radioHoras.setSelected(false);
+            radioCargoCombustible.setSelected(false);
+                    
         }
     }
 
@@ -166,11 +182,10 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 LocalDate localDateInicio = datePikerInicio.getValue();
                 Instant instant2 = Instant.from(localDateInicio.atStartOfDay(ZoneId.systemDefault()));
                 Date date2 = Date.from(instant2);
-
                 vuelos.setDestino(txtDestino.getText());
                 vuelos.setOrigen(txtOrigen.getText());
                 vuelos.setFechaFinal(date1);
-                vuelos.setFechaFinal(date2);
+                vuelos.setFechaInicio(date2);
 
                 bitacora.setTipoBitacora(txtTipoBita.getText());
                 if (radioCargoCombustible.isSelected() == true) {
@@ -219,6 +234,8 @@ public class MantenimientoVuelosController extends Controller implements Initial
             }
         } else {
             if (!txtDestino.getText().isEmpty() && !combEstado.getValue().isEmpty() && !txtOrigen.getText().isEmpty() && !txtTipoBita.getText().isEmpty() && datePikerFinal.getValue() != null && datePikerInicio.getValue() != null) {
+                bitacora = new BitacorasVuelosDTO();
+                bitacora = vuelos.getBitacoraVueloId();
                 if (combEstado.getValue().equals("Activo")) {
                     vuelos.setEstado(true);
                 } else {
@@ -235,7 +252,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 vuelos.setDestino(txtDestino.getText());
                 vuelos.setOrigen(txtOrigen.getText());
                 vuelos.setFechaFinal(date1);
-                vuelos.setFechaFinal(date2);
+                vuelos.setFechaInicio(date2);
                 vuelos.setAvionId(aviones);
                 bitacora.setTipoBitacora(txtTipoBita.getText());
 
@@ -264,11 +281,15 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 } else {
                     bitacora.setZonaDescarga(false);
                 }
-                if (VuelosService.updateVuelo(vuelos) == 200) {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Se editó correctamente");
-                    PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
+                if (BitacorasVuelosService.updateBitacoraVuelo(bitacora) == 200) {
+                    if (VuelosService.updateVuelo(vuelos) == 200) {
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Se editó correctamente");
+                        PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Vuelo", ((Stage) txtAvion.getScene().getWindow()), "No se editó correctamente");
+                    }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Vuelo", ((Stage) txtAvion.getScene().getWindow()), "No se editó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el bitácora", ((Stage) txtAvion.getScene().getWindow()), "No se editó correctamente");
                 }
 
             } else {
