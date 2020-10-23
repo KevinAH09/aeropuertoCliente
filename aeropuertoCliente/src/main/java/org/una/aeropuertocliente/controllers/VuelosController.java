@@ -106,6 +106,9 @@ public class VuelosController extends Controller implements Initializable {
             if(A2.isEmpty())
             {
                 notificar(2);
+                txtFilter.setDisable(true);
+                combFilter.setDisable(true);
+                btnFiltrar.setDisable(true);
             }
             txtTipoAvion.setDisable(true);
             txtmatricula.setDisable(true);
