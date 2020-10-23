@@ -35,6 +35,7 @@ import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
 import org.una.aeropuertocliente.entitiesServices.RolesService;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
 import org.una.aeropuertocliente.utils.AppContext;
+import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -242,6 +243,9 @@ public class MantenimientoUsuariosController implements Initializable {
 
     @FXML
     private void onActionCambiarContrasena(ActionEvent event) {
+        
+        AppContext.getInstance().set("usuarioContrasena", usuario);
+        FlowController.getInstance().goViewInWindowModal("cambioContrasena/cambioContrasena", ((Stage) txtCorreo.getScene().getWindow()), Boolean.TRUE);
     }
 
 }
