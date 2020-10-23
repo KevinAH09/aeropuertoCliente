@@ -115,7 +115,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aerolinea = (AerolineasDTO) AppContext.getInstance().get("aerolinea");
-        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula", "Tipo de avión", "Estado", "Aerolinea"));
+        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula", "Tipo de avión", "Estado", "Nombre aerolinea"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         if (aerolinea != null) {
             actionAvionClick();
@@ -198,7 +198,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         colHoraVuelo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getHorasVuelo()));
         TableColumn<AvionesDTO, String> colEstado = new TableColumn("Estado");
         colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
-        TableColumn<AvionesDTO, String> colAerolinea = new TableColumn("Aerolinea");
+        TableColumn<AvionesDTO, String> colAerolinea = new TableColumn("Nombre aerolinea");
         colAerolinea.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getAerolineaId().getNombreAerolinea()));
         tableAviones.getColumns().addAll(colId, colMatricula, colTipoAvion, colHoraVuelo, colEstado, colAerolinea);
         notificar(1);
@@ -333,6 +333,22 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 if (avionesList != null) {
                     tableAviones.setItems(FXCollections.observableArrayList(avionesList));
                 } else {
+                    notificar(0);
+                }
+            }
+            if (combFilter.getValue().equals("Nombre aerolinea") && !txtFilter.getText().isEmpty()) {
+
+                tableAviones.getItems().clear();
+                avionesList = AvionesService.allAviones();
+                for (int i = 0; i < avionesList.size(); i++) {
+                    if (avionesList.get(i).getAerolineaId().getNombreAerolinea().equals(txtFilter.getText())) {
+                        avionesList2 = AvionesService.aerolinea(avionesList.get(i).getAerolineaId().getId());
+                    }
+
+                }
+                if (!avionesList2.isEmpty()) {
+                    tableAviones.setItems(FXCollections.observableArrayList(avionesList2));
+                }else {
                     notificar(0);
                 }
             }

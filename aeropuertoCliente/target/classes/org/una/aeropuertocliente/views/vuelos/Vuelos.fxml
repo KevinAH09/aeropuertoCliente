@@ -31,7 +31,7 @@
                   <HBox alignment="CENTER" prefHeight="58.0" prefWidth="560.0" spacing="5.0">
                      <children>
                         <Label fx:id="lbltxtTipo" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXTextField fx:id="txtId" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de avión" />
+                        <JFXTextField fx:id="txtTipoAvion" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de avión" />
                         <Label fx:id="lbltxtNombre" prefHeight="17.0" prefWidth="30.0" />
                         <JFXTextField fx:id="txtmatricula" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Matrícula del avión" />
                      </children>
@@ -42,7 +42,7 @@
                   <HBox alignment="TOP_CENTER" prefHeight="47.0" prefWidth="560.0" spacing="5.0">
                      <children>
                         <Label fx:id="lbltxtTipo1" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXButton onAction="#buscarAvion" prefHeight="29.0" prefWidth="115.0" text="Buscar Avión" />
+                        <JFXButton fx:id="btnBuscarAvion" onAction="#buscarAvion" prefHeight="29.0" prefWidth="115.0" text="Buscar Avión" />
                         <Label fx:id="lbltxtNombre1" prefHeight="17.0" prefWidth="30.0" />
                      </children>
                      <padding>
@@ -52,13 +52,11 @@
                   <HBox alignment="CENTER" prefHeight="91.0" prefWidth="560.0">
                      <children>
                         <Label fx:id="labTxtFild1" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXTextField fx:id="txtFilter1" labelFloat="true" onAction="#filtrar1" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <JFXTextField fx:id="txtFilter" labelFloat="true" onAction="#filtrar1" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
                         <Label fx:id="labComb1" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXComboBox fx:id="combFilter1" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
+                        <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
                         <Label fx:id="labBtnFiltrar1" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXButton fx:id="btnFiltrar1" onAction="#filtrar1" prefHeight="29.0" prefWidth="82.0" text="Filtrar" />
-                        <Label fx:id="labBtnCancelar1" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXButton fx:id="btnCancelar1" onAction="#cancelar1" prefHeight="29.0" prefWidth="95.0" text="cancelar" />
+                        <JFXButton fx:id="btnFiltrar" onAction="#filtrar" prefHeight="29.0" prefWidth="82.0" text="Filtrar" />
                      </children>
                   </HBox>
                   <HBox prefHeight="281.0" prefWidth="560.0" spacing="20.0" VBox.vgrow="ALWAYS">
@@ -69,7 +67,7 @@
                         <VBox prefHeight="275.0" prefWidth="540.0" HBox.hgrow="ALWAYS">
                            <children>
                               <Label fx:id="lblTable1" prefHeight="20.0" prefWidth="98.0" />
-                              <TableView fx:id="tableAviones1" prefHeight="235.0" prefWidth="540.0">
+                              <TableView fx:id="tableView" prefHeight="235.0" prefWidth="540.0">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy></TableView>
@@ -79,7 +77,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="560.0">
                      <children>
-                        <JFXButton fx:id="btnGuardar" onAction="#registrarVuelos" text="Registrar vuelos" />
+                        <JFXButton fx:id="btnRegistrarVuelos" onAction="#registrarVuelos" text="Registrar vuelos" />
                      </children>
                   </HBox>
                </children>

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.una.aeropuertocliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
@@ -20,12 +19,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.entitiesServices.AvionesService;
 import org.una.aeropuertocliente.utils.AppContext;
@@ -53,102 +58,150 @@ public class AvionesController extends Controller implements Initializable {
     @FXML
     private JFXButton btnFiltrar;
     @FXML
-    private Label labBtnCancelar;
-    @FXML
-    private JFXButton btnCancelar;
-    @FXML
     private Label lblTable;
-    
-   AvionesDTO aviones;
-   AvionesDTO avionesFil;
+
+    AvionesDTO aviones;
+    AvionesDTO avionesFil;
     public List<AvionesDTO> avionesList = new ArrayList<AvionesDTO>();
     public List<AvionesDTO> avionesList2 = new ArrayList<AvionesDTO>();
     @FXML
     private TableView<AvionesDTO> tableAvion;
+    @FXML
+    private JFXButton btnVolverVuelos;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //actionAvionClick();
-        //llenarAviones();
-        //combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Aerolinea"));
+        actionAvionClick();
+        llenarAviones();
+        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Nombre aerolinea"));
 
-    }    
+    }
 
     @FXML
     private void filtrar(ActionEvent event) {
-        
-        if (txtFilter.getText() == null || txtFilter.getText().isEmpty()) {
-            tableAvion.getItems().clear();
-            avionesList = AvionesService.allAviones();
-            tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-        }
-        if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
-            tableAvion.getItems().clear();
-            avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
-            tableAvion.setItems(FXCollections.observableArrayList(avionesFil));
-        }
-        if (combFilter.getValue().equals("Estado")&& !txtFilter.getText().isEmpty()) {
-            if (txtFilter.getText().toLowerCase().equals("true")) {
+        if (combFilter.getValue().isEmpty() || txtFilter.getText().isEmpty()) {
+            notificar(0);
+        } else {
+            if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
                 tableAvion.getItems().clear();
-                avionesList = AvionesService.estado(true);
-                tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-            }
-            if (txtFilter.getText().equals("false")) {
-                tableAvion.getItems().clear();
-                avionesList = AvionesService.estado(false);
-                tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-            }
-        }
-        if (combFilter.getValue().equals("Matrícula")&& !txtFilter.getText().isEmpty()) {
-            tableAvion.getItems().clear();
-            avionesList = AvionesService.matricula(txtFilter.getText());
-            tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-        }
-        if (combFilter.getValue().equals("Tipo de avión")&& !txtFilter.getText().isEmpty()) {
-            tableAvion.getItems().clear();
-            avionesList = AvionesService.TipoAvion(txtFilter.getText());
-            tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-        }
-        if (combFilter.getValue().equals("Aerolinea")&& !txtFilter.getText().isEmpty()) {
-            
-            tableAvion.getItems().clear();
-            avionesList = AvionesService.allAviones();
-            for (int i = 0; i < avionesList.size(); i++) {
-                if (avionesList.get(i).getAerolineaId().getNombreAerolinea().equals(txtFilter.getText())) {
-                    avionesList2 = AvionesService.aerolinea(avionesList.get(i).getAerolineaId().getId());
-                    
+                avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
+                if (avionesFil != null) {
+                    tableAvion.setItems(FXCollections.observableArrayList(avionesFil));
+                } else {
+                    notificar(0);
                 }
-
             }
-            if (!avionesList2.isEmpty()) {
-                tableAvion.setItems(FXCollections.observableArrayList(avionesList2));
+            if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
+                if (txtFilter.getText().toLowerCase().equals("true")) {
+                    tableAvion.getItems().clear();
+                    avionesList = AvionesService.estado(true);
+                    if (avionesList != null) {
+                        tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+                    } else {
+                        notificar(0);
+                    }
+                }
+                if (txtFilter.getText().equals("false")) {
+                    tableAvion.getItems().clear();
+                    avionesList = AvionesService.estado(false);
+                    if (avionesList != null) {
+                        tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+                    } else {
+                        notificar(0);
+                    }
+                }
+            }
+            if (combFilter.getValue().equals("Matrícula") && !txtFilter.getText().isEmpty()) {
+                tableAvion.getItems().clear();
+                avionesList = AvionesService.matricula(txtFilter.getText());
+                if (avionesList != null) {
+                    tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+                } else {
+                    notificar(0);
+                }
+            }
+            if (combFilter.getValue().equals("Tipo de avión") && !txtFilter.getText().isEmpty()) {
+                tableAvion.getItems().clear();
+                avionesList = AvionesService.TipoAvion(txtFilter.getText());
+                if (avionesList != null) {
+                    tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+                } else {
+                    notificar(0);
+                }
+            }
+            if (combFilter.getValue().equals("Nombre aerolinea") && !txtFilter.getText().isEmpty()) {
+
+                tableAvion.getItems().clear();
+                avionesList = AvionesService.allAviones();
+                for (int i = 0; i < avionesList.size(); i++) {
+                    if (avionesList.get(i).getAerolineaId().getNombreAerolinea().equals(txtFilter.getText())) {
+                        avionesList2 = AvionesService.aerolinea(avionesList.get(i).getAerolineaId().getId());
+                    }
+
+                }
+                if (!avionesList2.isEmpty()) {
+                    tableAvion.setItems(FXCollections.observableArrayList(avionesList2));
+                }else {
+                    notificar(0);
+                }
             }
         }
-        
-        
+
     }
 
-    @FXML
-    private void cancelar(ActionEvent event) {
+    private void notificar(int num) {
+        tableAvion.getItems().clear();
+        if (num == 1) {
+            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView);
+            box.getChildren().add(lab);
+            tableAvion.setPlaceholder(box);
+        }
+        if (num == 0) {
+            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+            Text lab = new Text("No se encontró coincidencias");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView2);
+            box.getChildren().add(lab);
+            tableAvion.setPlaceholder(box);
+        }
+        if (num == 2) {
+            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+            Text lab = new Text("No hay vuelos en este avion, porfavor regitrar vuelos");
+            lab.setFill(Color.web("#0076a3"));
+            VBox box = new VBox();
+            box.setAlignment(Pos.CENTER);
+            box.getChildren().add(imageView2);
+            box.getChildren().add(lab);
+            tableAvion.setPlaceholder(box);
+
+        }
     }
-    
+
+
     private void actionAvionClick() {
         tableAvion.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount() == 2 && tableAvion.selectionModelProperty().get().getSelectedItem() != null) {
                     AvionesDTO avion = (AvionesDTO) tableAvion.selectionModelProperty().get().getSelectedItem();
-                    //AppContext.getInstance().set("zon", avion);
-                    System.out.println(avion.getTipoAvion());
-//                    ((Stage) btnFiltrar.getScene().getWindow()).close();
+                    AppContext.getInstance().set("avionAVuelos", avion);
+                    PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
                 }
 
             }
         });
     }
-    
+
     private void llenarAviones() {
         TableColumn<AvionesDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
@@ -160,26 +213,20 @@ public class AvionesController extends Controller implements Initializable {
         colHoraVuelo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getHorasVuelo()));
         TableColumn<AvionesDTO, String> colEstado = new TableColumn("Activo(true)Inactivo(False)");
         colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
-        TableColumn<AvionesDTO, String> colAerolinea = new TableColumn("Aerolinea");
+        TableColumn<AvionesDTO, String> colAerolinea = new TableColumn("Nombre aerolinea");
         colAerolinea.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getAerolineaId().getNombreAerolinea()));
-        tableAvion.getColumns().addAll(colId,colMatricula, colTipoAvion, colHoraVuelo,colEstado,colAerolinea);
-
-        try {
-             avionesList = AvionesService.allAviones();
-            if (avionesList != null && !avionesList.isEmpty()) {
-                tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "La lista está nula o vacía");
-            }
-        } catch (Exception e) {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de tramite", null, "Hubo un error al obtener los datos a cargar");
-        }
+        tableAvion.getColumns().addAll(colId, colMatricula, colTipoAvion, colHoraVuelo, colEstado, colAerolinea);
+        notificar(1);
     }
-    
+
     @Override
     public void initialize() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @FXML
+    private void volver(ActionEvent event) {
+        PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
+    }
 
 }
