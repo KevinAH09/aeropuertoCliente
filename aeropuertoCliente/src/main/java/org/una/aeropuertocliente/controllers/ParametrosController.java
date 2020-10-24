@@ -219,7 +219,7 @@ public class ParametrosController extends Controller implements Initializable {
                     notificar(0);
                 }
             }
-            if (parametrosList != null) {
+            if (parametrosList == null) {
                 mensaje = "No se encontró coincidencias";
                 notificar(0);
             }

@@ -111,6 +111,7 @@ public class RolesController extends Controller implements Initializable {
         }
         if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
             if (txtBusqueda.getText().equals("true")) {
+                System.out.println("Entró true");
                 tableRoles.getItems().clear();
                 rolesList = RolesService.estadoRoles(true);
                 if (rolesList != null) {
@@ -121,6 +122,7 @@ public class RolesController extends Controller implements Initializable {
                 }
             }
             if (txtBusqueda.getText().equals("false")) {
+                System.out.println("Entró false");
                 tableRoles.getItems().clear();
                 rolesList = RolesService.estadoRoles(false);
                 if (rolesList != null) {
@@ -130,7 +132,7 @@ public class RolesController extends Controller implements Initializable {
                     notificar(0);
                 }
             }
-            if (rolesList != null) {
+            if (rolesList == null) {
                 mensaje = "No se encontró coincidencias";
                 notificar(0);
             }

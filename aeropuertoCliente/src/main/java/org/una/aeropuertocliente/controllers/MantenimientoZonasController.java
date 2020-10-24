@@ -211,7 +211,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
                     notificar(0);
                 }
             }
-            if (zonasList != null) {
+            if (zonasList == null) {
                 mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
