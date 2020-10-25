@@ -100,7 +100,7 @@
                                     <Label fx:id="lbltxtMonto" prefHeight="21.0" prefWidth="30.0" />
                                     <JFXTextField fx:id="txtMonto" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Monto" />
                                     <Label fx:id="lblCmbArea" prefHeight="20.0" prefWidth="30.0" />
-                                    <JFXComboBox fx:id="cmbAreas" prefWidth="190.0" promptText="Areas Trabajos" />
+                                    <JFXComboBox fx:id="cmbAreas" prefWidth="190.0" promptText="Area Trabajo" />
                                  </children>
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
