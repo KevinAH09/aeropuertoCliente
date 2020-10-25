@@ -111,6 +111,8 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     private Label lblVolver;
     @FXML
     private JFXButton btnVolverAerolinea;
+    @FXML
+    private Label labTituloAviones;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

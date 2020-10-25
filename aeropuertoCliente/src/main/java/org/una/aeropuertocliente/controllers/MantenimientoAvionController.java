@@ -67,25 +67,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
     @FXML
     private Label labTituloAviones;
     @FXML
-    private Label labTxtFildTipoAvion;
-    @FXML
-    private Label labTxtFildMatricula;
-    @FXML
-    private Label labCombEstado;
-    @FXML
-    private Label labTxtFildZona;
-    @FXML
-    private Label labBtnAgregar;
-    @FXML
-    private Label labTxtFildVuelo;
-    @FXML
-    private Label labCombFiltro;
-    @FXML
-    private Label labBtnFiltro;
-    @FXML
     private Label labTable;
-    @FXML
-    private Label labBtn;
     @FXML
     private JFXTextField txtMatricula;
     @FXML
@@ -112,6 +94,8 @@ public class MantenimientoAvionController extends Controller implements Initiali
     private JFXButton btnVolver;
     AerolineasDTO aerolinea;
     public AvionesZonasDTO avionZonaList;
+    @FXML
+    private Label labVuelos;
 
     /**
      * Initializes the controller class.
@@ -259,9 +243,6 @@ public class MantenimientoAvionController extends Controller implements Initiali
         }
     }
 
-    @FXML
-    private void guardar(ActionEvent event) {
-    }
 
     private void llenarVuelos() {
         TableColumn<VuelosDTO, String> colId = new TableColumn("Id");

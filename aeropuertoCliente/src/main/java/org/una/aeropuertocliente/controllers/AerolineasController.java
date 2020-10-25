@@ -74,8 +74,6 @@ public class AerolineasController extends Controller implements Initializable {
     AerolineasDTO aerolinea1;
     AerolineasDTO aerolineaFil;
     public List<AerolineasDTO> aerolineaList = new ArrayList<AerolineasDTO>();
-    @FXML
-    private AnchorPane AnchorPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
