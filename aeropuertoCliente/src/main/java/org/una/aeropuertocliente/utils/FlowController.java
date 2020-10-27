@@ -79,7 +79,7 @@ public class FlowController {
                         loader.load();
                     } catch (Exception ex) {
                         loader = null;
-                        System.out.println("org.una.aeropuertocliente.utils.FlowController.goMain()"+ex);
+                        System.out.println(ex);
                     }
                 }
             }
@@ -88,12 +88,13 @@ public class FlowController {
     }
 
     public void goMain() {
+        System.out.println("org.una.aeropuertocliente.utils.FlowController.goMain()");
         try {
             this.mainStage.setScene(new Scene(FXMLLoader.load(App.class.getResource("views/base/Base.fxml"), this.idioma)));
             this.mainStage.setMinWidth(768);
             this.mainStage.show();
         } catch (Exception ex) {
-            System.out.println("org.una.aeropuertocliente.utils.FlowController.goMain()"+ex);
+            System.out.println(ex);
         }
     }
 

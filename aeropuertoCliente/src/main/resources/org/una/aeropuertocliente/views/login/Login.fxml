@@ -23,7 +23,7 @@
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../shared/cambio-de-divisas.png" />
+                                    <Image url="@cambio-de-divisas.png" />
                                  </image>
                               </ImageView>
                            </graphic>
