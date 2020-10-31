@@ -7,9 +7,9 @@ package org.una.aeropuertocliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -23,7 +23,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
@@ -68,9 +67,9 @@ public class MantenimientoVuelosController extends Controller implements Initial
     @FXML
     private JFXButton btnGuardar;
     @FXML
-    private DatePicker datePikerInicio;
+    private JFXDatePicker datePikerInicio;
     @FXML
-    private DatePicker datePikerFinal;
+    private JFXDatePicker datePikerFinal;
     @FXML
     private Label labTxtTipoBitacora;
     @FXML

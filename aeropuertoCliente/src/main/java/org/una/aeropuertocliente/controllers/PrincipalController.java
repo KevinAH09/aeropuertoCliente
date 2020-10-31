@@ -5,6 +5,7 @@
  */
 package org.una.aeropuertocliente.controllers;
 
+import com.jfoenix.controls.JFXTreeView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,9 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -41,7 +40,7 @@ public class PrincipalController extends Controller implements Initializable {
     @FXML
     private AnchorPane ancgor;
     @FXML
-    private TreeView<String> treeAcciones;
+    private JFXTreeView<String> treeAcciones;
     @FXML
     private VBox vboxPrincipal;
 

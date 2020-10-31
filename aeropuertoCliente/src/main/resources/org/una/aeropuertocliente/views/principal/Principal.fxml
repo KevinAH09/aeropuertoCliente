@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTreeView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,9 +19,9 @@
             <VBox fx:id="vboxPrincipal" alignment="CENTER" prefHeight="520.0" prefWidth="560.0" BorderPane.alignment="CENTER" />
          </center>
          <left>
-            <VBox prefHeight="520.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="520.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <TreeView fx:id="treeAcciones" prefHeight="520.0" prefWidth="195.0" stylesheets="@../shared/Style2.css" VBox.vgrow="ALWAYS" />
+                  <JFXTreeView fx:id="treeAcciones" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </left>
