@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -23,6 +24,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="30.0" prefWidth="701.0" VBox.vgrow="ALWAYS">
                      <children>
+                        <JFXDatePicker />
                         <Label text="Cambio de divisas" />
                      </children>
                   </HBox>
