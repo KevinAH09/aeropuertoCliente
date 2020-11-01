@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -26,6 +27,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -104,6 +106,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
     private Label lblEstado;
     @FXML
     private JFXComboBox<String> cmbEstado2;
+    private List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -123,6 +126,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
         }
         actionZonasClick();
         notificar(1);
+        indicarRequeridos();
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Código"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         cmbEstado2.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
@@ -164,8 +168,9 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
+        String validacion = validarRequeridos();
         if (zonas == null) {
-            if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtCodigo.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
+            if (validacion == null) {
                 zonas = new ZonasDTO();
                 if (cmbEstado.getValue().equals("Activo")) {
                     zonas.setEstado(true);
@@ -181,11 +186,11 @@ public class MantenimientoZonasController extends Controller implements Initiali
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Zona", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
 
         } else {
-            if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtCodigo.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
+            if (validacion == null) {
                 if (cmbEstado.getValue().equals("Activo")) {
                     zonas.setEstado(true);
                 } else {
@@ -200,7 +205,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
         }
         tableZonas.getItems().clear();
@@ -388,6 +393,38 @@ public class MantenimientoZonasController extends Controller implements Initiali
     private void limpiarTableView() {
         tableZonas.getItems().clear();
         tableZonas.getColumns().clear();
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtDescripcion, txtNombre, txtCodigo, cmbEstado));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
+        }
     }
 
     @Override
