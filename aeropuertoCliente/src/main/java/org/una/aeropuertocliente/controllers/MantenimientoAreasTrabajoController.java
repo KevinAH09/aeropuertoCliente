@@ -175,7 +175,7 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
         if (validos) {
             return null;
         } else {
-            return "Campos requeridos " + "[" + invalidos + "].";
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
         }
     }
 
