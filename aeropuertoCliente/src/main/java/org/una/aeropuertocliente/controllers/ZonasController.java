@@ -26,11 +26,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.TableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
 import org.una.aeropuertocliente.sharedService.Token;
@@ -69,6 +71,11 @@ public class ZonasController extends Controller implements Initializable {
     public List<ZonasDTO> zonasList = new ArrayList<ZonasDTO>();
     ZonasService zonSer;
     String mensaje;
+    public ZonasDTO data = new ZonasDTO();
+    @FXML
+    private Label lblEstadoZona;
+    @FXML
+    private JFXComboBox<String> cmbEstado;
 
     /**
      * Initializes the controller class.
@@ -77,42 +84,72 @@ public class ZonasController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         actionZonasClick();
-        llenarZonas();
+        notificar(1);
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Código"));
+        cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    cmbEstado.setVisible(false);
+                    txtBusqueda.setVisible(true);
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Nombre") {
+                    cmbEstado.setVisible(false);
+                    txtBusqueda.setVisible(true);
+                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
+                }
+                if (t1 == "Código") {
+                    cmbEstado.setVisible(false);
+                    txtBusqueda.setVisible(true);
+                    txtBusqueda.setPromptText("Ingrese el código");
+                }
+                if (t1 == "Estado") {
+                    cmbEstado.setVisible(true);
+                    txtBusqueda.setVisible(false);
+                }
+            }
+
+        }
+        );
     }
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
         if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
-            tableZonas.getItems().clear();
+            limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
-            tableZonas.getItems().clear();
             zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
             if (zonasFilt != null) {
+                limpiarTableView();
+                llenarZonas();
                 tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
             } else {
                 mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("true")) {
-                tableZonas.getItems().clear();
+        if (cmbFiltro.getValue().equals("Estado") && cmbEstado.getValue() != null) {
+            if (cmbEstado.getValue().equals("Activo")) {
                 zonasList = ZonasService.estadoZona(true);
                 if (zonasList != null) {
+                    limpiarTableView();
+                    llenarZonas();
                     tableZonas.setItems(FXCollections.observableArrayList(zonasList));
                 } else {
                     mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
-            if (txtBusqueda.getText().equals("false")) {
-                tableZonas.getItems().clear();
+            if (cmbEstado.getValue().equals("false")) {
                 zonasList = ZonasService.estadoZona(false);
                 if (zonasList != null) {
+                    limpiarTableView();
+                    llenarZonas();
                     tableZonas.setItems(FXCollections.observableArrayList(zonasList));
                 } else {
                     mensaje = "No se encontró coincidencias";
@@ -125,9 +162,10 @@ public class ZonasController extends Controller implements Initializable {
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
-            tableZonas.getItems().clear();
             zonasList = ZonasService.nombreZona(txtBusqueda.getText());
             if (zonasList != null) {
+                limpiarTableView();
+                llenarZonas();
                 tableZonas.setItems(FXCollections.observableArrayList(zonasList));
             } else {
                 mensaje = "No se encontró coincidencias";
@@ -135,9 +173,10 @@ public class ZonasController extends Controller implements Initializable {
             }
         }
         if (cmbFiltro.getValue().equals("Código") && !txtBusqueda.getText().isEmpty()) {
-            tableZonas.getItems().clear();
             zonasList = ZonasService.codigoZona(txtBusqueda.getText());
             if (zonasList != null) {
+                limpiarTableView();
+                llenarZonas();
                 tableZonas.setItems(FXCollections.observableArrayList(zonasList));
             } else {
                 mensaje = "No se encontró coincidencias";
@@ -152,33 +191,19 @@ public class ZonasController extends Controller implements Initializable {
         TableColumn<ZonasDTO, String> colNombre = new TableColumn("Nombre");
         colNombre.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreZona()));
         TableColumn<ZonasDTO, String> colEstado = new TableColumn("Estado");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         TableColumn<ZonasDTO, String> colCodigo = new TableColumn("Código");
         colCodigo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getCodigo()));
         TableColumn<ZonasDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableZonas.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion);
-        notificar(1);
+        addButtonToTable();
 
-        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-                if (t1 == "Id") {
-                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
-                }
-                if (t1 == "Nombre") {
-                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
-                }
-                if (t1 == "Código") {
-                    txtBusqueda.setPromptText("Ingrese el código");
-                }
-                if (t1 == "Estado") {
-                    txtBusqueda.setPromptText("Ingrese true o false");
-                }
-            }
-
-        }
-        );
     }
 
     private void actionZonasClick() {
@@ -196,7 +221,7 @@ public class ZonasController extends Controller implements Initializable {
     }
 
     private void notificar(int num) {
-        tableZonas.getItems().clear();
+        limpiarTableView();
         if (num == 1) {
             ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
             Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
@@ -216,6 +241,49 @@ public class ZonasController extends Controller implements Initializable {
             box.getChildren().add(lab);
             tableZonas.setPlaceholder(box);
         }
+    }
+
+    private void limpiarTableView() {
+        tableZonas.getItems().clear();
+        tableZonas.getColumns().clear();
+    }
+
+    private void addButtonToTable() {
+        TableColumn<ZonasDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<ZonasDTO, Void>, TableCell<ZonasDTO, Void>> cellFactory = new Callback<TableColumn<ZonasDTO, Void>, TableCell<ZonasDTO, Void>>() {
+            @Override
+            public TableCell<ZonasDTO, Void> call(final TableColumn<ZonasDTO, Void> param) {
+                final TableCell<ZonasDTO, Void> cell = new TableCell<ZonasDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Seleccionar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            data = getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("zon", data);
+                            PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion");
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableZonas.getColumns().add(colBtn);
+
     }
 
     @Override
