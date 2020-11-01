@@ -9,11 +9,15 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -61,6 +65,7 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
     @FXML
     private JFXButton btnRegistrar;
     AreasTrabajosDTO areaTrabajoDTO;
+    private List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -74,6 +79,7 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
         txtNombre.clear();
         txtId.setDisable(true);
         areaTrabajoDTO = (AreasTrabajosDTO) AppContext.getInstance().get("area");
+        indicarRequeridos();
         if (areaTrabajoDTO != null) {
             txtDescripcion.setText(areaTrabajoDTO.getDescripcion());
             txtId.setText(areaTrabajoDTO.getId().toString());
@@ -94,13 +100,14 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
         txtId.clear();
         txtNombre.clear();
         PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
-//        ((Stage) txtId.getScene().getWindow()).close();
     }
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
+        String validacion = validarRequeridos();
+        System.out.println("Codigo: " + validacion);
         if (areaTrabajoDTO == null) {
-            if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtDescripcion.getText().isEmpty()) {
+            if (validacion == null/*!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtDescripcion.getText().isEmpty()*/) {
                 areaTrabajoDTO = new AreasTrabajosDTO();
                 if (cmbEstado.getValue().equals("Activo")) {
                     areaTrabajoDTO.setEstado(true);
@@ -116,11 +123,11 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
 
         } else {
-            if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtId.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
+            if (validacion == null/*!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtId.getText().isEmpty() && !txtDescripcion.getText().isEmpty()*/) {
                 if (cmbEstado.getValue().equals("Activo")) {
                     areaTrabajoDTO.setEstado(true);
                 } else {
@@ -130,13 +137,45 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                 areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
                 if (AreasTrabajosService.updateAreaTrabajo(areaTrabajoDTO) == 200) {
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                     PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
+                    PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
+        }
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtDescripcion, txtNombre, cmbEstado));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Campos requeridos " + "[" + invalidos + "].";
         }
     }
 
