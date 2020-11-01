@@ -12,6 +12,7 @@ org\una\aeropuertocliente\entitiesServices\AvionesZonasService$3.class
 org\una\aeropuertocliente\controllers\CambioDivisasController.class
 org\una\aeropuertocliente\controllers\MantenimientoAvionController.class
 org\una\aeropuertocliente\entitiesServices\ParametrosService$1.class
+org\una\aeropuertocliente\controllers\ZonasController$3$1.class
 org\una\aeropuertocliente\dtos\ZonasDTO.class
 org\una\aeropuertocliente\controllers\MantenimientoControlGastosController.class
 org\una\aeropuertocliente\entitiesServices\AvionesService$1.class
@@ -61,6 +62,7 @@ org\una\aeropuertocliente\controllers\UsuariosController.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService$6.class
 org\una\aeropuertocliente\entitiesServices\AvionesService$4.class
 org\una\aeropuertocliente\entitiesServices\ParametrosService$4.class
+org\una\aeropuertocliente\controllers\MantenimientoZonasController$3$1.class
 org\una\aeropuertocliente\controllers\CambiarContrasenaController.class
 org\una\aeropuertocliente\App.class
 org\una\aeropuertocliente\dtos\AerolineasDTO.class
@@ -89,6 +91,7 @@ org\una\aeropuertocliente\apiForex\TiposMonedasServices$7.class
 org\una\aeropuertocliente\entitiesServices\VuelosService$5.class
 org\una\aeropuertocliente\dtos\AvionesZonasDTO.class
 org\una\aeropuertocliente\apiForex\Tipomodena.class
+org\una\aeropuertocliente\controllers\ZonasController$3.class
 org\una\aeropuertocliente\entitiesServices\AreasTrabajosService$1.class
 org\una\aeropuertocliente\controllers\AvionesController.class
 org\una\aeropuertocliente\controllers\ParametrosController$1.class
@@ -97,6 +100,7 @@ org\una\aeropuertocliente\entitiesServices\AvionesService$8.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService$2.class
 org\una\aeropuertocliente\controllers\RolesController$1.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$7.class
+org\una\aeropuertocliente\controllers\MantenimientoZonasController$3.class
 org\una\aeropuertocliente\entitiesServices\AreasTrabajosService$2.class
 org\una\aeropuertocliente\entitiesServices\AerolineasService$1.class
 org\una\aeropuertocliente\entitiesServices\AvionesZonasService$1.class
