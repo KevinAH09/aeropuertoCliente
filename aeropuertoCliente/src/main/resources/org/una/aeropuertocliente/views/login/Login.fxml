@@ -46,7 +46,7 @@
                         <AnchorPane prefHeight="100.0" prefWidth="300.0">
                            <children>
                               <JFXTextField fx:id="txtPassMostrado" layoutX="-2.0" layoutY="20.0" onKeyReleased="#actionKeyPass" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" />
-                              <JFXPasswordField fx:id="txtPassOculto" labelFloat="true" layoutX="-2.0" layoutY="20.0" onKeyReleased="#actionTabPass" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" visible="false" />
+                              <JFXPasswordField fx:id="txtPassOculto" labelFloat="true" layoutX="-2.0" layoutY="20.0" onKeyReleased="#actionKeyPass" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" visible="false" />
                            </children>
                         </AnchorPane>
                         <StackPane prefHeight="30.0" prefWidth="30.0">

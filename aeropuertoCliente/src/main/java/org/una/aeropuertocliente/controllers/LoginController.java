@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -44,7 +45,6 @@ import org.una.aeropuertocliente.utils.Mensaje;
  */
 public class LoginController extends Controller implements Initializable {
 
-    private final String urlstring = "http://localhost:8099/";
     @FXML
     private JFXTextField txtUsuario;
     @FXML
@@ -72,6 +72,7 @@ public class LoginController extends Controller implements Initializable {
         txtPassOculto.setVisible(true);
         imgNotPassword.setVisible(false);
         imgViewPassword.setVisible(true);
+
     }
 
     @Override
@@ -125,8 +126,6 @@ public class LoginController extends Controller implements Initializable {
         }
     }
 
-    
-
     @FXML
     private void actionSalir(ActionEvent event) {
         if (new Mensaje().showConfirmation("Volver a inicio", ((Stage) btnCancelar.getScene().getWindow()), "¿Desea salir del login?")) {
@@ -135,12 +134,25 @@ public class LoginController extends Controller implements Initializable {
     }
 
     @FXML
-    private void actionTabUsuario(KeyEvent event) {
-        event.getEventType().getName();
+    private void actionKeyUsuario(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            if (txtPassMostrado.isVisible()) {
+                txtPassMostrado.requestFocus();
+            } else {
+                txtPassOculto.requestFocus();
+            }
+        } else if (event.getCode() == KeyCode.ENTER) {
+            actionIngresar(null);
+        }
     }
 
     @FXML
-    private void actionTabPass(KeyEvent event) {
+    private void actionKeyPass(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            txtUsuario.requestFocus();
+        } else if (event.getCode() == KeyCode.ENTER) {
+            actionIngresar(null);
+        }
     }
 
 }
