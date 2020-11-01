@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -23,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -95,6 +97,7 @@ public class ParametrosController extends Controller implements Initializable {
     ParametrosDTO parametros;
     ParametrosDTO parametrosFilt;
     public List<ParametrosDTO> parametrosList = new ArrayList<ParametrosDTO>();
+    private List<Node> requeridos = new ArrayList<>();
     String mensaje;
     @FXML
     private JFXButton btnCancelar;
@@ -113,6 +116,7 @@ public class ParametrosController extends Controller implements Initializable {
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre"));
         actionParametrosClick();
         notificar(1);
+        indicarRequeridos();
 
         cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -148,8 +152,9 @@ public class ParametrosController extends Controller implements Initializable {
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
+        String validacion = validarRequeridos();
         if (parametros == null) {
-            if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtValor.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
+            if (validacion == null) {
                 parametros = new ParametrosDTO();
                 if (cmbEstado.getValue().equals("Activo")) {
                     parametros.setEstado(true);
@@ -165,11 +170,11 @@ public class ParametrosController extends Controller implements Initializable {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
 
         } else {
-            if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtValor.getText().isEmpty() && !txtDescripcion.getText().isEmpty()) {
+            if (validacion == null) {
                 if (cmbEstado.getValue().equals("Activo")) {
                     parametros.setEstado(true);
                 } else {
@@ -184,7 +189,7 @@ public class ParametrosController extends Controller implements Initializable {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
         }
         tableParametros.getItems().clear();
@@ -366,6 +371,38 @@ public class ParametrosController extends Controller implements Initializable {
     private void limpiarTableView() {
         tableParametros.getItems().clear();
         tableParametros.getColumns().clear();
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtDescripcion, txtNombre, cmbEstado, txtValor));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
+        }
     }
 
     @Override

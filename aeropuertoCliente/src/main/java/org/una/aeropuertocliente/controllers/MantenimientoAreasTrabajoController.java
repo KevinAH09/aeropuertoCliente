@@ -105,7 +105,6 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
     @FXML
     private void onActionGuardar(ActionEvent event) {
         String validacion = validarRequeridos();
-        System.out.println("Codigo: " + validacion);
         if (areaTrabajoDTO == null) {
             if (validacion == null/*!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtDescripcion.getText().isEmpty()*/) {
                 areaTrabajoDTO = new AreasTrabajosDTO();
