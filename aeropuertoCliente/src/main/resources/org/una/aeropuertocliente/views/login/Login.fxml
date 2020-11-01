@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,22 +16,6 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" StackPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="800.0">
-                     <children>
-                        <JFXButton onAction="#actionCambioDivisas" text="Divisas">
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@cambio-de-divisas.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </JFXButton>
-                     </children>
-                  </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
                         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -49,7 +32,7 @@
                               <Image url="@usuarioGrande.png" />
                            </image>
                         </ImageView>
-                        <JFXTextField fx:id="txtUsuario" prefHeight="47.0" prefWidth="300.0" promptText="CEDULA" />
+                        <JFXTextField fx:id="txtUsuario" onKeyReleased="#actionKeyUsuario" prefHeight="47.0" prefWidth="300.0" promptText="CEDULA" />
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </HBox>
@@ -62,8 +45,8 @@
                         </ImageView>
                         <AnchorPane prefHeight="100.0" prefWidth="300.0">
                            <children>
-                              <JFXTextField fx:id="txtPassMostrado" layoutX="-2.0" layoutY="20.0" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" />
-                              <JFXPasswordField fx:id="txtPassOculto" labelFloat="true" layoutX="-2.0" layoutY="20.0" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" visible="false" />
+                              <JFXTextField fx:id="txtPassMostrado" layoutX="-2.0" layoutY="20.0" onKeyReleased="#actionKeyPass" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" />
+                              <JFXPasswordField fx:id="txtPassOculto" labelFloat="true" layoutX="-2.0" layoutY="20.0" onKeyReleased="#actionTabPass" prefHeight="47.0" prefWidth="300.0" promptText="CONTRASEÑA" visible="false" />
                            </children>
                         </AnchorPane>
                         <StackPane prefHeight="30.0" prefWidth="30.0">

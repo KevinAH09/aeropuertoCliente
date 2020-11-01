@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.controllers.Controller;
@@ -124,17 +125,22 @@ public class LoginController extends Controller implements Initializable {
         }
     }
 
-    @FXML
-    private void actionCambioDivisas(ActionEvent event) {
-        AppContext.getInstance().set("cambiodivisas", true);
-        FlowController.getInstance().goViewInWindowModal("cambioDivisas/CambioDivisas", ((Stage) txtPassOculto.getScene().getWindow()), true);
-    }
+    
 
     @FXML
     private void actionSalir(ActionEvent event) {
-        if (new Mensaje().showConfirmation("Cerrar aplicacion", ((Stage) btnCancelar.getScene().getWindow()), "Desea salir de la aplicacion")) {
-            ((Stage) btnCancelar.getScene().getWindow()).close();
+        if (new Mensaje().showConfirmation("Volver a inicio", ((Stage) btnCancelar.getScene().getWindow()), "¿Desea salir del login?")) {
+            FlowController.getInstance().goView("inicio/Inicio");
         }
+    }
+
+    @FXML
+    private void actionTabUsuario(KeyEvent event) {
+        event.getEventType().getName();
+    }
+
+    @FXML
+    private void actionTabPass(KeyEvent event) {
     }
 
 }

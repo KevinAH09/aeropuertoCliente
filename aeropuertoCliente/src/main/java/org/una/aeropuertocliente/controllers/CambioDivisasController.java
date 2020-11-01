@@ -56,7 +56,6 @@ public class CambioDivisasController extends Controller implements Initializable
     private ImageView img7;
     @FXML
     private ImageView img8;
-    @FXML
     private JFXButton btnSalir;
     @FXML
     private JFXButton btnExportarXML;
@@ -84,10 +83,6 @@ public class CambioDivisasController extends Controller implements Initializable
     private ImageView imgSelect;
     @FXML
     private Text lblMontoCambio;
-    @FXML
-    private Label lblcompra;
-    @FXML
-    private Label lblVenta;
     List<String> listaMonedas = new ArrayList<>();
 
     double USDEuros;
@@ -106,11 +101,9 @@ public class CambioDivisasController extends Controller implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (!(boolean) AppContext.getInstance().get("cambiodivisas")) {
-            btnSalir.setDisable(true);
-            btnSalir.setVisible(false);
+           
         } else {
-            btnSalir.setDisable(false);
-            btnSalir.setVisible(true);
+//           
         }
 
         USDCostaRica = TiposMonedasServices.valorMonedaDolarVSColon().valorMoneda();
@@ -641,13 +634,6 @@ public class CambioDivisasController extends Controller implements Initializable
 
         }
 
-    }
-
-    @FXML
-    private void actionSalir(ActionEvent event) {
-        if (new Mensaje().showConfirmation("Cerrar cambio divisas", ((Stage) lblMontoCambio.getScene().getWindow()), "Desea salir de cambio de divisas")) {
-            ((Stage) lblMontoCambio.getScene().getWindow()).close();
-        }
     }
 
 }

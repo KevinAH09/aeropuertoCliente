@@ -22,7 +22,7 @@ public class App extends Application {
         FlowController.getInstance().InitializeFlow(stage, null);
         stage.initStyle(StageStyle.DECORATED);
         FlowController.getInstance().goMain();
-        FlowController.getInstance().goView("login/Login");
+        FlowController.getInstance().goView("inicio/Inicio");
     }
 
     static void setRoot(String fxml) throws IOException {

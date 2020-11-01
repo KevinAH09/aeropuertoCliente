@@ -184,6 +184,27 @@ public class FlowController {
         stage.showAndWait();
 
     }
+    public void goViewInWindowModalFullScrean(String viewName, Stage parentStage, Boolean resizable) { //muestra una ventana modal
+        FXMLLoader loader = getLoader(viewName);
+        Controller controller = loader.getController();
+        controller.initialize();
+        Stage stage = new Stage();
+        stage.setResizable(resizable);
+        stage.setOnHidden((WindowEvent event) -> {
+            controller.getStage().getScene().setRoot(new Pane());
+            controller.setStage(null);
+        });
+        controller.setStage(stage);
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(parentStage);
+        stage.centerOnScreen();
+        stage.setFullScreen(true);
+        stage.showAndWait();
+
+    }
 	
 	
 
