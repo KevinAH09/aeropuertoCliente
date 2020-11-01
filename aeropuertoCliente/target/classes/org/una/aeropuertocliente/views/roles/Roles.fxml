@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -21,7 +22,7 @@
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="lblZonas" prefHeight="17.0" prefWidth="30.0" />
-                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="62.0" text="Roles">
+                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="67.0" text="Roles">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -30,9 +31,15 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="560.0" spacing="5.0">
                      <children>
-                        <Label fx:id="lbltxtBusqueda" prefHeight="17.0" prefWidth="30.0" />
-                        <JFXTextField fx:id="txtBusqueda" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
-                        <Label fx:id="lblCmbFiltro" prefHeight="20.0" prefWidth="30.0" />
+                        <Pane prefHeight="60.0" prefWidth="221.0">
+                           <children>
+                              <Label fx:id="lbltxtBusqueda" layoutX="-1.0" layoutY="20.0" prefHeight="17.0" prefWidth="30.0" visible="false" />
+                              <JFXTextField fx:id="txtBusqueda" labelFloat="true" layoutX="21.0" layoutY="16.0" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                              <Label fx:id="lblEstado" layoutX="15.0" layoutY="22.0" prefHeight="20.0" prefWidth="15.0" visible="false" />
+                              <JFXComboBox fx:id="cmbEstado" layoutX="28.0" layoutY="18.0" prefHeight="26.0" prefWidth="177.0" promptText="Estado" visible="false" />
+                           </children>
+                        </Pane>
+                        <Label fx:id="lblCmbFiltro" prefHeight="20.0" prefWidth="18.0" />
                         <JFXComboBox fx:id="cmbFiltro" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
                         <Label fx:id="lblFiltrar" prefHeight="20.0" prefWidth="30.0" />
                         <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" prefHeight="29.0" prefWidth="75.0" text="Filtrar" />
@@ -48,7 +55,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="709.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label fx:id="lblTable" prefHeight="20.0" prefWidth="98.0" />
+                              <Label fx:id="lblTable" prefHeight="20.0" prefWidth="98.0" visible="false" />
                               <TableView fx:id="tableRoles" prefHeight="329.0" prefWidth="540.0" stylesheets="@../shared/table.css" VBox.vgrow="ALWAYS">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

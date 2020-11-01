@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -31,8 +32,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import static org.una.aeropuertocliente.controllers.PrincipalController.cambiarVistaPrincipal;
 import org.una.aeropuertocliente.dtos.RolesDTO;
+import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.RolesService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
@@ -74,6 +77,10 @@ public class RolesController extends Controller implements Initializable {
     String mensaje;
 
     public List<RolesDTO> rolesList = new ArrayList<RolesDTO>();
+    @FXML
+    private Label lblEstado;
+    @FXML
+    private JFXComboBox<String> cmbEstado;
 
     /**
      * Initializes the controller class.
@@ -88,44 +95,67 @@ public class RolesController extends Controller implements Initializable {
             btnRegistrar.setDisable(false);
         }
         actionRolesClick();
-        llenarRoles();
+        notificar(1);
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Código"));
+        cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    cmbEstado.setVisible(false);
+                    txtBusqueda.setVisible(true);
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Código") {
+                    cmbEstado.setVisible(false);
+                    txtBusqueda.setVisible(true);
+                    txtBusqueda.setPromptText("Ingrese el código");
+                }
+                if (t1 == "Estado") {
+                    cmbEstado.setVisible(true);
+                    txtBusqueda.setVisible(false);
+                }
+            }
+
+        }
+        );
     }
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
-            tableRoles.getItems().clear();
+        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null) {
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+            notificar(0);
         }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
-            tableRoles.getItems().clear();
+            limpiarTableView();
             rolesFilt = RolesService.idRole(Long.valueOf(txtBusqueda.getText()));
             if (rolesFilt != null) {
+                llenarRoles();
                 tableRoles.setItems(FXCollections.observableArrayList(rolesFilt));
             } else {
                 mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("true")) {
-                System.out.println("Entró true");
-                tableRoles.getItems().clear();
+        if (cmbFiltro.getValue().equals("Estado") && cmbEstado.getValue() != null) {
+            if (cmbEstado.getValue().equals("Activo")) {
+                limpiarTableView();
                 rolesList = RolesService.estadoRoles(true);
                 if (rolesList != null) {
+                    llenarRoles();
                     tableRoles.setItems(FXCollections.observableArrayList(rolesList));
                 } else {
                     mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
-            if (txtBusqueda.getText().equals("false")) {
-                System.out.println("Entró false");
-                tableRoles.getItems().clear();
+            if (cmbEstado.getValue().equals("Inactivo")) {
+                limpiarTableView();
                 rolesList = RolesService.estadoRoles(false);
                 if (rolesList != null) {
+                    llenarRoles();
                     tableRoles.setItems(FXCollections.observableArrayList(rolesList));
                 } else {
                     mensaje = "No se encontró coincidencias";
@@ -138,9 +168,10 @@ public class RolesController extends Controller implements Initializable {
             }
         }
         if (cmbFiltro.getValue().equals("Código") && !txtBusqueda.getText().isEmpty()) {
-            tableRoles.getItems().clear();
+            limpiarTableView();
             rolesList = RolesService.codigoRoles(txtBusqueda.getText());
             if (rolesList != null) {
+                llenarRoles();
                 tableRoles.setItems(FXCollections.observableArrayList(rolesList));
             } else {
                 mensaje = "No se encontró coincidencias";
@@ -159,30 +190,19 @@ public class RolesController extends Controller implements Initializable {
         TableColumn<RolesDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
         TableColumn<RolesDTO, String> colEstado = new TableColumn("Estado");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         TableColumn<RolesDTO, String> colCodigo = new TableColumn("Código");
         colCodigo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getCodigo()));
         TableColumn<RolesDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableRoles.getColumns().addAll(colId, colEstado, colCodigo, colDescripcion);
-        notificar(1);
-        
-        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-                if (t1 == "Id") {
-                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
-                }
-                if (t1 == "Código") {
-                    txtBusqueda.setPromptText("Ingrese el código");
-                }
-                if (t1 == "Estado") {
-                    txtBusqueda.setPromptText("Ingrese true o false");
-                }
-            }
+        addButtonToTable();
 
-        }
-        );
     }
 
     private void actionRolesClick() {
@@ -203,7 +223,7 @@ public class RolesController extends Controller implements Initializable {
     }
 
     private void notificar(int num) {
-        tableRoles.getItems().clear();
+        limpiarTableView();
         if (num == 1) {
             ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
             Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
@@ -223,6 +243,50 @@ public class RolesController extends Controller implements Initializable {
             box.getChildren().add(lab);
             tableRoles.setPlaceholder(box);
         }
+    }
+
+    private void limpiarTableView() {
+        tableRoles.getItems().clear();
+        tableRoles.getColumns().clear();
+    }
+
+    private void addButtonToTable() {
+        TableColumn<RolesDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<RolesDTO, Void>, TableCell<RolesDTO, Void>> cellFactory = new Callback<TableColumn<RolesDTO, Void>, TableCell<RolesDTO, Void>>() {
+            @Override
+            public TableCell<RolesDTO, Void> call(final TableColumn<RolesDTO, Void> param) {
+                final TableCell<RolesDTO, Void> cell = new TableCell<RolesDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Editar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            RolesDTO rol = getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("rol", rol);
+                            System.out.println(rol.getDescripcion());
+                            cambiarVistaPrincipal("mantenimientoRoles/MantenimientoRoles");
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableRoles.getColumns().add(colBtn);
+
     }
 
     @Override

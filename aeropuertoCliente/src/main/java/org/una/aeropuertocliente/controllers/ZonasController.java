@@ -145,7 +145,7 @@ public class ZonasController extends Controller implements Initializable {
                     notificar(0);
                 }
             }
-            if (cmbEstado.getValue().equals("false")) {
+            if (cmbEstado.getValue().equals("Inactivo")) {
                 zonasList = ZonasService.estadoZona(false);
                 if (zonasList != null) {
                     limpiarTableView();
