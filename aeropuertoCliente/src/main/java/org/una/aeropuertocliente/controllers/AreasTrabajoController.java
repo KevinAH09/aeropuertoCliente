@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -33,6 +34,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
@@ -90,21 +92,35 @@ public class AreasTrabajoController extends Controller implements Initializable 
             btnRegistrar.setDisable(false);
         }
         actionZonasClick();
-        llenarAreas();
+        notificar(1);
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Nombre"));
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Nombre") {
+                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
+                }
+            }
+
+        }
+        );
     }
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
         if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
-            tableAreas.getItems().clear();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+            notificar(0);
         }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             System.out.println("Entro Areas");
-            tableAreas.getItems().clear();
+            limpiarTableView();
             areasFilt = areaService.idAreaTrabajo(Long.valueOf(txtBusqueda.getText()));
             if (areasFilt != null) {
+                llenarAreas();
                 tableAreas.setItems(FXCollections.observableArrayList(areasFilt));
             } else {
                 mensaje = "No se encontró coincidencias";
@@ -112,9 +128,10 @@ public class AreasTrabajoController extends Controller implements Initializable 
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
-            tableAreas.getItems().clear();
+            limpiarTableView();
             areasList = areaService.nombreAreasTrabajos(txtBusqueda.getText().toUpperCase());
             if (areasList != null) {
+                llenarAreas();
                 tableAreas.setItems(FXCollections.observableArrayList(areasList));
             } else {
                 mensaje = "No se encontró coincidencias";
@@ -136,24 +153,16 @@ public class AreasTrabajoController extends Controller implements Initializable 
         colNombre.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreAreaTrabajo()));
         TableColumn<AreasTrabajosDTO, String> colDescrpcion = new TableColumn("Descripción");
         colDescrpcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
-        TableColumn<AreasTrabajosDTO, String> colEstado = new TableColumn("Descripción");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
-
-        tableAreas.getColumns().addAll(colId, colNombre, colDescrpcion, colEstado);
-        notificar(1);
-        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-                if (t1 == "Id") {
-                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
-                }
-                if (t1 == "Nombre") {
-                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
-                }
+        TableColumn<AreasTrabajosDTO, String> colEstado = new TableColumn("Estado");
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
             }
+            return new SimpleStringProperty("Inactivo");
+        });
+        tableAreas.getColumns().addAll(colId, colNombre, colDescrpcion, colEstado);
+        addButtonToTable();
 
-        }
-        );
     }
 
     private void actionZonasClick() {
@@ -165,9 +174,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
                         AreasTrabajosDTO area = (AreasTrabajosDTO) tableAreas.selectionModelProperty().get().getSelectedItem();
                         AppContext.getInstance().set("area", area);
                         System.out.println(area.getNombreAreaTrabajo());
-//                    FlowController.getInstance().goViewInWindowModal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo", ((Stage) btnRegistrar.getScene().getWindow()), false);
                         PrincipalController.cambiarVistaPrincipal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
-//                    ((Stage) btnFiltrar.getScene().getWindow()).close();
                     }
 
                 }
@@ -176,7 +183,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
     }
 
     private void notificar(int num) {
-        tableAreas.getItems().clear();
+        limpiarTableView();
         if (num == 1) {
             ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
             Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
@@ -196,6 +203,49 @@ public class AreasTrabajoController extends Controller implements Initializable 
             box.getChildren().add(lab);
             tableAreas.setPlaceholder(box);
         }
+    }
+
+    private void limpiarTableView() {
+        tableAreas.getItems().clear();
+        tableAreas.getColumns().clear();
+    }
+
+    private void addButtonToTable() {
+        TableColumn<AreasTrabajosDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<AreasTrabajosDTO, Void>, TableCell<AreasTrabajosDTO, Void>> cellFactory = new Callback<TableColumn<AreasTrabajosDTO, Void>, TableCell<AreasTrabajosDTO, Void>>() {
+            @Override
+            public TableCell<AreasTrabajosDTO, Void> call(final TableColumn<AreasTrabajosDTO, Void> param) {
+                final TableCell<AreasTrabajosDTO, Void> cell = new TableCell<AreasTrabajosDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Editar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            AreasTrabajosDTO area = getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("area", area);
+                            PrincipalController.cambiarVistaPrincipal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableAreas.getColumns().add(colBtn);
+
     }
 
     @Override
