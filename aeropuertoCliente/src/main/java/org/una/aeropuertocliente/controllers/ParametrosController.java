@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -33,9 +35,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.ParametrosDTO;
+import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.ParametrosService;
 import org.una.aeropuertocliente.sharedService.Token;
+import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -93,6 +98,10 @@ public class ParametrosController extends Controller implements Initializable {
     String mensaje;
     @FXML
     private JFXButton btnCancelar;
+    @FXML
+    private Label lblcbEstado;
+    @FXML
+    private JFXComboBox<String> cmbEstado2;
 
     /**
      * Initializes the controller class.
@@ -100,9 +109,33 @@ public class ParametrosController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        cmbEstado2.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre"));
         actionParametrosClick();
-        llenarParametros();
+        notificar(1);
+
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    cmbEstado2.setVisible(false);
+                    txtBusqueda.setVisible(true);
+                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
+                }
+                if (t1 == "Nombre") {
+                    cmbEstado2.setVisible(false);
+                    txtBusqueda.setVisible(true);
+                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
+                }
+                if (t1 == "Estado") {
+                    cmbEstado2.setVisible(true);
+                    txtBusqueda.setVisible(false);
+
+                }
+            }
+
+        }
+        );
     }
 
     @FXML
@@ -160,7 +193,7 @@ public class ParametrosController extends Controller implements Initializable {
     }
 
     private void notificar(int num) {
-        tableParametros.getItems().clear();
+        limpiarTableView();
         if (num == 1) {
             ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
             Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
@@ -185,35 +218,39 @@ public class ParametrosController extends Controller implements Initializable {
     @FXML
     private void onActionFiltrar(ActionEvent event) {
         if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
-            tableParametros.getItems().clear();
+            limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+            notificar(0);
         }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
-            tableParametros.getItems().clear();
+            limpiarTableView();
             parametrosFilt = ParametrosService.idParametro(Long.valueOf(txtBusqueda.getText()));
             if (parametrosFilt != null) {
+                llenarParametros();
                 tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
             } else {
                 mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("true")) {
-                tableParametros.getItems().clear();
+        if (cmbFiltro.getValue().equals("Estado") && cmbEstado2.getValue() != null) {
+            if (cmbEstado2.getValue().equals("Activo")) {
+                limpiarTableView();
                 parametrosList = ParametrosService.estadoParametros(true);
                 if (parametrosList != null) {
-                    tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+                    llenarParametros();
+                    tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
                 } else {
                     mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
-            if (txtBusqueda.getText().equals("false")) {
-                tableParametros.getItems().clear();
+            if (cmbEstado2.getValue().equals("Inactivo")) {
+                limpiarTableView();
                 parametrosList = ParametrosService.estadoParametros(false);
                 if (parametrosList != null) {
-                    tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+                    llenarParametros();
+                    tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
                 } else {
                     mensaje = "No se encontró coincidencias";
                     notificar(0);
@@ -225,9 +262,10 @@ public class ParametrosController extends Controller implements Initializable {
             }
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
-            tableParametros.getItems().clear();
+            limpiarTableView();
             parametrosList = ParametrosService.nombreParametros(txtBusqueda.getText());
             if (parametrosList != null) {
+                llenarParametros();
                 tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
             } else {
                 mensaje = "No se encontró coincidencias";
@@ -252,36 +290,26 @@ public class ParametrosController extends Controller implements Initializable {
     }
 
     private void llenarParametros() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         TableColumn<ParametrosDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
         TableColumn<ParametrosDTO, String> colNombre = new TableColumn("Nombre");
         colNombre.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreParametro()));
         TableColumn<ParametrosDTO, String> colEstado = new TableColumn("Estado");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         TableColumn<ParametrosDTO, String> colCodigo = new TableColumn("Valor Parametro");
         colCodigo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getValor()));
         TableColumn<ParametrosDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         TableColumn<ParametrosDTO, String> colFecha = new TableColumn("Fecha registro");
-        colFecha.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaRegistro()));
+        colFecha.setCellValueFactory((param) -> new SimpleObjectProperty(formatter.format(param.getValue().getFechaRegistro())));
         tableParametros.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion, colFecha);
-        notificar(1);
-        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-                if (t1 == "Id") {
-                    txtBusqueda.setPromptText("Ingrese el  número correspondiente");
-                }
-                if (t1 == "Nombre") {
-                    txtBusqueda.setPromptText("Ingrese el nombre de la zona");
-                }
-                if (t1 == "Estado") {
-                    txtBusqueda.setPromptText("Ingrese true o false");
-                }
-            }
-
-        }
-        );
+        addButtonToTable();
     }
 
     private void editar() {
@@ -292,10 +320,52 @@ public class ParametrosController extends Controller implements Initializable {
             if (parametros.isEstado()) {
                 cmbEstado.setValue("Activo");
             } else {
-                cmbEstado.setValue("Desactivo");
+                cmbEstado.setValue("Inactivo");
             }
 
         }
+    }
+
+    private void addButtonToTable() {
+        TableColumn<ParametrosDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<ParametrosDTO, Void>, TableCell<ParametrosDTO, Void>> cellFactory = new Callback<TableColumn<ParametrosDTO, Void>, TableCell<ParametrosDTO, Void>>() {
+            @Override
+            public TableCell<ParametrosDTO, Void> call(final TableColumn<ParametrosDTO, Void> param) {
+                final TableCell<ParametrosDTO, Void> cell = new TableCell<ParametrosDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Editar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            parametros = getTableView().getItems().get(getIndex());
+                            editar();
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableParametros.getColumns().add(colBtn);
+
+    }
+
+    private void limpiarTableView() {
+        tableParametros.getItems().clear();
+        tableParametros.getColumns().clear();
     }
 
     @Override

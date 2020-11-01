@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -22,7 +23,7 @@
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="lblZonas" prefHeight="21.0" prefWidth="24.0" />
-                        <Label fx:id="titulo" text="Parametros del sistema">
+                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="182.0" text="Parametros del sistema">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -65,10 +66,16 @@
                   <Separator prefWidth="200.0" />
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="687.0" spacing="5.0">
                      <children>
-                        <Label fx:id="lbltxtBusqueda" prefHeight="21.0" prefWidth="39.0" />
-                        <JFXTextField fx:id="txtBusqueda" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <Pane prefHeight="56.0" prefWidth="220.0">
+                           <children>
+                              <Label fx:id="lbltxtBusqueda" layoutX="2.0" layoutY="18.0" prefHeight="21.0" prefWidth="24.0" visible="false" />
+                              <JFXTextField fx:id="txtBusqueda" labelFloat="true" layoutX="29.0" layoutY="14.0" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                              <Label fx:id="lblcbEstado" layoutX="15.0" layoutY="20.0" prefHeight="20.0" prefWidth="24.0" visible="false" />
+                              <JFXComboBox fx:id="cmbEstado2" layoutX="55.0" layoutY="18.0" prefHeight="26.0" prefWidth="155.0" promptText="Estado" visible="false" />
+                           </children>
+                        </Pane>
                         <Label fx:id="lblCmbFiltro" prefHeight="20.0" prefWidth="36.0" />
-                        <JFXComboBox fx:id="cmbFiltro" labelFloat="true" prefHeight="31.0" prefWidth="190.0" promptText="Tipo de busqueda" />
+                        <JFXComboBox fx:id="cmbFiltro" labelFloat="true" prefHeight="31.0" prefWidth="161.0" promptText="Tipo de busqueda" />
                         <Label fx:id="lblFiltrar" prefHeight="20.0" prefWidth="36.0" />
                         <JFXButton fx:id="btnFiltrar" onAction="#onActionFiltrar" prefHeight="29.0" prefWidth="95.0" text="Filtrar" />
                      </children>
