@@ -12,8 +12,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.ArrayList;
-//import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,7 +39,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
+import org.una.aeropuertocliente.dtos.RolesDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
+import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
+import org.una.aeropuertocliente.entitiesServices.RolesService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
@@ -84,6 +86,14 @@ public class UsuariosController extends Controller implements Initializable {
     private Label lblEstado;
     @FXML
     private JFXComboBox<String> cmbEstado;
+    @FXML
+    private Label lblAreas;
+    @FXML
+    private JFXComboBox<AreasTrabajosDTO> cmbAreas;
+    @FXML
+    private Label lblRoles;
+    @FXML
+    private JFXComboBox<RolesDTO> cmbRoles;
 
     /**
      * Initializes the controller class.
@@ -91,6 +101,8 @@ public class UsuariosController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        cmbRoles.setItems(FXCollections.observableArrayList(RolesService.allRoles()));
+        cmbAreas.setItems(FXCollections.observableArrayList(AreasTrabajosService.allAreasTrabajos()));
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
         notificar(1);
         cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -98,10 +110,29 @@ public class UsuariosController extends Controller implements Initializable {
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
                 if (t1 == "Estado") {
                     cmbEstado.setVisible(true);
+                    cmbRoles.setVisible(false);
+                    cmbAreas.setVisible(false);
                     txtBusqueda.setVisible(false);
                 } else {
-                    cmbEstado.setVisible(false);
-                    txtBusqueda.setVisible(true);
+                    if (t1 == "Rol") {
+                        cmbRoles.setVisible(true);
+                        cmbAreas.setVisible(false);
+                        cmbEstado.setVisible(false);
+                        txtBusqueda.setVisible(false);
+                    } else {
+                        if (t1 == "Area Trabajo") {
+                            cmbRoles.setVisible(false);
+                            cmbEstado.setVisible(false);
+                            cmbAreas.setVisible(true);
+                            txtBusqueda.setVisible(false);
+                        } else {
+                            cmbRoles.setVisible(false);
+                            cmbEstado.setVisible(false);
+                            cmbAreas.setVisible(false);
+                            txtBusqueda.setVisible(true);
+                        }
+                    }
+
                 }
             }
 
@@ -120,7 +151,7 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+        if (cmbFiltro.getValue().isEmpty()) {
             limpiarTableView();
             notificar(0);
         }
@@ -155,6 +186,8 @@ public class UsuariosController extends Controller implements Initializable {
                     notificar(0);
                 }
             }
+        } else {
+            notificar(0);
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
@@ -165,6 +198,8 @@ public class UsuariosController extends Controller implements Initializable {
             } else {
                 notificar(0);
             }
+        } else {
+            notificar(0);
         }
         if (cmbFiltro.getValue().equals("Cedula") && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
@@ -175,29 +210,34 @@ public class UsuariosController extends Controller implements Initializable {
             } else {
                 notificar(0);
             }
+        } else {
+            notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Area Trabajo") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue().equals("Area Trabajo") && cmbAreas.getValue() != null) {
             limpiarTableView();
+            llenarUsuarios();
             usuariosList = UsuariosService.allUsuarios();
             for (int i = 0; i < usuariosList.size(); i++) {
-                llenarUsuarios();
-                if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(txtBusqueda.getText().toUpperCase())) {
+                if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(cmbAreas.getValue().getNombreAreaTrabajo())) {
                     usuariosList2 = UsuariosService.areaTrabajoUsuarios(usuariosList.get(i).getAreaTrabajoId().getId());
+                    System.out.println("Entró Areas");
                     if (usuariosList2 != null) {
                         tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
                     } else {
                         notificar(0);
                     }
                 }
-
             }
+        } else {
+            notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Rol") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue().equals("Rol") && cmbRoles.getValue() != null) {
             limpiarTableView();
+            llenarUsuarios();
             usuariosList = UsuariosService.allUsuarios();
             for (int i = 0; i < usuariosList.size(); i++) {
-                llenarUsuarios();
-                if (usuariosList.get(i).getRolId().getDescripcion().equals(txtBusqueda.getText().toUpperCase())) {
+                if (usuariosList.get(i).getRolId().getDescripcion().equals(cmbRoles.getValue().getDescripcion())) {
+                    System.out.println("Entró roles");
                     usuariosList2 = UsuariosService.rolUsuarios(usuariosList.get(i).getRolId().getId());
                     if (usuariosList2 != null) {
                         tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
@@ -205,9 +245,9 @@ public class UsuariosController extends Controller implements Initializable {
                         notificar(0);
                     }
                 }
-
             }
-
+        } else {
+            notificar(0);
         }
     }
 
