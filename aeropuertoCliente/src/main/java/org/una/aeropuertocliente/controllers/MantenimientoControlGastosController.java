@@ -9,13 +9,16 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -104,6 +107,7 @@ public class MantenimientoControlGastosController extends Controller implements 
     @FXML
     private Label lbltxtNombre;
     public List area = new ArrayList<String>();
+    private List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -131,10 +135,11 @@ public class MantenimientoControlGastosController extends Controller implements 
         txtPeridiocidad.clear();
         controlesGastosDTO = (ControlesGastosDTO) AppContext.getInstance().get("control");
         if (controlesGastosDTO != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             txtEmpresa.setText(controlesGastosDTO.getEmpresaContratante());
             txtResponsable.setText(controlesGastosDTO.getResponsable());
             txtContrato.setText(controlesGastosDTO.getNumeroContrato());
-            txtFecha.setText(controlesGastosDTO.getFechaRegistro().toString());
+            txtFecha.setText(formatter.format(controlesGastosDTO.getFechaRegistro()));
 
             detallesGastosDTO = controlesGastosDTO.getDetalleControlGastoId();
             txtObservacion.setText(detallesGastosDTO.getObservacion());
@@ -145,7 +150,7 @@ public class MantenimientoControlGastosController extends Controller implements 
             cmbEstado.setValue(detallesGastosDTO.getEstado());
             cmbEstadoPago.setValue(detallesGastosDTO.getEstadoPago());
         }
-
+        indicarRequeridos();
     }
 
     @FXML
@@ -168,9 +173,9 @@ public class MantenimientoControlGastosController extends Controller implements 
 
     @FXML
     private void onActionRegistrar(ActionEvent event) {
+        String validacion = validarRequeridos();
         if (controlesGastosDTO == null) {
-            if (!txtEmpresa.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtContrato.getText().isEmpty() && !txtResponsable.getText().isEmpty() && !txtObservacion.getText().isEmpty() && !txtTipoServico.getText().isEmpty()
-                    && !txtDuracion.getText().isEmpty() && !txtPeridiocidad.getText().isEmpty() && !cmbEstadoPago.getValue().isEmpty() && !cmbAreas.getValue().isEmpty()) {
+            if (validacion == null) {
 
                 controlesGastosDTO = new ControlesGastosDTO();
                 controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
@@ -204,17 +209,15 @@ public class MantenimientoControlGastosController extends Controller implements 
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
             }
 
         } else {
-            if (!txtEmpresa.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtContrato.getText().isEmpty() && !txtResponsable.getText().isEmpty() && !txtObservacion.getText().isEmpty() && !txtTipoServico.getText().isEmpty()
-                    && !txtDuracion.getText().isEmpty() && !txtPeridiocidad.getText().isEmpty() && !cmbEstadoPago.getValue().isEmpty() && !cmbAreas.getValue().isEmpty()) {
+            if (validacion == null) {
 
                 controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
                 controlesGastosDTO.setResponsable(txtResponsable.getText());
                 controlesGastosDTO.setNumeroContrato(txtContrato.getText());
-
 
                 detallesGastosDTO.setObservacion(txtObservacion.getText());
                 detallesGastosDTO.setTipoServicio(txtTipoServico.getText());
@@ -222,7 +225,7 @@ public class MantenimientoControlGastosController extends Controller implements 
                 detallesGastosDTO.setPeriodicidad(Long.parseLong(txtPeridiocidad.getText()));
                 detallesGastosDTO.setEstado(cmbEstado.getValue());
                 detallesGastosDTO.setEstadoPago(cmbEstadoPago.getValue());
-             
+
                 if (DetallesControlesGastosService.updateDetalleControlGasto(detallesGastosDTO) == 200) {
                     controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO);
                     if (ControlGastosService.updateControlGasto(controlesGastosDTO) == 200) {
@@ -235,8 +238,41 @@ public class MantenimientoControlGastosController extends Controller implements 
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
             }
+        }
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtContrato, txtDuracion, txtEmpresa, txtObservacion, txtPeridiocidad, txtResponsable,
+                txtTipoServico, cmbAreas, cmbEstadoPago, cmbEstado));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
         }
     }
 

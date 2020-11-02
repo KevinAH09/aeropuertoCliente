@@ -2,12 +2,14 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -21,7 +23,7 @@
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="lblZonas" prefHeight="17.0" prefWidth="30.0" />
-                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="134.0" text="Control de Gastos">
+                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="139.0" text="Control de Gastos">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -30,8 +32,16 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="560.0" spacing="5.0">
                      <children>
-                        <Label fx:id="lbltxtBusqueda" prefHeight="17.0" prefWidth="30.0" />
-                        <JFXTextField fx:id="txtBusqueda" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <Pane prefHeight="60.0" prefWidth="238.0">
+                           <children>
+                              <Label fx:id="lbltxtBusqueda" layoutX="20.0" layoutY="25.0" prefHeight="17.0" prefWidth="30.0" visible="false" />
+                              <JFXTextField fx:id="txtBusqueda" labelFloat="true" layoutX="56.0" layoutY="20.0" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                              <Label fx:id="lblDesde" layoutX="6.0" layoutY="26.0" prefHeight="20.0" prefWidth="22.0" visible="false" />
+                              <JFXDatePicker fx:id="fDesde" defaultColor="#181e1e" layoutX="40.0" layoutY="22.0" prefHeight="29.0" prefWidth="92.0" promptText="Desde" visible="false" />
+                              <Label fx:id="lblHasta" layoutX="132.0" layoutY="27.0" prefHeight="20.0" prefWidth="22.0" visible="false" />
+                              <JFXDatePicker fx:id="fHasta" defaultColor="#181e1e" layoutX="155.0" layoutY="21.0" prefHeight="29.0" prefWidth="92.0" promptText="Hasta" visible="false" />
+                           </children>
+                        </Pane>
                         <Label fx:id="lblCmbFiltro" prefHeight="20.0" prefWidth="30.0" />
                         <JFXComboBox fx:id="cmbFiltro" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
                         <Label fx:id="lblFiltrar" prefHeight="20.0" prefWidth="30.0" />
