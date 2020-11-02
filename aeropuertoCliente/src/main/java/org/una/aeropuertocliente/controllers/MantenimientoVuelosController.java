@@ -18,13 +18,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.dtos.BitacorasVuelosDTO;
 import org.una.aeropuertocliente.dtos.VuelosDTO;
@@ -107,6 +111,32 @@ public class MantenimientoVuelosController extends Controller implements Initial
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Callback<DatePicker, DateCell> dayFinCellFactory = dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (datePikerInicio.getValue() != null) {
+                    if (item.isBefore(datePikerInicio.getValue())) {
+                        setStyle("-fx-background-color: #ffc0cb;");
+                        Platform.runLater(() -> setDisable(true));
+                    }
+                }
+            }
+        };
+        datePikerFinal.setDayCellFactory(dayFinCellFactory);
+        Callback<DatePicker, DateCell> dayIniCellFactory = dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (datePikerFinal.getValue() != null) {
+                    if (item.isAfter(datePikerFinal.getValue())) {
+                        setStyle("-fx-background-color: #ffc0cb;");
+                        Platform.runLater(() -> setDisable(true));
+                    }
+                }
+            }
+        };
+        datePikerInicio.setDayCellFactory(dayIniCellFactory);
         vuelos = (VuelosDTO) AppContext.getInstance().get("VueloAMantenimientoVuelo");
         aviones = (AvionesDTO) AppContext.getInstance().get("AvionAMantenimientoVuelo");
         combEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
