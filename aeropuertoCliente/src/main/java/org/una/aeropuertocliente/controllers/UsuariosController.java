@@ -143,7 +143,6 @@ public class UsuariosController extends Controller implements Initializable {
             btnRegistrar.setDisable(true);
         } else {
             actionUsuariosClick();
-            addButtonToTable();
             btnRegistrar.setVisible(true);
             btnRegistrar.setDisable(false);
         }
@@ -151,43 +150,19 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (cmbFiltro.getValue().isEmpty()) {
+        if (cmbFiltro.getValue() == null) {
             limpiarTableView();
             notificar(0);
         }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
+            llenarUsuarios();
             usuariosFilt = UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
             if (usuariosFilt != null) {
-                llenarUsuarios();
                 tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
             } else {
                 notificar(0);
             }
-        }
-        if (cmbFiltro.getValue().equals("Estado") && cmbEstado.getValue() != null) {
-            if (cmbEstado.getValue().equals("Activo")) {
-                limpiarTableView();
-                usuariosList = UsuariosService.estadoUsuarios(true);
-                if (usuariosList != null) {
-                    llenarUsuarios();
-                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
-                } else {
-                    notificar(0);
-                }
-            }
-            if (cmbEstado.getValue().equals("Inactivo")) {
-                limpiarTableView();
-                usuariosList = UsuariosService.estadoUsuarios(false);
-                if (usuariosList != null) {
-                    llenarUsuarios();
-                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
-                } else {
-                    notificar(0);
-                }
-            }
-        } else {
-            notificar(0);
         }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
@@ -198,8 +173,6 @@ public class UsuariosController extends Controller implements Initializable {
             } else {
                 notificar(0);
             }
-        } else {
-            notificar(0);
         }
         if (cmbFiltro.getValue().equals("Cedula") && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
@@ -210,8 +183,6 @@ public class UsuariosController extends Controller implements Initializable {
             } else {
                 notificar(0);
             }
-        } else {
-            notificar(0);
         }
         if (cmbFiltro.getValue().equals("Area Trabajo") && cmbAreas.getValue() != null) {
             limpiarTableView();
@@ -249,6 +220,28 @@ public class UsuariosController extends Controller implements Initializable {
         } else {
             notificar(0);
         }
+        if (cmbFiltro.getValue().equals("Estado") && cmbEstado.getValue() != null) {
+            if (cmbEstado.getValue().equals("Activo")) {
+                limpiarTableView();
+                llenarUsuarios();
+                usuariosList = UsuariosService.estadoUsuarios(true);
+                if (usuariosList != null) {
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                } else {
+                    notificar(0);
+                }
+            }
+            if (cmbEstado.getValue().equals("Inactivo")) {
+                limpiarTableView();
+                llenarUsuarios();
+                usuariosList = UsuariosService.estadoUsuarios(false);
+                if (usuariosList != null) {
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                } else {
+                    notificar(0);
+                }
+            }
+        }
     }
 
     @FXML
@@ -285,6 +278,9 @@ public class UsuariosController extends Controller implements Initializable {
             return new SimpleStringProperty("no tiene");
         });
         tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol, colArea);
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            addButtonToTable();
+        }
     }
 
     private void actionUsuariosClick() {

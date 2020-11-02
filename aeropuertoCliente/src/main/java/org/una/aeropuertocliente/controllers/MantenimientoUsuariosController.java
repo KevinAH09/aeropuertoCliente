@@ -12,15 +12,19 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -99,6 +103,7 @@ public class MantenimientoUsuariosController implements Initializable {
     UsuariosDTO usuario = new UsuariosDTO();
     List<RolesDTO> listRoles = new ArrayList();
     List<AreasTrabajosDTO> listAreas = new ArrayList();
+    private List<Node> requeridos = new ArrayList<>();
     @FXML
     private Label lbltextPass;
     @FXML
@@ -129,6 +134,7 @@ public class MantenimientoUsuariosController implements Initializable {
         }
         cmbArea.setItems(FXCollections.observableArrayList(llenarComboBox));
         if (usuario != null) {
+            txtPassMostrado.setText(usuario.getContrasenaEncriptada());
             txtPassMostrado.setDisable(true);
             txtPassMostrado.setVisible(false);
             txtId.setText(usuario.getId().toString());
@@ -164,11 +170,13 @@ public class MantenimientoUsuariosController implements Initializable {
             btnCambiarContrasena.setVisible(false);
 
         }
+        indicarRequeridos();
     }
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
-        if (txtNombre.getText() != null && txtCedula.getText() != null && txtCorreo.getText() != null && txtPassMostrado.getText() != null && cmbArea.getValue() != null && cmbRoles.getValue() != null && combJefe.getValue() != null) {
+        String validacion = validarRequeridos();
+        if (validacion == null && validarEmail()) {
             if ((UsuariosDTO) AppContext.getInstance().get("usu") == null) {
                 usuario = new UsuariosDTO();
                 for (RolesDTO listRole : listRoles) {
@@ -230,7 +238,11 @@ public class MantenimientoUsuariosController implements Initializable {
                 }
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "Faltan campos por rellenar");
+            if (validacion != null) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), validacion);
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El correo no tiene el formato example@dominio.cr");
+            }
         }
     }
 
@@ -248,6 +260,53 @@ public class MantenimientoUsuariosController implements Initializable {
 
         AppContext.getInstance().set("usuarioContrasena", usuario);
         FlowController.getInstance().goViewInWindowModal("cambioContrasena/cambioContrasena", ((Stage) txtCorreo.getScene().getWindow()), Boolean.TRUE);
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtCedula, txtCorreo, txtPassMostrado, txtNombre, cmbArea, cmbRoles, combJefe, cmbEstado));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
+        }
+    }
+
+    private boolean validarEmail() {
+        boolean ban;
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        String email = txtCorreo.getText();
+        Matcher mather = pattern.matcher(email);
+        if (mather.find() == true) {
+            ban = true;
+        } else {
+            ban = false;
+        }
+        return ban;
     }
 
 }

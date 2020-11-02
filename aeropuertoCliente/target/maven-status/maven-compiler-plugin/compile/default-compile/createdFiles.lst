@@ -15,6 +15,7 @@ org\una\aeropuertocliente\controllers\RolesController$3.class
 org\una\aeropuertocliente\entitiesServices\ParametrosService$1.class
 org\una\aeropuertocliente\controllers\ZonasController$3$1.class
 org\una\aeropuertocliente\dtos\ZonasDTO.class
+org\una\aeropuertocliente\controllers\UsuariosController$3$1.class
 org\una\aeropuertocliente\controllers\MantenimientoControlGastosController.class
 org\una\aeropuertocliente\entitiesServices\AvionesService$1.class
 org\una\aeropuertocliente\entitiesServices\AerolineasService$2.class
@@ -85,7 +86,7 @@ org\una\aeropuertocliente\apiForex\TiposMonedasServices$5.class
 org\una\aeropuertocliente\controllers\Controller.class
 org\una\aeropuertocliente\entitiesServices\VuelosService.class
 org\una\aeropuertocliente\entitiesServices\serviceCambiosDivisas.class
-org\una\aeropuertocliente\controllers\LoginController.class
+org\una\aeropuertocliente\controllers\UsuariosController$3.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$8.class
 org\una\aeropuertocliente\entitiesServices\AvionesService$3.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$2.class
@@ -134,6 +135,7 @@ org\una\aeropuertocliente\entitiesServices\ZonasService$4.class
 org\una\aeropuertocliente\controllers\VuelosController$1.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$4.class
 org\una\aeropuertocliente\sharedService\Conection.class
+org\una\aeropuertocliente\controllers\UsuariosController$2.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$1.class
 org\una\aeropuertocliente\entitiesServices\DetallesControlesGastosService$3.class
 org\una\aeropuertocliente\dtos\RegistrosAccionesDTO.class
