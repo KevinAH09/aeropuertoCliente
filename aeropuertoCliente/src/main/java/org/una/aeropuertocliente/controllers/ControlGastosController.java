@@ -147,7 +147,7 @@ public class ControlGastosController extends Controller implements Initializable
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
             limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);

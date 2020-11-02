@@ -215,7 +215,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
             limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
@@ -231,7 +231,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && cmbEstado2.getValue() != null) {
+        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado2.getValue().isEmpty()) {
             if (cmbEstado2.getValue().equals("Activo")) {
                 limpiarTableView();
                 zonasList = ZonasService.estadoZona(true);
