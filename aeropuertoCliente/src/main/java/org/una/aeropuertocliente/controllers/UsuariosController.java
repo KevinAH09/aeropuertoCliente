@@ -90,14 +90,6 @@ public class UsuariosController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
-            btnRegistrar.setVisible(false);
-            btnRegistrar.setDisable(true);
-        } else {
-            btnRegistrar.setVisible(true);
-            btnRegistrar.setDisable(false);
-        }
-        actionUsuariosClick();
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
         notificar(1);
@@ -115,6 +107,15 @@ public class UsuariosController extends Controller implements Initializable {
 
         }
         );
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+        } else {
+            actionUsuariosClick();
+            addButtonToTable();
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+        }
     }
 
     @FXML
@@ -133,7 +134,7 @@ public class UsuariosController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && cmbEstado.getValue()!=null) {
+        if (cmbFiltro.getValue().equals("Estado") && cmbEstado.getValue() != null) {
             if (cmbEstado.getValue().equals("Activo")) {
                 limpiarTableView();
                 usuariosList = UsuariosService.estadoUsuarios(true);
@@ -244,7 +245,6 @@ public class UsuariosController extends Controller implements Initializable {
             return new SimpleStringProperty("no tiene");
         });
         tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol, colArea);
-        addButtonToTable();
     }
 
     private void actionUsuariosClick() {
