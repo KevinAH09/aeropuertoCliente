@@ -4,6 +4,7 @@ module org.una.aeropuertocliente {
     requires com.jfoenix;
     requires com.google.gson;
     requires java.base;
+    requires jasperreports;
     
     opens org.una.aeropuertocliente.controllers to javafx.fxml;
     opens org.una.aeropuertocliente to javafx.fxml;

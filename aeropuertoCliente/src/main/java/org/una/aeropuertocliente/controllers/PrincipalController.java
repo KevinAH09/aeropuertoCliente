@@ -76,6 +76,7 @@ public class PrincipalController extends Controller implements Initializable {
         Node imgCambioDiv = new ImageView(new Image("org/una/aeropuertocliente/views/principal/intercambio.png"));
         TreeItem<String> root = new TreeItem<>("Funciones");
         root.setGraphic(imgroot);
+        root.setExpanded(true);
         treeAcciones.setRoot(root);
         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             TreeItem<String> itemParametros = new TreeItem<>("Parametros del sistema");

@@ -171,7 +171,28 @@ public class Conection {
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
+            System.out.println(response.toString());
             return gson.fromJson(response.toString(), listtype);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public static <T> String oneConnectionReporte(String urlstring) throws MalformedURLException, IOException {
+       
+        URL url = new URL(urlBase + urlstring);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("Authorization", "bearer " + Token.getInstance().getJwt());
+        try ( BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+            StringBuilder response = new StringBuilder();
+            String responseLine;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+            System.out.println(response.toString());
+            return response.toString();
 
         } catch (Exception e) {
             return null;
