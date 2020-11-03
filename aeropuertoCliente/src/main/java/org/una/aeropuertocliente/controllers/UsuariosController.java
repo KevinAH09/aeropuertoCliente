@@ -12,8 +12,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.ArrayList;
-//import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,16 +25,25 @@ import org.una.aeropuertocliente.entitiesServices.UsuariosService;
 import org.una.aeropuertocliente.utils.Mensaje;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.TableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
+import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
+import org.una.aeropuertocliente.dtos.RolesDTO;
+import org.una.aeropuertocliente.dtos.ZonasDTO;
+import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
+import org.una.aeropuertocliente.entitiesServices.RolesService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
@@ -75,28 +82,81 @@ public class UsuariosController extends Controller implements Initializable {
     public List<UsuariosDTO> usuariosList = new ArrayList<UsuariosDTO>();
     public List<UsuariosDTO> usuariosList2 = new ArrayList<UsuariosDTO>();
     public UsuariosDTO usuariosFilt = new UsuariosDTO();
+    @FXML
+    private Label lblEstado;
+    @FXML
+    private JFXComboBox<String> cmbEstado;
+    @FXML
+    private Label lblAreas;
+    @FXML
+    private JFXComboBox<AreasTrabajosDTO> cmbAreas;
+    @FXML
+    private Label lblRoles;
+    @FXML
+    private JFXComboBox<RolesDTO> cmbRoles;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        cmbRoles.setItems(FXCollections.observableArrayList(RolesService.allRoles()));
+        cmbAreas.setItems(FXCollections.observableArrayList(AreasTrabajosService.allAreasTrabajos()));
+        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
+        notificar(1);
+        cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Estado") {
+                    cmbEstado.setVisible(true);
+                    cmbRoles.setVisible(false);
+                    cmbAreas.setVisible(false);
+                    txtBusqueda.setVisible(false);
+                } else {
+                    if (t1 == "Rol") {
+                        cmbRoles.setVisible(true);
+                        cmbAreas.setVisible(false);
+                        cmbEstado.setVisible(false);
+                        txtBusqueda.setVisible(false);
+                    } else {
+                        if (t1 == "Area Trabajo") {
+                            cmbRoles.setVisible(false);
+                            cmbEstado.setVisible(false);
+                            cmbAreas.setVisible(true);
+                            txtBusqueda.setVisible(false);
+                        } else {
+                            cmbRoles.setVisible(false);
+                            cmbEstado.setVisible(false);
+                            cmbAreas.setVisible(false);
+                            txtBusqueda.setVisible(true);
+                        }
+                    }
+
+                }
+            }
+
+        }
+        );
         if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
         } else {
+            actionUsuariosClick();
             btnRegistrar.setVisible(true);
             btnRegistrar.setDisable(false);
         }
-        actionUsuariosClick();
-        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
-        llenarUsuarios();
     }
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbAreas.getValue() == null || cmbEstado.getValue().isEmpty() || cmbRoles.getValue() == null) {
+            limpiarTableView();
+            notificar(0);
+        }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
-            tableUsuarios.getItems().clear();
+            limpiarTableView();
+            llenarUsuarios();
             usuariosFilt = UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
             if (usuariosFilt != null) {
                 tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
@@ -104,66 +164,51 @@ public class UsuariosController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
-            if (txtBusqueda.getText().equals("Activo")) {
-                tableUsuarios.getItems().clear();
-                usuariosList = UsuariosService.estadoUsuarios(true);
-                if (usuariosList != null) {
-                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
-                } else {
-                    notificar(0);
-                }
-            }
-            if (txtBusqueda.getText().equals("Inactivo")) {
-                tableUsuarios.getItems().clear();
-                usuariosList = UsuariosService.estadoUsuarios(false);
-                if (usuariosList != null) {
-                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
-                } else {
-                    notificar(0);
-                }
-            }
-        }
         if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
-            tableUsuarios.getItems().clear();
+            limpiarTableView();
             usuariosList = UsuariosService.nombreUsuarios(txtBusqueda.getText());
             if (usuariosList != null) {
+                llenarUsuarios();
                 tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
             } else {
                 notificar(0);
             }
         }
         if (cmbFiltro.getValue().equals("Cedula") && !txtBusqueda.getText().isEmpty()) {
-            tableUsuarios.getItems().clear();
+            limpiarTableView();
             usuariosFilt = UsuariosService.cedulaUsuarios(txtBusqueda.getText());
             if (usuariosFilt != null) {
+                llenarUsuarios();
                 tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
             } else {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Area Trabajo") && !txtBusqueda.getText().isEmpty()) {
-            tableUsuarios.getItems().clear();
+        if (cmbFiltro.getValue().equals("Area Trabajo") && cmbAreas.getValue() != null) {
+            limpiarTableView();
+            llenarUsuarios();
             usuariosList = UsuariosService.allUsuarios();
             for (int i = 0; i < usuariosList.size(); i++) {
-                if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(txtBusqueda.getText().toUpperCase())) {
-                    System.out.println("Entró");
+                if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(cmbAreas.getValue().getNombreAreaTrabajo())) {
                     usuariosList2 = UsuariosService.areaTrabajoUsuarios(usuariosList.get(i).getAreaTrabajoId().getId());
+                    System.out.println("Entró Areas");
                     if (usuariosList2 != null) {
                         tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
                     } else {
                         notificar(0);
                     }
                 }
-
             }
+        } else {
+            notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Rol") && !txtBusqueda.getText().isEmpty()) {
-            tableUsuarios.getItems().clear();
+        if (cmbFiltro.getValue().equals("Rol") && cmbRoles.getValue() != null) {
+            limpiarTableView();
+            llenarUsuarios();
             usuariosList = UsuariosService.allUsuarios();
             for (int i = 0; i < usuariosList.size(); i++) {
-                if (usuariosList.get(i).getRolId().getDescripcion().equals(txtBusqueda.getText().toUpperCase())) {
-                    System.out.println("Entró");
+                if (usuariosList.get(i).getRolId().getDescripcion().equals(cmbRoles.getValue().getDescripcion())) {
+                    System.out.println("Entró roles");
                     usuariosList2 = UsuariosService.rolUsuarios(usuariosList.get(i).getRolId().getId());
                     if (usuariosList2 != null) {
                         tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
@@ -171,9 +216,31 @@ public class UsuariosController extends Controller implements Initializable {
                         notificar(0);
                     }
                 }
-
             }
-
+        } else {
+            notificar(0);
+        }
+        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado.getValue().isEmpty()) {
+            if (cmbEstado.getValue().equals("Activo")) {
+                limpiarTableView();
+                llenarUsuarios();
+                usuariosList = UsuariosService.estadoUsuarios(true);
+                if (usuariosList != null) {
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                } else {
+                    notificar(0);
+                }
+            }
+            if (cmbEstado.getValue().equals("Inactivo")) {
+                limpiarTableView();
+                llenarUsuarios();
+                usuariosList = UsuariosService.estadoUsuarios(false);
+                if (usuariosList != null) {
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                } else {
+                    notificar(0);
+                }
+            }
         }
     }
 
@@ -211,7 +278,9 @@ public class UsuariosController extends Controller implements Initializable {
             return new SimpleStringProperty("no tiene");
         });
         tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol, colArea);
-        notificar(1);
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            addButtonToTable();
+        }
     }
 
     private void actionUsuariosClick() {
@@ -231,7 +300,7 @@ public class UsuariosController extends Controller implements Initializable {
     }
 
     private void notificar(int num) {
-        tableUsuarios.getItems().clear();
+        limpiarTableView();
         if (num == 1) {
             ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
             Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
@@ -251,6 +320,49 @@ public class UsuariosController extends Controller implements Initializable {
             box.getChildren().add(lab);
             tableUsuarios.setPlaceholder(box);
         }
+    }
+
+    private void limpiarTableView() {
+        tableUsuarios.getItems().clear();
+        tableUsuarios.getColumns().clear();
+    }
+
+    private void addButtonToTable() {
+        TableColumn<UsuariosDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<UsuariosDTO, Void>, TableCell<UsuariosDTO, Void>> cellFactory = new Callback<TableColumn<UsuariosDTO, Void>, TableCell<UsuariosDTO, Void>>() {
+            @Override
+            public TableCell<UsuariosDTO, Void> call(final TableColumn<UsuariosDTO, Void> param) {
+                final TableCell<UsuariosDTO, Void> cell = new TableCell<UsuariosDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Editar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            UsuariosDTO usuario = getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("usu", usuario);
+                            PrincipalController.cambiarVistaPrincipal("mantenimientoUsuarios/MantenimientoUsuarios");
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableUsuarios.getColumns().add(colBtn);
+
     }
 
     @Override

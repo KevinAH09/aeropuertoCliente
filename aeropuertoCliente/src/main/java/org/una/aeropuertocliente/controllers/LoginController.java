@@ -12,12 +12,16 @@ import org.una.aeropuertocliente.controllers.BaseController;
 import java.io.IOException;
 import org.una.aeropuertocliente.controllers.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -61,6 +65,7 @@ public class LoginController extends Controller implements Initializable {
     private JFXButton btnIngresar;
 
     private String pass;
+    private List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -72,6 +77,7 @@ public class LoginController extends Controller implements Initializable {
         txtPassOculto.setVisible(true);
         imgNotPassword.setVisible(false);
         imgViewPassword.setVisible(true);
+        indicarRequeridos();
 
     }
 
@@ -105,7 +111,8 @@ public class LoginController extends Controller implements Initializable {
         } else {
             pass = txtPassOculto.getText();
         }
-        if (!txtPassMostrado.getText().isEmpty() && ((!txtPassMostrado.getText().isEmpty())) || (!txtPassOculto.getText().isEmpty())) {
+        String validacion = validarRequeridos();
+        if (validacion == null) {
 
             Token.setInstance(null);
             AuthenticationRequest authenticationRequest = new AuthenticationRequest(txtUsuario.getText(), pass);
@@ -122,7 +129,7 @@ public class LoginController extends Controller implements Initializable {
             }
 
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "Por favor complete todos los campos");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), validacion);
         }
     }
 
@@ -152,6 +159,30 @@ public class LoginController extends Controller implements Initializable {
             txtUsuario.requestFocus();
         } else if (event.getCode() == KeyCode.ENTER) {
             actionIngresar(null);
+        }
+    }
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtPassMostrado, txtPassOculto, txtUsuario));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
         }
     }
 

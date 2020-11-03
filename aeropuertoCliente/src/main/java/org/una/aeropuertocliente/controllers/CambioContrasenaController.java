@@ -8,10 +8,14 @@ package org.una.aeropuertocliente.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -40,6 +44,7 @@ public class CambioContrasenaController extends Controller implements Initializa
     @FXML
     private JFXButton btnCambiar;
     UsuariosDTO usuDto = new UsuariosDTO();
+    private List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -58,7 +63,8 @@ public class CambioContrasenaController extends Controller implements Initializa
 
     @FXML
     private void actionCambiar(ActionEvent event) {
-        if (txtcontrasena.getText() != null && txtConfirmarcontrasena.getText() != null) {
+        String validacion = validarRequeridos();
+        if (validacion == null) {
             if (txtcontrasena.getText().equals(txtConfirmarcontrasena.getText())) {
                 usuDto.setContrasenaEncriptada(txtcontrasena.getText());
                 if (UsuariosService.updateContrasenaUsuario(usuDto) == 200) {
@@ -72,7 +78,32 @@ public class CambioContrasenaController extends Controller implements Initializa
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "Las contraseñas no coinciden");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "Faltan campos por rellenar");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), validacion);
+        }
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtConfirmarcontrasena, txtcontrasena));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
         }
     }
 

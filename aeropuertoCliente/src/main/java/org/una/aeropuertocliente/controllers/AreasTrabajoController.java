@@ -111,11 +111,11 @@ public class AreasTrabajoController extends Controller implements Initializable 
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
             mensaje = "Por favor debe ingresar datos en el campo de búsqueda";
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty() && cmbFiltro.getValue() != null) {
+        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty() && !cmbFiltro.getValue().isEmpty()) {
             System.out.println("Entro Areas");
             limpiarTableView();
             areasFilt = areaService.idAreaTrabajo(Long.valueOf(txtBusqueda.getText()));
@@ -127,7 +127,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty() && cmbFiltro.getValue() != null) {
+        if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty() && !cmbFiltro.getValue().isEmpty()) {
             limpiarTableView();
             areasList = areaService.nombreAreasTrabajos(txtBusqueda.getText().toUpperCase());
             if (areasList != null) {

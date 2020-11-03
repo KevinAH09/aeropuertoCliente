@@ -124,7 +124,7 @@ public class RolesController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbEstado.getValue().isEmpty()) {
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
@@ -139,7 +139,7 @@ public class RolesController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && cmbEstado.getValue() != null) {
+        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado.getValue().isEmpty()) {
             if (cmbEstado.getValue().equals("Activo")) {
                 limpiarTableView();
                 rolesList = RolesService.estadoRoles(true);

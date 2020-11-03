@@ -117,9 +117,9 @@ public class ZonasController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbEstado.getValue().isEmpty()) {
             limpiarTableView();
-            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+            mensaje = "Campos vacíos en el apartado de búsqueda";
             notificar(0);
         }
         if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
@@ -133,7 +133,7 @@ public class ZonasController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && cmbEstado.getValue() != null) {
+        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado.getValue().isEmpty()) {
             if (cmbEstado.getValue().equals("Activo")) {
                 zonasList = ZonasService.estadoZona(true);
                 if (zonasList != null) {

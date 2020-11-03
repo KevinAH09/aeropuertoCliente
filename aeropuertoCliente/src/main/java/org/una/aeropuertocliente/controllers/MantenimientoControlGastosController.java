@@ -59,10 +59,6 @@ public class MantenimientoControlGastosController extends Controller implements 
     @FXML
     private JFXTextField txtFecha;
     @FXML
-    private Label lbltxtMonto;
-    @FXML
-    private JFXTextField txtMonto;
-    @FXML
     private Label lblTitulo2;
     @FXML
     private Label lbltxtObservacion;

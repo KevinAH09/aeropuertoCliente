@@ -222,7 +222,7 @@ public class ParametrosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText() == null || txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbEstado2.getValue().isEmpty()) {
             limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
@@ -238,7 +238,7 @@ public class ParametrosController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && cmbEstado2.getValue() != null) {
+        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado2.getValue().isEmpty()) {
             if (cmbEstado2.getValue().equals("Activo")) {
                 limpiarTableView();
                 parametrosList = ParametrosService.estadoParametros(true);
