@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -167,6 +168,7 @@ public class VuelosController extends Controller implements Initializable {
     }
 
     private void llenarVuelos() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         TableColumn<VuelosDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
         TableColumn<VuelosDTO, String> colOrigen = new TableColumn("Origen");
@@ -174,9 +176,9 @@ public class VuelosController extends Controller implements Initializable {
         TableColumn<VuelosDTO, String> colDestino = new TableColumn("Destino");
         colDestino.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDestino()));
         TableColumn<VuelosDTO, String> colFechaInicio = new TableColumn("Fecha Inicio");
-        colFechaInicio.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaInicio()));
+        colFechaInicio.setCellValueFactory((param) -> new SimpleObjectProperty(formatter.format(param.getValue().getFechaInicio())));
         TableColumn<VuelosDTO, String> colFechaFinal = new TableColumn("Fecha Final");
-        colFechaFinal.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaFinal()));
+        colFechaFinal.setCellValueFactory((param) -> new SimpleObjectProperty(formatter.format(param.getValue().getFechaFinal())));
         TableColumn<VuelosDTO, String> colEstado = new TableColumn("Estado\nActivo Inactivo");
         colEstado.setCellValueFactory((param) -> {
             if (param.getValue().isEstado()) {
