@@ -124,7 +124,7 @@ public class RolesController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbEstado.getValue().isEmpty()) {
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }

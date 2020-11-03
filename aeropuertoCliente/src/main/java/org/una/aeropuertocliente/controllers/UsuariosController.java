@@ -150,7 +150,7 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbAreas.getValue() == null || cmbEstado.getValue().isEmpty() || cmbRoles.getValue() == null) {
             limpiarTableView();
             notificar(0);
         }
