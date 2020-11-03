@@ -111,6 +111,8 @@ public class LoginController extends Controller implements Initializable {
         } else {
             pass = txtPassOculto.getText();
         }
+        txtPassMostrado.setText(txtPassOculto.getText());
+        txtPassOculto.setText(txtPassMostrado.getText());
         String validacion = validarRequeridos();
         if (validacion == null) {
 
@@ -161,6 +163,7 @@ public class LoginController extends Controller implements Initializable {
             actionIngresar(null);
         }
     }
+
     public void indicarRequeridos() {
         requeridos.clear();
         requeridos.addAll(Arrays.asList(txtPassMostrado, txtPassOculto, txtUsuario));
