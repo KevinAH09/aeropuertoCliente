@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
    <children>
       <StackPane prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -25,18 +25,16 @@
                   <HBox alignment="CENTER" prefHeight="98.0" prefWidth="550.0">
                      <children>
                         <Label fx:id="labTxtFild" prefHeight="21.0" prefWidth="40.0" />
-                        <JFXTextField fx:id="txtFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <JFXTextField fx:id="txtFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su búsqueda" />
                         <Label fx:id="labComb" prefHeight="21.0" prefWidth="43.0" />
-                        <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
+                        <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de búsqueda" />
                         <Label fx:id="labBtnFiltrar" prefHeight="21.0" prefWidth="32.0" />
                         <JFXButton fx:id="btnFiltrar" onAction="#filtrar" prefHeight="29.0" prefWidth="87.0" text="Filtrar" />
-                        <Label fx:id="labBtnCancelar" prefHeight="21.0" prefWidth="35.0" />
-                        <JFXButton fx:id="btnCancelar" onAction="#cancelar" prefHeight="29.0" prefWidth="99.0" text="cancelar" />
                      </children>
                   </HBox>
                   <HBox prefHeight="300.0" prefWidth="560.0">
                      <children>
-                        <TableView fx:id="tableview" prefHeight="229.0" prefWidth="560.0" stylesheets="@../shared/table.css" HBox.hgrow="ALWAYS">
+                        <TableView fx:id="tableview" editable="true" prefHeight="229.0" prefWidth="560.0" stylesheets="@../shared/table.css" HBox.hgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy></TableView>
@@ -45,7 +43,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="700.0">
                      <children>
                         <Label fx:id="labbtnRegistrarAvion" prefHeight="20.0" prefWidth="22.0" />
-                        <JFXButton fx:id="btnRegistrarAvion" onAction="#registrarAvion" text="Registrar Aerolinea" />
+                        <JFXButton fx:id="btnRegistrarAvion" onAction="#registrarAvion" text="Registrar aerolinea" />
                      </children>
                   </HBox>
                </children>

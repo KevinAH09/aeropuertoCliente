@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoAerolineasController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoAerolineasController">
    <children>
       <StackPane prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -57,11 +57,10 @@
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="560.0" spacing="5.0">
                      <children>
-                        <Label fx:id="lblGuardar" prefHeight="20.0" prefWidth="13.0" />
+                        <Label fx:id="lblGuardar" prefHeight="20.0" prefWidth="28.0" />
                         <JFXButton fx:id="btnGuardar" onAction="#onActionGuardar" text="Guardar" />
-                        <Label fx:id="lblCancelar" prefHeight="20.0" prefWidth="19.0" />
-                        <JFXButton fx:id="btnCancelar" onAction="#onActionCancelar" text="Cancelar" />
-                        <Label fx:id="lblEditar" prefHeight="20.0" prefWidth="11.0" />
+                        <JFXButton fx:id="btnCancelar" onAction="#onActionCancelar" text="Cancelar" visible="false" />
+                        <Label fx:id="lblEditar" prefHeight="20.0" prefWidth="32.0" />
                         <JFXButton fx:id="btnEditar" onAction="#onActionEditar" text="Editar" />
                      </children>
                      <padding>
@@ -81,9 +80,9 @@
                   <HBox alignment="CENTER" prefHeight="61.0" prefWidth="560.0">
                      <children>
                         <Label fx:id="labTxtFild" prefHeight="21.0" prefWidth="40.0" />
-                        <JFXTextField fx:id="txtFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <JFXTextField fx:id="txtFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su búsqueda" />
                         <Label fx:id="labComb" prefHeight="21.0" prefWidth="43.0" />
-                        <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
+                        <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de búsqueda" />
                         <Label fx:id="labBtnFiltrar" prefHeight="21.0" prefWidth="32.0" />
                         <JFXButton fx:id="btnFiltrar" onAction="#filtrar" prefHeight="29.0" prefWidth="87.0" text="Filtrar" />
                      </children>
@@ -107,9 +106,9 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="lblVolver" prefHeight="20.0" prefWidth="58.0" />
-                        <JFXButton fx:id="btnVolverAerolinea" onAction="#volver" text="Volver Aerolinea" />
+                        <JFXButton fx:id="btnVolverAerolinea" onAction="#volver" text="Volver a aerolineas" />
                         <Label fx:id="lblRegistrar" prefHeight="20.0" prefWidth="58.0" />
-                        <JFXButton fx:id="btnRegistrar" onAction="#onActionRegistrar" text="Registrar  Avion" />
+                        <JFXButton fx:id="btnRegistrar" onAction="#onActionRegistrar" text="Registrar  avión" />
                      </children>
                   </HBox>
                </children>

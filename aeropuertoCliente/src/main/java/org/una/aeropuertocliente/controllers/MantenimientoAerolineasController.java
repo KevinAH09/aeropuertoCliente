@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -113,12 +115,35 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     private JFXButton btnVolverAerolinea;
     @FXML
     private Label labTituloAviones;
+    String mensaje;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aerolinea = (AerolineasDTO) AppContext.getInstance().get("aerolinea");
         combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula", "Tipo de avión", "Estado", "Nombre aerolinea"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtFilter.setPromptText("Ingrese número correspondiente");
+                }
+                if (t1 == "Matrícula") {
+                    txtFilter.setPromptText("Ingrese matrícula del avión");
+                }
+                if (t1 == "Tipo de avión") {
+                    txtFilter.setPromptText("Ingrese el tipo de avión");
+                }
+                if (t1 == "Estado") {
+                    txtFilter.setPromptText("Ingrese estado(true o false)");
+                }
+                if (t1 == "Nombre aerolinea") {
+                    txtFilter.setPromptText("Ingrese nombre de la aerolinea");
+                }
+            }
+
+        }
+        );
         if (aerolinea != null) {
             actionAvionClick();
             llenarAviones();
@@ -139,8 +164,6 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 combFilter.setVisible(false);
                 btnFiltrar.setVisible(false);
                 btnCancelar.setVisible(false);
-                //btnRegistrar.setDisable(true);
-                //tableAviones.setVisible(false);
                 notificar(2);
             }
             btnCancelar.setVisible(false);
@@ -157,9 +180,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             combFilter.setVisible(false);
             btnFiltrar.setVisible(false);
             btnCancelar.setVisible(false);
-            
-               
-          
+
             notificar(2);
             txtNombre.setDisable(false);
             txtId.setDisable(true);
@@ -169,7 +190,6 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             btnCancelar.setVisible(false);
             btnEditar.setDisable(true);
             btnGuardar.setVisible(true);
-            
 
             tableAviones.getItems().clear();
         }
@@ -218,9 +238,9 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 }
                 aerolinea.setNombreResponsable(txtResponsable.getText());
                 aerolinea.setNombreAerolinea(txtNombre.getText());
-                //if(AvionesService.aerolinea(aerolinea.getId()).isEmpty())
                 if (AerolineasService.createAerolinea(aerolinea) == 201) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
+                    PrincipalController.cambiarVistaPrincipal("aerolineas/Aerolineas");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
@@ -283,7 +303,8 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @FXML
     private void filtrar(ActionEvent event) {
-        if (combFilter.getValue().isEmpty() || txtFilter.getText().isEmpty()) {
+        if (combFilter.getValue()==null || txtFilter.getText().isEmpty()) {
+            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         } else {
 
@@ -294,6 +315,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 if (avionesFil != null) {
                     tableAviones.setItems(FXCollections.observableArrayList(avionesFil));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -304,6 +326,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                     if (avionesList != null) {
                         tableAviones.setItems(FXCollections.observableArrayList(avionesList));
                     } else {
+                        mensaje = "No se encontró coincidencias";
                         notificar(0);
                     }
                 }
@@ -313,10 +336,12 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                     if (avionesList != null) {
                         tableAviones.setItems(FXCollections.observableArrayList(avionesList));
                     } else {
+                        mensaje = "No se encontró coincidencias";
                         notificar(0);
                     }
                 }
                 if (avionesList == null) {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -326,6 +351,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 if (avionesList != null) {
                     tableAviones.setItems(FXCollections.observableArrayList(avionesList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -335,6 +361,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 if (avionesList != null) {
                     tableAviones.setItems(FXCollections.observableArrayList(avionesList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -350,7 +377,8 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 }
                 if (!avionesList2.isEmpty()) {
                     tableAviones.setItems(FXCollections.observableArrayList(avionesList2));
-                }else {
+                } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -371,7 +399,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         }
         if (num == 0) {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);

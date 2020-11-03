@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -68,6 +70,7 @@ public class AvionesController extends Controller implements Initializable {
     private TableView<AvionesDTO> tableAvion;
     @FXML
     private JFXButton btnVolverVuelos;
+    String mensaje;
 
     /**
      * Initializes the controller class.
@@ -76,13 +79,35 @@ public class AvionesController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         actionAvionClick();
         llenarAviones();
-        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula","Tipo de avión","Estado","Nombre aerolinea"));
+        combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula", "Tipo de avión", "Estado", "Nombre aerolinea"));
+        combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtFilter.setPromptText("Ingrese número correspondiente");
+                }
+                if (t1 == "Matrícula") {
+                    txtFilter.setPromptText("Ingrese matrícula del avión");
+                }
+                if (t1 == "Tipo de avión") {
+                    txtFilter.setPromptText("Ingrese el tipo de avión");
+                }
+                if (t1 == "Estado") {
+                    txtFilter.setPromptText("Ingrese estado(true o false)");
+                }
+                if (t1 == "Nombre aerolinea") {
+                    txtFilter.setPromptText("Ingrese nombre de la aerolinea");
+                }
+            }
 
+        }
+        );
     }
 
     @FXML
     private void filtrar(ActionEvent event) {
-        if (combFilter.getValue().isEmpty() || txtFilter.getText().isEmpty()) {
+        if (combFilter.getValue() == null || txtFilter.getText().isEmpty()) {
+            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         } else {
             if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
@@ -91,6 +116,7 @@ public class AvionesController extends Controller implements Initializable {
                 if (avionesFil != null) {
                     tableAvion.setItems(FXCollections.observableArrayList(avionesFil));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -101,6 +127,7 @@ public class AvionesController extends Controller implements Initializable {
                     if (avionesList != null) {
                         tableAvion.setItems(FXCollections.observableArrayList(avionesList));
                     } else {
+                        mensaje = "No se encontró coincidencias";
                         notificar(0);
                     }
                 }
@@ -110,6 +137,7 @@ public class AvionesController extends Controller implements Initializable {
                     if (avionesList != null) {
                         tableAvion.setItems(FXCollections.observableArrayList(avionesList));
                     } else {
+                        mensaje = "No se encontró coincidencias";
                         notificar(0);
                     }
                 }
@@ -120,6 +148,7 @@ public class AvionesController extends Controller implements Initializable {
                 if (avionesList != null) {
                     tableAvion.setItems(FXCollections.observableArrayList(avionesList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -129,6 +158,7 @@ public class AvionesController extends Controller implements Initializable {
                 if (avionesList != null) {
                     tableAvion.setItems(FXCollections.observableArrayList(avionesList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -144,7 +174,8 @@ public class AvionesController extends Controller implements Initializable {
                 }
                 if (!avionesList2.isEmpty()) {
                     tableAvion.setItems(FXCollections.observableArrayList(avionesList2));
-                }else {
+                } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -166,7 +197,7 @@ public class AvionesController extends Controller implements Initializable {
         }
         if (num == 0) {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);
@@ -186,7 +217,6 @@ public class AvionesController extends Controller implements Initializable {
 
         }
     }
-
 
     private void actionAvionClick() {
         tableAvion.setOnMouseClicked(new EventHandler<MouseEvent>() {

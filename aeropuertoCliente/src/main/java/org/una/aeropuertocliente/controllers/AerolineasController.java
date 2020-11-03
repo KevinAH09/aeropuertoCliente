@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -46,8 +48,6 @@ public class AerolineasController extends Controller implements Initializable {
     @FXML
     private Button btnFiltrar;
     @FXML
-    private Button btnCancelar;
-    @FXML
     private TableView<AerolineasDTO> tableview;
     @FXML
     private JFXTextField txtFilter;
@@ -62,14 +62,12 @@ public class AerolineasController extends Controller implements Initializable {
     @FXML
     private Label labBtnFiltrar;
     @FXML
-    private Label labBtnCancelar;
-    @FXML
     private Label labbtnRegistrarAvion;
     @FXML
     private JFXButton btnRegistrarAvion;
 
     AerolineasService aerolineaService;
-
+    String mensaje;
     AerolineasDTO aerolinea;
     AerolineasDTO aerolinea1;
     AerolineasDTO aerolineaFil;
@@ -88,7 +86,30 @@ public class AerolineasController extends Controller implements Initializable {
         actionAerolineaClick();
         llenarAerolineas();
         combFilter.setItems(FXCollections.observableArrayList("Id", "Nombre Responsable", "Nombre Aerolinea", "Estado"));
+        combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtFilter.setPromptText("Ingrese número correspondiente");
+                }
+                if (t1 == "Nombre Responsable") {
+                    txtFilter.setPromptText("Ingrese nombre del responsable");
+                }
+                if (t1 == "Nombre Aerolinea") {
+                    txtFilter.setPromptText("Ingrese nombre de la aeroliena");
+                }
+                if (t1 == "Estado") {
+                    txtFilter.setPromptText("Ingrese estado(true o false)");
+                }
+            }
 
+        }
+        );
+    }
+
+    private void limpiarTableView() {
+        tableview.getItems().clear();
+        tableview.getColumns().clear();
     }
 
     private void llenarAerolineas() {
@@ -100,6 +121,7 @@ public class AerolineasController extends Controller implements Initializable {
         colResponsable.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreResponsable()));
         TableColumn<AerolineasDTO, String> colEstado = new TableColumn("Estado\nActivo(True)Inactivo(False)");
         colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
+        
         tableview.getColumns().addAll(colId, colNombreAerolinea, colResponsable, colEstado);
         notificar(1);
     }
@@ -116,7 +138,6 @@ public class AerolineasController extends Controller implements Initializable {
                         AppContext.getInstance().set("aerolinea", aerolinea);
                         PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");
                     }
-
                 }
             }
         });
@@ -124,7 +145,10 @@ public class AerolineasController extends Controller implements Initializable {
 
     @FXML
     private void filtrar(ActionEvent event) {
-        if (combFilter.getValue().isEmpty() || txtFilter.getText().isEmpty()) {
+
+        if ((combFilter.getValue()==null || txtFilter.getText().isEmpty())) {
+            limpiarTableView();
+            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         } else {
 
@@ -135,6 +159,7 @@ public class AerolineasController extends Controller implements Initializable {
                 if (aerolineaFil != null) {
                     tableview.setItems(FXCollections.observableArrayList(aerolineaFil));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -145,7 +170,8 @@ public class AerolineasController extends Controller implements Initializable {
                     if (aerolineaList != null) {
                         tableview.setItems(FXCollections.observableArrayList(aerolineaList));
                     } else {
-                        notificar(0);
+                   mensaje = "No se encontró coincidencias";
+                    notificar(0);
                     }
                 }
                 if (txtFilter.getText().equals("false")) {
@@ -154,10 +180,12 @@ public class AerolineasController extends Controller implements Initializable {
                     if (aerolineaList != null) {
                         tableview.setItems(FXCollections.observableArrayList(aerolineaList));
                     } else {
-                        notificar(0);
+                        mensaje = "No se encontró coincidencias";
+                    notificar(0);
                     }
                 }
                 if (aerolineaList == null) {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -168,6 +196,7 @@ public class AerolineasController extends Controller implements Initializable {
                 if (aerolineaList != null) {
                     tableview.setItems(FXCollections.observableArrayList(aerolineaList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -177,7 +206,8 @@ public class AerolineasController extends Controller implements Initializable {
                 if (aerolineaList != null) {
                     tableview.setItems(FXCollections.observableArrayList(aerolineaList));
                 } else {
-                    notificar(0);
+                    mensaje = "No se encontró coincidencias";
+                    notificar(0);;
                 }
             }
         }
@@ -196,7 +226,7 @@ public class AerolineasController extends Controller implements Initializable {
             tableview.setPlaceholder(box);
         } else {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);
@@ -206,9 +236,6 @@ public class AerolineasController extends Controller implements Initializable {
         }
     }
 
-    @FXML
-    private void cancelar(ActionEvent event) {
-    }
 
     @FXML
     private void registrarAvion(ActionEvent event) {

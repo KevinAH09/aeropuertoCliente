@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AvionesController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AvionesController">
    <children>
       <StackPane prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -25,9 +25,9 @@
                   <HBox alignment="CENTER" prefHeight="72.0" prefWidth="560.0">
                      <children>
                         <Label fx:id="labTxtFild" prefHeight="21.0" prefWidth="35.0" />
-                        <JFXTextField fx:id="txtFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <JFXTextField fx:id="txtFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su búsqueda" />
                         <Label fx:id="labComb" prefHeight="21.0" prefWidth="34.0" />
-                        <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
+                        <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de búsqueda" />
                         <Label fx:id="labBtnFiltrar" prefHeight="21.0" prefWidth="29.0" />
                         <JFXButton fx:id="btnFiltrar" onAction="#filtrar" prefHeight="29.0" prefWidth="84.0" text="Filtrar" />
                      </children>
@@ -48,7 +48,7 @@
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="79.0" prefWidth="560.0">
                      <children>
-                        <JFXButton fx:id="btnVolverVuelos" onAction="#volver" prefHeight="29.0" prefWidth="129.0" text="Volver Vuelos" />
+                        <JFXButton fx:id="btnVolverVuelos" onAction="#volver" prefHeight="29.0" prefWidth="255.0" text="Volver a mantenimiento vuelos" />
                      </children>
                   </HBox>
                </children>

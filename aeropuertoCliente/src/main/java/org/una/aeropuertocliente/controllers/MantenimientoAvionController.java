@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -96,6 +98,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
     public AvionesZonasDTO avionZonaList;
     @FXML
     private Label labVuelos;
+    String mensaje;
 
     /**
      * Initializes the controller class.
@@ -106,6 +109,25 @@ public class MantenimientoAvionController extends Controller implements Initiali
         avion = (AvionesDTO) AppContext.getInstance().get("agregarAvion");
         combEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         combFiltro.setItems(FXCollections.observableArrayList("Id", "Destino", "Origen", "Estado"));
+        combFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtFiltrar.setPromptText("Ingrese número correspondiente");
+                }
+                if (t1 == "Destino") {
+                    txtFiltrar.setPromptText("Ingrese destino del vuelo");
+                }
+                if (t1 == "Origen") {
+                    txtFiltrar.setPromptText("Ingrese origen del vuelo");
+                }
+                if (t1 == "Estado") {
+                    txtFiltrar.setPromptText("Ingrese estado(true o false)");
+                }
+            }
+
+        }
+        );
         if (avion != null) {
             llenarVuelos();
             if (avion.isEstado()) {
@@ -124,14 +146,6 @@ public class MantenimientoAvionController extends Controller implements Initiali
             combEstado.setDisable(true);
             txtTipoAvion.setText(avion.getTipoAvion());
             txtMatricula.setText(avion.getMatricula());
-            // txtZona.setText(aerolinea.getNombreResponsable());
-//            if (VuelosService.(aerolinea.getId()).isEmpty()) {
-//                txtFilter.setVisible(false);
-//                combFilter.setVisible(false);
-//                btnFiltrar.setVisible(false);
-//                btnCancelar.setVisible(false);
-//                tableAviones.setVisible(false);
-//            }
             btnCancelar.setVisible(false);
             btnEditar.setVisible(true);
             btnGuardarEditar.setDisable(true);
@@ -141,19 +155,12 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 ZonasDTO zon;
                 zon = (ZonasDTO) AppContext.getInstance().get("zon");
                 txtZona.setText(zon.getNombreZona());
-                //btnGuardarEditar.setDisable(false);
             }
 
         } else {
             txtTipoAvion.setText("");
             txtMatricula.setText("");
             combEstado.setValue("Activo");
-
-//            avionZonaList = AvionesZonasService.zonaReciente(avion.getId());
-//            if(avionZonaList!=null)
-//            {
-//                txtZona.setText(avionZonaList.getZona().getNombreZona());
-//            }
             if (AppContext.getInstance().get("zon") != null) {
                 ZonasDTO zon;
                 zon = (ZonasDTO) AppContext.getInstance().get("zon");
@@ -187,15 +194,16 @@ public class MantenimientoAvionController extends Controller implements Initiali
     @FXML
     private void btnFiltrar(ActionEvent event) {
         if (combFiltro.getValue() == null || txtFiltrar.getText() == null) {
+            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         } else {
-
             if (combFiltro.getValue().equals("Id") && !txtFiltrar.getText().isEmpty()) {
                 tableview.getItems().clear();
                 vueloFil = VuelosService.idVuelo(Long.valueOf(txtFiltrar.getText()));
                 if (vueloFil != null) {
                     tableview.setItems(FXCollections.observableArrayList(vueloFil));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -206,6 +214,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     if (vuelosList != null) {
                         tableview.setItems(FXCollections.observableArrayList(vuelosList));
                     } else {
+                        mensaje = "No se encontró coincidencias";
                         notificar(0);
                     }
                 }
@@ -215,10 +224,12 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     if (vuelosList != null) {
                         tableview.setItems(FXCollections.observableArrayList(vuelosList));
                     } else {
+                        mensaje = "No se encontró coincidencias";
                         notificar(0);
                     }
                 }
                 if (vuelosList == null) {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -228,6 +239,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 if (vuelosList != null) {
                     tableview.setItems(FXCollections.observableArrayList(vuelosList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
@@ -237,12 +249,12 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 if (vuelosList != null) {
                     tableview.setItems(FXCollections.observableArrayList(vuelosList));
                 } else {
+                    mensaje = "No se encontró coincidencias";
                     notificar(0);
                 }
             }
         }
     }
-
 
     private void llenarVuelos() {
         TableColumn<VuelosDTO, String> colId = new TableColumn("Id");
@@ -280,7 +292,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
         }
         if (num == 0) {
             ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
+            Text lab = new Text(mensaje);
             lab.setFill(Color.web("#0076a3"));
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);
@@ -341,7 +353,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     if (AvionesZonasService.createAvionZona(avionZona) == 201) {
                         btnGuardarEditar.setDisable(true);
                         btnEditar.setDisable(false);
-                        
+
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aviones", ((Stage) txtMatricula.getScene().getWindow()), "Se guardó correctamente");
                     } else {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la zona del avion", ((Stage) txtMatricula.getScene().getWindow()), "No se guardó correctamente");
