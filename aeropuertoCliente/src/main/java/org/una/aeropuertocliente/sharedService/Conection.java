@@ -171,7 +171,6 @@ public class Conection {
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
-            System.out.println(response.toString());
             return gson.fromJson(response.toString(), listtype);
 
         } catch (Exception e) {

@@ -193,7 +193,6 @@ public class VuelosController extends Controller implements Initializable {
 
     private void addButtonToTable() {
         TableColumn<VuelosDTO, Void> colBtn = new TableColumn("Acción");
-
         Callback<TableColumn<VuelosDTO, Void>, TableCell<VuelosDTO, Void>> cellFactory = new Callback<TableColumn<VuelosDTO, Void>, TableCell<VuelosDTO, Void>>() {
             @Override
             public TableCell<VuelosDTO, Void> call(final TableColumn<VuelosDTO, Void> param) {
@@ -203,16 +202,10 @@ public class VuelosController extends Controller implements Initializable {
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
-                            data = getTableView().getItems().get(getIndex());
-                            if (!txtTipoAvion.getText().equals("")) {
-                                if (data != null) {
-                                    AppContext.getInstance().set("AvionAMantenimientoVuelo", data);
-                                    AppContext.getInstance().set("VueloAMantenimientoVuelo", null);
-                                }
-                                PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
-                            } else {
-                                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Registrar vuelo", ((Stage) txtTipoAvion.getScene().getWindow()), "Por favor busque un avión antes de registrar un vuelo");
-                            }
+                            VuelosDTO vuelo = (VuelosDTO) getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("VueloAMantenimientoVuelo", vuelo);
+                                AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
+                            PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
                         });
                     }
 
@@ -233,9 +226,7 @@ public class VuelosController extends Controller implements Initializable {
         colBtn.setCellFactory(cellFactory);
 
         tableView.getColumns().add(colBtn);
-
     }
-
     @FXML
     private void filtrar(ActionEvent event) {
         if (combFilter.getValue().isEmpty() || txtFilter.getText().isEmpty()) {

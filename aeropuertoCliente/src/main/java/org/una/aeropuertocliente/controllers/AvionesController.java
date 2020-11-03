@@ -254,6 +254,7 @@ public class AvionesController extends Controller implements Initializable {
         addButtonToTable();
         notificar(1);
     }
+
     private void addButtonToTable() {
         TableColumn<AvionesDTO, Void> colBtn = new TableColumn("Acción");
 
@@ -266,9 +267,9 @@ public class AvionesController extends Controller implements Initializable {
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
-                            data = getTableView().getItems().get(getIndex());
-                            AppContext.getInstance().set("agregarAvion", data);
-                            PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion");
+                            AvionesDTO avion = (AvionesDTO) getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("avionAVuelos", avion);
+                            PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
                         });
                     }
 
