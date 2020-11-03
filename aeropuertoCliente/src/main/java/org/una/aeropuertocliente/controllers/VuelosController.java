@@ -30,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.dtos.VuelosDTO;
 import org.una.aeropuertocliente.entitiesServices.AvionesService;
@@ -86,6 +87,7 @@ public class VuelosController extends Controller implements Initializable {
     private JFXButton btnRegistrarVuelos;
     AvionesDTO Objetoaviones;
     public List<VuelosDTO> A2 = new ArrayList<VuelosDTO>();
+
     /**
      * Initializes the controller class.
      */
@@ -102,9 +104,8 @@ public class VuelosController extends Controller implements Initializable {
             llenarVuelos();
             txtTipoAvion.setText(Objetoaviones.getTipoAvion());
             txtmatricula.setText(Objetoaviones.getMatricula());
-            A2=VuelosService.vuelos(Objetoaviones.getId());
-            if(A2.isEmpty())
-            {
+            A2 = VuelosService.vuelos(Objetoaviones.getId());
+            if (A2.isEmpty()) {
                 notificar(2);
                 txtFilter.setDisable(true);
                 combFilter.setDisable(true);
@@ -230,11 +231,15 @@ public class VuelosController extends Controller implements Initializable {
 
     @FXML
     private void registrarVuelos(ActionEvent event) {
-        if (Objetoaviones != null) {
-            AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
-            AppContext.getInstance().set("VueloAMantenimientoVuelo", null);
+        if (!txtTipoAvion.getText().equals("")) {
+            if (Objetoaviones != null) {
+                AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
+                AppContext.getInstance().set("VueloAMantenimientoVuelo", null);
+            }
+            PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
+        }else{
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Registrar vuelo", ((Stage) txtTipoAvion.getScene().getWindow()), "Por favor busque un avión antes de registrar un vuelo");
         }
-        PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
     }
 
     @Override
