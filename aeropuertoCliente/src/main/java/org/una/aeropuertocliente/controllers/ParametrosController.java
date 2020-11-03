@@ -222,12 +222,12 @@ public class ParametrosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbEstado2.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null || cmbEstado2.getValue() == null) {
             limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             parametrosFilt = ParametrosService.idParametro(Long.valueOf(txtBusqueda.getText()));
             if (parametrosFilt != null) {
@@ -238,7 +238,7 @@ public class ParametrosController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado2.getValue().isEmpty()) {
+        if (cmbFiltro.getValue() == "Estado" && cmbEstado2.getValue() != null) {
             if (cmbEstado2.getValue().equals("Activo")) {
                 limpiarTableView();
                 parametrosList = ParametrosService.estadoParametros(true);
@@ -266,7 +266,7 @@ public class ParametrosController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             parametrosList = ParametrosService.nombreParametros(txtBusqueda.getText());
             if (parametrosList != null) {

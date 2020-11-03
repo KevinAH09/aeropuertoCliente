@@ -150,11 +150,11 @@ public class UsuariosController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbAreas.getValue() == null || cmbEstado.getValue().isEmpty() || cmbRoles.getValue() == null) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null || cmbAreas.getValue() == null || cmbEstado.getValue() == null || cmbRoles.getValue() == null) {
             limpiarTableView();
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             llenarUsuarios();
             usuariosFilt = UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
@@ -164,7 +164,7 @@ public class UsuariosController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             usuariosList = UsuariosService.nombreUsuarios(txtBusqueda.getText());
             if (usuariosList != null) {
@@ -174,7 +174,7 @@ public class UsuariosController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Cedula") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Cedula" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             usuariosFilt = UsuariosService.cedulaUsuarios(txtBusqueda.getText());
             if (usuariosFilt != null) {
@@ -184,7 +184,7 @@ public class UsuariosController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Area Trabajo") && cmbAreas.getValue() != null) {
+        if (cmbFiltro.getValue() == "Area Trabajo" && cmbAreas.getValue() != null) {
             limpiarTableView();
             llenarUsuarios();
             usuariosList = UsuariosService.allUsuarios();
@@ -202,7 +202,7 @@ public class UsuariosController extends Controller implements Initializable {
         } else {
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Rol") && cmbRoles.getValue() != null) {
+        if (cmbFiltro.getValue() == "Rol" && cmbRoles.getValue() != null) {
             limpiarTableView();
             llenarUsuarios();
             usuariosList = UsuariosService.allUsuarios();
@@ -220,7 +220,7 @@ public class UsuariosController extends Controller implements Initializable {
         } else {
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado.getValue().isEmpty()) {
+        if (cmbFiltro.getValue() == "Estado" && !cmbEstado.getValue().isEmpty()) {
             if (cmbEstado.getValue().equals("Activo")) {
                 limpiarTableView();
                 llenarUsuarios();

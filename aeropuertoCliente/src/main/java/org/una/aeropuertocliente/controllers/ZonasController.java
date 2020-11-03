@@ -117,12 +117,12 @@ public class ZonasController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbEstado.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null || cmbEstado.getValue() == null) {
             limpiarTableView();
             mensaje = "Campos vacíos en el apartado de búsqueda";
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
             zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
             if (zonasFilt != null) {
                 limpiarTableView();
@@ -133,7 +133,7 @@ public class ZonasController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado.getValue().isEmpty()) {
+        if (cmbFiltro.getValue() == "Estado" && !cmbEstado.getValue().isEmpty()) {
             if (cmbEstado.getValue().equals("Activo")) {
                 zonasList = ZonasService.estadoZona(true);
                 if (zonasList != null) {
@@ -161,7 +161,7 @@ public class ZonasController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
             zonasList = ZonasService.nombreZona(txtBusqueda.getText());
             if (zonasList != null) {
                 limpiarTableView();
@@ -172,7 +172,7 @@ public class ZonasController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Código") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Código" && !txtBusqueda.getText().isEmpty()) {
             zonasList = ZonasService.codigoZona(txtBusqueda.getText());
             if (zonasList != null) {
                 limpiarTableView();

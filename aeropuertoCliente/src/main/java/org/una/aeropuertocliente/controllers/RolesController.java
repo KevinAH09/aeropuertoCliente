@@ -124,11 +124,11 @@ public class RolesController extends Controller implements Initializable {
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbEstado.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null || cmbEstado.getValue() == null) {
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             rolesFilt = RolesService.idRole(Long.valueOf(txtBusqueda.getText()));
             if (rolesFilt != null) {
@@ -139,7 +139,7 @@ public class RolesController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado.getValue().isEmpty()) {
+        if (cmbFiltro.getValue() == "Estado" && !cmbEstado.getValue().isEmpty()) {
             if (cmbEstado.getValue().equals("Activo")) {
                 limpiarTableView();
                 rolesList = RolesService.estadoRoles(true);
@@ -167,7 +167,7 @@ public class RolesController extends Controller implements Initializable {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Código") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Código" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             rolesList = RolesService.codigoRoles(txtBusqueda.getText());
             if (rolesList != null) {

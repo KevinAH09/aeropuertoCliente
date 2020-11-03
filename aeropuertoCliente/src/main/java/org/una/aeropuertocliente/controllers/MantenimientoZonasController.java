@@ -215,23 +215,12 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty() || cmbEstado2.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null || cmbEstado2.getValue() == null) {
             limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
-            if (zonasFilt != null) {
-                llenarZonas();
-                tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
-            } else {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
-        }
-        if (cmbFiltro.getValue().equals("Estado") && !cmbEstado2.getValue().isEmpty()) {
+        if (cmbFiltro.getValue() == "Estado" && !cmbEstado2.getValue().isEmpty()) {
             if (cmbEstado2.getValue().equals("Activo")) {
                 limpiarTableView();
                 zonasList = ZonasService.estadoZona(true);
@@ -259,7 +248,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Nombre") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             zonasList = ZonasService.nombreZona(txtBusqueda.getText());
             if (zonasList != null) {
@@ -269,13 +258,24 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Código") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Código" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             zonasList = ZonasService.codigoZona(txtBusqueda.getText());
             if (zonasList != null) {
                 llenarZonas();
                 tableZonas.setItems(FXCollections.observableArrayList(zonasList));
             } else {
+                notificar(0);
+            }
+        }
+        if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
+            limpiarTableView();
+            zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
+            if (zonasFilt != null) {
+                llenarZonas();
+                tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
+            } else {
+                mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
         }
@@ -391,8 +391,13 @@ public class MantenimientoZonasController extends Controller implements Initiali
     }
 
     private void limpiarTableView() {
-        tableZonas.getItems().clear();
-        tableZonas.getColumns().clear();
+        if (tableZonas.getItems().size() > 0 && tableZonas.getColumns().size() > 0) {
+            tableZonas.getItems().clear();
+            tableZonas.getColumns().clear();
+        }
+        if (tableZonas.getColumns().size() > 0) {
+            tableZonas.getColumns().clear();
+        }
     }
 
     public void indicarRequeridos() {

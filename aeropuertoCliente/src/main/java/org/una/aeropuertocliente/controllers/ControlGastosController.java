@@ -147,12 +147,12 @@ public class ControlGastosController extends Controller implements Initializable
 
     @FXML
     private void onActionFiltrar(ActionEvent event) {
-        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue().isEmpty()) {
+        if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null) {
             limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
-        if (cmbFiltro.getValue().equals("Id") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             gastosFilt = ControlGastosService.idControlGasto(Long.valueOf(txtBusqueda.getText()));
             if (gastosFilt != null) {
@@ -163,7 +163,7 @@ public class ControlGastosController extends Controller implements Initializable
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Empresa") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Empresa" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             gastosList = ControlGastosService.empresaControlesGastos(txtBusqueda.getText());
             if (gastosList != null) {
@@ -174,7 +174,7 @@ public class ControlGastosController extends Controller implements Initializable
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Contrato") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Contrato" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             gastosList = ControlGastosService.contratoControlesGastos(txtBusqueda.getText());
             if (gastosList != null) {
@@ -185,7 +185,7 @@ public class ControlGastosController extends Controller implements Initializable
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Tipo") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Tipo" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             gastosList = ControlGastosService.tipoControlesGastos(txtBusqueda.getText());
             if (gastosList != null) {
@@ -196,7 +196,7 @@ public class ControlGastosController extends Controller implements Initializable
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue().equals("Estado") && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Estado" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             gastosList = ControlGastosService.estadoControlesGastos(txtBusqueda.getText());
             if (gastosList != null) {
@@ -208,13 +208,8 @@ public class ControlGastosController extends Controller implements Initializable
             }
         }
 
-        if (cmbFiltro.getValue().equals("Intervalo Fechas") && fDesde.getValue() != null && fHasta.getValue() != null) {
+        if (cmbFiltro.getValue() == "Intervalo Fechas" && fDesde.getValue() != null && fHasta.getValue() != null) {
             limpiarTableView();
-//            String data = txtBusqueda.getText();
-//            String sDate1 = data.substring(0, 10);
-//            String sDate2 = data.substring(11, 21);
-            
-
             Date ini = Date.from(fDesde.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date fina = Date.from(fHasta.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(ini);
