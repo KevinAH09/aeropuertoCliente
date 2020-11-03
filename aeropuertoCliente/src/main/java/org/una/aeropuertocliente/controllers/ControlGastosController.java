@@ -213,14 +213,12 @@ public class ControlGastosController extends Controller implements Initializable
 //            String data = txtBusqueda.getText();
 //            String sDate1 = data.substring(0, 10);
 //            String sDate2 = data.substring(11, 21);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date ini = new Date();
-            Date fina = new Date();
+            
 
-            ini = Date.from(fDesde.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            fina = Date.from(fHasta.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            String sDate1 = formatter.format(ini);
-            String sDate2 = formatter.format(fina);
+            Date ini = Date.from(fDesde.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date fina = Date.from(fHasta.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(ini);
+            String sDate2 = new SimpleDateFormat("yyyy-MM-dd").format(fina);
 
             gastosList = ControlGastosService.fechaControlesGastos(sDate1, sDate2);
             if (gastosList != null) {

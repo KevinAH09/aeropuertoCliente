@@ -5,6 +5,10 @@ module org.una.aeropuertocliente {
     requires com.google.gson;
     requires java.base;
     requires jasperreports;
+    requires java.xml;
+    requires javax.interceptor.api;
+    requires javax.inject;
+    requires org.apache.logging.log4j;
     
     opens org.una.aeropuertocliente.controllers to javafx.fxml;
     opens org.una.aeropuertocliente to javafx.fxml;

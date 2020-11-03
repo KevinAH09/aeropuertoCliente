@@ -25,7 +25,7 @@ public class ReportesService {
       public static void reporteUsuarios() {
            String jasper = "";
         try {
-            jasper = Conection.oneConnectionReporte("reportes/fechaini/fechafin/lkj/uih");
+            jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/lkj/uih");
             System.out.println(jasper);
         byte[] repor = Base64.getDecoder().decode(jasper);
             ByteArrayInputStream bta = null;
