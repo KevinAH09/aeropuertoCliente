@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -31,9 +34,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.dtos.VuelosDTO;
-import org.una.aeropuertocliente.entitiesServices.AvionesService;
 import org.una.aeropuertocliente.entitiesServices.VuelosService;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -87,6 +90,7 @@ public class VuelosController extends Controller implements Initializable {
     private JFXButton btnRegistrarVuelos;
     AvionesDTO Objetoaviones;
     public List<VuelosDTO> A2 = new ArrayList<VuelosDTO>();
+    public VuelosDTO data = new VuelosDTO();
 
     /**
      * Initializes the controller class.
@@ -121,6 +125,28 @@ public class VuelosController extends Controller implements Initializable {
             txtmatricula.setDisable(true);
             tableView.setDisable(true);
         }
+        combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if (t1 == "Id") {
+                    txtFilter.setPromptText("Ingrese número correspondiente");
+                }
+                if (t1 == "Destino") {
+                    txtFilter.setPromptText("Ingrese nombre del destino");
+                }
+                if (t1 == "Nombre Aerolinea") {
+                    txtFilter.setPromptText("Ingrese nombre del Origen");
+                }
+                if (t1 == "Estado") {
+                    txtFilter.setPromptText("Ingrese estado");
+                }
+                if (t1 == "Matricula del Avión") {
+                    txtFilter.setPromptText("Ingrese matrícula del avión");
+                }
+            }
+
+        }
+        );
     }
 
     private void actionVueloClick() {
@@ -151,12 +177,63 @@ public class VuelosController extends Controller implements Initializable {
         colFechaInicio.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaInicio()));
         TableColumn<VuelosDTO, String> colFechaFinal = new TableColumn("Fecha Final");
         colFechaFinal.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaFinal()));
-        TableColumn<VuelosDTO, String> colEstado = new TableColumn("Estado");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaFinal()));
+        TableColumn<VuelosDTO, String> colEstado = new TableColumn("Estado\nActivo Inactivo");
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         TableColumn<VuelosDTO, String> colTipoBicatora = new TableColumn("Tipo Bitácora");
         colTipoBicatora.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getBitacoraVueloId().getTipoBitacora()));
         tableView.getColumns().addAll(colId, colOrigen, colDestino, colFechaInicio, colFechaFinal, colEstado, colTipoBicatora);
+        addButtonToTable();
         notificar(1);
+    }
+
+    private void addButtonToTable() {
+        TableColumn<VuelosDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<VuelosDTO, Void>, TableCell<VuelosDTO, Void>> cellFactory = new Callback<TableColumn<VuelosDTO, Void>, TableCell<VuelosDTO, Void>>() {
+            @Override
+            public TableCell<VuelosDTO, Void> call(final TableColumn<VuelosDTO, Void> param) {
+                final TableCell<VuelosDTO, Void> cell = new TableCell<VuelosDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Seleccionar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            data = getTableView().getItems().get(getIndex());
+                            if (!txtTipoAvion.getText().equals("")) {
+                                if (data != null) {
+                                    AppContext.getInstance().set("AvionAMantenimientoVuelo", data);
+                                    AppContext.getInstance().set("VueloAMantenimientoVuelo", null);
+                                }
+                                PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
+                            } else {
+                                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Registrar vuelo", ((Stage) txtTipoAvion.getScene().getWindow()), "Por favor busque un avión antes de registrar un vuelo");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableView.getColumns().add(colBtn);
+
     }
 
     @FXML
@@ -174,7 +251,7 @@ public class VuelosController extends Controller implements Initializable {
                 }
             }
             if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-                if (txtFilter.getText().equals("true")) {
+                if (txtFilter.getText().equals("Activo")) {
                     tableView.getItems().clear();
                     vuelosList = VuelosService.estado(true);
                     if (vuelosList != null) {
@@ -183,7 +260,7 @@ public class VuelosController extends Controller implements Initializable {
                         notificar(0);
                     }
                 }
-                if (txtFilter.getText().equals("false")) {
+                if (txtFilter.getText().equals("Inactivo")) {
                     tableView.getItems().clear();
                     vuelosList = VuelosService.estado(false);
                     if (vuelosList != null) {
@@ -237,7 +314,7 @@ public class VuelosController extends Controller implements Initializable {
                 AppContext.getInstance().set("VueloAMantenimientoVuelo", null);
             }
             PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
-        }else{
+        } else {
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Registrar vuelo", ((Stage) txtTipoAvion.getScene().getWindow()), "Por favor busque un avión antes de registrar un vuelo");
         }
     }

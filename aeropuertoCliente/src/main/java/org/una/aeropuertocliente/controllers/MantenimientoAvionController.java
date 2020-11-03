@@ -25,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -34,6 +35,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.dtos.AvionesZonasDTO;
@@ -83,8 +85,6 @@ public class MantenimientoAvionController extends Controller implements Initiali
     @FXML
     private Label lblGuardar;
     @FXML
-    private Label lblCancelar;
-    @FXML
     private Label lblEditar;
     @FXML
     private JFXButton btnEditar;
@@ -99,6 +99,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
     @FXML
     private Label labVuelos;
     String mensaje;
+    public VuelosDTO data = new VuelosDTO();
 
     /**
      * Initializes the controller class.
@@ -122,7 +123,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     txtFiltrar.setPromptText("Ingrese origen del vuelo");
                 }
                 if (t1 == "Estado") {
-                    txtFiltrar.setPromptText("Ingrese estado(true o false)");
+                    txtFiltrar.setPromptText("Ingrese estado");
                 }
             }
 
@@ -208,7 +209,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 }
             }
             if (combFiltro.getValue().equals("Estado") && !txtFiltrar.getText().isEmpty()) {
-                if (txtFiltrar.getText().toLowerCase().equals("true")) {
+                if (txtFiltrar.getText().toLowerCase().equals("Activo")) {
                     tableview.getItems().clear();
                     vuelosList = VuelosService.estado(true);
                     if (vuelosList != null) {
@@ -218,7 +219,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                         notificar(0);
                     }
                 }
-                if (txtFiltrar.getText().equals("false")) {
+                if (txtFiltrar.getText().equals("Inactivo")) {
                     tableview.getItems().clear();
                     vuelosList = VuelosService.estado(false);
                     if (vuelosList != null) {
@@ -267,8 +268,13 @@ public class MantenimientoAvionController extends Controller implements Initiali
         colFechaInicio.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaInicio()));
         TableColumn<VuelosDTO, String> colFechaFinal = new TableColumn("Fecha Final");
         colFechaFinal.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getFechaFinal()));
-        TableColumn<VuelosDTO, String> colEstado = new TableColumn("Estado");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
+        TableColumn<VuelosDTO, String> colEstado = new TableColumn("Estado\nActivo Inactivo");
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         tableview.getColumns().addAll(colId, colOrigen, colDestino, colFechaInicio, colFechaFinal, colEstado);
         notificar(1);
     }
@@ -312,7 +318,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
 
         }
     }
-
+    
     @FXML
     private void onActionCancelar(ActionEvent event) {
     }
@@ -375,11 +381,8 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 }
                 avion.setMatricula(txtMatricula.getText());
                 avion.setTipoAvion(txtTipoAvion.getText());
-                //avionZona.setAvion(avion);
-                //avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
 
                 if (AvionesService.updateAvion(avion) == 200) {
-                    //if (AvionesZonasService.updateAvionZona(avionZona) == 200) {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Avion", ((Stage) txtMatricula.getScene().getWindow()), "Se editó correctamente");
                     btnEditar.setDisable(false);
                     btnGuardarEditar.setDisable(true);
@@ -388,7 +391,6 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     txtTipoAvion.setDisable(true);
                     txtMatricula.setDisable(true);
                     combEstado.setDisable(true);
-                    // }
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Avion", ((Stage) txtMatricula.getScene().getWindow()), "No se editó correctamente");
                 }

@@ -24,16 +24,18 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
+import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AerolineasService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
@@ -72,6 +74,7 @@ public class AerolineasController extends Controller implements Initializable {
     AerolineasDTO aerolinea1;
     AerolineasDTO aerolineaFil;
     public List<AerolineasDTO> aerolineaList = new ArrayList<AerolineasDTO>();
+    public AerolineasDTO data = new AerolineasDTO();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -99,7 +102,7 @@ public class AerolineasController extends Controller implements Initializable {
                     txtFilter.setPromptText("Ingrese nombre de la aeroliena");
                 }
                 if (t1 == "Estado") {
-                    txtFilter.setPromptText("Ingrese estado(true o false)");
+                    txtFilter.setPromptText("Ingrese estado");
                 }
             }
 
@@ -119,13 +122,56 @@ public class AerolineasController extends Controller implements Initializable {
         colNombreAerolinea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreAerolinea()));
         TableColumn<AerolineasDTO, String> colResponsable = new TableColumn("Nombre Responsable");
         colResponsable.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreResponsable()));
-        TableColumn<AerolineasDTO, String> colEstado = new TableColumn("Estado\nActivo(True)Inactivo(False)");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
-        
+        TableColumn<AerolineasDTO, String> colEstado = new TableColumn("Estado\nActivo Inactivo");
+        colEstado.setCellValueFactory((param) ->{
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         tableview.getColumns().addAll(colId, colNombreAerolinea, colResponsable, colEstado);
+        addButtonToTable();
         notificar(1);
     }
 
+    private void addButtonToTable() {
+        TableColumn<AerolineasDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<AerolineasDTO, Void>, TableCell<AerolineasDTO, Void>> cellFactory = new Callback<TableColumn<AerolineasDTO, Void>, TableCell<AerolineasDTO, Void>>() {
+            @Override
+            public TableCell<AerolineasDTO, Void> call(final TableColumn<AerolineasDTO, Void> param) {
+                final TableCell<AerolineasDTO, Void> cell = new TableCell<AerolineasDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Seleccionar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            data = getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("aerolinea", data);
+                            PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableview.getColumns().add(colBtn);
+
+    }
+    
     private void actionAerolineaClick() {
         aerolinea = null;
 
@@ -164,7 +210,7 @@ public class AerolineasController extends Controller implements Initializable {
                 }
             }
             if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-                if (txtFilter.getText().equals("true")) {
+                if (txtFilter.getText().equals("Activo")) {
                     tableview.getItems().clear();
                     aerolineaList = AerolineasService.estadoAerolinea(true);
                     if (aerolineaList != null) {
@@ -174,7 +220,7 @@ public class AerolineasController extends Controller implements Initializable {
                     notificar(0);
                     }
                 }
-                if (txtFilter.getText().equals("false")) {
+                if (txtFilter.getText().equals("Inactivo")) {
                     tableview.getItems().clear();
                     aerolineaList = AerolineasService.estadoAerolinea(false);
                     if (aerolineaList != null) {
@@ -207,7 +253,7 @@ public class AerolineasController extends Controller implements Initializable {
                     tableview.setItems(FXCollections.observableArrayList(aerolineaList));
                 } else {
                     mensaje = "No se encontró coincidencias";
-                    notificar(0);;
+                    notificar(0);
                 }
             }
         }

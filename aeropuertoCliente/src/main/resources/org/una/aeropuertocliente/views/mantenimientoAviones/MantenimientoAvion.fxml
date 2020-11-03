@@ -19,7 +19,7 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="724.0">
+                  <HBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="724.0">
                      <children>
                         <Label fx:id="labTituloAviones" prefHeight="20.0" prefWidth="21.0" />
                         <Label text="Mantenimiento de aviones" />

@@ -8,14 +8,10 @@ package org.una.aeropuertocliente.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -28,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -37,12 +34,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.entitiesServices.AerolineasService;
 import org.una.aeropuertocliente.entitiesServices.AvionesService;
 import org.una.aeropuertocliente.utils.AppContext;
-import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -116,6 +113,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     @FXML
     private Label labTituloAviones;
     String mensaje;
+    public AvionesDTO data = new AvionesDTO();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -135,7 +133,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                     txtFilter.setPromptText("Ingrese el tipo de avión");
                 }
                 if (t1 == "Estado") {
-                    txtFilter.setPromptText("Ingrese estado(true o false)");
+                    txtFilter.setPromptText("Ingrese estado");
                 }
                 if (t1 == "Nombre aerolinea") {
                     txtFilter.setPromptText("Ingrese nombre de la aerolinea");
@@ -218,11 +216,17 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         colTipoAvion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getTipoAvion()));
         TableColumn<AvionesDTO, String> colHoraVuelo = new TableColumn("Horas de vuelo");
         colHoraVuelo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getHorasVuelo()));
-        TableColumn<AvionesDTO, String> colEstado = new TableColumn("Estado");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
+        TableColumn<AvionesDTO, String> colEstado = new TableColumn("Estado\nActivo Inactivo");
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         TableColumn<AvionesDTO, String> colAerolinea = new TableColumn("Nombre aerolinea");
         colAerolinea.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getAerolineaId().getNombreAerolinea()));
         tableAviones.getColumns().addAll(colId, colMatricula, colTipoAvion, colHoraVuelo, colEstado, colAerolinea);
+        addButtonToTable();
         notificar(1);
     }
 
@@ -301,9 +305,47 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private void addButtonToTable() {
+        TableColumn<AvionesDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<AvionesDTO, Void>, TableCell<AvionesDTO, Void>> cellFactory = new Callback<TableColumn<AvionesDTO, Void>, TableCell<AvionesDTO, Void>>() {
+            @Override
+            public TableCell<AvionesDTO, Void> call(final TableColumn<AvionesDTO, Void> param) {
+                final TableCell<AvionesDTO, Void> cell = new TableCell<AvionesDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Seleccionar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            data = getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("agregarAvion", data);
+                            PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion");
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableAviones.getColumns().add(colBtn);
+
+    }
+
     @FXML
     private void filtrar(ActionEvent event) {
-        if (combFilter.getValue()==null || txtFilter.getText().isEmpty()) {
+        if (combFilter.getValue() == null || txtFilter.getText().isEmpty()) {
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         } else {
@@ -320,7 +362,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 }
             }
             if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-                if (txtFilter.getText().equals("true")) {
+                if (txtFilter.getText().equals("Activo")) {
                     tableAviones.getItems().clear();
                     avionesList = AvionesService.estado(true);
                     if (avionesList != null) {
@@ -330,7 +372,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                         notificar(0);
                     }
                 }
-                if (txtFilter.getText().equals("false")) {
+                if (txtFilter.getText().equals("Inactivo")) {
                     tableAviones.getItems().clear();
                     avionesList = AvionesService.estado(false);
                     if (avionesList != null) {

@@ -22,21 +22,20 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.entitiesServices.AvionesService;
 import org.una.aeropuertocliente.utils.AppContext;
-import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -71,6 +70,7 @@ public class AvionesController extends Controller implements Initializable {
     @FXML
     private JFXButton btnVolverVuelos;
     String mensaje;
+    public AvionesDTO data = new AvionesDTO();
 
     /**
      * Initializes the controller class.
@@ -93,7 +93,7 @@ public class AvionesController extends Controller implements Initializable {
                     txtFilter.setPromptText("Ingrese el tipo de avión");
                 }
                 if (t1 == "Estado") {
-                    txtFilter.setPromptText("Ingrese estado(true o false)");
+                    txtFilter.setPromptText("Ingrese estado");
                 }
                 if (t1 == "Nombre aerolinea") {
                     txtFilter.setPromptText("Ingrese nombre de la aerolinea");
@@ -121,7 +121,7 @@ public class AvionesController extends Controller implements Initializable {
                 }
             }
             if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-                if (txtFilter.getText().toLowerCase().equals("true")) {
+                if (txtFilter.getText().equals("Activo")) {
                     tableAvion.getItems().clear();
                     avionesList = AvionesService.estado(true);
                     if (avionesList != null) {
@@ -131,7 +131,7 @@ public class AvionesController extends Controller implements Initializable {
                         notificar(0);
                     }
                 }
-                if (txtFilter.getText().equals("false")) {
+                if (txtFilter.getText().equals("Inactivo")) {
                     tableAvion.getItems().clear();
                     avionesList = AvionesService.estado(false);
                     if (avionesList != null) {
@@ -241,12 +241,55 @@ public class AvionesController extends Controller implements Initializable {
         colTipoAvion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getTipoAvion()));
         TableColumn<AvionesDTO, String> colHoraVuelo = new TableColumn("Horas de vuelo");
         colHoraVuelo.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getHorasVuelo()));
-        TableColumn<AvionesDTO, String> colEstado = new TableColumn("Activo(true)Inactivo(False)");
-        colEstado.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().isEstado()));
+        TableColumn<AvionesDTO, String> colEstado = new TableColumn("Estado\nActivo Inactivo");
+        colEstado.setCellValueFactory((param) -> {
+            if (param.getValue().isEstado()) {
+                return new SimpleStringProperty("Activo");
+            }
+            return new SimpleStringProperty("Inactivo");
+        });
         TableColumn<AvionesDTO, String> colAerolinea = new TableColumn("Nombre aerolinea");
         colAerolinea.setCellValueFactory((param) -> new SimpleObjectProperty(param.getValue().getAerolineaId().getNombreAerolinea()));
         tableAvion.getColumns().addAll(colId, colMatricula, colTipoAvion, colHoraVuelo, colEstado, colAerolinea);
+        addButtonToTable();
         notificar(1);
+    }
+    private void addButtonToTable() {
+        TableColumn<AvionesDTO, Void> colBtn = new TableColumn("Acción");
+
+        Callback<TableColumn<AvionesDTO, Void>, TableCell<AvionesDTO, Void>> cellFactory = new Callback<TableColumn<AvionesDTO, Void>, TableCell<AvionesDTO, Void>>() {
+            @Override
+            public TableCell<AvionesDTO, Void> call(final TableColumn<AvionesDTO, Void> param) {
+                final TableCell<AvionesDTO, Void> cell = new TableCell<AvionesDTO, Void>() {
+
+                    private final JFXButton btn = new JFXButton("Seleccionar");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            data = getTableView().getItems().get(getIndex());
+                            AppContext.getInstance().set("agregarAvion", data);
+                            PrincipalController.cambiarVistaPrincipal("mantenimientoAviones/MantenimientoAvion");
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableAvion.getColumns().add(colBtn);
+
     }
 
     @Override
