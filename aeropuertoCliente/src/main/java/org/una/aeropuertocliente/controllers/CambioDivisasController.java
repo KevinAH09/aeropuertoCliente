@@ -150,7 +150,66 @@ public class CambioDivisasController extends Controller implements Initializable
             llenarImages();
         }
     }
+    void generarPDF(){
+         java.util.Date fec = new Date();
+        String dato = fec.toString();
+        List<TbTipotarjeta> listTar = cComi.findTbTipotarjetaEntities();
+        try {
 
+            pdf = new PDDocument();//crea la instancia
+            PDPage page = new PDPage();//crea la pagina
+            pdf.addPage(page);//agregamos la pagina al pdf
+            content = new PDPageContentStream(pdf, page);//aqui escribimos
+
+            content.beginText();
+            content.setFont(PDType1Font.COURIER, 11);
+            content.newLineAtOffset(85, 770);
+            content.showText("MUSEO SFORZESCO");
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.COURIER, 11);
+            content.newLineAtOffset(85, 750);
+            content.showText("GENERADO: " + fec);
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.COURIER, 11);
+            content.newLineAtOffset(85, 730);
+            content.showText("REPORTE DE COMISIONES POR RANGO DE FECHA");
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.COURIER, 11);
+            content.newLineAtOffset(85, 710);
+            content.showText("DESPUES DEL : " + local + " Y ANTES DEL: " + loc);
+            content.endText();
+
+            content.beginText();
+            content.setFont(PDType1Font.COURIER, 11);
+            content.newLineAtOffset(85, 690);
+            content.showText("DETALLE:");
+            content.endText();
+
+            int vari = 670;
+            for (int p = 0; p < listTar.size(); p++) {
+                content.beginText();
+                content.setFont(PDType1Font.COURIER, 11);
+                content.newLineAtOffset(100, vari);
+                content.showText(listTar.get(p).getNombre() + "            " + listTar.get(p).getTotal());
+                content.endText();
+                vari = vari - 20;
+            }
+
+            content.close();
+            pdf.save("C:\\Users\\Gustavo\\Documents\\NetBeansProjects\\Proyecto#2-(5)\\src\\ventas\\reporte " + hoy.toString() + "-" + listTar.size() + ".pdf");
+            pdf.close();
+
+            Alert error = new Alert(Alert.AlertType.INFORMATION);
+            error.setTitle("AVISO");
+            error.setContentText("El reporte fue generado en el archivo PDF");
+            error.showAndWait();
+    }
     private void llenarImages() {
         if (itemSelect.equals("Colon")) {
             img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
