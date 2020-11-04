@@ -447,7 +447,6 @@ public class UsuariosController extends Controller implements Initializable {
     @FXML
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
-        System.out.println("Entró");
         if (cntrlD.match(event)) {
             boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
             if (validos1) {

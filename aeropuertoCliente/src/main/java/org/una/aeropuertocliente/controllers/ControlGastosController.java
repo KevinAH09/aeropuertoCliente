@@ -367,7 +367,7 @@ public class ControlGastosController extends Controller implements Initializable
 
     public void desarrollo() {
         String dato = "";
-        boolean validos1 = true/*(Boolean) AppContext.getInstance().get("mod")*/;
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
             for (Node node : modDesarrollo) {
                 if (node instanceof JFXTextField) {
