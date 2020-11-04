@@ -34,6 +34,16 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -41,6 +51,9 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.una.aeropuertocliente.apiForex.TiposMonedasServices;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * FXML Controller class
@@ -163,6 +176,45 @@ public class CambioDivisasController extends Controller implements Initializable
         }
     }
 
+    void generarXML() {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            DOMImplementation implementation = builder.getDOMImplementation();
+            Document document = implementation.createDocument(null, "geekyxml", null);
+            document.setXmlVersion("1.0");
+            document.setTextContent("<?xml-stylesheet href=\"common.css\"?>");
+            
+            //Main Node
+            Element raiz = document.getDocumentElement();
+             Element itemNode = document.createElement("ITEM");
+            //Por cada key creamos un item que contendrá la key y el value
+            for (int i = 0; i < listaMonedas.size(); i++) {
+                //Item Node
+               
+                //Key Node
+                Element keyNode = document.createElement("KEY");
+                org.w3c.dom.Text nodeKeyValue = document.createTextNode(listaMonedas.get(i));
+                keyNode.appendChild(nodeKeyValue);
+                //append keyNode and valueNode to itemNode
+                itemNode.appendChild(keyNode);
+                //append itemNode to raiz
+                raiz.appendChild(itemNode); //pegamos el elemento a la raiz "Documento"
+            }
+            //Generate XML
+            Source source = new DOMSource(document);
+             DirectoryChooser filChoser = new DirectoryChooser();
+            //Indicamos donde lo queremos almacenar
+            Result result = new StreamResult(new java.io.File(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath()+"/KevinXML.xml")); //nombre del archivo
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.transform(source, result);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     void generarPDF() {
 
         try {
@@ -194,15 +246,15 @@ public class CambioDivisasController extends Controller implements Initializable
             content.beginText();
             content.setFont(PDType1Font.COURIER, 11);
             content.newLineAtOffset(85, 690);
-            content.showText("Moneda seleccionada: "+cbMoneda.getValue());
+            content.showText("Moneda seleccionada: " + cbMoneda.getValue());
             content.endText();
-            
+
             content.beginText();
             content.setFont(PDType1Font.COURIER, 11);
             content.newLineAtOffset(85, 670);
-            content.showText("Monto a consultar: "+txtIngresarMonto.getText());
+            content.showText("Monto a consultar: " + txtIngresarMonto.getText());
             content.endText();
-            
+
             content.beginText();
             content.setFont(PDType1Font.COURIER, 11);
             content.newLineAtOffset(85, 650);
@@ -216,14 +268,14 @@ public class CambioDivisasController extends Controller implements Initializable
                 content.newLineAtOffset(100, vari);
                 content.showText(listaMonedas.get(p));
                 content.endText();
-                vari=vari-20;
+                vari = vari - 20;
             }
             content.close();
             DirectoryChooser filChoser = new DirectoryChooser();
 //            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getPath());
 //            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getCanonicalPath());
 //            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath().replaceAll("\\\\", "/"));
-            pdf.save(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/hola.pdf");
+            pdf.save(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/hola.xml");
             pdf.close();
 
         } catch (IOException ex) {
@@ -884,6 +936,7 @@ public class CambioDivisasController extends Controller implements Initializable
 
     @FXML
     private void actionExportXML(ActionEvent event) {
+        generarXML();
     }
 
     @FXML
