@@ -216,7 +216,6 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                     ((Label) node).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", false);
         } else {
             for (int i = 0; i < modDesarrollo.size(); i++) {
                 if (modDesarrollo.get(i) instanceof JFXButton) {
@@ -236,7 +235,6 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                     ((Label) modDesarrollo.get(i)).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", true);
         }
     }
 

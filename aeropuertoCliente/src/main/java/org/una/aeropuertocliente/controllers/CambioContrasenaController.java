@@ -141,7 +141,6 @@ public class CambioContrasenaController extends Controller implements Initializa
                     ((JFXButton) node).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", false);
         } else {
             for (int i = 0; i < modDesarrollo.size(); i++) {
                 if (modDesarrollo.get(i) instanceof JFXButton) {
@@ -153,7 +152,6 @@ public class CambioContrasenaController extends Controller implements Initializa
                     ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", true);
         }
     }
 

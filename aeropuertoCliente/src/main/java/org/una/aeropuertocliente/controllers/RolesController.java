@@ -305,9 +305,10 @@ public class RolesController extends Controller implements Initializable {
         modDesarrolloAxiliar.add(lblTable.getText());
         modDesarrolloAxiliar.add(txtBusqueda.getPromptText());
         modDesarrolloAxiliar.add(cmbFiltro.getPromptText());
+        modDesarrolloAxiliar.add(cmbEstado.getPromptText());
         modDesarrolloAxiliar.add(btnFiltrar.getText());
         modDesarrolloAxiliar.add(btnRegistrar.getText());
-        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, txtBusqueda, cmbFiltro, btnFiltrar, btnRegistrar));
+        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, txtBusqueda, cmbFiltro, cmbEstado, btnFiltrar, btnRegistrar));
     }
 
     public void desarrollo() {
@@ -337,7 +338,6 @@ public class RolesController extends Controller implements Initializable {
                     }
                 }
             }
-            AppContext.getInstance().set("mod", false);
         } else {
             for (int i = 0; i < modDesarrollo.size(); i++) {
                 if (modDesarrollo.get(i) instanceof JFXButton) {
@@ -357,7 +357,6 @@ public class RolesController extends Controller implements Initializable {
                     ((Label) modDesarrollo.get(i)).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", true);
         }
     }
 

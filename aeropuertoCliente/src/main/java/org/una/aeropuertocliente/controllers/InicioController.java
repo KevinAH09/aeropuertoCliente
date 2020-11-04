@@ -16,6 +16,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -36,7 +40,7 @@ public class InicioController extends Controller implements Initializable {
 
     private List<String> modDesarrolloAxiliar = new ArrayList<>();
     private List<Node> modDesarrollo = new ArrayList<>();
-    Boolean mod = true;
+    Boolean mod = false;
 
     /**
      * Initializes the controller class.
@@ -86,7 +90,6 @@ public class InicioController extends Controller implements Initializable {
                     ((JFXButton) node).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", false);
         } else {
             for (int i = 0; i < modDesarrollo.size(); i++) {
                 if (modDesarrollo.get(i) instanceof JFXButton) {
@@ -94,12 +97,20 @@ public class InicioController extends Controller implements Initializable {
                     ((JFXButton) modDesarrollo.get(i)).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", true);
         }
     }
 
     @Override
     public void initialize() {
 
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        System.out.println("Entró");
+        if (cntrlD.match(event)) {
+            desarrollo();
+        }
     }
 }

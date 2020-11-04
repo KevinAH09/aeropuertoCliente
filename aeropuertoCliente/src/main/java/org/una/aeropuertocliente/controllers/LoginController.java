@@ -195,7 +195,6 @@ public class LoginController extends Controller implements Initializable {
                     ((JFXButton) node).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", false);
         } else {
             for (int i = 0; i < modDesarrollo.size(); i++) {
                 if (modDesarrollo.get(i) instanceof JFXTextField) {
@@ -207,7 +206,6 @@ public class LoginController extends Controller implements Initializable {
                     ((JFXButton) modDesarrollo.get(i)).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", true);
         }
     }
 
@@ -238,10 +236,10 @@ public class LoginController extends Controller implements Initializable {
 
     @FXML
     private void modoDesarrollo(KeyEvent event) {
-//        KeyCombination cntrlZ = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
         System.out.println("Entró");
-        if (event.getCode() == KeyCode.Z) {
-            System.out.println("Escribió una tecla");
+        if (cntrlD.match(event)) {
+            desarrollo();
         }
     }
 }

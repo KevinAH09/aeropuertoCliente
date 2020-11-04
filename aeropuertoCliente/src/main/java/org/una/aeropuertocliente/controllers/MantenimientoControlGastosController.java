@@ -321,7 +321,6 @@ public class MantenimientoControlGastosController extends Controller implements 
                 }
 
             }
-            AppContext.getInstance().set("mod", false);
         } else {
             for (int i = 0; i < modDesarrollo.size(); i++) {
                 if (modDesarrollo.get(i) instanceof JFXButton) {
@@ -341,7 +340,6 @@ public class MantenimientoControlGastosController extends Controller implements 
                     ((Label) modDesarrollo.get(i)).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", true);
         }
     }
 
