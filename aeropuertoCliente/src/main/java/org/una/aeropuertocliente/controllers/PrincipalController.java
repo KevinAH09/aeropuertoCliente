@@ -5,9 +5,13 @@
  */
 package org.una.aeropuertocliente.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeView;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -55,6 +60,14 @@ public class PrincipalController extends Controller implements Initializable {
     private Text textInfoRol;
     @FXML
     private Text textInfoArea;
+    @FXML
+    private JFXButton btnCerraSesion;
+    @FXML
+    private Label lblTree;
+    @FXML
+    private Label lblVbox;
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -193,6 +206,8 @@ public class PrincipalController extends Controller implements Initializable {
 
             }
         });
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -222,14 +237,57 @@ public class PrincipalController extends Controller implements Initializable {
     @FXML
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
-//        System.out.println("Entró");
         if (cntrlD.match(event)) {
             boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
             if (validos1) {
                 AppContext.getInstance().set("mod", false);
-            }else
-            {
+                desarrollo();
+            } else {
                 AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
+        }
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(lblVbox.getText());
+        modDesarrolloAxiliar.add(lblTree.getText());
+        modDesarrolloAxiliar.add(btnCerraSesion.getText());
+        modDesarrollo.addAll(Arrays.asList(lblVbox, lblTree, btnCerraSesion));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof Label) {
+                    if (node == lblVbox) {
+                        dato = vboxPrincipal.getId();
+                        ((Label) node).setText(dato);
+                    }
+                    if (node == lblTree) {
+                        dato = treeAcciones.getId();
+                        ((Label) node).setText(dato);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
             }
         }
     }
