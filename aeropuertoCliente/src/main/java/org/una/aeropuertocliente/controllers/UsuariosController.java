@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -387,7 +391,7 @@ public class UsuariosController extends Controller implements Initializable {
         modDesarrolloAxiliar.add(cmbEstado.getPromptText());
         modDesarrolloAxiliar.add(btnFiltrar.getText());
         modDesarrolloAxiliar.add(btnRegistrar.getText());
-        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, txtBusqueda, cmbFiltro, cmbRoles, cmbAreas, cmbEstado, btnFiltrar, btnRegistrar));      
+        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, txtBusqueda, cmbFiltro, cmbRoles, cmbAreas, cmbEstado, btnFiltrar, btnRegistrar));
     }
 
     public void desarrollo() {
@@ -417,7 +421,6 @@ public class UsuariosController extends Controller implements Initializable {
                     }
                 }
             }
-            AppContext.getInstance().set("mod", false);
         } else {
             for (int i = 0; i < modDesarrollo.size(); i++) {
                 if (modDesarrollo.get(i) instanceof JFXButton) {
@@ -437,9 +440,28 @@ public class UsuariosController extends Controller implements Initializable {
                     ((Label) modDesarrollo.get(i)).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", true);
         }
     }
+
+//    public void hiloCorreo() {
+//        Timer timer = new Timer();
+//        TimerTask timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                System.out.println("entra en hilo");
+//                try {
+////                    enviarCorreo(usuDto);
+//                    timer.cancel();
+//                    timer.purge();
+//                } catch (Exception ex) {
+//                    Logger.getLogger(UsuariosController.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//
+//            }
+//
+//        };
+//        timer.schedule(timerTask, 0, 1000);
+//    }
 
     @Override
     public void initialize() {

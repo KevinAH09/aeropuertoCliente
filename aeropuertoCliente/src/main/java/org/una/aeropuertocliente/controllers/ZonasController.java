@@ -335,7 +335,6 @@ public class ZonasController extends Controller implements Initializable {
                     }
                 }
             }
-            AppContext.getInstance().set("mod", false);
         } else {
             for (int i = 0; i < modDesarrollo.size(); i++) {
                 if (modDesarrollo.get(i) instanceof JFXButton) {
@@ -355,7 +354,7 @@ public class ZonasController extends Controller implements Initializable {
                     ((Label) modDesarrollo.get(i)).setText(dato);
                 }
             }
-            AppContext.getInstance().set("mod", true);
+
         }
     }
 
