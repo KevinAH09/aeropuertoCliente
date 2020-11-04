@@ -105,6 +105,8 @@ public class ParametrosController extends Controller implements Initializable {
     private Label lblcbEstado;
     @FXML
     private JFXComboBox<String> cmbEstado2;
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -346,6 +348,10 @@ public class ParametrosController extends Controller implements Initializable {
                             parametros = getTableView().getItems().get(getIndex());
                             editar();
                         });
+                        btn.setId("btnEditar");
+                        btn.setText("Editar");
+                        modDesarrolloAxiliar.add("Editar");
+                        modDesarrollo.add(btn);
                     }
 
                     @Override

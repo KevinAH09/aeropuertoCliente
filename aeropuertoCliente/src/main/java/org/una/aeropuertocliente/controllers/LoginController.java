@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -28,6 +29,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -66,6 +69,8 @@ public class LoginController extends Controller implements Initializable {
 
     private String pass;
     private List<Node> requeridos = new ArrayList<>();
+    private List<Node> modDesarrollo = new ArrayList<>();
+    private List<String> modDesarrolloAxiliar = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -78,12 +83,8 @@ public class LoginController extends Controller implements Initializable {
         imgNotPassword.setVisible(false);
         imgViewPassword.setVisible(true);
         indicarRequeridos();
-
-    }
-
-    @Override
-    public void initialize() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -169,6 +170,47 @@ public class LoginController extends Controller implements Initializable {
         requeridos.addAll(Arrays.asList(txtPassMostrado, txtPassOculto, txtUsuario));
     }
 
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(txtPassMostrado.getPromptText());
+        modDesarrolloAxiliar.add(txtPassOculto.getPromptText());
+        modDesarrolloAxiliar.add(txtUsuario.getPromptText());
+        modDesarrolloAxiliar.add(btnIngresar.getText());
+        modDesarrolloAxiliar.add(btnCancelar.getText());
+        modDesarrollo.addAll(Arrays.asList(txtPassMostrado, txtPassOculto, txtUsuario, btnIngresar, btnCancelar));
+    }
+
+    public void desarrollo() {
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        String dato = "";
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", false);
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", true);
+        }
+    }
+
     public String validarRequeridos() {
         Boolean validos = true;
         String invalidos = "";
@@ -189,4 +231,17 @@ public class LoginController extends Controller implements Initializable {
         }
     }
 
+    @Override
+    public void initialize() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+//        KeyCombination cntrlZ = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        System.out.println("Entró");
+        if (event.getCode() == KeyCode.Z) {
+            System.out.println("Escribió una tecla");
+        }
+    }
 }

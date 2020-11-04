@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -83,6 +85,8 @@ public class ControlGastosController extends Controller implements Initializable
     ControlesGastosDTO gastosFilt;
     public List<ControlesGastosDTO> gastosList = new ArrayList<ControlesGastosDTO>();
     public List<DetallesControlesGastosDTO> detallesList = new ArrayList<DetallesControlesGastosDTO>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
     @FXML
     private Label lblDesde;
     @FXML
@@ -143,6 +147,8 @@ public class ControlGastosController extends Controller implements Initializable
         }
         );
         notificar(1);
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -314,6 +320,10 @@ public class ControlGastosController extends Controller implements Initializable
                             System.out.println(control.getNumeroContrato());
                             PrincipalController.cambiarVistaPrincipal("mantenimientoControlGastos/MantenimientoControlGastos");
                         });
+                        btn.setId("btnEditar");
+                        btn.setText("Editar");
+                        modDesarrolloAxiliar.add("Editar");
+                        modDesarrollo.add(btn);
                     }
 
                     @Override
@@ -334,6 +344,79 @@ public class ControlGastosController extends Controller implements Initializable
 
         tableGastos.getColumns().add(colBtn);
 
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(titulo.getText());
+        modDesarrolloAxiliar.add(lblTable.getText());
+        modDesarrolloAxiliar.add(cmbFiltro.getPromptText());
+        modDesarrolloAxiliar.add(txtBusqueda.getPromptText());
+        modDesarrolloAxiliar.add(btnFiltrar.getText());
+        modDesarrolloAxiliar.add(btnRegistrar.getText());
+        modDesarrolloAxiliar.add(fDesde.getPromptText());
+        modDesarrolloAxiliar.add(fHasta.getPromptText());
+        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, cmbFiltro, txtBusqueda, btnFiltrar, btnRegistrar, fDesde, fHasta));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = true/*(Boolean) AppContext.getInstance().get("mod")*/;
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof JFXComboBox) {
+                    dato = ((JFXComboBox) node).getId();
+                    ((JFXComboBox) node).setPromptText(dato);
+                }
+                if (node instanceof JFXDatePicker) {
+                    dato = ((JFXDatePicker) node).getId();
+                    ((JFXDatePicker) node).setPromptText(dato);
+                }
+                if (node instanceof Label) {
+                    if (node == lblTable) {
+                        dato = tableGastos.getId();
+                        ((Label) node).setText(dato);
+                    } else {
+                        dato = ((Label) node).getId();
+                        ((Label) node).setText(dato);
+                    }
+                }
+            }
+            AppContext.getInstance().set("mod", false);
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXDatePicker) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXDatePicker) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", true);
+        }
     }
 
     @Override

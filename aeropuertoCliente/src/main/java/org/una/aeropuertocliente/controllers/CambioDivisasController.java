@@ -17,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -84,6 +85,8 @@ public class CambioDivisasController extends Controller implements Initializable
     @FXML
     private Text lblMontoCambio;
     List<String> listaMonedas = new ArrayList<>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
 
     double USDEuros;
     double USDCostaRica;
@@ -101,7 +104,7 @@ public class CambioDivisasController extends Controller implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (!(boolean) AppContext.getInstance().get("cambiodivisas")) {
-           
+
         } else {
 //           
         }
@@ -634,6 +637,64 @@ public class CambioDivisasController extends Controller implements Initializable
 
         }
 
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(cbMoneda.getPromptText());
+        modDesarrolloAxiliar.add(txtIngresarMonto.getPromptText());
+        modDesarrolloAxiliar.add(btnExportarPDF.getText());
+        modDesarrolloAxiliar.add(btnExportarXML.getText());
+        modDesarrolloAxiliar.add(btnSalir.getText());
+        modDesarrollo.addAll(Arrays.asList(cbMoneda, txtIngresarMonto, btnExportarPDF, btnExportarXML, btnSalir));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof JFXComboBox) {
+                    dato = ((JFXComboBox) node).getId();
+                    ((JFXComboBox) node).setPromptText(dato);
+                }
+                if (node instanceof Label) {
+                    dato = ((Label) node).getId();
+                    ((Label) node).setText(dato);
+
+                }
+            }
+            AppContext.getInstance().set("mod", false);
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", true);
+        }
     }
 
 }

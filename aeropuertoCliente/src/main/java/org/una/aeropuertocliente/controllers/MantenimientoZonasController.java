@@ -107,6 +107,8 @@ public class MantenimientoZonasController extends Controller implements Initiali
     @FXML
     private JFXComboBox<String> cmbEstado2;
     private List<Node> requeridos = new ArrayList<>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -156,6 +158,8 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
         }
         );
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -370,6 +374,10 @@ public class MantenimientoZonasController extends Controller implements Initiali
                             zonas = getTableView().getItems().get(getIndex());
                             editar();
                         });
+                        btn.setId("btnEditar");
+                        btn.setText("Editar");
+                        modDesarrolloAxiliar.add("Editar");
+                        modDesarrollo.add(btn);
                     }
 
                     @Override
@@ -429,6 +437,75 @@ public class MantenimientoZonasController extends Controller implements Initiali
             return null;
         } else {
             return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
+        }
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(titulo.getText());
+        modDesarrolloAxiliar.add(lblTable.getText());
+        modDesarrolloAxiliar.add(txtNombre.getPromptText());
+        modDesarrolloAxiliar.add(txtCodigo.getPromptText());
+        modDesarrolloAxiliar.add(cmbEstado.getPromptText());
+        modDesarrolloAxiliar.add(cmbEstado2.getPromptText());
+        modDesarrolloAxiliar.add(cmbFiltro.getPromptText());
+        modDesarrolloAxiliar.add(txtDescripcion.getPromptText());
+        modDesarrolloAxiliar.add(txtBusqueda.getPromptText());
+        modDesarrolloAxiliar.add(btnRegistrar.getText());
+        modDesarrolloAxiliar.add(btnFiltrar.getText());
+        modDesarrolloAxiliar.add(btnCancelar.getText());
+        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, txtNombre, txtCodigo, cmbEstado, cmbEstado2, cmbFiltro, txtDescripcion, txtBusqueda, btnRegistrar, btnFiltrar, btnCancelar));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof JFXComboBox) {
+                    dato = ((JFXComboBox) node).getId();
+                    ((JFXComboBox) node).setPromptText(dato);
+                }
+                if (node instanceof Label) {
+                    if (node == lblTable) {
+                        dato = tableZonas.getId();
+                        ((Label) node).setText(dato);
+                    } else {
+                        dato = ((Label) node).getId();
+                        ((Label) node).setText(dato);
+                    }
+                }
+            }
+            AppContext.getInstance().set("mod", false);
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", true);
         }
     }
 

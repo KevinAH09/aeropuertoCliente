@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -22,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -78,6 +80,8 @@ public class AreasTrabajoController extends Controller implements Initializable 
     public List<AreasTrabajosDTO> areasList = new ArrayList<AreasTrabajosDTO>();
     public AreasTrabajosDTO areasFilt;
     String mensaje;
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -107,6 +111,8 @@ public class AreasTrabajoController extends Controller implements Initializable 
 
         }
         );
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -127,7 +133,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty() && cmbFiltro.getValue()!=null) {
+        if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty() && cmbFiltro.getValue() != null) {
             limpiarTableView();
             areasList = areaService.nombreAreasTrabajos(txtBusqueda.getText().toUpperCase());
             if (areasList != null) {
@@ -226,6 +232,10 @@ public class AreasTrabajoController extends Controller implements Initializable 
                             AppContext.getInstance().set("area", area);
                             PrincipalController.cambiarVistaPrincipal("mantenimientoAreasTrabajo/MantenimientoAreasTrabajo");
                         });
+                        btn.setId("btnEditar");
+                        btn.setText("Editar");
+                        modDesarrolloAxiliar.add("Editar");
+                        modDesarrollo.add(btn);
                     }
 
                     @Override
@@ -243,9 +253,71 @@ public class AreasTrabajoController extends Controller implements Initializable 
         };
 
         colBtn.setCellFactory(cellFactory);
-
         tableAreas.getColumns().add(colBtn);
 
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(titulo.getText());
+        modDesarrolloAxiliar.add(lblTable.getText());
+        modDesarrolloAxiliar.add(cmbFiltro.getPromptText());
+        modDesarrolloAxiliar.add(txtBusqueda.getPromptText());
+        modDesarrolloAxiliar.add(btnFiltrar.getText());
+        modDesarrolloAxiliar.add(btnRegistrar.getText());
+        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, cmbFiltro, txtBusqueda, btnFiltrar, btnRegistrar));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof JFXComboBox) {
+                    dato = ((JFXComboBox) node).getId();
+                    ((JFXComboBox) node).setPromptText(dato);
+                }
+                if (node instanceof Label) {
+                    if (node == lblTable) {
+                        dato = tableAreas.getId();
+                        ((Label) node).setText(dato);
+                    } else {
+                        dato = ((Label) node).getId();
+                        ((Label) node).setText(dato);
+                    }
+                }
+            }
+            AppContext.getInstance().set("mod", false);
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", true);
+        }
     }
 
     @Override

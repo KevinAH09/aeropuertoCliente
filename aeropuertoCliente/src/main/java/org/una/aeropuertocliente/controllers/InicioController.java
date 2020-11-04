@@ -7,11 +7,15 @@ package org.una.aeropuertocliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -25,13 +29,23 @@ public class InicioController extends Controller implements Initializable {
 
     @FXML
     private JFXButton btnSalir;
+    @FXML
+    private JFXButton bntLogin;
+    @FXML
+    private JFXButton btnDivisas;
+
+    private List<String> modDesarrolloAxiliar = new ArrayList<>();
+    private List<Node> modDesarrollo = new ArrayList<>();
+    Boolean mod = true;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        AppContext.getInstance().set("mod", mod);
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -52,8 +66,40 @@ public class InicioController extends Controller implements Initializable {
         }
     }
 
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(bntLogin.getText());
+        modDesarrolloAxiliar.add(btnSalir.getText());
+        modDesarrolloAxiliar.add(btnDivisas.getText());
+
+        modDesarrollo.addAll(Arrays.asList(bntLogin, btnSalir, btnDivisas));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", false);
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", true);
+        }
+    }
+
     @Override
     public void initialize() {
-       
+
     }
 }

@@ -6,6 +6,7 @@
 package org.una.aeropuertocliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ public class CambioContrasenaController extends Controller implements Initializa
     private JFXButton btnCambiar;
     UsuariosDTO usuDto = new UsuariosDTO();
     private List<Node> requeridos = new ArrayList<>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -54,6 +57,8 @@ public class CambioContrasenaController extends Controller implements Initializa
         usuDto = (UsuariosDTO) AppContext.getInstance().get("usuarioContrasena");
         lblNombre.setText(usuDto.getNombreCompleto());
         lblCedula.setText(usuDto.getCedula());
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -110,6 +115,46 @@ public class CambioContrasenaController extends Controller implements Initializa
     @Override
     public void initialize() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(txtcontrasena.getPromptText());
+        modDesarrolloAxiliar.add(txtConfirmarcontrasena.getPromptText());
+        modDesarrolloAxiliar.add(btnCancelar.getText());
+        modDesarrolloAxiliar.add(btnCambiar.getText());
+        modDesarrollo.addAll(Arrays.asList(txtcontrasena, txtConfirmarcontrasena, btnCancelar, btnCambiar));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", false);
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+            }
+            AppContext.getInstance().set("mod", true);
+        }
     }
 
 }
