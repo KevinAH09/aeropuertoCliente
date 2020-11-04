@@ -20,6 +20,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
@@ -241,6 +246,21 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
     @Override
     public void initialize() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            } else {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
+        }
     }
 
 }

@@ -110,7 +110,15 @@ public class InicioController extends Controller implements Initializable {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
         System.out.println("Entró");
         if (cntrlD.match(event)) {
-            desarrollo();
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            }else
+            {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
         }
     }
 }

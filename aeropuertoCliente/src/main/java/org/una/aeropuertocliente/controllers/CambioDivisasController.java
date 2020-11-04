@@ -29,6 +29,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
@@ -942,6 +946,21 @@ public class CambioDivisasController extends Controller implements Initializable
     @FXML
     private void actionExportPDF(ActionEvent event) {
         generarPDF();
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            } else {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
+        }
     }
 
 }

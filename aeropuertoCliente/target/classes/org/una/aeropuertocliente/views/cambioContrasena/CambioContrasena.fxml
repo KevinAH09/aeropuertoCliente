@@ -8,10 +8,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="349.0" prefWidth="574.0" stylesheets="@../shared/Style2.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="org.una.aeropuertocliente.controllers.CambioContrasenaController">
+<AnchorPane id="AnchorPane" prefHeight="349.0" prefWidth="574.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.CambioContrasenaController">
    <children>
-      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane onKeyPressed="#modoDesarrollo" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>

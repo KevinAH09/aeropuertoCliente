@@ -14,25 +14,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.una.aeropuertocliente.dtos.UsuariosDTO;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
-import org.una.aeropuertocliente.utils.Mensaje;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -41,18 +37,17 @@ import javafx.scene.Node;
 import javafx.scene.control.TableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.dtos.RolesDTO;
-import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
 import org.una.aeropuertocliente.entitiesServices.RolesService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
-import org.una.aeropuertocliente.utils.FlowController;
 
 /**
  * FXML Controller class
@@ -156,6 +151,7 @@ public class UsuariosController extends Controller implements Initializable {
         }
         llenarListaNodos();
         desarrollo();
+
     }
 
     @FXML
@@ -443,28 +439,24 @@ public class UsuariosController extends Controller implements Initializable {
         }
     }
 
-//    public void hiloCorreo() {
-//        Timer timer = new Timer();
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                System.out.println("entra en hilo");
-//                try {
-////                    enviarCorreo(usuDto);
-//                    timer.cancel();
-//                    timer.purge();
-//                } catch (Exception ex) {
-//                    Logger.getLogger(UsuariosController.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//
-//            }
-//
-//        };
-//        timer.schedule(timerTask, 0, 1000);
-//    }
-
     @Override
     public void initialize() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        System.out.println("Entró");
+        if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            } else {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
+        }
     }
 }

@@ -30,6 +30,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
@@ -374,6 +379,22 @@ public class MantenimientoUsuariosController implements Initializable {
                     dato = modDesarrolloAxiliar.get(i);
                     ((Label) modDesarrollo.get(i)).setText(dato);
                 }
+            }
+        }
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            }else
+            {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
             }
         }
     }
