@@ -238,8 +238,15 @@ public class LoginController extends Controller implements Initializable {
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
         System.out.println("Entró");
-        if (cntrlD.match(event)) {
-            desarrollo();
+       if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            } else {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
         }
     }
 }
