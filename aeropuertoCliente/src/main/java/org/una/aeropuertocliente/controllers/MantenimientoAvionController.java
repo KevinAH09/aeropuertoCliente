@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -22,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -101,6 +103,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
     private Label labVuelos;
     String mensaje;
     public VuelosDTO data = new VuelosDTO();
+    private List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -185,6 +188,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
             btnEditar.setDisable(true);
             btnGuardarEditar.setVisible(true);
         }
+        indicarRequeridos();
     }
 
     @FXML
@@ -281,6 +285,38 @@ public class MantenimientoAvionController extends Controller implements Initiali
         notificar(1);
     }
 
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtMatricula, txtTipoAvion, txtZona, combEstado));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
+        }
+    }
+
     @Override
     public void initialize() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -320,7 +356,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
 
         }
     }
-    
+
     @FXML
     private void onActionCancelar(ActionEvent event) {
     }
@@ -339,9 +375,10 @@ public class MantenimientoAvionController extends Controller implements Initiali
 
     @FXML
     private void onActionGuardarEditar(ActionEvent event) {
+        String validacion = validarRequeridos();
         avionZona = new AvionesZonasDTO();
         if (avion == null) {
-            if (!txtMatricula.getText().isEmpty() && !combEstado.getValue().isEmpty() && !txtTipoAvion.getText().isEmpty() && !txtZona.getText().isEmpty()) {
+            if (validacion == null) {
                 avion = new AvionesDTO();
                 if (combEstado.getValue().equals("Activo")) {
                     avion.setEstado(true);
@@ -371,11 +408,11 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar los Aviones", ((Stage) txtMatricula.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear avión", ((Stage) txtMatricula.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtMatricula.getScene().getWindow()), validacion);
             }
 
         } else {
-            if (!txtMatricula.getText().isEmpty() && !combEstado.getValue().isEmpty() && !txtTipoAvion.getText().isEmpty() && !txtZona.getText().isEmpty()) {
+            if (validacion == null) {
                 if (combEstado.getValue().equals("Activo")) {
                     avion.setEstado(true);
                 } else {
@@ -397,7 +434,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Avion", ((Stage) txtMatricula.getScene().getWindow()), "No se editó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Avion", ((Stage) txtMatricula.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtMatricula.getScene().getWindow()), validacion);
             }
         }
     }

@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,6 +26,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -107,6 +109,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
     public List<VuelosDTO> vuelosList = new ArrayList<VuelosDTO>();
     @FXML
     private JFXComboBox<String> combBitacora;
+    private List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -253,12 +256,14 @@ public class MantenimientoVuelosController extends Controller implements Initial
             radioCargoCombustible.setSelected(false);
 
         }
+        indicarRequeridos();
     }
 
     @FXML
     private void guardar(ActionEvent event) {
+        String validacion = validarRequeridos();
         if (vuelos == null) {
-            if (!txtDestino.getText().isEmpty() && !combEstado.getValue().isEmpty() && !txtOrigen.getText().isEmpty() && !combBitacora.getValue().isEmpty() && datePikerFinal.getValue() != null && datePikerInicio.getValue() != null) {
+            if (validacion == null) {
                 vuelos = new VuelosDTO();
                 bitacora = new BitacorasVuelosDTO();
 
@@ -294,9 +299,9 @@ public class MantenimientoVuelosController extends Controller implements Initial
                     bitacora.setAutorizacionTorreControl(false);
                 }
 
-                if ((bitacora.isCargaPasajero() == true || bitacora.isAutorizacionTorreControl() == true) && bitacora.isCargaCombustible() == true &&bitacora.isHorasVuelo() == true) {
+                if ((bitacora.isCargaPasajero() == true || bitacora.isAutorizacionTorreControl() == true) && bitacora.isCargaCombustible() == true && bitacora.isHorasVuelo() == true) {
                     vuelos.setEstado(true);
-                }else{
+                } else {
                     vuelos.setEstado(false);
                 }
 
@@ -309,7 +314,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
                     if (VuelosService.createVuelo(vuelos) == 201) {
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Se guardó correctamente");
                         PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
-
+ 
                     } else {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el vuelo", ((Stage) txtAvion.getScene().getWindow()), "No se guardó correctamente");
                     }
@@ -317,10 +322,10 @@ public class MantenimientoVuelosController extends Controller implements Initial
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Bitácora", ((Stage) txtAvion.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtAvion.getScene().getWindow()), validacion);
             }
         } else {
-            if (!txtDestino.getText().isEmpty() && !combEstado.getValue().isEmpty() && !txtOrigen.getText().isEmpty() && !combBitacora.getValue().isEmpty() && datePikerFinal.getValue() != null && datePikerInicio.getValue() != null) {
+            if (validacion == null) {
                 bitacora = new BitacorasVuelosDTO();
                 bitacora = vuelos.getBitacoraVueloId();
 
@@ -367,11 +372,10 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 } else {
                     bitacora.setZonaDescarga(false);
                 }
-                
-                
-                if ((bitacora.isCargaPasajero() == true || bitacora.isAutorizacionTorreControl() == true) && bitacora.isCargaCombustible() == true &&bitacora.isHorasVuelo() == true) {
+
+                if ((bitacora.isCargaPasajero() == true || bitacora.isAutorizacionTorreControl() == true) && bitacora.isCargaCombustible() == true && bitacora.isHorasVuelo() == true) {
                     vuelos.setEstado(true);
-                } else{
+                } else {
                     vuelos.setEstado(false);
                 }
 
@@ -387,8 +391,47 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 }
 
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtAvion.getScene().getWindow()), validacion);
             }
+        }
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtAvion, txtDestino, txtOrigen, datePikerFinal, datePikerInicio, combEstado));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXDatePicker && (((JFXDatePicker) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXDatePicker) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXDatePicker) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
         }
     }
 

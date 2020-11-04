@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -22,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -114,6 +116,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     private Label labTituloAviones;
     String mensaje;
     public AvionesDTO data = new AvionesDTO();
+    private List<Node> requeridos = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -191,6 +194,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
             tableAviones.getItems().clear();
         }
+        indicarRequeridos();
 
     }
 
@@ -232,8 +236,10 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
+        String validacion = validarRequeridos();
         if (aerolinea == null) {
-            if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtResponsable.getText().isEmpty()) {
+            if (validacion == null) {
+
                 aerolinea = new AerolineasDTO();
                 if (cmbEstado.getValue().equals("Activo")) {
                     aerolinea.setEstado(true);
@@ -248,12 +254,13 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
                 }
+
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
 
         } else {
-            if (!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtResponsable.getText().isEmpty()) {
+            if (validacion == null) {
                 if (cmbEstado.getValue().equals("Activo")) {
                     aerolinea.setEstado(true);
                 } else {
@@ -271,7 +278,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar la Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "No se editó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar la Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "Rellene los campos necesarios");
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
         }
     }
@@ -459,6 +466,38 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             box.getChildren().add(lab);
             tableAviones.setPlaceholder(box);
 
+        }
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtId, txtNombre, txtResponsable, cmbEstado));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && (((JFXTextField) node).getText() == null || ((JFXTextField) node).getText().isEmpty())) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return null;
+        } else {
+            return "Los siguientes campos son requeridos " + "[" + invalidos + "].";
         }
     }
 
