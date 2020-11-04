@@ -30,6 +30,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -68,6 +73,8 @@ public class AerolineasController extends Controller implements Initializable {
     @FXML
     private JFXButton btnRegistrarAvion;
     private List<Node> requeridos = new ArrayList<>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
 
     AerolineasService aerolineaService;
     String mensaje;
@@ -76,6 +83,10 @@ public class AerolineasController extends Controller implements Initializable {
     AerolineasDTO aerolineaFil;
     public List<AerolineasDTO> aerolineaList = new ArrayList<AerolineasDTO>();
     public AerolineasDTO data = new AerolineasDTO();
+    @FXML
+    private Label titulo;
+    @FXML
+    private Label lblTable;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -109,6 +120,8 @@ public class AerolineasController extends Controller implements Initializable {
 
         }
         );
+        llenarListaNodos();
+        desarrollo();
     }
 
     private void limpiarTableView() {
@@ -124,7 +137,7 @@ public class AerolineasController extends Controller implements Initializable {
         TableColumn<AerolineasDTO, String> colResponsable = new TableColumn("Nombre Responsable");
         colResponsable.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getNombreResponsable()));
         TableColumn<AerolineasDTO, String> colEstado = new TableColumn("Estado\nActivo Inactivo");
-        colEstado.setCellValueFactory((param) ->{
+        colEstado.setCellValueFactory((param) -> {
             if (param.getValue().isEstado()) {
                 return new SimpleStringProperty("Activo");
             }
@@ -151,6 +164,10 @@ public class AerolineasController extends Controller implements Initializable {
                             AppContext.getInstance().set("aerolinea", data);
                             PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");
                         });
+                        btn.setId("btnSeleccionar");
+                        btn.setText("Seleccionar");
+                        modDesarrolloAxiliar.add("Seleccionar");
+                        modDesarrollo.add(btn);
                     }
 
                     @Override
@@ -172,7 +189,7 @@ public class AerolineasController extends Controller implements Initializable {
         tableview.getColumns().add(colBtn);
 
     }
-    
+
     private void actionAerolineaClick() {
         aerolinea = null;
 
@@ -193,7 +210,7 @@ public class AerolineasController extends Controller implements Initializable {
     @FXML
     private void filtrar(ActionEvent event) {
 
-        if ((combFilter.getValue()==null || txtFilter.getText().isEmpty())) {
+        if ((combFilter.getValue() == null || txtFilter.getText().isEmpty())) {
             limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
@@ -217,8 +234,8 @@ public class AerolineasController extends Controller implements Initializable {
                     if (aerolineaList != null) {
                         tableview.setItems(FXCollections.observableArrayList(aerolineaList));
                     } else {
-                   mensaje = "No se encontró coincidencias";
-                    notificar(0);
+                        mensaje = "No se encontró coincidencias";
+                        notificar(0);
                     }
                 }
                 if (txtFilter.getText().equals("Inactivo")) {
@@ -228,7 +245,7 @@ public class AerolineasController extends Controller implements Initializable {
                         tableview.setItems(FXCollections.observableArrayList(aerolineaList));
                     } else {
                         mensaje = "No se encontró coincidencias";
-                    notificar(0);
+                        notificar(0);
                     }
                 }
                 if (aerolineaList == null) {
@@ -283,7 +300,6 @@ public class AerolineasController extends Controller implements Initializable {
         }
     }
 
-
     @FXML
     private void registrarAvion(ActionEvent event) {
         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
@@ -297,7 +313,81 @@ public class AerolineasController extends Controller implements Initializable {
     public void initialize() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            } else {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
+        }
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(titulo.getText());
+        modDesarrolloAxiliar.add(lblTable.getText());
+        modDesarrolloAxiliar.add(combFilter.getPromptText());
+        modDesarrolloAxiliar.add(txtFilter.getPromptText());
+        modDesarrolloAxiliar.add(btnFiltrar.getText());
+        modDesarrolloAxiliar.add(btnRegistrarAvion.getText());
+        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, combFilter, txtFilter, btnFiltrar, btnRegistrarAvion));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof JFXComboBox) {
+                    dato = ((JFXComboBox) node).getId();
+                    ((JFXComboBox) node).setPromptText(dato);
+                }
+                if (node instanceof Label) {
+                    if (node == lblTable) {
+                        dato = tableview.getId();
+                        ((Label) node).setText(dato);
+                    } else {
+                        dato = ((Label) node).getId();
+                        ((Label) node).setText(dato);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+        }
+    }
+
 }

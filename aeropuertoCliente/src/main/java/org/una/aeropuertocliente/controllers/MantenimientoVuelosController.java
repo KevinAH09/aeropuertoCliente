@@ -31,6 +31,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
@@ -110,6 +115,13 @@ public class MantenimientoVuelosController extends Controller implements Initial
     @FXML
     private JFXComboBox<String> combBitacora;
     private List<Node> requeridos = new ArrayList<>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
+
+    @FXML
+    private Label titulo;
+    @FXML
+    private Label titulo2;
 
     /**
      * Initializes the controller class.
@@ -257,6 +269,8 @@ public class MantenimientoVuelosController extends Controller implements Initial
 
         }
         indicarRequeridos();
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -314,7 +328,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
                     if (VuelosService.createVuelo(vuelos) == 201) {
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Se guardó correctamente");
                         PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
- 
+
                     } else {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el vuelo", ((Stage) txtAvion.getScene().getWindow()), "No se guardó correctamente");
                     }
@@ -438,6 +452,98 @@ public class MantenimientoVuelosController extends Controller implements Initial
     @Override
     public void initialize() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            } else {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
+        }
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(titulo.getText());
+        modDesarrolloAxiliar.add(titulo2.getText());
+        modDesarrolloAxiliar.add(txtOrigen.getPromptText());
+        modDesarrolloAxiliar.add(txtAvion.getPromptText());
+        modDesarrolloAxiliar.add(txtDestino.getPromptText());
+        modDesarrolloAxiliar.add(datePikerInicio.getPromptText());
+        modDesarrolloAxiliar.add(datePikerFinal.getPromptText());
+        modDesarrolloAxiliar.add(combEstado.getPromptText());
+        modDesarrolloAxiliar.add(combBitacora.getPromptText());
+        modDesarrolloAxiliar.add(btnGuardar.getText());
+        modDesarrolloAxiliar.add(radioZona.getText());
+        modDesarrolloAxiliar.add(radioSubioCargaPasajero.getText());
+        modDesarrolloAxiliar.add(radioCargoCombustible.getText());
+        modDesarrolloAxiliar.add(radioHoras.getText());
+        modDesarrolloAxiliar.add(radioTorre.getText());
+        modDesarrollo.addAll(Arrays.asList(titulo, titulo2, txtOrigen, txtAvion, txtDestino, datePikerInicio, datePikerFinal, combEstado, combBitacora, btnGuardar,
+                radioZona, radioSubioCargaPasajero, radioCargoCombustible, radioHoras, radioTorre));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof JFXComboBox) {
+                    dato = ((JFXComboBox) node).getId();
+                    ((JFXComboBox) node).setPromptText(dato);
+                }
+                if (node instanceof Label) {
+                    dato = ((Label) node).getId();
+                    ((Label) node).setText(dato);
+
+                }
+                if (node instanceof JFXRadioButton) {
+                    dato = ((JFXRadioButton) node).getId();
+                    ((JFXRadioButton) node).setText(dato);
+
+                }
+            }
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXRadioButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXRadioButton) modDesarrollo.get(i)).setText(dato);
+                }
+
+            }
+        }
     }
 
 }

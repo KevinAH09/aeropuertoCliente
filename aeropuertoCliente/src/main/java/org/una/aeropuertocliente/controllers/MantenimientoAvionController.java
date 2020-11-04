@@ -34,6 +34,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -58,17 +63,17 @@ import org.una.aeropuertocliente.utils.Mensaje;
 public class MantenimientoAvionController extends Controller implements Initializable {
 
     @FXML
-    private TextField txtTipoAvion;
+    private JFXTextField txtTipoAvion;
     @FXML
-    private TextField txtZona;
+    private JFXTextField txtZona;
     @FXML
-    private Button btnZona;
+    private JFXButton btnZona;
     @FXML
-    private TextField txtFiltrar;
+    private JFXTextField txtFiltrar;
     @FXML
-    private Button btnFiltrar;
+    private JFXButton btnFiltrar;
     @FXML
-    private Button btnCancelar;
+    private JFXButton btnCancelar;
     @FXML
     private TableView<VuelosDTO> tableview;
     @FXML
@@ -104,6 +109,16 @@ public class MantenimientoAvionController extends Controller implements Initiali
     String mensaje;
     public VuelosDTO data = new VuelosDTO();
     private List<Node> requeridos = new ArrayList<>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
+    @FXML
+    private Label titulo;
+    @FXML
+    private Label titulo2;
+    @FXML
+    private Label lblTable;
+    @FXML
+    private JFXComboBox<String> cmbEstado;
 
     /**
      * Initializes the controller class.
@@ -113,20 +128,29 @@ public class MantenimientoAvionController extends Controller implements Initiali
         aerolinea = (AerolineasDTO) AppContext.getInstance().get("aerolinea");
         avion = (AvionesDTO) AppContext.getInstance().get("agregarAvion");
         combEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         combFiltro.setItems(FXCollections.observableArrayList("Id", "Destino", "Origen", "Estado"));
         combFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
                 if (t1 == "Id") {
+                    cmbEstado.setVisible(false);
+                    txtFiltrar.setVisible(true);
                     txtFiltrar.setPromptText("Ingrese número correspondiente");
                 }
                 if (t1 == "Destino") {
+                    cmbEstado.setVisible(false);
+                    txtFiltrar.setVisible(true);
                     txtFiltrar.setPromptText("Ingrese destino del vuelo");
                 }
                 if (t1 == "Origen") {
+                    cmbEstado.setVisible(false);
+                    txtFiltrar.setVisible(true);
                     txtFiltrar.setPromptText("Ingrese origen del vuelo");
                 }
                 if (t1 == "Estado") {
+                    cmbEstado.setVisible(true);
+                    txtFiltrar.setVisible(false);
                     txtFiltrar.setPromptText("Ingrese estado");
                 }
             }
@@ -183,12 +207,14 @@ public class MantenimientoAvionController extends Controller implements Initiali
             btnFiltrar.setVisible(false);
             btnCancelar.setVisible(false);
             btnZona.setDisable(false);
-//
+
             btnCancelar.setVisible(false);
             btnEditar.setDisable(true);
             btnGuardarEditar.setVisible(true);
         }
         indicarRequeridos();
+        llenarListaNodos();
+        desarrollo();
     }
 
     @FXML
@@ -214,7 +240,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 }
             }
             if (combFiltro.getValue().equals("Estado") && !txtFiltrar.getText().isEmpty()) {
-                if (txtFiltrar.getText().toLowerCase().equals("Activo")) {
+                if (cmbEstado.getValue().equals("Activo")) {
                     tableview.getItems().clear();
                     vuelosList = VuelosService.estado(true);
                     if (vuelosList != null) {
@@ -224,7 +250,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                         notificar(0);
                     }
                 }
-                if (txtFiltrar.getText().equals("Inactivo")) {
+                if (cmbEstado.getValue().equals("Inactivo")) {
                     tableview.getItems().clear();
                     vuelosList = VuelosService.estado(false);
                     if (vuelosList != null) {
@@ -442,6 +468,93 @@ public class MantenimientoAvionController extends Controller implements Initiali
     @FXML
     private void onActionVolver(ActionEvent event) {
         PrincipalController.cambiarVistaPrincipal("mantenimientoAerolineas/MantenimientoAerolineas");
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            } else {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
+        }
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(titulo.getText());
+        modDesarrolloAxiliar.add(titulo2.getText());
+        modDesarrolloAxiliar.add(lblTable.getText());
+        modDesarrolloAxiliar.add(txtTipoAvion.getPromptText());
+        modDesarrolloAxiliar.add(txtZona.getPromptText());
+        modDesarrolloAxiliar.add(txtFiltrar.getPromptText());
+        modDesarrolloAxiliar.add(txtMatricula.getPromptText());
+        modDesarrolloAxiliar.add(combEstado.getPromptText());
+        modDesarrolloAxiliar.add(combFiltro.getPromptText());
+        modDesarrolloAxiliar.add(cmbEstado.getPromptText());
+        modDesarrolloAxiliar.add(btnFiltrar.getText());
+        modDesarrolloAxiliar.add(btnZona.getText());
+        modDesarrolloAxiliar.add(btnCancelar.getText());
+        modDesarrolloAxiliar.add(btnEditar.getText());
+        modDesarrolloAxiliar.add(btnGuardarEditar.getText());
+        modDesarrolloAxiliar.add(btnVolver.getText());
+        modDesarrollo.addAll(Arrays.asList(titulo, titulo2, lblTable, txtTipoAvion, txtZona, txtFiltrar, txtMatricula, combEstado, combFiltro, cmbEstado,
+                btnFiltrar, btnZona, btnCancelar, btnEditar, btnGuardarEditar, btnVolver));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof JFXComboBox) {
+                    dato = ((JFXComboBox) node).getId();
+                    ((JFXComboBox) node).setPromptText(dato);
+                }
+                if (node instanceof Label) {
+                    if (node == lblTable) {
+                        dato = tableview.getId();
+                        ((Label) node).setText(dato);
+                    } else {
+                        dato = ((Label) node).getId();
+                        ((Label) node).setText(dato);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+        }
     }
 
 }

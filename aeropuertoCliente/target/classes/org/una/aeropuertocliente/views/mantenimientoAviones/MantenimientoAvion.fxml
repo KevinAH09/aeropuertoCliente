@@ -10,19 +10,20 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="475.0" prefWidth="724.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoAvionController">
+<AnchorPane id="AnchorPane" prefHeight="475.0" prefWidth="724.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.MantenimientoAvionController">
    <children>
-      <StackPane prefHeight="475.0" prefWidth="724.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane onKeyPressed="#modoDesarrollo" prefHeight="475.0" prefWidth="724.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="724.0">
                      <children>
                         <Label fx:id="labTituloAviones" prefHeight="20.0" prefWidth="21.0" />
-                        <Label text="Mantenimiento de aviones" />
+                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="208.0" text="Mantenimiento de aviones" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" fillHeight="false" prefHeight="60.0" spacing="20.0" VBox.vgrow="ALWAYS">
@@ -56,12 +57,17 @@
                   <HBox alignment="CENTER" prefHeight="34.0" prefWidth="724.0">
                      <children>
                         <Label fx:id="labVuelos" prefHeight="20.0" prefWidth="37.0" />
-                        <Label text="Vuelos" />
+                        <Label fx:id="titulo2" text="Vuelos" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="65.0" prefWidth="724.0" spacing="20.0">
                      <children>
-                        <JFXTextField fx:id="txtFiltrar" labelFloat="true" prefHeight="30.0" prefWidth="190.0" promptText="Ingrese su búsqueda" />
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <JFXTextField fx:id="txtFiltrar" labelFloat="true" layoutX="5.0" layoutY="10.0" prefHeight="30.0" prefWidth="190.0" promptText="Ingrese su búsqueda" />
+                              <JFXComboBox fx:id="cmbEstado" layoutX="3.0" layoutY="13.0" prefHeight="26.0" prefWidth="190.0" promptText="Estado" visible="false" />
+                           </children>
+                        </Pane>
                         <JFXComboBox fx:id="combFiltro" labelFloat="true" prefHeight="30.0" prefWidth="190.0" promptText="Tipo de búsqueda" />
                         <JFXButton fx:id="btnFiltrar" onAction="#btnFiltrar" prefWidth="140.0" text="Filtrar" />
                      </children>
@@ -73,11 +79,16 @@
                   </HBox>
                   <HBox prefHeight="221.0" prefWidth="724.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tableview" prefHeight="215.0" prefWidth="724.0" stylesheets="@../shared/table.css" HBox.hgrow="ALWAYS">
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
+                        <VBox prefHeight="205.0" prefWidth="724.0">
+                           <children>
+                              <Label fx:id="lblTable" prefHeight="20.0" prefWidth="90.0" />
+                              <TableView fx:id="tableview" prefHeight="215.0" prefWidth="724.0" stylesheets="@../shared/table.css">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="724.0">

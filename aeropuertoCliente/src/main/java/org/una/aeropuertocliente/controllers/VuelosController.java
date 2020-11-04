@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -23,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -30,6 +32,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -71,6 +77,8 @@ public class VuelosController extends Controller implements Initializable {
     VuelosDTO vuelosFil;
     public List<VuelosDTO> vuelosList = new ArrayList<VuelosDTO>();
     public List<VuelosDTO> vuelosList2 = new ArrayList<VuelosDTO>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
     @FXML
     private Label lbltxtTipo1;
     @FXML
@@ -92,6 +100,8 @@ public class VuelosController extends Controller implements Initializable {
     AvionesDTO Objetoaviones;
     public List<VuelosDTO> A2 = new ArrayList<VuelosDTO>();
     public VuelosDTO data = new VuelosDTO();
+    @FXML
+    private JFXComboBox<String> cmbEstado;
 
     /**
      * Initializes the controller class.
@@ -103,6 +113,7 @@ public class VuelosController extends Controller implements Initializable {
 
         actionVueloClick();
         combFilter.setItems(FXCollections.observableArrayList("Id", "Destino", "Origen", "Estado", "Matricula del Avión"));
+        cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         txtTipoAvion.setText("");
         txtmatricula.setText("");
         if (Objetoaviones != null) {
@@ -130,24 +141,35 @@ public class VuelosController extends Controller implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
                 if (t1 == "Id") {
+                    cmbEstado.setVisible(false);
+                    txtFilter.setVisible(true);
                     txtFilter.setPromptText("Ingrese número correspondiente");
                 }
                 if (t1 == "Destino") {
+                    cmbEstado.setVisible(false);
+                    txtFilter.setVisible(true);
                     txtFilter.setPromptText("Ingrese nombre del destino");
                 }
                 if (t1 == "Nombre Aerolinea") {
+                    cmbEstado.setVisible(false);
+                    txtFilter.setVisible(true);
                     txtFilter.setPromptText("Ingrese nombre del Origen");
                 }
                 if (t1 == "Estado") {
-                    txtFilter.setPromptText("Ingrese estado");
+                    cmbEstado.setVisible(true);
+                    txtFilter.setVisible(false);
                 }
                 if (t1 == "Matricula del Avión") {
+                    cmbEstado.setVisible(false);
+                    txtFilter.setVisible(true);
                     txtFilter.setPromptText("Ingrese matrícula del avión");
                 }
             }
 
         }
         );
+        llenarListaNodos();
+        desarrollo();
     }
 
     private void actionVueloClick() {
@@ -206,9 +228,13 @@ public class VuelosController extends Controller implements Initializable {
                         btn.setOnAction((ActionEvent event) -> {
                             VuelosDTO vuelo = (VuelosDTO) getTableView().getItems().get(getIndex());
                             AppContext.getInstance().set("VueloAMantenimientoVuelo", vuelo);
-                                AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
+                            AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
                             PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
                         });
+                        btn.setId("btnSeleccionar");
+                        btn.setText("Seleccionar");
+                        modDesarrolloAxiliar.add("Seleccionar");
+                        modDesarrollo.add(btn);
                     }
 
                     @Override
@@ -229,6 +255,7 @@ public class VuelosController extends Controller implements Initializable {
 
         tableView.getColumns().add(colBtn);
     }
+
     @FXML
     private void filtrar(ActionEvent event) {
         if (combFilter.getValue().isEmpty() || txtFilter.getText().isEmpty()) {
@@ -244,7 +271,7 @@ public class VuelosController extends Controller implements Initializable {
                 }
             }
             if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-                if (txtFilter.getText().equals("Activo")) {
+                if (cmbEstado.getValue() == "Activo") {
                     tableView.getItems().clear();
                     vuelosList = VuelosService.estado(true);
                     if (vuelosList != null) {
@@ -253,7 +280,7 @@ public class VuelosController extends Controller implements Initializable {
                         notificar(0);
                     }
                 }
-                if (txtFilter.getText().equals("Inactivo")) {
+                if (cmbEstado.getValue() == "Inactivo") {
                     tableView.getItems().clear();
                     vuelosList = VuelosService.estado(false);
                     if (vuelosList != null) {
@@ -358,6 +385,83 @@ public class VuelosController extends Controller implements Initializable {
     }
 
     @FXML
-    private void filtrar1(ActionEvent event) {
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        if (cntrlD.match(event)) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+                desarrollo();
+            } else {
+                AppContext.getInstance().set("mod", true);
+                desarrollo();
+            }
+        }
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(titulo.getText());
+        modDesarrolloAxiliar.add(lblTable1.getText());
+        modDesarrolloAxiliar.add(txtmatricula.getPromptText());
+        modDesarrolloAxiliar.add(txtTipoAvion.getPromptText());
+        modDesarrolloAxiliar.add(txtFilter.getPromptText());
+        modDesarrolloAxiliar.add(combFilter.getPromptText());
+        modDesarrolloAxiliar.add(cmbEstado.getPromptText());
+        modDesarrolloAxiliar.add(btnBuscarAvion.getText());
+        modDesarrolloAxiliar.add(btnFiltrar.getText());
+        modDesarrolloAxiliar.add(btnRegistrarVuelos.getText());
+        modDesarrollo.addAll(Arrays.asList(titulo, lblTable1, txtmatricula, txtTipoAvion, txtFilter, combFilter, cmbEstado, btnBuscarAvion,
+                btnFiltrar, btnRegistrarVuelos));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            for (Node node : modDesarrollo) {
+                if (node instanceof JFXTextField) {
+                    dato = ((JFXTextField) node).getId();
+                    ((JFXTextField) node).setPromptText(dato);
+                }
+                if (node instanceof JFXButton) {
+                    dato = ((JFXButton) node).getId();
+                    ((JFXButton) node).setText(dato);
+                }
+                if (node instanceof JFXComboBox) {
+                    dato = ((JFXComboBox) node).getId();
+                    ((JFXComboBox) node).setPromptText(dato);
+                }
+                if (node instanceof Label) {
+                    if (node == lblTable1) {
+                        dato = tableView.getId();
+                        ((Label) node).setText(dato);
+                    } else {
+                        dato = ((Label) node).getId();
+                        ((Label) node).setText(dato);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < modDesarrollo.size(); i++) {
+                if (modDesarrollo.get(i) instanceof JFXButton) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXTextField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof Label) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((Label) modDesarrollo.get(i)).setText(dato);
+                }
+            }
+        }
     }
 }

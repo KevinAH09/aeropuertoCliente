@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,16 +11,16 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
    <children>
-      <StackPane prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane onKeyPressed="#modoDesarrollo" prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="724.0">
                      <children>
                         <Label fx:id="labTitulo" prefHeight="20.0" prefWidth="22.0" />
-                        <Label text="Aerolineas" />
+                        <Label fx:id="titulo" text="Aerolineas" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="98.0" prefWidth="550.0">
@@ -34,10 +35,19 @@
                   </HBox>
                   <HBox prefHeight="300.0" prefWidth="560.0">
                      <children>
-                        <TableView fx:id="tableview" editable="true" prefHeight="229.0" prefWidth="560.0" stylesheets="@../shared/table.css" HBox.hgrow="ALWAYS">
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy></TableView>
+                        <VBox prefHeight="300.0" prefWidth="558.0">
+                           <children>
+                              <Label fx:id="lblTable" prefHeight="20.0" prefWidth="49.0" />
+                              <TableView fx:id="tableview" editable="true" prefHeight="283.0" prefWidth="558.0" stylesheets="@../shared/table.css">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="700.0">

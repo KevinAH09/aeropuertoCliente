@@ -9,20 +9,21 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.VuelosController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.VuelosController">
    <children>
-      <StackPane prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane onKeyPressed="#modoDesarrollo" prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="47.0" prefWidth="560.0">
                      <children>
                         <Label fx:id="lablTitulo" prefHeight="17.0" prefWidth="20.0" />
-                        <Label fx:id="titulo" text="Vuelos">
+                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="56.0" text="Vuelos">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -53,8 +54,13 @@
                   <Separator prefWidth="200.0" />
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="560.0">
                      <children>
-                        <Label fx:id="labTxtFild1" prefHeight="20.0" prefWidth="30.0" />
-                        <JFXTextField fx:id="txtFilter" labelFloat="true" onAction="#filtrar1" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                        <Pane prefHeight="52.0" prefWidth="230.0">
+                           <children>
+                              <Label fx:id="labTxtFild1" layoutX="9.0" layoutY="17.0" prefHeight="20.0" prefWidth="30.0" visible="false" />
+                              <JFXTextField fx:id="txtFilter" labelFloat="true" layoutX="39.0" layoutY="12.0" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su busqueda" />
+                              <JFXComboBox fx:id="cmbEstado" layoutX="54.0" layoutY="14.0" prefHeight="26.0" prefWidth="161.0" promptText="Estado" visible="false" />
+                           </children>
+                        </Pane>
                         <Label fx:id="labComb1" prefHeight="20.0" prefWidth="30.0" />
                         <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de busqueda" />
                         <Label fx:id="labBtnFiltrar1" prefHeight="20.0" prefWidth="30.0" />
