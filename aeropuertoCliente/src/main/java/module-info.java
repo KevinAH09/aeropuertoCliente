@@ -8,6 +8,7 @@ module org.una.aeropuertocliente {
     requires java.xml;
     requires javax.interceptor.api;
     requires javax.inject;
+    requires pdfbox;
     requires org.apache.logging.log4j;
     
     opens org.una.aeropuertocliente.controllers to javafx.fxml;

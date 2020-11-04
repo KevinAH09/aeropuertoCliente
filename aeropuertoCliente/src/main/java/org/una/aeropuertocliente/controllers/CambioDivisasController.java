@@ -8,11 +8,17 @@ package org.una.aeropuertocliente.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +31,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.una.aeropuertocliente.apiForex.TiposMonedasServices;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -84,10 +96,10 @@ public class CambioDivisasController extends Controller implements Initializable
     private ImageView imgSelect;
     @FXML
     private Text lblMontoCambio;
-    List<String> listaMonedas = new ArrayList<>();
+    private List<String> listaMonedas = new ArrayList<>();
     public List<Node> modDesarrollo = new ArrayList<>();
     public List<String> modDesarrolloAxiliar = new ArrayList<>();
-
+    private List<String> cambios = new ArrayList<>();
     double USDEuros;
     double USDCostaRica;
     double USDLibraEstaerlina;
@@ -150,66 +162,75 @@ public class CambioDivisasController extends Controller implements Initializable
             llenarImages();
         }
     }
-    void generarPDF(){
-         java.util.Date fec = new Date();
-        String dato = fec.toString();
-        List<TbTipotarjeta> listTar = cComi.findTbTipotarjetaEntities();
-        try {
 
-            pdf = new PDDocument();//crea la instancia
+    void generarPDF() {
+
+        try {
+            Date fec = new Date();
+
+            PDDocument pdf = new PDDocument();//crea la instancia
             PDPage page = new PDPage();//crea la pagina
             pdf.addPage(page);//agregamos la pagina al pdf
-            content = new PDPageContentStream(pdf, page);//aqui escribimos
+            PDPageContentStream content = new PDPageContentStream(pdf, page);//aqui escribimos
 
             content.beginText();
             content.setFont(PDType1Font.COURIER, 11);
             content.newLineAtOffset(85, 770);
-            content.showText("MUSEO SFORZESCO");
+            content.showText("Arepuerto UNA");
             content.endText();
 
             content.beginText();
             content.setFont(PDType1Font.COURIER, 11);
             content.newLineAtOffset(85, 750);
-            content.showText("GENERADO: " + fec);
+            content.showText("GENERADO: " + new SimpleDateFormat("dd-MM-yyyy").format(fec));
             content.endText();
 
             content.beginText();
             content.setFont(PDType1Font.COURIER, 11);
             content.newLineAtOffset(85, 730);
-            content.showText("REPORTE DE COMISIONES POR RANGO DE FECHA");
-            content.endText();
-
-            content.beginText();
-            content.setFont(PDType1Font.COURIER, 11);
-            content.newLineAtOffset(85, 710);
-            content.showText("DESPUES DEL : " + local + " Y ANTES DEL: " + loc);
+            content.showText("REPORTE DE RESULTADOS DE CAMBIO DE DIVISAS");
             content.endText();
 
             content.beginText();
             content.setFont(PDType1Font.COURIER, 11);
             content.newLineAtOffset(85, 690);
-            content.showText("DETALLE:");
+            content.showText("Moneda seleccionada: "+cbMoneda.getValue());
             content.endText();
-
-            int vari = 670;
-            for (int p = 0; p < listTar.size(); p++) {
+            
+            content.beginText();
+            content.setFont(PDType1Font.COURIER, 11);
+            content.newLineAtOffset(85, 670);
+            content.showText("Monto a consultar: "+txtIngresarMonto.getText());
+            content.endText();
+            
+            content.beginText();
+            content.setFont(PDType1Font.COURIER, 11);
+            content.newLineAtOffset(85, 650);
+            content.showText("Resultados del cambio: ");
+            content.endText();
+            llenarMontosReportes();
+            int vari = 620;
+            for (int p = 0; p < listaMonedas.size(); p++) {
                 content.beginText();
                 content.setFont(PDType1Font.COURIER, 11);
                 content.newLineAtOffset(100, vari);
-                content.showText(listTar.get(p).getNombre() + "            " + listTar.get(p).getTotal());
+                content.showText(listaMonedas.get(p));
                 content.endText();
-                vari = vari - 20;
+                vari=vari-20;
             }
-
             content.close();
-            pdf.save("C:\\Users\\Gustavo\\Documents\\NetBeansProjects\\Proyecto#2-(5)\\src\\ventas\\reporte " + hoy.toString() + "-" + listTar.size() + ".pdf");
+            DirectoryChooser filChoser = new DirectoryChooser();
+//            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getPath());
+//            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getCanonicalPath());
+//            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath().replaceAll("\\\\", "/"));
+            pdf.save(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/hola.pdf");
             pdf.close();
 
-            Alert error = new Alert(Alert.AlertType.INFORMATION);
-            error.setTitle("AVISO");
-            error.setContentText("El reporte fue generado en el archivo PDF");
-            error.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     private void llenarImages() {
         if (itemSelect.equals("Colon")) {
             img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
@@ -428,7 +449,7 @@ public class CambioDivisasController extends Controller implements Initializable
             llenarImgSelect(monedaSelect);
             lblselect.setText(monedaSelect);
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al calcular monto", null, "Monto no digitado");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al calcular monto", (Stage) lblselect.getScene().getWindow(), "Monto no digitado");
         }
 
     }
@@ -463,6 +484,7 @@ public class CambioDivisasController extends Controller implements Initializable
         if (itemSelect.equals("Colon")) {
             if (selectImg.equals("Eurodolar")) {
                 lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDEuros));
+
             } else if (selectImg.equals("Dolar estadounidense")) {
                 lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
             } else if (selectImg.equals("Yen")) {
@@ -698,6 +720,112 @@ public class CambioDivisasController extends Controller implements Initializable
 
     }
 
+    private void llenarMontosReportes() {
+
+        double monto = Double.valueOf(txtIngresarMonto.getText());
+        if (itemSelect.equals("Colon")) {
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Eurodolar: " + String.format("%.2f", (monto / USDCostaRica) * USDEuros));
+            listaMonedas.add("Dolar estadounidense: " + String.format("%.2f", (monto / USDCostaRica)));
+            listaMonedas.add("Yen: " + String.format("%.2f", (monto / USDCostaRica) * USDYen));
+            listaMonedas.add("Dolar canadiense: " + String.format("%.2f", (monto / USDCostaRica) * USDCanada));
+            listaMonedas.add("Libra esterlina: " + String.format("%.2f", (monto / USDCostaRica) * USDLibraEstaerlina));
+            listaMonedas.add("Franco: " + String.format("%.2f", (monto / USDCostaRica) * USDFranco));
+            listaMonedas.add("Dolar australiano: " + String.format("%.2f", (monto / USDCostaRica) * USDAustralia));
+            listaMonedas.add("Dolar neozelandés: " + String.format("%.2f", (monto / USDCostaRica) * USDNuevaZelanda));
+
+        } else if (itemSelect.equals("Eurodolar")) {
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Colon: " + String.format("%.2f", (monto / USDEuros) * USDCostaRica));
+            listaMonedas.add("Dolar estadounidense: " + String.format("%.2f", (monto / USDEuros)));
+            listaMonedas.add("Yen: " + String.format("%.2f", (monto / USDEuros) * USDYen));
+            listaMonedas.add("Dolar canadiense: " + String.format("%.2f", (monto / USDEuros) * USDCanada));
+            listaMonedas.add("Libra esterlina: " + String.format("%.2f", (monto / USDEuros) * USDLibraEstaerlina));
+            listaMonedas.add("Franco: " + String.format("%.2f", (monto / USDEuros) * USDFranco));
+            listaMonedas.add("Dolar australiano: " + String.format("%.2f", (monto / USDEuros) * USDAustralia));
+            listaMonedas.add("Dolar neozelandés: " + String.format("%.2f", (monto / USDEuros) * USDNuevaZelanda));
+
+        } else if (itemSelect.equals("Dolar estadounidense")) {
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Colon: " + String.format("%.2f", (monto / USDCostaRica)));
+            listaMonedas.add("EuroDolar: " + String.format("%.2f", (monto / USDEuros)));
+            listaMonedas.add("Yen: " + String.format("%.2f", (monto / USDYen)));
+            listaMonedas.add("Dolar canadiense: " + String.format("%.2f", (monto / USDCanada)));
+            listaMonedas.add("Libra esterlina: " + String.format("%.2f", (monto / USDLibraEstaerlina)));
+            listaMonedas.add("Franco: " + String.format("%.2f", (monto / USDFranco)));
+            listaMonedas.add("Dolar australiano: " + String.format("%.2f", (monto / USDAustralia)));
+            listaMonedas.add("Dolar neozelandés: " + String.format("%.2f", (monto / USDNuevaZelanda)));
+
+        } else if (itemSelect.equals("Yen")) {
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Colon: " + String.format("%.2f", (monto / USDYen) * USDCostaRica));
+            listaMonedas.add("Dolar estadounidense: " + String.format("%.2f", (monto / USDYen)));
+            listaMonedas.add("Eurodolar: " + String.format("%.2f", (monto / USDYen) * USDEuros));
+            listaMonedas.add("Dolar canadiense: " + String.format("%.2f", (monto / USDYen) * USDCanada));
+            listaMonedas.add("Libra esterlina: " + String.format("%.2f", (monto / USDYen) * USDLibraEstaerlina));
+            listaMonedas.add("Franco: " + String.format("%.2f", (monto / USDYen) * USDFranco));
+            listaMonedas.add("Dolar australiano: " + String.format("%.2f", (monto / USDYen) * USDAustralia));
+            listaMonedas.add("Dolar neozelandés: " + String.format("%.2f", (monto / USDYen) * USDNuevaZelanda));
+
+        } else if (itemSelect.equals("Dolar canadiense")) {
+
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Colon: " + String.format("%.2f", (monto / USDCanada) * USDCostaRica));
+            listaMonedas.add("Dolar estadounidense: " + String.format("%.2f", (monto / USDCanada)));
+            listaMonedas.add("Eurodolar: " + String.format("%.2f", (monto / USDCanada) * USDEuros));
+            listaMonedas.add("Yen: " + String.format("%.2f", (monto / USDCanada) * USDYen));
+            listaMonedas.add("Libra esterlina: " + String.format("%.2f", (monto / USDCanada) * USDLibraEstaerlina));
+            listaMonedas.add("Franco: " + String.format("%.2f", (monto / USDCanada) * USDFranco));
+            listaMonedas.add("Dolar australiano: " + String.format("%.2f", (monto / USDCanada) * USDAustralia));
+            listaMonedas.add("Dolar neozelandés: " + String.format("%.2f", (monto / USDCanada) * USDNuevaZelanda));
+
+        } else if (itemSelect.equals("Libra esterlina")) {
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Colon: " + String.format("%.2f", (monto / USDLibraEstaerlina) * USDCostaRica));
+            listaMonedas.add("Dolar estadounidense: " + String.format("%.2f", (monto / USDLibraEstaerlina)));
+            listaMonedas.add("Eurodolar: " + String.format("%.2f", (monto / USDLibraEstaerlina) * USDEuros));
+            listaMonedas.add("Yen: " + String.format("%.2f", (monto / USDLibraEstaerlina) * USDYen));
+            listaMonedas.add("Dolar canadiense: " + String.format("%.2f", (monto / USDLibraEstaerlina) * USDCanada));
+            listaMonedas.add("Franco: " + String.format("%.2f", (monto / USDLibraEstaerlina) * USDFranco));
+            listaMonedas.add("Dolar australiano: " + String.format("%.2f", (monto / USDLibraEstaerlina) * USDAustralia));
+            listaMonedas.add("Dolar neozelandés: " + String.format("%.2f", (monto / USDLibraEstaerlina) * USDNuevaZelanda));
+
+        } else if (itemSelect.equals("Franco")) {
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Colon: " + String.format("%.2f", (monto / USDFranco) * USDCostaRica));
+            listaMonedas.add("Dolar estadounidense: " + String.format("%.2f", (monto / USDFranco)));
+            listaMonedas.add("Eurodolar: " + String.format("%.2f", (monto / USDFranco) * USDEuros));
+            listaMonedas.add("Yen: " + String.format("%.2f", (monto / USDFranco) * USDYen));
+            listaMonedas.add("Dolar canadiense: " + String.format("%.2f", (monto / USDFranco) * USDCanada));
+            listaMonedas.add("Libra esterlina: " + String.format("%.2f", (monto / USDFranco) * USDLibraEstaerlina));
+            listaMonedas.add("Dolar australiano: " + String.format("%.2f", (monto / USDFranco) * USDAustralia));
+            listaMonedas.add("Dolar neozelandés: " + String.format("%.2f", (monto / USDFranco) * USDNuevaZelanda));
+
+        } else if (itemSelect.equals("Dolar australiano")) {
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Colon: " + String.format("%.2f", (monto / USDAustralia) * USDCostaRica));
+            listaMonedas.add("Dolar estadounidense: " + String.format("%.2f", (monto / USDAustralia)));
+            listaMonedas.add("Eurodolar: " + String.format("%.2f", (monto / USDAustralia) * USDEuros));
+            listaMonedas.add("Yen: " + String.format("%.2f", (monto / USDAustralia) * USDYen));
+            listaMonedas.add("Dolar canadiense: " + String.format("%.2f", (monto / USDAustralia) * USDCanada));
+            listaMonedas.add("Libra esterlina: " + String.format("%.2f", (monto / USDAustralia) * USDLibraEstaerlina));
+            listaMonedas.add("Franco: " + String.format("%.2f", (monto / USDAustralia) * USDFranco));
+            listaMonedas.add("Dolar neozelandés: " + String.format("%.2f", (monto / USDAustralia) * USDNuevaZelanda));
+
+        } else if (itemSelect.equals("Dolar neozelandes")) {
+            listaMonedas = new ArrayList<>();
+            listaMonedas.add("Colon: " + String.format("%.2f", (monto / USDNuevaZelanda) * USDCostaRica));
+            listaMonedas.add("Dolar estadounidense: " + String.format("%.2f", (monto / USDNuevaZelanda)));
+            listaMonedas.add("Eurodolar: " + String.format("%.2f", (monto / USDNuevaZelanda) * USDEuros));
+            listaMonedas.add("Yen: " + String.format("%.2f", (monto / USDNuevaZelanda) * USDYen));
+            listaMonedas.add("Dolar canadiense: " + String.format("%.2f", (monto / USDNuevaZelanda) * USDCanada));
+            listaMonedas.add("Libra esterlina: " + String.format("%.2f", (monto / USDNuevaZelanda) * USDLibraEstaerlina));
+            listaMonedas.add("Franco: " + String.format("%.2f", (monto / USDNuevaZelanda) * USDFranco));
+            listaMonedas.add("Dolar australiano: " + String.format("%.2f", (monto / USDNuevaZelanda) * USDAustralia));
+        }
+
+    }
+
     public void llenarListaNodos() {
         modDesarrollo.clear();
         modDesarrolloAxiliar.clear();
@@ -752,6 +880,15 @@ public class CambioDivisasController extends Controller implements Initializable
                 }
             }
         }
+    }
+
+    @FXML
+    private void actionExportXML(ActionEvent event) {
+    }
+
+    @FXML
+    private void actionExportPDF(ActionEvent event) {
+        generarPDF();
     }
 
 }
