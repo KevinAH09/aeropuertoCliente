@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -92,6 +93,8 @@ public class FlowController {
         try {
             this.mainStage.setScene(new Scene(FXMLLoader.load(App.class.getResource("views/base/Base.fxml"), this.idioma)));
             this.mainStage.setMinWidth(768);
+            this.mainStage.getIcons().add(new Image("org/una/aeropuertocliente/views/shared/Icono.png"));
+            this.mainStage.setTitle("UNA AIRPORT");
             this.mainStage.show();
         } catch (Exception ex) {
             System.out.println(ex);

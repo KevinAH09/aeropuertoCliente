@@ -87,6 +87,10 @@ public class PrincipalController extends Controller implements Initializable {
         } else {
             textInfoArea.setText(" No posee");
         }
+        ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/fondo.png"));
+        imageView2.setFitWidth(300);
+        imageView2.setFitHeight(300);
+        vboxPrincipalStatic.getChildren().add(imageView2);
         Node imgroot = new ImageView(new Image("org/una/aeropuertocliente/views/principal/menu.png"));
         Node imgInformacion = new ImageView(new Image("org/una/aeropuertocliente/views/principal/informacion.png"));
         Node imgAdmin = new ImageView(new Image("org/una/aeropuertocliente/views/principal/lengueta.png"));
