@@ -26,7 +26,6 @@ public class ReportesService {
            String jasper = "";
         try {
             jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/"+ini+"/"+fin);
-            System.out.println(jasper);
         byte[] repor = Base64.getDecoder().decode(jasper);
             ByteArrayInputStream bta = null;
             ObjectInputStream ois = null;
@@ -50,7 +49,6 @@ public class ReportesService {
            String jasper = "";
         try {
             jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/empresa/"+ini+"/"+fin+"/"+empresa);
-            System.out.println(jasper);
         byte[] repor = Base64.getDecoder().decode(jasper);
             ByteArrayInputStream bta = null;
             ObjectInputStream ois = null;
@@ -74,7 +72,6 @@ public class ReportesService {
            String jasper = "";
         try {
             jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/area/"+ini+"/"+fin+"/"+area);
-            System.out.println(jasper);
         byte[] repor = Base64.getDecoder().decode(jasper);
             ByteArrayInputStream bta = null;
             ObjectInputStream ois = null;
@@ -98,7 +95,6 @@ public class ReportesService {
            String jasper = "";
         try {
             jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/pago/"+ini+"/"+fin+"/"+pago);
-            System.out.println(jasper);
         byte[] repor = Base64.getDecoder().decode(jasper);
             ByteArrayInputStream bta = null;
             ObjectInputStream ois = null;

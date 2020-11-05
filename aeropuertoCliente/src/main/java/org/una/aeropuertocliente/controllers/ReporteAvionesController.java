@@ -108,8 +108,8 @@ public class ReporteAvionesController extends Controller implements Initializabl
              ReportesService.reporteAvionesFechasZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(),cbZonas.getValue().getId().toString());
         } else if(cbFiltro.getValue().equals("Rango de fechas y aerolinea")){
              ReportesService.reporteAvionesFechasAerolinea(fechaIni.getValue().toString(), fechaFin.getValue().toString(),cbAerolineas.getValue().getId().toString());
-        } else if(cbFiltro.getValue().equals("Rango de fechas y aerolinea")){
-            
+        } else if(cbFiltro.getValue().equals("Rango de fechas, aerolinea y zona")){
+            ReportesService.reporteAvionesFechasAerolineaZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(),cbAerolineas.getValue().getId().toString(),cbZonas.getValue().getId().toString());
         }
     }
 
