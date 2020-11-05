@@ -406,6 +406,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     avion.setEstado(false);
                 }
                 avion.setMatricula(txtMatricula.getText());
+                avion.setHorasVuelo(String.valueOf(0));
                 avion.setTipoAvion(txtTipoAvion.getText());
                 avion.setAerolineaId((AerolineasDTO) AppContext.getInstance().get("aerolinea"));
                 if (AvionesService.createAvion(avion) == 201) {
