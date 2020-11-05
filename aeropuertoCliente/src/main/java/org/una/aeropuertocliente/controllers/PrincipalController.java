@@ -107,6 +107,9 @@ public class PrincipalController extends Controller implements Initializable {
             TreeItem<String> itemAdministracion = new TreeItem<>("Administracion");
             itemAdministracion.setGraphic(imgAdmin);
             root.getChildren().add(itemAdministracion);
+            TreeItem<String> itemReporte = new TreeItem<>("Reportes");
+            itemAdministracion.setGraphic(imgAdmin);
+            root.getChildren().add(itemReporte);
             TreeItem<String> itemUsuarios = new TreeItem<>("Usuarios");
             itemInformacion.getChildren().add(itemUsuarios);
             TreeItem<String> itemRoles = new TreeItem<>("Roles");
@@ -117,6 +120,10 @@ public class PrincipalController extends Controller implements Initializable {
             itemInformacion.getChildren().add(itemAerolinea);
             TreeItem<String> itemZonas = new TreeItem<>("Zonas");
             itemInformacion.getChildren().add(itemZonas);
+            TreeItem<String> itemReporteVuelos = new TreeItem<>("Recorrido de aviones");
+            itemReporte.getChildren().add(itemReporteVuelos);
+            TreeItem<String> itemReporteGastosMant = new TreeItem<>("Gastos de mantenimiento");
+            itemReporte.getChildren().add(itemReporteGastosMant);
             TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Gastos de manteniento");
             itemAdministracion.getChildren().add(itemGastoMantenimientos);
             TreeItem<String> itemRegistroVuelo = new TreeItem<>("Vuelos");
@@ -200,6 +207,10 @@ public class PrincipalController extends Controller implements Initializable {
                     } else if (item.getValue().equals("Cambio de Divisas")) {
                         AppContext.getInstance().set("cambiodivisas", false);
                         cambiarVistaPrincipal("cambioDivisas/CambioDivisas");
+                    } else if (item.getValue().equals("Recorrido de aviones")) {
+                        cambiarVistaPrincipal("reporteAviones/ReporteAviones");
+                    } else if (item.getValue().equals("Gastos de mantenimiento")) {
+                        cambiarVistaPrincipal("reporteGastoMant/ReporteGastoMant");
                     }
 
                 }
