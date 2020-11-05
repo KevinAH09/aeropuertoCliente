@@ -45,7 +45,6 @@ org\una\aeropuertocliente\controllers\RolesController$2.class
 org\una\aeropuertocliente\controllers\RolesController.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService$7.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService$4.class
-org\una\aeropuertocliente\controllers\ReporteGastosMantenimientoController.class
 org\una\aeropuertocliente\entitiesServices\ParametrosService$2.class
 org\una\aeropuertocliente\controllers\MantenimientoVuelosController$1.class
 org\una\aeropuertocliente\dtos\ParametrosDTO.class
