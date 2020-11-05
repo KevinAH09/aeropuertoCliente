@@ -326,7 +326,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 bitacora2 = BitacorasVuelosService.createBitacoraVueloExpecial(bitacora);
                 if (bitacora2 != null) {
                     vuelos.setBitacoraVueloId(bitacora2);
-                    
+
                     String s = aviones.getHorasVuelo();
                     Date input = new Date();
                     input = vuelos.getFechaInicio();
@@ -336,7 +336,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
 
                     long diff = input1.getTime() - input.getTime();
                     long hora = Long.parseLong(s);
-                    hora = hora +TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+                    hora = hora + TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
                     aviones.setHorasVuelo(Long.toString(hora));
                     AvionesService.updateAvion(aviones);
                     vuelos.setAvionId(aviones);
@@ -365,10 +365,34 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 Instant instant2 = Instant.from(localDateInicio.atStartOfDay(ZoneId.systemDefault()));
                 Date date2 = Date.from(instant2);
 
+                long cont = 0;
+                long resul = 0;
+                String s = aviones.getHorasVuelo();
+                long hora = Long.parseLong(s);
+
+                Date input = new Date();
+                input = vuelos.getFechaInicio();
+
+                Date input1 = new Date();
+                input1 = vuelos.getFechaFinal();
+
+                cont = (input1.getTime() - input.getTime());
+
+                cont = TimeUnit.HOURS.convert(cont, TimeUnit.MILLISECONDS);
+                resul = hora - cont;
+
                 vuelos.setDestino(txtDestino.getText());
                 vuelos.setOrigen(txtOrigen.getText());
                 vuelos.setFechaFinal(date1);
                 vuelos.setFechaInicio(date2);
+
+                cont = 0;
+                cont = (vuelos.getFechaFinal().getTime() - vuelos.getFechaInicio().getTime());
+                cont = TimeUnit.HOURS.convert(cont, TimeUnit.MILLISECONDS);
+                resul = resul + cont;
+                aviones.setHorasVuelo(Long.toString(resul));
+                AvionesService.updateAvion(aviones);
+
                 vuelos.setAvionId(aviones);
 
                 if (combBitacora.getValue().equals("Despegue")) {
