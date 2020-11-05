@@ -22,7 +22,7 @@ import org.una.aeropuertocliente.sharedService.Conection;
  * @author colo7
  */
 public class ReportesService {
-      public static void reporteGastosMant(String ini,String fin) {
+      public static void reporteGastosMantFechas(String ini,String fin) {
            String jasper = "";
         try {
             jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/"+ini+"/"+fin);
@@ -35,7 +35,7 @@ public class ReportesService {
                 ois = new ObjectInputStream(bta);
                 JasperPrint jp = (JasperPrint) ois.readObject();
                 JasperViewer jv = new JasperViewer(jp, false);
-                jv.setTitle("Reporte vuelos");
+                jv.setTitle("Reporte de gastos de mantenimiento");
                 jv.setVisible(true);
                 jv.show();
             } catch (Exception e) {
@@ -46,7 +46,7 @@ public class ReportesService {
         }
         
     }
-      public static void reporteGastosMantEmpresa(String ini,String fin,String empresa) {
+      public static void reporteGastosMantFechasEmpresa(String ini,String fin,String empresa) {
            String jasper = "";
         try {
             jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/empresa/"+ini+"/"+fin+"/"+empresa);
@@ -59,7 +59,7 @@ public class ReportesService {
                 ois = new ObjectInputStream(bta);
                 JasperPrint jp = (JasperPrint) ois.readObject();
                 JasperViewer jv = new JasperViewer(jp, false);
-                jv.setTitle("Reporte vuelos");
+                jv.setTitle("Reporte de gastos de mantenimiento");
                 jv.setVisible(true);
                 jv.show();
             } catch (Exception e) {
@@ -70,6 +70,148 @@ public class ReportesService {
         }
         
     }
+      public static void reporteGastosMantFechasAreaTrabajo(String ini,String fin,String area) {
+           String jasper = "";
+        try {
+            jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/area/"+ini+"/"+fin+"/"+area);
+            System.out.println(jasper);
+        byte[] repor = Base64.getDecoder().decode(jasper);
+            ByteArrayInputStream bta = null;
+            ObjectInputStream ois = null;
+            try {
+                bta = new ByteArrayInputStream(repor);
+                ois = new ObjectInputStream(bta);
+                JasperPrint jp = (JasperPrint) ois.readObject();
+                JasperViewer jv = new JasperViewer(jp, false);
+                jv.setTitle("Reporte de gastos de mantenimiento");
+                jv.setVisible(true);
+                jv.show();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+      public static void reporteGastosMantFechasEstadoPago(String ini,String fin,String pago) {
+           String jasper = "";
+        try {
+            jasper = Conection.oneConnectionReporte("reportes/gastosMant/fechaini/fechafin/pago/"+ini+"/"+fin+"/"+pago);
+            System.out.println(jasper);
+        byte[] repor = Base64.getDecoder().decode(jasper);
+            ByteArrayInputStream bta = null;
+            ObjectInputStream ois = null;
+            try {
+                bta = new ByteArrayInputStream(repor);
+                ois = new ObjectInputStream(bta);
+                JasperPrint jp = (JasperPrint) ois.readObject();
+                JasperViewer jv = new JasperViewer(jp, false);
+                jv.setTitle("Reporte de gastos de mantenimiento");
+                jv.setVisible(true);
+                jv.show();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    public static void reporteAvionesFechas(String ini,String fin) {
+           String jasper = "";
+        try {
+            jasper = Conection.oneConnectionReporte("reportes/aviones/fechaini/fechafin/"+ini+"/"+fin);
+        byte[] repor = Base64.getDecoder().decode(jasper);
+            ByteArrayInputStream bta = null;
+            ObjectInputStream ois = null;
+            try {
+                bta = new ByteArrayInputStream(repor);
+                ois = new ObjectInputStream(bta);
+                JasperPrint jp = (JasperPrint) ois.readObject();
+                JasperViewer jv = new JasperViewer(jp, false);
+                jv.setTitle("Reporte de recorrido de vuelos");
+                jv.setVisible(true);
+                jv.show();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    public static void reporteAvionesFechasZona(String ini,String fin,String zona) {
+           String jasper = "";
+        try {
+            jasper = Conection.oneConnectionReporte("reportes/aviones/fechaini/fechafin/zona/"+ini+"/"+fin+"/"+zona);
+        byte[] repor = Base64.getDecoder().decode(jasper);
+            ByteArrayInputStream bta = null;
+            ObjectInputStream ois = null;
+            try {
+                bta = new ByteArrayInputStream(repor);
+                ois = new ObjectInputStream(bta);
+                JasperPrint jp = (JasperPrint) ois.readObject();
+                JasperViewer jv = new JasperViewer(jp, false);
+                jv.setTitle("Reporte de recorrido de vuelos");
+                jv.setVisible(true);
+                jv.show();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    public static void reporteAvionesFechasAerolinea(String ini,String fin,String aero) {
+           String jasper = "";
+        try {
+            jasper = Conection.oneConnectionReporte("reportes/aviones/fechaini/fechafin/aerolinea/"+ini+"/"+fin+"/"+aero);
+        byte[] repor = Base64.getDecoder().decode(jasper);
+            ByteArrayInputStream bta = null;
+            ObjectInputStream ois = null;
+            try {
+                bta = new ByteArrayInputStream(repor);
+                ois = new ObjectInputStream(bta);
+                JasperPrint jp = (JasperPrint) ois.readObject();
+                JasperViewer jv = new JasperViewer(jp, false);
+                jv.setTitle("Reporte de recorrido de vuelos");
+                jv.setVisible(true);
+                jv.show();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+      
+    public static void reporteAvionesFechasAerolineaZona(String ini,String fin,String aero,String zona) {
+           String jasper = "";
+        try {
+            jasper = Conection.oneConnectionReporte("reportes/aviones/fechaini/fechafin/zonaAerolinea/"+ini+"/"+fin+"/"+aero+"/"+zona);
+        byte[] repor = Base64.getDecoder().decode(jasper);
+            ByteArrayInputStream bta = null;
+            ObjectInputStream ois = null;
+            try {
+                bta = new ByteArrayInputStream(repor);
+                ois = new ObjectInputStream(bta);
+                JasperPrint jp = (JasperPrint) ois.readObject();
+                JasperViewer jv = new JasperViewer(jp, false);
+                jv.setTitle("Reporte de recorrido de vuelos");
+                jv.setVisible(true);
+                jv.show();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+      
 
     
 }

@@ -161,7 +161,11 @@ public class MantenimientoUsuariosController implements Initializable {
             } else {
                 combJefe.setValue("No");
             }
-            cmbArea.setValue(usuario.getAreaTrabajoId().getNombreAreaTrabajo());
+            if (usuario.getAreaTrabajoId() != null) {
+                cmbArea.setValue(usuario.getAreaTrabajoId().getNombreAreaTrabajo());
+            }else{
+                cmbArea.setDisable(true);
+            }
             cmbRoles.setValue(usuario.getRolId().getCodigo());
             btnCambiarContrasena.setDisable(false);
             btnCambiarContrasena.setVisible(true);
@@ -391,8 +395,7 @@ public class MantenimientoUsuariosController implements Initializable {
             if (validos1) {
                 AppContext.getInstance().set("mod", false);
                 desarrollo();
-            }else
-            {
+            } else {
                 AppContext.getInstance().set("mod", true);
                 desarrollo();
             }
