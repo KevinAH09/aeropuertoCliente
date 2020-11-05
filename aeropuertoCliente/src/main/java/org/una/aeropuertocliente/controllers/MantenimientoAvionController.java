@@ -25,16 +25,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -43,7 +38,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.dtos.AvionesZonasDTO;
@@ -411,7 +405,6 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 } else {
                     avion.setEstado(false);
                 }
-
                 avion.setMatricula(txtMatricula.getText());
                 avion.setTipoAvion(txtTipoAvion.getText());
                 avion.setAerolineaId((AerolineasDTO) AppContext.getInstance().get("aerolinea"));

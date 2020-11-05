@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -41,6 +42,7 @@ import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.dtos.BitacorasVuelosDTO;
 import org.una.aeropuertocliente.dtos.VuelosDTO;
+import org.una.aeropuertocliente.entitiesServices.AvionesService;
 import org.una.aeropuertocliente.entitiesServices.BitacorasVuelosService;
 import org.una.aeropuertocliente.entitiesServices.VuelosService;
 import org.una.aeropuertocliente.utils.AppContext;
@@ -324,6 +326,19 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 bitacora2 = BitacorasVuelosService.createBitacoraVueloExpecial(bitacora);
                 if (bitacora2 != null) {
                     vuelos.setBitacoraVueloId(bitacora2);
+                    
+                    String s = aviones.getHorasVuelo();
+                    Date input = new Date();
+                    input = vuelos.getFechaInicio();
+
+                    Date input1 = new Date();
+                    input1 = vuelos.getFechaFinal();
+
+                    long diff = input1.getTime() - input.getTime();
+                    long hora = Long.parseLong(s);
+                    hora = hora +TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+                    aviones.setHorasVuelo(Long.toString(hora));
+                    AvionesService.updateAvion(aviones);
                     vuelos.setAvionId(aviones);
                     if (VuelosService.createVuelo(vuelos) == 201) {
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Se guardó correctamente");
