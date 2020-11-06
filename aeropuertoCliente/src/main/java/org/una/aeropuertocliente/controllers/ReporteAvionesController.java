@@ -18,14 +18,17 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AerolineasService;
 import org.una.aeropuertocliente.entitiesServices.ReportesService;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
+import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -133,7 +136,7 @@ public class ReporteAvionesController extends Controller implements Initializabl
         fechaIni.setValue(null);
         cbAerolineas.setValue(null);
         cbZonas.setValue(null);
-        cbFiltro.setValue("");
+        cbFiltro.setValue("Filtrar reporte por:");
     }
 
     @FXML
@@ -141,18 +144,26 @@ public class ReporteAvionesController extends Controller implements Initializabl
         if (cbFiltro.getValue().equals("Rango de fechas")) {
             if (fechaFin.getValue() != null && fechaIni.getValue() != null) {
                 ReportesService.reporteAvionesFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
             }
         } else if (cbFiltro.getValue().equals("Rango de fechas y zona")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbZonas.getValue() != null) {
                 ReportesService.reporteAvionesFechasZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbZonas.getValue().getId().toString());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
             }
         } else if (cbFiltro.getValue().equals("Rango de fechas y aerolinea")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbZonas.getValue() != null) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null) {
                 ReportesService.reporteAvionesFechasAerolinea(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
             }
         } else if (cbFiltro.getValue().equals("Rango de fechas, aerolinea y zona")) {
             if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null && cbZonas.getValue() != null) {
                 ReportesService.reporteAvionesFechasAerolineaZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString(), cbZonas.getValue().getId().toString());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
             }
         }
     }
