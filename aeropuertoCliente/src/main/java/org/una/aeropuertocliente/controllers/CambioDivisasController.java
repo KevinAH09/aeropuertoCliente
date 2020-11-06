@@ -8,6 +8,7 @@ package org.una.aeropuertocliente.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -86,7 +89,7 @@ public class CambioDivisasController extends Controller implements Initializable
     private ImageView img7;
     @FXML
     private ImageView img8;
-    
+
     @FXML
     private JFXButton btnExportarXML;
     @FXML
@@ -132,11 +135,16 @@ public class CambioDivisasController extends Controller implements Initializable
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (!(boolean) AppContext.getInstance().get("cambiodivisas")) {
+        txtIngresarMonto.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(txtIngresarMonto.getText());
+                if (!newValue.matches("\\d*")) {
+                    txtIngresarMonto.setText(newValue.replaceAll("[^\\d]", ""));
+                }
 
-        } else {
-//           
-        }
+            }
+        });
 
         USDCostaRica = TiposMonedasServices.valorMonedaDolarVSColon().valorMoneda();
 
@@ -174,7 +182,7 @@ public class CambioDivisasController extends Controller implements Initializable
         itemSelect = null;
         itemSelect = cbMoneda.getSelectionModel().getSelectedItem();
         if (itemSelect != null) {
-            txtIngresarMonto.setText(null);
+            txtIngresarMonto.setText("");
             lblMontoCambio.setText(null);
             lblselect.setText(null);
             imgSelect.setImage(null);
@@ -192,8 +200,8 @@ public class CambioDivisasController extends Controller implements Initializable
 
             //Main Node
             Element raiz = document.getDocumentElement();
-            Element itemMoneda = document.createElement(cbMoneda.getValue());
-            Element keyMonto = document.createElement(txtIngresarMonto.getText());
+            Element itemMoneda = document.createElement("Moneda:" + cbMoneda.getValue());
+            Element keyMonto = document.createElement("Monto:" + txtIngresarMonto.getText());
             itemMoneda.appendChild(keyMonto);
             raiz.appendChild(itemMoneda);
             Element intemDetalle = document.createElement("Cambios");
@@ -214,10 +222,15 @@ public class CambioDivisasController extends Controller implements Initializable
             //Generate XML
             Source source = new DOMSource(document);
             DirectoryChooser filChoser = new DirectoryChooser();
-            //Indicamos donde lo queremos almacenar
-            Result result = new StreamResult(new java.io.File(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath() + "/KevinXML.xml")); //nombre del archivo
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.transform(source, result);
+            File file = filChoser.showDialog(lblselect.getScene().getWindow());
+            if (file != null) {
+                Result result = new StreamResult(file.getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/hola.xml");
+                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                transformer.transform(source, result);
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
+            }
+
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
@@ -282,10 +295,12 @@ public class CambioDivisasController extends Controller implements Initializable
             }
             content.close();
             DirectoryChooser filChoser = new DirectoryChooser();
-//            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getPath());
-//            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getCanonicalPath());
-//            System.out.println(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath().replaceAll("\\\\", "/"));
-            pdf.save(filChoser.showDialog((Stage) lblselect.getScene().getWindow()).getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/hola.xml");
+            File file = filChoser.showDialog(lblselect.getScene().getWindow());
+            if (file != null) {
+                pdf.save(file.getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/hola.pdf");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
+            }
             pdf.close();
 
         } catch (IOException ex) {
@@ -945,12 +960,20 @@ public class CambioDivisasController extends Controller implements Initializable
 
     @FXML
     private void actionExportXML(ActionEvent event) {
-        generarXML();
+        if (!txtIngresarMonto.getText().isEmpty()) {
+            generarXML();
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Monto no digitado.");
+        }
     }
 
     @FXML
     private void actionExportPDF(ActionEvent event) {
-        generarPDF();
+        if (!txtIngresarMonto.getText().isEmpty()) {
+            generarPDF();
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Monto no digitado.");
+        }
     }
 
     @FXML
