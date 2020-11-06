@@ -48,14 +48,20 @@ public class ReporteAvionesController extends Controller implements Initializabl
     private JFXButton btnLimpiar;
     @FXML
     private JFXButton btnGenerar;
-    
+
     private List<AerolineasDTO> lisAerolineas = new ArrayList<>();
     private List<ZonasDTO> lisZonas = new ArrayList<>();
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        fechaFin.setVisible(false);
+        fechaIni.setVisible(false);
+        cbAerolineas.setVisible(false);
+        cbZonas.setVisible(false);
+
         Callback<DatePicker, DateCell> dayFinCellFactory = dp -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
@@ -86,30 +92,68 @@ public class ReporteAvionesController extends Controller implements Initializabl
         lisZonas = new ArrayList<>();
         lisAerolineas = AerolineasService.allAerolineas();
         lisZonas = ZonasService.allZonas();
-        
+
         cbAerolineas.setItems(FXCollections.observableArrayList(lisAerolineas));
         cbZonas.setItems(FXCollections.observableArrayList(lisZonas));
-        cbFiltro.setItems(FXCollections.observableArrayList("Rango de fechas","Rango de fechas y aerolinea","Rango de fechas y zona","Rango de fechas, aerolinea y zona"));
-    }    
+        cbFiltro.setItems(FXCollections.observableArrayList("Rango de fechas", "Rango de fechas y aerolinea", "Rango de fechas y zona", "Rango de fechas, aerolinea y zona"));
+    }
 
     @FXML
     private void actionFiltroSelect(ActionEvent event) {
+        if (cbFiltro.getValue().equals("Rango de fechas")) {
+            fechaFin.setVisible(true);
+            fechaIni.setVisible(true);
+            cbAerolineas.setVisible(false);
+            cbZonas.setVisible(false);
+        } else if (cbFiltro.getValue().equals("Rango de fechas y zona")) {
+            fechaFin.setVisible(true);
+            fechaIni.setVisible(true);
+            cbAerolineas.setVisible(false);
+            cbZonas.setVisible(true);
+        } else if (cbFiltro.getValue().equals("Rango de fechas y aerolinea")) {
+            fechaFin.setVisible(true);
+            fechaIni.setVisible(true);
+            cbAerolineas.setVisible(true);
+            cbZonas.setVisible(false);
+        } else if (cbFiltro.getValue().equals("Rango de fechas, aerolinea y zona")) {
+            fechaFin.setVisible(true);
+            fechaIni.setVisible(true);
+            cbAerolineas.setVisible(true);
+            cbZonas.setVisible(true);
+        }
     }
 
     @FXML
     private void actionLimpiar(ActionEvent event) {
+        fechaFin.setVisible(false);
+        fechaIni.setVisible(false);
+        cbAerolineas.setVisible(false);
+        cbZonas.setVisible(false);
+        fechaFin.setValue(null);
+        fechaIni.setValue(null);
+        cbAerolineas.setValue(null);
+        cbZonas.setValue(null);
+        cbFiltro.setValue("");
     }
 
     @FXML
     private void actionGenerar(ActionEvent event) {
-        if(cbFiltro.getValue().equals("Rango de fechas")){
-            ReportesService.reporteAvionesFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
-        }else if(cbFiltro.getValue().equals("Rango de fechas y zona")){
-             ReportesService.reporteAvionesFechasZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(),cbZonas.getValue().getId().toString());
-        } else if(cbFiltro.getValue().equals("Rango de fechas y aerolinea")){
-             ReportesService.reporteAvionesFechasAerolinea(fechaIni.getValue().toString(), fechaFin.getValue().toString(),cbAerolineas.getValue().getId().toString());
-        } else if(cbFiltro.getValue().equals("Rango de fechas, aerolinea y zona")){
-            ReportesService.reporteAvionesFechasAerolineaZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(),cbAerolineas.getValue().getId().toString(),cbZonas.getValue().getId().toString());
+        if (cbFiltro.getValue().equals("Rango de fechas")) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null) {
+                ReportesService.reporteAvionesFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
+            }
+        } else if (cbFiltro.getValue().equals("Rango de fechas y zona")) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null) {
+                ReportesService.reporteAvionesFechasZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbZonas.getValue().getId().toString());
+            }
+        } else if (cbFiltro.getValue().equals("Rango de fechas y aerolinea")) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbZonas.getValue() != null) {
+                ReportesService.reporteAvionesFechasAerolinea(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString());
+            }
+        } else if (cbFiltro.getValue().equals("Rango de fechas, aerolinea y zona")) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null && cbZonas.getValue() != null) {
+                ReportesService.reporteAvionesFechasAerolineaZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString(), cbZonas.getValue().getId().toString());
+            }
         }
     }
 
@@ -117,5 +161,5 @@ public class ReporteAvionesController extends Controller implements Initializabl
     public void initialize() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
