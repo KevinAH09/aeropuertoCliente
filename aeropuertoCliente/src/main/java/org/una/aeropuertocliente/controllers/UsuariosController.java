@@ -161,10 +161,11 @@ public class UsuariosController extends Controller implements Initializable {
             notificar(0);
         }
         if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            llenarUsuarios();
+            limpiarTableView();      
             usuariosFilt = UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
+            System.out.println(usuariosFilt);
             if (usuariosFilt != null) {
+                llenarUsuarios();
                 tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
             } else {
                 notificar(0);
@@ -173,6 +174,7 @@ public class UsuariosController extends Controller implements Initializable {
         if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             usuariosList = UsuariosService.nombreUsuarios(txtBusqueda.getText());
+            System.out.println(usuariosList.size());
             if (usuariosList != null) {
                 llenarUsuarios();
                 tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
@@ -183,9 +185,10 @@ public class UsuariosController extends Controller implements Initializable {
         if (cmbFiltro.getValue() == "Cedula" && !txtBusqueda.getText().isEmpty()) {
             limpiarTableView();
             usuariosFilt = UsuariosService.cedulaUsuarios(txtBusqueda.getText());
+            System.out.println(usuariosFilt);
             if (usuariosFilt != null) {
                 llenarUsuarios();
-                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
             } else {
                 notificar(0);
             }
@@ -197,7 +200,6 @@ public class UsuariosController extends Controller implements Initializable {
             for (int i = 0; i < usuariosList.size(); i++) {
                 if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(cmbAreas.getValue().getNombreAreaTrabajo())) {
                     usuariosList2 = UsuariosService.areaTrabajoUsuarios(usuariosList.get(i).getAreaTrabajoId().getId());
-                    System.out.println("Entró Areas");
                     if (usuariosList2 != null) {
                         tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
                     } else {
@@ -205,16 +207,13 @@ public class UsuariosController extends Controller implements Initializable {
                     }
                 }
             }
-        } else {
-            notificar(0);
-        }
+        } 
         if (cmbFiltro.getValue() == "Rol" && cmbRoles.getValue() != null) {
             limpiarTableView();
             llenarUsuarios();
             usuariosList = UsuariosService.allUsuarios();
             for (int i = 0; i < usuariosList.size(); i++) {
                 if (usuariosList.get(i).getRolId().getDescripcion().equals(cmbRoles.getValue().getDescripcion())) {
-                    System.out.println("Entró roles");
                     usuariosList2 = UsuariosService.rolUsuarios(usuariosList.get(i).getRolId().getId());
                     if (usuariosList2 != null) {
                         tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
@@ -223,9 +222,7 @@ public class UsuariosController extends Controller implements Initializable {
                     }
                 }
             }
-        } else {
-            notificar(0);
-        }
+        } 
         if (cmbFiltro.getValue() == "Estado" && !cmbEstado.getValue().isEmpty()) {
             if (cmbEstado.getValue().equals("Activo")) {
                 limpiarTableView();
