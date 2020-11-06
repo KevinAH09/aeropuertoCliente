@@ -94,7 +94,7 @@ public class FlowController {
             this.mainStage.setScene(new Scene(FXMLLoader.load(App.class.getResource("views/base/Base.fxml"), this.idioma)));
             this.mainStage.setMinWidth(768);
             this.mainStage.getIcons().add(new Image("org/una/aeropuertocliente/views/shared/Icono.png"));
-            this.mainStage.setTitle("AIRPORT UNA");
+            this.mainStage.setTitle("Aeropuerto UNA");
             this.mainStage.show();
         } catch (Exception ex) {
             System.out.println(ex);
