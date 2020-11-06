@@ -19,12 +19,15 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
 import org.una.aeropuertocliente.entitiesServices.ReportesService;
+import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -57,6 +60,11 @@ public class ReporteGastoMantController extends Controller implements Initializa
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        fechaFin.setVisible(false);
+        fechaIni.setVisible(false);
+        cbAreaTrabajo.setVisible(false);
+        txtEmpresa.setVisible(false);
+        cbEstadoPago.setVisible(false);
         Callback<DatePicker, DateCell> dayFinCellFactory = dp -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
@@ -93,22 +101,74 @@ public class ReporteGastoMantController extends Controller implements Initializa
 
     @FXML
     private void actionFiltroSelect(ActionEvent event) {
+        if (cbFiltro.getValue().equals("Rango de fechas")) {
+            fechaFin.setVisible(true);
+            fechaIni.setVisible(true);
+            cbAreaTrabajo.setVisible(false);
+            txtEmpresa.setVisible(false);
+            cbEstadoPago.setVisible(false);
+        } else if (cbFiltro.getValue().equals("Rango de fechas y area de trabajo")) {
+            fechaFin.setVisible(true);
+            fechaIni.setVisible(true);
+            cbAreaTrabajo.setVisible(true);
+            txtEmpresa.setVisible(false);
+            cbEstadoPago.setVisible(false);
+        } else if (cbFiltro.getValue().equals("Rango de fechas y estado de pago")) {
+            fechaFin.setVisible(true);
+            fechaIni.setVisible(true);
+            cbAreaTrabajo.setVisible(false);
+            txtEmpresa.setVisible(false);
+            cbEstadoPago.setVisible(true);
+        } else if (cbFiltro.getValue().equals("Rango de fechas y empresa")) {
+            fechaFin.setVisible(true);
+            fechaIni.setVisible(true);
+            cbAreaTrabajo.setVisible(false);
+            txtEmpresa.setVisible(true);
+            cbEstadoPago.setVisible(false);
+        }
     }
 
     @FXML
     private void actionLimpiar(ActionEvent event) {
+        fechaFin.setVisible(false);
+        fechaIni.setVisible(false);
+        cbAreaTrabajo.setVisible(false);
+        txtEmpresa.setVisible(false);
+        cbEstadoPago.setVisible(false);
+        fechaFin.setValue(null);
+        fechaIni.setValue(null);
+        cbAreaTrabajo.setValue(null);
+        cbEstadoPago.setValue(null);
+        txtEmpresa.setText("");
+        cbFiltro.setValue("Filtrar reporte por:");
     }
 
     @FXML
     private void actionGenerar(ActionEvent event) {
-         if(cbFiltro.getValue().equals("Rango de fechas")){
-            ReportesService.reporteGastosMantFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
-        }else if(cbFiltro.getValue().equals("Rango de fechas y area de trabajo")){
-             ReportesService.reporteGastosMantFechasAreaTrabajo(fechaIni.getValue().toString(), fechaFin.getValue().toString(),cbAreaTrabajo.getValue().getId().toString());
-        } else if(cbFiltro.getValue().equals("Rango de fechas y estado de pago")){
-             ReportesService.reporteGastosMantFechasEstadoPago(fechaIni.getValue().toString(), fechaFin.getValue().toString(),cbEstadoPago.getValue());
-        } else if(cbFiltro.getValue().equals("Rango de fechas y empresa")){
-            ReportesService.reporteGastosMantFechasEmpresa(fechaIni.getValue().toString(), fechaFin.getValue().toString(),txtEmpresa.getText());
+        if (cbFiltro.getValue().equals("Rango de fechas")) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null) {
+                ReportesService.reporteGastosMantFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            }
+        } else if (cbFiltro.getValue().equals("Rango de fechas y area de trabajo")) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAreaTrabajo.getValue() != null) {
+                ReportesService.reporteGastosMantFechasAreaTrabajo(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAreaTrabajo.getValue().getId().toString());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            }
+        } else if (cbFiltro.getValue().equals("Rango de fechas y estado de pago")) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbEstadoPago.getValue() != null) {
+                ReportesService.reporteGastosMantFechasEstadoPago(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbEstadoPago.getValue());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            }
+        } else if (cbFiltro.getValue().equals("Rango de fechas y empresa")) {
+            if (fechaFin.getValue() != null && fechaIni.getValue() != null && !txtEmpresa.getText().isEmpty()) {
+                ReportesService.reporteGastosMantFechasEmpresa(fechaIni.getValue().toString(), fechaFin.getValue().toString(), txtEmpresa.getText());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            }
         }
     }
 
