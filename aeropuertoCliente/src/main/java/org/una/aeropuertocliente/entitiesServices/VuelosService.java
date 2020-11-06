@@ -8,6 +8,7 @@ package org.una.aeropuertocliente.entitiesServices;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -103,6 +104,19 @@ public class VuelosService {
         List<VuelosDTO> dtos = new ArrayList<>();
         try {
             dtos = (List<VuelosDTO>) Conection.listFromConnection("vuelo/avion/" +id, new TypeToken<ArrayList<VuelosDTO>>() {
+            }.getType());
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dtos;
+    }
+    
+    public static List<VuelosDTO> FechaInicio(String fecha) {
+
+        List<VuelosDTO> dtos = new ArrayList<>();
+        try {
+            dtos = (List<VuelosDTO>) Conection.listFromConnection("vuelo/fechaInicio/" +fecha, new TypeToken<ArrayList<VuelosDTO>>() {
             }.getType());
 
         } catch (IOException ex) {

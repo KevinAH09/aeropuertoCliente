@@ -10,8 +10,11 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -112,7 +115,7 @@ public class VuelosController extends Controller implements Initializable {
         Objetoaviones = (AvionesDTO) AppContext.getInstance().get("avionAVuelos");
 
         actionVueloClick();
-        combFilter.setItems(FXCollections.observableArrayList("Id", "Destino", "Origen", "Estado", "Matricula del Avión"));
+        combFilter.setItems(FXCollections.observableArrayList("Id", "Destino", "Origen", "Estado", "Matricula del Avión", "Fecha inicio"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         txtTipoAvion.setText("");
         txtmatricula.setText("");
@@ -159,6 +162,13 @@ public class VuelosController extends Controller implements Initializable {
                     cmbEstado.setVisible(true);
                     txtFilter.setVisible(false);
                 }
+
+                if (t1 == "Fecha inicio") {
+                    cmbEstado.setVisible(false);
+                    txtFilter.setVisible(true);
+                    txtFilter.setPromptText("Ingrese fecha(yyyy-mm-dd)");
+                }
+
                 if (t1 == "Matricula del Avión") {
                     cmbEstado.setVisible(false);
                     txtFilter.setVisible(true);
@@ -290,6 +300,26 @@ public class VuelosController extends Controller implements Initializable {
                     }
                 }
             }
+
+            if (combFilter.getValue().equals("Fecha inicio") && !txtFilter.getText().isEmpty()) {
+                tableView.getItems().clear();
+
+                
+                String date1 = txtFilter.getText();
+                LocalDate localDate = LocalDate.parse(date1);
+                Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                System.out.println("date "+date);
+                String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                vuelosList = VuelosService.FechaInicio(sDate1);
+                System.out.println("org.una.aeropuertocliente.controllers.VuelosController.filtrar()"+vuelosList);
+                
+                if (vuelosList != null) {
+                    tableView.setItems(FXCollections.observableArrayList(vuelosList));
+                } else {
+                    notificar(0);
+                }
+            }
+
             if (combFilter.getValue().equals("Destino") && !txtFilter.getText().isEmpty()) {
                 tableView.getItems().clear();
                 vuelosList = VuelosService.Destino(txtFilter.getText());
