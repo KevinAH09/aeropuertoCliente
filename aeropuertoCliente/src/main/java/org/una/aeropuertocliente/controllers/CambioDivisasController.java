@@ -86,7 +86,7 @@ public class CambioDivisasController extends Controller implements Initializable
     private ImageView img7;
     @FXML
     private ImageView img8;
-    private JFXButton btnSalir;
+    
     @FXML
     private JFXButton btnExportarXML;
     @FXML
@@ -159,6 +159,8 @@ public class CambioDivisasController extends Controller implements Initializable
         cbMoneda.setItems(FXCollections.observableArrayList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes"));
         cbMoneda.setValue("Colon");
         itemSelect = "Colon";
+        llenarListaNodos();
+        desarrollo();
 
     }
 
@@ -893,8 +895,7 @@ public class CambioDivisasController extends Controller implements Initializable
         modDesarrolloAxiliar.add(txtIngresarMonto.getPromptText());
         modDesarrolloAxiliar.add(btnExportarPDF.getText());
         modDesarrolloAxiliar.add(btnExportarXML.getText());
-        modDesarrolloAxiliar.add(btnSalir.getText());
-        modDesarrollo.addAll(Arrays.asList(cbMoneda, txtIngresarMonto, btnExportarPDF, btnExportarXML, btnSalir));
+        modDesarrollo.addAll(Arrays.asList(cbMoneda, txtIngresarMonto, btnExportarPDF, btnExportarXML));
     }
 
     public void desarrollo() {
