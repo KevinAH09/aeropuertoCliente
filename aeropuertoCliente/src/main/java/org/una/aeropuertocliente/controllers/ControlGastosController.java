@@ -115,13 +115,14 @@ public class ControlGastosController extends Controller implements Initializable
     }
 
     private void validarRol() {
-        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
-            btnRegistrar.setVisible(false);
-            btnRegistrar.setDisable(true);
-        } else {
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
             actionControlClick();
             btnRegistrar.setVisible(true);
             btnRegistrar.setDisable(false);
+
+        } else {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
         }
     }
 
@@ -318,7 +319,6 @@ public class ControlGastosController extends Controller implements Initializable
                 if (mouseEvent.getClickCount() == 2 && tableGastos.selectionModelProperty().get().getSelectedItem() != null) {
                     ControlesGastosDTO control = (ControlesGastosDTO) tableGastos.selectionModelProperty().get().getSelectedItem();
                     AppContext.getInstance().set("control", control);
-                    System.out.println(control.getNumeroContrato());
                     PrincipalController.cambiarVistaPrincipal("mantenimientoControlGastos/MantenimientoControlGastos");
                 }
 
