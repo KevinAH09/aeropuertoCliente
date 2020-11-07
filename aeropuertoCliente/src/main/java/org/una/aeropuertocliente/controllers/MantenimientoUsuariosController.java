@@ -125,21 +125,19 @@ public class MantenimientoUsuariosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         List<String> llenarComboBox = new ArrayList<>();
-        usuario = (UsuariosDTO) AppContext.getInstance().get("usu");
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         combJefe.setItems(FXCollections.observableArrayList("Si", "No"));
-        listRoles = RolesService.allRoles();
-        for (RolesDTO listRole : listRoles) {
-            llenarComboBox.add(listRole.getCodigo());
-        }
+        cargarComboboxRoles(llenarComboBox);
+        cargarComboboxAreas(llenarComboBox);
 
-        cmbRoles.setItems(FXCollections.observableArrayList(llenarComboBox));
-        listAreas = AreasTrabajosService.allAreasTrabajos();
-        llenarComboBox.clear();
-        for (AreasTrabajosDTO lisArea : listAreas) {
-            llenarComboBox.add(lisArea.getNombreAreaTrabajo());
-        }
-        cmbArea.setItems(FXCollections.observableArrayList(llenarComboBox));
+        llenarFormulario();
+        indicarRequeridos();
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void llenarFormulario() {
+        usuario = (UsuariosDTO) AppContext.getInstance().get("usu");
         if (usuario != null) {
             txtPassMostrado.setText(usuario.getContrasenaEncriptada());
             txtPassMostrado.setDisable(true);
@@ -163,7 +161,7 @@ public class MantenimientoUsuariosController implements Initializable {
             }
             if (usuario.getAreaTrabajoId() != null) {
                 cmbArea.setValue(usuario.getAreaTrabajoId().getNombreAreaTrabajo());
-            }else{
+            } else {
                 cmbArea.setDisable(true);
             }
             cmbRoles.setValue(usuario.getRolId().getCodigo());
@@ -181,9 +179,23 @@ public class MantenimientoUsuariosController implements Initializable {
             btnCambiarContrasena.setVisible(false);
 
         }
-        indicarRequeridos();
-        llenarListaNodos();
-        desarrollo();
+    }
+
+    private void cargarComboboxAreas(List<String> llenarComboBox) {
+        listAreas = AreasTrabajosService.allAreasTrabajos();
+        llenarComboBox.clear();
+        for (AreasTrabajosDTO lisArea : listAreas) {
+            llenarComboBox.add(lisArea.getNombreAreaTrabajo());
+        }
+        cmbArea.setItems(FXCollections.observableArrayList(llenarComboBox));
+    }
+
+    private void cargarComboboxRoles(List<String> llenarComboBox) {
+        listRoles = RolesService.allRoles();
+        for (RolesDTO listRole : listRoles) {
+            llenarComboBox.add(listRole.getCodigo());
+        }
+        cmbRoles.setItems(FXCollections.observableArrayList(llenarComboBox));
     }
 
     @FXML
@@ -191,64 +203,9 @@ public class MantenimientoUsuariosController implements Initializable {
         String validacion = validarRequeridos();
         if (validacion == null && validarEmail()) {
             if ((UsuariosDTO) AppContext.getInstance().get("usu") == null) {
-                usuario = new UsuariosDTO();
-                for (RolesDTO listRole : listRoles) {
-                    if (listRole.getCodigo().equals(cmbRoles.getValue())) {
-                        usuario.setRolId(listRole);
-                    }
-                }
-                for (AreasTrabajosDTO lisArea : listAreas) {
-                    if (lisArea.getNombreAreaTrabajo().equals(cmbArea.getValue())) {
-                        usuario.setAreaTrabajoId(lisArea);
-                    }
-                }
-                usuario.setCedula(txtCedula.getText());
-                usuario.setCorreo(txtCorreo.getText());
-                usuario.setEstado(true);
-                usuario.setNombreCompleto(txtNombre.getText());
-                usuario.setFechaRegistro(new Date());
-                if (combJefe.getValue().equals("Si")) {
-                    usuario.setJefeId(true);
-                } else {
-                    usuario.setJefeId(false);
-                }
-                usuario.setContrasenaEncriptada(txtPassMostrado.getText());
-                usuario = UsuariosService.createUsuario(usuario);
-                if (usuario != null) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
-                }
+                guardarNuevoUsuario();
             } else {
-                for (RolesDTO listRole : listRoles) {
-                    if (listRole.getCodigo().equals(cmbRoles.getValue())) {
-                        usuario.setRolId(listRole);
-                    }
-                }
-                for (AreasTrabajosDTO lisArea : listAreas) {
-                    if (lisArea.getNombreAreaTrabajo().equals(cmbArea.getValue())) {
-                        usuario.setAreaTrabajoId(lisArea);
-                    }
-                }
-                usuario.setCedula(txtCedula.getText());
-                usuario.setCorreo(txtCorreo.getText());
-                if (cmbEstado.getValue().equals("Activo")) {
-                    usuario.setEstado(true);
-                } else {
-                    usuario.setEstado(false);
-                }
-                usuario.setNombreCompleto(txtNombre.getText());
-                if (combJefe.getValue().equals("Si")) {
-                    usuario.setJefeId(true);
-                } else {
-                    usuario.setJefeId(false);
-                }
-                if (UsuariosService.updateUsuario(usuario) == 200) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
-                    PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
-                }
+                guardarEdicionUsuario();
             }
         } else {
             if (validacion != null) {
@@ -256,6 +213,69 @@ public class MantenimientoUsuariosController implements Initializable {
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El correo no tiene el formato example@dominio.cr");
             }
+        }
+    }
+
+    private void guardarEdicionUsuario() {
+        for (RolesDTO listRole : listRoles) {
+            if (listRole.getCodigo().equals(cmbRoles.getValue())) {
+                usuario.setRolId(listRole);
+            }
+        }
+        for (AreasTrabajosDTO lisArea : listAreas) {
+            if (lisArea.getNombreAreaTrabajo().equals(cmbArea.getValue())) {
+                usuario.setAreaTrabajoId(lisArea);
+            }
+        }
+        usuario.setCedula(txtCedula.getText());
+        usuario.setCorreo(txtCorreo.getText());
+        if (cmbEstado.getValue().equals("Activo")) {
+            usuario.setEstado(true);
+        } else {
+            usuario.setEstado(false);
+        }
+        usuario.setNombreCompleto(txtNombre.getText());
+        if (combJefe.getValue().equals("Si")) {
+            usuario.setJefeId(true);
+        } else {
+            usuario.setJefeId(false);
+        }
+        if (UsuariosService.updateUsuario(usuario) == 200) {
+            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
+            PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
+        }
+    }
+
+    private void guardarNuevoUsuario() {
+        usuario = new UsuariosDTO();
+        for (RolesDTO listRole : listRoles) {
+            if (listRole.getCodigo().equals(cmbRoles.getValue())) {
+                usuario.setRolId(listRole);
+            }
+        }
+        for (AreasTrabajosDTO lisArea : listAreas) {
+            if (lisArea.getNombreAreaTrabajo().equals(cmbArea.getValue())) {
+                usuario.setAreaTrabajoId(lisArea);
+            }
+        }
+        usuario.setCedula(txtCedula.getText());
+        usuario.setCorreo(txtCorreo.getText());
+        usuario.setEstado(true);
+        usuario.setNombreCompleto(txtNombre.getText());
+        usuario.setFechaRegistro(new Date());
+        if (combJefe.getValue().equals("Si")) {
+            usuario.setJefeId(true);
+        } else {
+            usuario.setJefeId(false);
+        }
+        usuario.setContrasenaEncriptada(txtPassMostrado.getText());
+        usuario = UsuariosService.createUsuario(usuario);
+        if (usuario != null) {
+            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
         }
     }
 
@@ -347,42 +367,52 @@ public class MantenimientoUsuariosController implements Initializable {
         String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    dato = ((Label) node).getId();
-                    ((Label) node).setText(dato);
-                }
-            }
+            validarBooleanoTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
-                }
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                dato = ((Label) node).getId();
+                ((Label) node).setText(dato);
             }
         }
     }

@@ -125,6 +125,12 @@ public class ParametrosController extends Controller implements Initializable {
         notificar(1);
         indicarRequeridos();
 
+        asignarAccionComboboxFiltro();
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void asignarAccionComboboxFiltro() {
         cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
@@ -147,8 +153,6 @@ public class ParametrosController extends Controller implements Initializable {
 
         }
         );
-        llenarListaNodos();
-        desarrollo();
     }
 
     @FXML
@@ -163,70 +167,86 @@ public class ParametrosController extends Controller implements Initializable {
     private void onActionGuardar(ActionEvent event) {
         String validacion = validarRequeridos();
         if (parametros == null) {
-            if (validacion == null) {
-                parametros = new ParametrosDTO();
-                if (cmbEstado.getValue().equals("Activo")) {
-                    parametros.setEstado(true);
-                } else {
-                    parametros.setEstado(false);
-                }
-                parametros.setDescripcion(txtDescripcion.getText());
-                parametros.setNombreParametro(txtNombre.getText());
-                parametros.setValor(txtValor.getText());
-                if (ParametrosService.createParametro(parametros) == 201) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar parametro", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
-                }
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
-            }
+            guardarNuevoParametro(validacion);
 
         } else {
-            if (validacion == null) {
-                if (cmbEstado.getValue().equals("Activo")) {
-                    parametros.setEstado(true);
-                } else {
-                    parametros.setEstado(false);
-                }
-                parametros.setDescripcion(txtDescripcion.getText());
-                parametros.setNombreParametro(txtNombre.getText());
-                parametros.setValor(txtValor.getText());
-                if (ParametrosService.updateParametro(parametros) == 200) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar parametro", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
-                }
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
-            }
+            guardarEdicionParametro(validacion);
         }
         tableParametros.getItems().clear();
         parametrosList = ParametrosService.allParametros();
         tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
     }
 
+    private void guardarEdicionParametro(String validacion) {
+        if (validacion == null) {
+            if (cmbEstado.getValue().equals("Activo")) {
+                parametros.setEstado(true);
+            } else {
+                parametros.setEstado(false);
+            }
+            parametros.setDescripcion(txtDescripcion.getText());
+            parametros.setNombreParametro(txtNombre.getText());
+            parametros.setValor(txtValor.getText());
+            if (ParametrosService.updateParametro(parametros) == 200) {
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar parametro", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
+        }
+    }
+
+    private void guardarNuevoParametro(String validacion) {
+        if (validacion == null) {
+            parametros = new ParametrosDTO();
+            if (cmbEstado.getValue().equals("Activo")) {
+                parametros.setEstado(true);
+            } else {
+                parametros.setEstado(false);
+            }
+            parametros.setDescripcion(txtDescripcion.getText());
+            parametros.setNombreParametro(txtNombre.getText());
+            parametros.setValor(txtValor.getText());
+            if (ParametrosService.createParametro(parametros) == 201) {
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar parametro", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
+        }
+    }
+
     private void notificar(int num) {
         limpiarTableView();
         if (num == 1) {
-            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
-            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView);
-            box.getChildren().add(lab);
-            tableParametros.setPlaceholder(box);
+            alertar1();
         } else {
-            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text(mensaje);
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView2);
-            box.getChildren().add(lab);
-            tableParametros.setPlaceholder(box);
+            alertar2();
         }
+    }
+
+    private void alertar2() {
+        ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+        Text lab = new Text(mensaje);
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView2);
+        box.getChildren().add(lab);
+        tableParametros.setPlaceholder(box);
+    }
+
+    private void alertar1() {
+        ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+        Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView);
+        box.getChildren().add(lab);
+        tableParametros.setPlaceholder(box);
     }
 
     @FXML
@@ -236,55 +256,70 @@ public class ParametrosController extends Controller implements Initializable {
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
+
         if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            parametrosFilt = ParametrosService.idParametro(Long.valueOf(txtBusqueda.getText()));
-            if (parametrosFilt != null) {
-                llenarParametros();
-                tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
-            } else {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+            filtrarPorId();
         }
+
         if (cmbFiltro.getValue() == "Estado" && cmbEstado2.getValue() != null) {
-            if (cmbEstado2.getValue().equals("Activo")) {
-                limpiarTableView();
-                parametrosList = ParametrosService.estadoParametros(true);
-                if (parametrosList != null) {
-                    llenarParametros();
-                    tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
-            }
-            if (cmbEstado2.getValue().equals("Inactivo")) {
-                limpiarTableView();
-                parametrosList = ParametrosService.estadoParametros(false);
-                if (parametrosList != null) {
-                    llenarParametros();
-                    tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
-            }
-            if (parametrosList == null) {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+            filtrarPorEstado();
         }
+
         if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
+            filtrarPorNombre();
+        }
+    }
+
+    private void filtrarPorNombre() {
+        limpiarTableView();
+        parametrosList = ParametrosService.nombreParametros(txtBusqueda.getText());
+        if (parametrosList != null) {
+            llenarTableView();
+            tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorEstado() {
+        if (cmbEstado2.getValue().equals("Activo")) {
             limpiarTableView();
-            parametrosList = ParametrosService.nombreParametros(txtBusqueda.getText());
+            parametrosList = ParametrosService.estadoParametros(true);
             if (parametrosList != null) {
-                llenarParametros();
-                tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+                llenarTableView();
+                tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
             } else {
                 mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
+        }
+        if (cmbEstado2.getValue().equals("Inactivo")) {
+            limpiarTableView();
+            parametrosList = ParametrosService.estadoParametros(false);
+            if (parametrosList != null) {
+                llenarTableView();
+                tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
+            } else {
+                mensaje = "No se encontró coincidencias";
+                notificar(0);
+            }
+        }
+        if (parametrosList == null) {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorId() throws NumberFormatException {
+        limpiarTableView();
+        parametrosFilt = ParametrosService.idParametro(Long.valueOf(txtBusqueda.getText()));
+        if (parametrosFilt != null) {
+            llenarTableView();
+            tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
         }
     }
 
@@ -303,7 +338,7 @@ public class ParametrosController extends Controller implements Initializable {
         });
     }
 
-    private void llenarParametros() {
+    private void llenarTableView() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         TableColumn<ParametrosDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
@@ -323,7 +358,7 @@ public class ParametrosController extends Controller implements Initializable {
         TableColumn<ParametrosDTO, String> colFecha = new TableColumn("Fecha registro");
         colFecha.setCellValueFactory((param) -> new SimpleObjectProperty(formatter.format(param.getValue().getFechaRegistro())));
         tableParametros.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion, colFecha);
-        addButtonToTable();
+        agregarBtnTableView();
     }
 
     private void editar() {
@@ -340,7 +375,7 @@ public class ParametrosController extends Controller implements Initializable {
         }
     }
 
-    private void addButtonToTable() {
+    private void agregarBtnTableView() {
         TableColumn<ParametrosDTO, Void> colBtn = new TableColumn("Acción");
 
         Callback<TableColumn<ParametrosDTO, Void>, TableCell<ParametrosDTO, Void>> cellFactory = new Callback<TableColumn<ParametrosDTO, Void>, TableCell<ParametrosDTO, Void>>() {
@@ -438,49 +473,58 @@ public class ParametrosController extends Controller implements Initializable {
     }
 
     public void desarrollo() {
-        String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    if (node == lblTable) {
-                        dato = tableParametros.getId();
-                        ((Label) node).setText(dato);
-                    } else {
-                        dato = ((Label) node).getId();
-                        ((Label) node).setText(dato);
-                    }
-                }
-            }
+            validarBooleanoTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato = "";
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato = "";
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                if (node == lblTable) {
+                    dato = tableParametros.getId();
+                    ((Label) node).setText(dato);
+                } else {
+                    dato = ((Label) node).getId();
+                    ((Label) node).setText(dato);
                 }
             }
         }

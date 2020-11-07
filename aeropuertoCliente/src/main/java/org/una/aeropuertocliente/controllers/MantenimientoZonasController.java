@@ -120,23 +120,19 @@ public class MantenimientoZonasController extends Controller implements Initiali
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
-            btnRegistrar.setVisible(false);
-            btnRegistrar.setDisable(true);
-            btnCancelar.setVisible(false);
-            btnCancelar.setDisable(true);
-        } else {
-            btnRegistrar.setVisible(true);
-            btnRegistrar.setDisable(false);
-            btnCancelar.setVisible(true);
-            btnCancelar.setDisable(false);
-        }
+        validarRol();
         actionZonasClick();
         notificar(1);
         indicarRequeridos();
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Código"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         cmbEstado2.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        asignarAccionComboboxFiltro();
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void asignarAccionComboboxFiltro() {
         cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
@@ -163,8 +159,20 @@ public class MantenimientoZonasController extends Controller implements Initiali
 
         }
         );
-        llenarListaNodos();
-        desarrollo();
+    }
+
+    private void validarRol() {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+            btnCancelar.setVisible(false);
+            btnCancelar.setDisable(true);
+        } else {
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+            btnCancelar.setVisible(true);
+            btnCancelar.setDisable(false);
+        }
     }
 
     @FXML
@@ -179,47 +187,55 @@ public class MantenimientoZonasController extends Controller implements Initiali
     private void onActionGuardar(ActionEvent event) {
         String validacion = validarRequeridos();
         if (zonas == null) {
-            if (validacion == null) {
-                zonas = new ZonasDTO();
-                if (cmbEstado.getValue().equals("Activo")) {
-                    zonas.setEstado(true);
-                } else {
-                    zonas.setEstado(false);
-                }
-                zonas.setDescripcion(txtDescripcion.getText());
-                zonas.setCodigo(txtCodigo.getText());
-                zonas.setNombreZona(txtNombre.getText());
-                if (ZonasService.createZona(zonas) == 201) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Zona", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
-                }
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
-            }
+            guardarNuevaZona(validacion);
 
         } else {
-            if (validacion == null) {
-                if (cmbEstado.getValue().equals("Activo")) {
-                    zonas.setEstado(true);
-                } else {
-                    zonas.setEstado(false);
-                }
-                zonas.setDescripcion(txtDescripcion.getText());
-                zonas.setCodigo(txtCodigo.getText());
-                zonas.setNombreZona(txtNombre.getText());
-                if (ZonasService.updateZona(zonas) == 200) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Zona", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
-                }
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
-            }
+            guardarEdicionZona(validacion);
         }
         tableZonas.getItems().clear();
         zonasList = ZonasService.allZonas();
         tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+    }
+
+    private void guardarEdicionZona(String validacion) {
+        if (validacion == null) {
+            if (cmbEstado.getValue().equals("Activo")) {
+                zonas.setEstado(true);
+            } else {
+                zonas.setEstado(false);
+            }
+            zonas.setDescripcion(txtDescripcion.getText());
+            zonas.setCodigo(txtCodigo.getText());
+            zonas.setNombreZona(txtNombre.getText());
+            if (ZonasService.updateZona(zonas) == 200) {
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Zona", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
+        }
+    }
+
+    private void guardarNuevaZona(String validacion) {
+        if (validacion == null) {
+            zonas = new ZonasDTO();
+            if (cmbEstado.getValue().equals("Activo")) {
+                zonas.setEstado(true);
+            } else {
+                zonas.setEstado(false);
+            }
+            zonas.setDescripcion(txtDescripcion.getText());
+            zonas.setCodigo(txtCodigo.getText());
+            zonas.setNombreZona(txtNombre.getText());
+            if (ZonasService.createZona(zonas) == 201) {
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Zona", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
+        }
     }
 
     @FXML
@@ -229,64 +245,84 @@ public class MantenimientoZonasController extends Controller implements Initiali
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
+        
         if (cmbFiltro.getValue() == "Estado" && !cmbEstado2.getValue().isEmpty()) {
-            if (cmbEstado2.getValue().equals("Activo")) {
-                limpiarTableView();
-                zonasList = ZonasService.estadoZona(true);
-                if (zonasList != null) {
-                    llenarZonas();
-                    tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
-            }
-            if (cmbEstado2.getValue().equals("false")) {
-                limpiarTableView();
-                zonasList = ZonasService.estadoZona(false);
-                if (zonasList != null) {
-                    llenarZonas();
-                    tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
-            }
-            if (zonasList == null) {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+            filtrarPorEstado();
         }
+        
         if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            zonasList = ZonasService.nombreZona(txtBusqueda.getText());
-            if (zonasList != null) {
-                llenarZonas();
-                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-            } else {
-                notificar(0);
-            }
+            filtrarPorNombre();
         }
+        
         if (cmbFiltro.getValue() == "Código" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            zonasList = ZonasService.codigoZona(txtBusqueda.getText());
-            if (zonasList != null) {
-                llenarZonas();
-                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
-            } else {
-                notificar(0);
-            }
+            filtrarPorCodigo();
         }
+        
         if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
+            filtrarPorId();
+        }
+    }
+
+    private void filtrarPorId() throws NumberFormatException {
+        limpiarTableView();
+        zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
+        if (zonasFilt != null) {
+            llenarTableView();
+            tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorCodigo() {
+        limpiarTableView();
+        zonasList = ZonasService.codigoZona(txtBusqueda.getText());
+        if (zonasList != null) {
+            llenarTableView();
+            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+        } else {
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorNombre() {
+        limpiarTableView();
+        zonasList = ZonasService.nombreZona(txtBusqueda.getText());
+        if (zonasList != null) {
+            llenarTableView();
+            tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+        } else {
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorEstado() {
+        if (cmbEstado2.getValue().equals("Activo")) {
             limpiarTableView();
-            zonasFilt = ZonasService.idZona(Long.valueOf(txtBusqueda.getText()));
-            if (zonasFilt != null) {
-                llenarZonas();
-                tableZonas.setItems(FXCollections.observableArrayList(zonasFilt));
+            zonasList = ZonasService.estadoZona(true);
+            if (zonasList != null) {
+                llenarTableView();
+                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
             } else {
                 mensaje = "No se encontró coincidencias";
                 notificar(0);
             }
+        }
+        if (cmbEstado2.getValue().equals("false")) {
+            limpiarTableView();
+            zonasList = ZonasService.estadoZona(false);
+            if (zonasList != null) {
+                llenarTableView();
+                tableZonas.setItems(FXCollections.observableArrayList(zonasList));
+            } else {
+                mensaje = "No se encontró coincidencias";
+                notificar(0);
+            }
+        }
+        if (zonasList == null) {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
         }
     }
 
@@ -305,7 +341,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
         });
     }
 
-    private void llenarZonas() {
+    private void llenarTableView() {
         TableColumn<ZonasDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
         TableColumn<ZonasDTO, String> colNombre = new TableColumn("Nombre");
@@ -322,7 +358,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
         TableColumn<ZonasDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableZonas.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion);
-        addButtonToTable();
+        agregarBtnTableView();
 
     }
 
@@ -344,27 +380,35 @@ public class MantenimientoZonasController extends Controller implements Initiali
     private void notificar(int num) {
         limpiarTableView();
         if (num == 1) {
-            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
-            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView);
-            box.getChildren().add(lab);
-            tableZonas.setPlaceholder(box);
+            alertar1();
         } else {
-            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text(mensaje);
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView2);
-            box.getChildren().add(lab);
-            tableZonas.setPlaceholder(box);
+            alertar2();
         }
     }
 
-    private void addButtonToTable() {
+    private void alertar2() {
+        ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+        Text lab = new Text(mensaje);
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView2);
+        box.getChildren().add(lab);
+        tableZonas.setPlaceholder(box);
+    }
+
+    private void alertar1() {
+        ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+        Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView);
+        box.getChildren().add(lab);
+        tableZonas.setPlaceholder(box);
+    }
+
+    private void agregarBtnTableView() {
         TableColumn<ZonasDTO, Void> colBtn = new TableColumn("Acción");
 
         Callback<TableColumn<ZonasDTO, Void>, TableCell<ZonasDTO, Void>> cellFactory = new Callback<TableColumn<ZonasDTO, Void>, TableCell<ZonasDTO, Void>>() {
@@ -467,46 +511,56 @@ public class MantenimientoZonasController extends Controller implements Initiali
         String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    if (node == lblTable) {
-                        dato = tableZonas.getId();
-                        ((Label) node).setText(dato);
-                    } else {
-                        dato = ((Label) node).getId();
-                        ((Label) node).setText(dato);
-                    }
-                }
-            }
+            validarBooleanoTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                if (node == lblTable) {
+                    dato = tableZonas.getId();
+                    ((Label) node).setText(dato);
+                } else {
+                    dato = ((Label) node).getId();
+                    ((Label) node).setText(dato);
                 }
             }
         }

@@ -117,10 +117,7 @@ public class MantenimientoControlGastosController extends Controller implements 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        areasList = AreasTrabajosService.allAreasTrabajos();
-        for (AreasTrabajosDTO areasTrabajosDTO : areasList) {
-            area.add(areasTrabajosDTO.getNombreAreaTrabajo());
-        }
+        cargarComboboxAreas();
 
         cmbEstado.setItems(FXCollections.observableArrayList("Valido", "Anulado"));
         cmbEstadoPago.setItems(FXCollections.observableArrayList("Anulado", "Cancelado", "Pendiente"));
@@ -136,6 +133,21 @@ public class MantenimientoControlGastosController extends Controller implements 
         txtTipoServico.clear();
         txtDuracion.clear();
         txtPeridiocidad.clear();
+        
+        llenarFormulario();
+        indicarRequeridos();
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void cargarComboboxAreas() {
+        areasList = AreasTrabajosService.allAreasTrabajos();
+        for (AreasTrabajosDTO areasTrabajosDTO : areasList) {
+            area.add(areasTrabajosDTO.getNombreAreaTrabajo());
+        }
+    }
+
+    private void llenarFormulario() {
         controlesGastosDTO = (ControlesGastosDTO) AppContext.getInstance().get("control");
         if (controlesGastosDTO != null) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -153,9 +165,6 @@ public class MantenimientoControlGastosController extends Controller implements 
             cmbEstado.setValue(detallesGastosDTO.getEstado());
             cmbEstadoPago.setValue(detallesGastosDTO.getEstadoPago());
         }
-        indicarRequeridos();
-        llenarListaNodos();
-        desarrollo();
     }
 
     @FXML
@@ -180,72 +189,84 @@ public class MantenimientoControlGastosController extends Controller implements 
     private void onActionRegistrar(ActionEvent event) {
         String validacion = validarRequeridos();
         if (controlesGastosDTO == null) {
-            if (validacion == null) {
-
-                controlesGastosDTO = new ControlesGastosDTO();
-                controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
-                controlesGastosDTO.setResponsable(txtResponsable.getText());
-                controlesGastosDTO.setNumeroContrato(txtContrato.getText());
-
-                detallesGastosDTO = new DetallesControlesGastosDTO();
-                detallesGastosDTO.setObservacion(txtObservacion.getText());
-                detallesGastosDTO.setTipoServicio(txtTipoServico.getText());
-                detallesGastosDTO.setDuracion(Long.parseLong(txtDuracion.getText()));
-                detallesGastosDTO.setPeriodicidad(Long.parseLong(txtPeridiocidad.getText()));
-                detallesGastosDTO.setEstado(cmbEstado.getValue());
-                detallesGastosDTO.setEstadoPago(cmbEstadoPago.getValue());
-
-                for (AreasTrabajosDTO areasTrabajosDTO : areasList) {
-                    if (cmbAreas.getValue() == areasTrabajosDTO.getNombreAreaTrabajo()) {
-                        detallesGastosDTO.setAreaTrabajoId(areasTrabajosDTO);
-                    }
-                }
-                detallesGastosDTO2 = DetallesControlesGastosService.createDetalleControlGasto(detallesGastosDTO);
-                if (detallesGastosDTO2 != null) {
-                    controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO2);
-
-                    if (ControlGastosService.createControlGasto(controlesGastosDTO) == 201) {
-                        new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
-                        PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
-                    } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
-                    }
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
-                }
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
-            }
+            guardarNuevoGasto(validacion);
 
         } else {
-            if (validacion == null) {
+            guardarEdicionYDetalleGasto(validacion);
+        }
+    }
 
-                controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
-                controlesGastosDTO.setResponsable(txtResponsable.getText());
-                controlesGastosDTO.setNumeroContrato(txtContrato.getText());
-
-                detallesGastosDTO.setObservacion(txtObservacion.getText());
-                detallesGastosDTO.setTipoServicio(txtTipoServico.getText());
-                detallesGastosDTO.setDuracion(Long.parseLong(txtDuracion.getText()));
-                detallesGastosDTO.setPeriodicidad(Long.parseLong(txtPeridiocidad.getText()));
-                detallesGastosDTO.setEstado(cmbEstado.getValue());
-                detallesGastosDTO.setEstadoPago(cmbEstadoPago.getValue());
-
-                if (DetallesControlesGastosService.updateDetalleControlGasto(detallesGastosDTO) == 200) {
-                    controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO);
-                    if (ControlGastosService.updateControlGasto(controlesGastosDTO) == 200) {
-                        new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
-                        PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
-                    } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
-                    }
+    private void guardarEdicionYDetalleGasto(String validacion) throws NumberFormatException {
+        if (validacion == null) {
+            
+            controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
+            controlesGastosDTO.setResponsable(txtResponsable.getText());
+            controlesGastosDTO.setNumeroContrato(txtContrato.getText());
+            
+            detallesGastosDTO.setObservacion(txtObservacion.getText());
+            detallesGastosDTO.setTipoServicio(txtTipoServico.getText());
+            detallesGastosDTO.setDuracion(Long.parseLong(txtDuracion.getText()));
+            detallesGastosDTO.setPeriodicidad(Long.parseLong(txtPeridiocidad.getText()));
+            detallesGastosDTO.setEstado(cmbEstado.getValue());
+            detallesGastosDTO.setEstadoPago(cmbEstadoPago.getValue());
+            
+            if (DetallesControlesGastosService.updateDetalleControlGasto(detallesGastosDTO) == 200) {
+                controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO);
+                if (ControlGastosService.updateControlGasto(controlesGastosDTO) == 200) {
+                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
+                    PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
+        }
+    }
+
+    private void guardarNuevoGasto(String validacion) throws NumberFormatException {
+        if (validacion == null) {
+            
+            controlesGastosDTO = new ControlesGastosDTO();
+            controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
+            controlesGastosDTO.setResponsable(txtResponsable.getText());
+            controlesGastosDTO.setNumeroContrato(txtContrato.getText());
+            
+            guardarNuevoDetalleGastos();
+            if (detallesGastosDTO2 != null) {
+                controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO2);
+                
+                if (ControlGastosService.createControlGasto(controlesGastosDTO) == 201) {
+                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
+                    PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
+                }
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
+        }
+    }
+
+    private void guardarNuevoDetalleGastos() throws NumberFormatException {
+        detallesGastosDTO = new DetallesControlesGastosDTO();
+        detallesGastosDTO.setObservacion(txtObservacion.getText());
+        detallesGastosDTO.setTipoServicio(txtTipoServico.getText());
+        detallesGastosDTO.setDuracion(Long.parseLong(txtDuracion.getText()));
+        detallesGastosDTO.setPeriodicidad(Long.parseLong(txtPeridiocidad.getText()));
+        detallesGastosDTO.setEstado(cmbEstado.getValue());
+        detallesGastosDTO.setEstadoPago(cmbEstadoPago.getValue());
+        
+        for (AreasTrabajosDTO areasTrabajosDTO : areasList) {
+            if (cmbAreas.getValue() == areasTrabajosDTO.getNombreAreaTrabajo()) {
+                detallesGastosDTO.setAreaTrabajoId(areasTrabajosDTO);
             }
         }
+        detallesGastosDTO2 = DetallesControlesGastosService.createDetalleControlGasto(detallesGastosDTO);
     }
 
     public void indicarRequeridos() {
@@ -327,23 +348,28 @@ public class MantenimientoControlGastosController extends Controller implements 
 
             }
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
-                }
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
             }
         }
     }

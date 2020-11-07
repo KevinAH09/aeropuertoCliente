@@ -51,6 +51,7 @@ import org.una.aeropuertocliente.dtos.ControlesGastosDTO;
 import org.una.aeropuertocliente.dtos.DetallesControlesGastosDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.ControlGastosService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
@@ -107,7 +108,24 @@ public class ControlGastosController extends Controller implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Empresa", "Intervalo Fechas", "Contrato", "Estado", "Tipo"));
-        actionControlClick();
+        asignarAccionComboboxFiltro();
+        notificar(1);
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void validarRol() {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+        } else {
+            actionControlClick();
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+        }
+    }
+
+    private void asignarAccionComboboxFiltro() {
         cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
@@ -151,9 +169,6 @@ public class ControlGastosController extends Controller implements Initializable
 
         }
         );
-        notificar(1);
-        llenarListaNodos();
-        desarrollo();
     }
 
     @FXML
@@ -163,77 +178,106 @@ public class ControlGastosController extends Controller implements Initializable
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
+
         if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            gastosFilt = ControlGastosService.idControlGasto(Long.valueOf(txtBusqueda.getText()));
-            if (gastosFilt != null) {
-                llenarGastos();
-                tableGastos.setItems(FXCollections.observableArrayList(gastosFilt));
-            } else {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+            filtrarPorId();
         }
+
         if (cmbFiltro.getValue() == "Empresa" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            gastosList = ControlGastosService.empresaControlesGastos(txtBusqueda.getText());
-            if (gastosList != null) {
-                llenarGastos();
-                tableGastos.setItems(FXCollections.observableArrayList(gastosList));
-            } else {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+            filtrarPorNombreEmpresa();
         }
+
         if (cmbFiltro.getValue() == "Contrato" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            gastosList = ControlGastosService.contratoControlesGastos(txtBusqueda.getText());
-            if (gastosList != null) {
-                llenarGastos();
-                tableGastos.setItems(FXCollections.observableArrayList(gastosList));
-            } else {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+            filtrarPorContrato();
         }
+
         if (cmbFiltro.getValue() == "Tipo" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            gastosList = ControlGastosService.tipoControlesGastos(txtBusqueda.getText());
-            if (gastosList != null) {
-                llenarGastos();
-                tableGastos.setItems(FXCollections.observableArrayList(gastosList));
-            } else {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+            filtrarPorTipoGasto();
         }
+
         if (cmbFiltro.getValue() == "Estado" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();
-            gastosList = ControlGastosService.estadoControlesGastos(txtBusqueda.getText());
-            if (gastosList != null) {
-                llenarGastos();
-                tableGastos.setItems(FXCollections.observableArrayList(gastosList));
-            } else {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+            filtrarPorEstado();
         }
 
         if (cmbFiltro.getValue() == "Intervalo Fechas" && fDesde.getValue() != null && fHasta.getValue() != null) {
-            limpiarTableView();
-            Date ini = Date.from(fDesde.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Date fina = Date.from(fHasta.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(ini);
-            String sDate2 = new SimpleDateFormat("yyyy-MM-dd").format(fina);
+            filtrarPorRangoFechas();
+        }
+    }
 
-            gastosList = ControlGastosService.fechaControlesGastos(sDate1, sDate2);
-            if (gastosList != null) {
-                llenarGastos();
-                tableGastos.setItems(FXCollections.observableArrayList(gastosList));
-            } else {
-                mensaje = "No se encontró coincidencias";
-                notificar(0);
-            }
+    private void filtrarPorRangoFechas() {
+        limpiarTableView();
+        Date ini = Date.from(fDesde.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date fina = Date.from(fHasta.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(ini);
+        String sDate2 = new SimpleDateFormat("yyyy-MM-dd").format(fina);
+
+        gastosList = ControlGastosService.fechaControlesGastos(sDate1, sDate2);
+        if (gastosList != null) {
+            llenarTableView();
+            tableGastos.setItems(FXCollections.observableArrayList(gastosList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorEstado() {
+        limpiarTableView();
+        gastosList = ControlGastosService.estadoControlesGastos(txtBusqueda.getText());
+        if (gastosList != null) {
+            llenarTableView();
+            tableGastos.setItems(FXCollections.observableArrayList(gastosList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorTipoGasto() {
+        limpiarTableView();
+        gastosList = ControlGastosService.tipoControlesGastos(txtBusqueda.getText());
+        if (gastosList != null) {
+            llenarTableView();
+            tableGastos.setItems(FXCollections.observableArrayList(gastosList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorContrato() {
+        limpiarTableView();
+        gastosList = ControlGastosService.contratoControlesGastos(txtBusqueda.getText());
+        if (gastosList != null) {
+            llenarTableView();
+            tableGastos.setItems(FXCollections.observableArrayList(gastosList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorNombreEmpresa() {
+        limpiarTableView();
+        gastosList = ControlGastosService.empresaControlesGastos(txtBusqueda.getText());
+        if (gastosList != null) {
+            llenarTableView();
+            tableGastos.setItems(FXCollections.observableArrayList(gastosList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorId() throws NumberFormatException {
+        limpiarTableView();
+        gastosFilt = ControlGastosService.idControlGasto(Long.valueOf(txtBusqueda.getText()));
+        if (gastosFilt != null) {
+            llenarTableView();
+            tableGastos.setItems(FXCollections.observableArrayList(gastosFilt));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
         }
     }
 
@@ -243,7 +287,7 @@ public class ControlGastosController extends Controller implements Initializable
         PrincipalController.cambiarVistaPrincipal("mantenimientoControlGastos/MantenimientoControlGastos");
     }
 
-    private void llenarGastos() {
+    private void llenarTableView() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         TableColumn<ControlesGastosDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
@@ -262,7 +306,9 @@ public class ControlGastosController extends Controller implements Initializable
         TableColumn<ControlesGastosDTO, String> colArea = new TableColumn("Area");
         colArea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDetalleControlGastoId().getAreaTrabajoId().getNombreAreaTrabajo()));
         tableGastos.getColumns().addAll(colId, colEmpresa, colContrato, colResponsable, colFecha, colTipo, colEstado, colArea);
-        addButtonToTable();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            agregarBtnTableView();
+        }
     }
 
     private void actionControlClick() {
@@ -283,24 +329,32 @@ public class ControlGastosController extends Controller implements Initializable
     private void notificar(int num) {
         limpiarTableView();
         if (num == 1) {
-            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
-            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView);
-            box.getChildren().add(lab);
-            tableGastos.setPlaceholder(box);
+            alertar1();
         } else {
-            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text(mensaje);
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView2);
-            box.getChildren().add(lab);
-            tableGastos.setPlaceholder(box);
+            alertar2();
         }
+    }
+
+    private void alertar2() {
+        ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+        Text lab = new Text(mensaje);
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView2);
+        box.getChildren().add(lab);
+        tableGastos.setPlaceholder(box);
+    }
+
+    private void alertar1() {
+        ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+        Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView);
+        box.getChildren().add(lab);
+        tableGastos.setPlaceholder(box);
     }
 
     private void limpiarTableView() {
@@ -308,7 +362,7 @@ public class ControlGastosController extends Controller implements Initializable
         tableGastos.getColumns().clear();
     }
 
-    private void addButtonToTable() {
+    private void agregarBtnTableView() {
         TableColumn<ControlesGastosDTO, Void> colBtn = new TableColumn("Acción");
 
         Callback<TableColumn<ControlesGastosDTO, Void>, TableCell<ControlesGastosDTO, Void>> cellFactory = new Callback<TableColumn<ControlesGastosDTO, Void>, TableCell<ControlesGastosDTO, Void>>() {
@@ -369,54 +423,64 @@ public class ControlGastosController extends Controller implements Initializable
         String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof JFXDatePicker) {
-                    dato = ((JFXDatePicker) node).getId();
-                    ((JFXDatePicker) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    if (node == lblTable) {
-                        dato = tableGastos.getId();
-                        ((Label) node).setText(dato);
-                    } else {
-                        dato = ((Label) node).getId();
-                        ((Label) node).setText(dato);
-                    }
-                }
-            }
+            validarBooleanoTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXDatePicker) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXDatePicker) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXDatePicker) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXDatePicker) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof JFXDatePicker) {
+                dato = ((JFXDatePicker) node).getId();
+                ((JFXDatePicker) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                if (node == lblTable) {
+                    dato = tableGastos.getId();
+                    ((Label) node).setText(dato);
+                } else {
+                    dato = ((Label) node).getId();
+                    ((Label) node).setText(dato);
                 }
             }
         }

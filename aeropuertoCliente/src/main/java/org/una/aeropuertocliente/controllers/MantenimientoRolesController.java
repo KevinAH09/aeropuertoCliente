@@ -87,6 +87,12 @@ public class MantenimientoRolesController extends Controller implements Initiali
         txtCodigo.clear();
         txtId.setDisable(true);
         indicarRequeridos();
+        llenarFormulario();
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void llenarFormulario() {
         roles = (RolesDTO) AppContext.getInstance().get("rol");
         if (roles != null) {
             txtDescripcion.setText(roles.getDescripcion());
@@ -98,8 +104,6 @@ public class MantenimientoRolesController extends Controller implements Initiali
                 cmbEstado.setValue("Inactivo");
             }
         }
-        llenarListaNodos();
-        desarrollo();
     }
 
     @FXML
@@ -115,43 +119,51 @@ public class MantenimientoRolesController extends Controller implements Initiali
     private void onActionGuardar(ActionEvent event) {
         String validacion = validarRequeridos();
         if (roles == null) {
-            if (validacion == null) {
-                roles = new RolesDTO();
-                if (cmbEstado.getValue().equals("Activo")) {
-                    roles.setEstado(true);
-                } else {
-                    roles.setEstado(false);
-                }
-                roles.setDescripcion(txtDescripcion.getText());
-                roles.setCodigo(txtCodigo.getText());
-                if (RolesService.createRol(roles) == 201) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
-                    PrincipalController.cambiarVistaPrincipal("roles/Roles");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se guardó correctamente");
-                }
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear rol", ((Stage) txtCodigo.getScene().getWindow()), validacion);
-            }
+            guardarNuevoRol(validacion);
 
         } else {
-            if (validacion == null) {
-                if (cmbEstado.getValue().equals("Activo")) {
-                    roles.setEstado(true);
-                } else {
-                    roles.setEstado(false);
-                }
-                roles.setDescripcion(txtDescripcion.getText());
-                roles.setCodigo(txtCodigo.getText());
-                if (RolesService.updateRol(roles) == 200) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
-                    PrincipalController.cambiarVistaPrincipal("roles/Roles");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se guardó correctamente");
-                }
+            guardarEdicionRol(validacion);
+        }
+    }
+
+    private void guardarEdicionRol(String validacion) {
+        if (validacion == null) {
+            if (cmbEstado.getValue().equals("Activo")) {
+                roles.setEstado(true);
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), validacion);
+                roles.setEstado(false);
             }
+            roles.setDescripcion(txtDescripcion.getText());
+            roles.setCodigo(txtCodigo.getText());
+            if (RolesService.updateRol(roles) == 200) {
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
+                PrincipalController.cambiarVistaPrincipal("roles/Roles");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), validacion);
+        }
+    }
+
+    private void guardarNuevoRol(String validacion) {
+        if (validacion == null) {
+            roles = new RolesDTO();
+            if (cmbEstado.getValue().equals("Activo")) {
+                roles.setEstado(true);
+            } else {
+                roles.setEstado(false);
+            }
+            roles.setDescripcion(txtDescripcion.getText());
+            roles.setCodigo(txtCodigo.getText());
+            if (RolesService.createRol(roles) == 201) {
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
+                PrincipalController.cambiarVistaPrincipal("roles/Roles");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear rol", ((Stage) txtCodigo.getScene().getWindow()), validacion);
         }
     }
 
@@ -171,6 +183,7 @@ public class MantenimientoRolesController extends Controller implements Initiali
                     invalidos += "," + ((JFXTextField) node).getPromptText();
                 }
                 validos = false;
+                
             } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
                 if (validos) {
                     invalidos += ((JFXComboBox) node).getPromptText();
@@ -204,42 +217,52 @@ public class MantenimientoRolesController extends Controller implements Initiali
         String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    dato = ((Label) node).getId();
-                    ((Label) node).setText(dato);
-                }
-            }
+            validarBooleanoTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
-                }
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                dato = ((Label) node).getId();
+                ((Label) node).setText(dato);
             }
         }
     }

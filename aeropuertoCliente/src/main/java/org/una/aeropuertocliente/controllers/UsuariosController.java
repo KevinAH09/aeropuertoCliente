@@ -108,6 +108,25 @@ public class UsuariosController extends Controller implements Initializable {
         cmbAreas.setItems(FXCollections.observableArrayList(AreasTrabajosService.allAreasTrabajos()));
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
         notificar(1);
+        asignarAccionComboboxFiltro();
+        validarRol();
+        llenarListaNodos();
+        desarrollo();
+
+    }
+
+    private void validarRol() {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+        } else {
+            actionUsuariosClick();
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+        }
+    }
+
+    private void asignarAccionComboboxFiltro() {
         cmbFiltro.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
@@ -141,17 +160,6 @@ public class UsuariosController extends Controller implements Initializable {
 
         }
         );
-        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
-            btnRegistrar.setVisible(false);
-            btnRegistrar.setDisable(true);
-        } else {
-            actionUsuariosClick();
-            btnRegistrar.setVisible(true);
-            btnRegistrar.setDisable(false);
-        }
-        llenarListaNodos();
-        desarrollo();
-
     }
 
     @FXML
@@ -161,89 +169,113 @@ public class UsuariosController extends Controller implements Initializable {
             notificar(0);
         }
         if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
-            limpiarTableView();      
-            usuariosFilt = UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
-            System.out.println(usuariosFilt);
-            if (usuariosFilt != null) {
-                llenarUsuarios();
-                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
-            } else {
-                notificar(0);
-            }
+            filtrarPorId();
         }
         if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
+            filtrarPorNombre();
+        }
+        if (cmbFiltro.getValue() == "Cedula" && !txtBusqueda.getText().isEmpty()) {
+            filtrarPorCedula();
+        }
+        if (cmbFiltro.getValue() == "Area Trabajo" && cmbAreas.getValue() != null) {
+            filtrarPorArea();
+        }
+        if (cmbFiltro.getValue() == "Rol" && cmbRoles.getValue() != null) {
+            filtrarPorRol();
+        }
+        if (cmbFiltro.getValue() == "Estado" && !cmbEstado.getValue().isEmpty()) {
+            filtrarPorEstado();
+        }
+    }
+
+    private void filtrarPorEstado() {
+        if (cmbEstado.getValue().equals("Activo")) {
             limpiarTableView();
-            usuariosList = UsuariosService.nombreUsuarios(txtBusqueda.getText());
-            System.out.println(usuariosList.size());
+            llenarTableView();
+            usuariosList = UsuariosService.estadoUsuarios(true);
             if (usuariosList != null) {
-                llenarUsuarios();
                 tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
             } else {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue() == "Cedula" && !txtBusqueda.getText().isEmpty()) {
+        if (cmbEstado.getValue().equals("Inactivo")) {
             limpiarTableView();
-            usuariosFilt = UsuariosService.cedulaUsuarios(txtBusqueda.getText());
-            System.out.println(usuariosFilt);
-            if (usuariosFilt != null) {
-                llenarUsuarios();
-                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+            llenarTableView();
+            usuariosList = UsuariosService.estadoUsuarios(false);
+            if (usuariosList != null) {
+                tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
             } else {
                 notificar(0);
             }
         }
-        if (cmbFiltro.getValue() == "Area Trabajo" && cmbAreas.getValue() != null) {
-            limpiarTableView();
-            llenarUsuarios();
-            usuariosList = UsuariosService.allUsuarios();
-            for (int i = 0; i < usuariosList.size(); i++) {
-                if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(cmbAreas.getValue().getNombreAreaTrabajo())) {
-                    usuariosList2 = UsuariosService.areaTrabajoUsuarios(usuariosList.get(i).getAreaTrabajoId().getId());
-                    if (usuariosList2 != null) {
-                        tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
-                    } else {
-                        notificar(0);
-                    }
-                }
-            }
-        } 
-        if (cmbFiltro.getValue() == "Rol" && cmbRoles.getValue() != null) {
-            limpiarTableView();
-            llenarUsuarios();
-            usuariosList = UsuariosService.allUsuarios();
-            for (int i = 0; i < usuariosList.size(); i++) {
-                if (usuariosList.get(i).getRolId().getDescripcion().equals(cmbRoles.getValue().getDescripcion())) {
-                    usuariosList2 = UsuariosService.rolUsuarios(usuariosList.get(i).getRolId().getId());
-                    if (usuariosList2 != null) {
-                        tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
-                    } else {
-                        notificar(0);
-                    }
-                }
-            }
-        } 
-        if (cmbFiltro.getValue() == "Estado" && !cmbEstado.getValue().isEmpty()) {
-            if (cmbEstado.getValue().equals("Activo")) {
-                limpiarTableView();
-                llenarUsuarios();
-                usuariosList = UsuariosService.estadoUsuarios(true);
-                if (usuariosList != null) {
-                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+    }
+
+    private void filtrarPorRol() {
+        limpiarTableView();
+        llenarTableView();
+        usuariosList = UsuariosService.allUsuarios();
+        for (int i = 0; i < usuariosList.size(); i++) {
+            if (usuariosList.get(i).getRolId().getDescripcion().equals(cmbRoles.getValue().getDescripcion())) {
+                usuariosList2 = UsuariosService.rolUsuarios(usuariosList.get(i).getRolId().getId());
+                if (usuariosList2 != null) {
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
                 } else {
                     notificar(0);
                 }
             }
-            if (cmbEstado.getValue().equals("Inactivo")) {
-                limpiarTableView();
-                llenarUsuarios();
-                usuariosList = UsuariosService.estadoUsuarios(false);
-                if (usuariosList != null) {
-                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+        }
+    }
+
+    private void filtrarPorArea() {
+        limpiarTableView();
+        llenarTableView();
+        usuariosList = UsuariosService.allUsuarios();
+        for (int i = 0; i < usuariosList.size(); i++) {
+            if (usuariosList.get(i).getAreaTrabajoId().getNombreAreaTrabajo().equals(cmbAreas.getValue().getNombreAreaTrabajo())) {
+                usuariosList2 = UsuariosService.areaTrabajoUsuarios(usuariosList.get(i).getAreaTrabajoId().getId());
+                if (usuariosList2 != null) {
+                    tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList2));
                 } else {
                     notificar(0);
                 }
             }
+        }
+    }
+
+    private void filtrarPorCedula() {
+        limpiarTableView();
+        usuariosFilt = UsuariosService.cedulaUsuarios(txtBusqueda.getText());
+        System.out.println(usuariosFilt);
+        if (usuariosFilt != null) {
+            llenarTableView();
+            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+        } else {
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorNombre() {
+        limpiarTableView();
+        usuariosList = UsuariosService.nombreUsuarios(txtBusqueda.getText());
+        System.out.println(usuariosList.size());
+        if (usuariosList != null) {
+            llenarTableView();
+            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosList));
+        } else {
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorId() throws NumberFormatException {
+        limpiarTableView();
+        usuariosFilt = UsuariosService.idUsuario(Long.valueOf(txtBusqueda.getText()));
+        System.out.println(usuariosFilt);
+        if (usuariosFilt != null) {
+            llenarTableView();
+            tableUsuarios.setItems(FXCollections.observableArrayList(usuariosFilt));
+        } else {
+            notificar(0);
         }
     }
 
@@ -253,7 +285,7 @@ public class UsuariosController extends Controller implements Initializable {
         PrincipalController.cambiarVistaPrincipal("mantenimientoUsuarios/MantenimientoUsuarios");
     }
 
-    private void llenarUsuarios() {
+    private void llenarTableView() {
         TableColumn<UsuariosDTO, String> colId = new TableColumn("Id");
         colId.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getId().toString()));
         TableColumn<UsuariosDTO, String> colNombre = new TableColumn("Nombre");
@@ -282,7 +314,7 @@ public class UsuariosController extends Controller implements Initializable {
         });
         tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol, colArea);
         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
-            addButtonToTable();
+            agregarBtnTableView();
         }
     }
 
@@ -305,24 +337,32 @@ public class UsuariosController extends Controller implements Initializable {
     private void notificar(int num) {
         limpiarTableView();
         if (num == 1) {
-            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
-            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView);
-            box.getChildren().add(lab);
-            tableUsuarios.setPlaceholder(box);
+            alertar1();
         } else {
-            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No se encontró coincidencias");
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView2);
-            box.getChildren().add(lab);
-            tableUsuarios.setPlaceholder(box);
+            alertar2();
         }
+    }
+
+    private void alertar2() {
+        ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+        Text lab = new Text("No se encontró coincidencias");
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView2);
+        box.getChildren().add(lab);
+        tableUsuarios.setPlaceholder(box);
+    }
+
+    private void alertar1() {
+        ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+        Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView);
+        box.getChildren().add(lab);
+        tableUsuarios.setPlaceholder(box);
     }
 
     private void limpiarTableView() {
@@ -330,7 +370,7 @@ public class UsuariosController extends Controller implements Initializable {
         tableUsuarios.getColumns().clear();
     }
 
-    private void addButtonToTable() {
+    private void agregarBtnTableView() {
         TableColumn<UsuariosDTO, Void> colBtn = new TableColumn("Acción");
 
         Callback<TableColumn<UsuariosDTO, Void>, TableCell<UsuariosDTO, Void>> cellFactory = new Callback<TableColumn<UsuariosDTO, Void>, TableCell<UsuariosDTO, Void>>() {
@@ -391,46 +431,56 @@ public class UsuariosController extends Controller implements Initializable {
         String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    if (node == lblTable) {
-                        dato = tableUsuarios.getId();
-                        ((Label) node).setText(dato);
-                    } else {
-                        dato = ((Label) node).getId();
-                        ((Label) node).setText(dato);
-                    }
-                }
-            }
+            validarBooleanoTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                if (node == lblTable) {
+                    dato = tableUsuarios.getId();
+                    ((Label) node).setText(dato);
+                } else {
+                    dato = ((Label) node).getId();
+                    ((Label) node).setText(dato);
                 }
             }
         }

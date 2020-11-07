@@ -85,6 +85,12 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
         txtId.clear();
         txtNombre.clear();
         txtId.setDisable(true);
+        llenarFormulario();
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void llenarFormulario() {
         areaTrabajoDTO = (AreasTrabajosDTO) AppContext.getInstance().get("area");
         indicarRequeridos();
         if (areaTrabajoDTO != null) {
@@ -97,8 +103,6 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                 cmbEstado.setValue("Inactivo");
             }
         }
-        llenarListaNodos();
-        desarrollo();
     }
 
     @FXML
@@ -114,43 +118,51 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
     private void onActionGuardar(ActionEvent event) {
         String validacion = validarRequeridos();
         if (areaTrabajoDTO == null) {
-            if (validacion == null/*!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtDescripcion.getText().isEmpty()*/) {
-                areaTrabajoDTO = new AreasTrabajosDTO();
-                if (cmbEstado.getValue().equals("Activo")) {
-                    areaTrabajoDTO.setEstado(true);
-                } else {
-                    areaTrabajoDTO.setEstado(false);
-                }
-                areaTrabajoDTO.setDescripcion(txtDescripcion.getText());
-                areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
-                if (AreasTrabajosService.createAreaTrabajo(areaTrabajoDTO) == 201) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                    PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
-                }
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
-            }
+            guardarNuevaArea(validacion);
 
         } else {
-            if (validacion == null/*!txtNombre.getText().isEmpty() && !cmbEstado.getValue().isEmpty() && !txtId.getText().isEmpty() && !txtDescripcion.getText().isEmpty()*/) {
-                if (cmbEstado.getValue().equals("Activo")) {
-                    areaTrabajoDTO.setEstado(true);
-                } else {
-                    areaTrabajoDTO.setEstado(false);
-                }
-                areaTrabajoDTO.setDescripcion(txtDescripcion.getText());
-                areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
-                if (AreasTrabajosService.updateAreaTrabajo(areaTrabajoDTO) == 200) {
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
-                    PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
-                }
+            guardarEdicionArea(validacion);
+        }
+    }
+
+    private void guardarEdicionArea(String validacion) {
+        if (validacion == null) {
+            if (cmbEstado.getValue().equals("Activo")) {
+                areaTrabajoDTO.setEstado(true);
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
+                areaTrabajoDTO.setEstado(false);
             }
+            areaTrabajoDTO.setDescripcion(txtDescripcion.getText());
+            areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
+            if (AreasTrabajosService.updateAreaTrabajo(areaTrabajoDTO) == 200) {
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
+                PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
+        }
+    }
+
+    private void guardarNuevaArea(String validacion) {
+        if (validacion == null) {
+            areaTrabajoDTO = new AreasTrabajosDTO();
+            if (cmbEstado.getValue().equals("Activo")) {
+                areaTrabajoDTO.setEstado(true);
+            } else {
+                areaTrabajoDTO.setEstado(false);
+            }
+            areaTrabajoDTO.setDescripcion(txtDescripcion.getText());
+            areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
+            if (AreasTrabajosService.createAreaTrabajo(areaTrabajoDTO) == 201) {
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
+                PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
         }
     }
 
@@ -170,7 +182,9 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                     invalidos += "," + ((JFXTextField) node).getPromptText();
                 }
                 validos = false;
+
             } else if (node instanceof JFXComboBox && (((JFXComboBox) node).getValue() == null)) {
+
                 if (validos) {
                     invalidos += ((JFXComboBox) node).getPromptText();
                 } else {
@@ -196,49 +210,58 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
         modDesarrolloAxiliar.add(cmbEstado.getPromptText());
         modDesarrolloAxiliar.add(btnCancelar.getText());
         modDesarrolloAxiliar.add(btnRegistrar.getText());
-        modDesarrollo.addAll(Arrays.asList(titulo, txtNombre, txtId, cmbEstado, btnCancelar, btnRegistrar));
+        modDesarrollo.addAll(Arrays.asList(titulo, txtNombre, txtId, txtDescripcion, cmbEstado, btnCancelar, btnRegistrar));
     }
 
     public void desarrollo() {
-        String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    dato = ((Label) node).getId();
-                    ((Label) node).setText(dato);
-                }
-            }
+            validarBooleanoTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
-                }
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato = "";
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato = "";
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                dato = ((Label) node).getId();
+                ((Label) node).setText(dato);
             }
         }
     }

@@ -58,6 +58,7 @@ org\una\aeropuertocliente\dtos\UsuariosDTO.class
 org\una\aeropuertocliente\entitiesServices\AvionesService$5.class
 org\una\aeropuertocliente\entitiesServices\AvionesService$2.class
 org\una\aeropuertocliente\entitiesServices\ControlGastosService.class
+org\una\aeropuertocliente\controllers\CambioDivisasController$1.class
 org\una\aeropuertocliente\entitiesServices\RolesService$3.class
 org\una\aeropuertocliente\controllers\AerolineasController.class
 org\una\aeropuertocliente\controllers\MantenimientoAerolineasController.class
@@ -180,6 +181,7 @@ org\una\aeropuertocliente\controllers\UsuariosController$1.class
 org\una\aeropuertocliente\sharedService\Conection$1.class
 org\una\aeropuertocliente\controllers\MantenimientoZonasController$1.class
 org\una\aeropuertocliente\dtos\AreasTrabajosDTO.class
+org\una\aeropuertocliente\entitiesServices\VuelosService$6.class
 org\una\aeropuertocliente\controllers\AvionesController$1.class
 org\una\aeropuertocliente\entitiesServices\ParametrosService.class
 org\una\aeropuertocliente\controllers\ControlGastosController$2.class
