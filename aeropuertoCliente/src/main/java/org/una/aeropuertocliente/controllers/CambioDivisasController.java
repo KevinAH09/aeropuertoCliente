@@ -135,6 +135,15 @@ public class CambioDivisasController extends Controller implements Initializable
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        validaciontxtIngresarSoloNum();
+        obtenerDatosDivisas();
+        llenarOpcionesComponentesVista();
+        llenarListaNodos();
+        desarrollo();
+
+    }
+
+    private void validaciontxtIngresarSoloNum() {
         txtIngresarMonto.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -145,7 +154,16 @@ public class CambioDivisasController extends Controller implements Initializable
 
             }
         });
+    }
 
+    private void llenarOpcionesComponentesVista() {
+        listaMoneas = Arrays.asList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes");
+        cbMoneda.setItems(FXCollections.observableArrayList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes"));
+        cbMoneda.setValue("Colon");
+        itemSelect = "Colon";
+    }
+
+    private void obtenerDatosDivisas() {
         USDCostaRica = TiposMonedasServices.valorMonedaDolarVSColon().valorMoneda();
 
         USDEuros = TiposMonedasServices.valorMonedaDolarVSEuros().valorMoneda();
@@ -161,15 +179,6 @@ public class CambioDivisasController extends Controller implements Initializable
         USDAustralia = TiposMonedasServices.valorMonedaDolarVSAustraliaDolar().valorMoneda();
 
         USDNuevaZelanda = TiposMonedasServices.valorMonedaDolarVSNuevaZelandaDolar().valorMoneda();
-
-        listaMoneas = Arrays.asList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes");
-
-        cbMoneda.setItems(FXCollections.observableArrayList("Colon", "Eurodolar", "Dolar estadounidense", "Yen", "Dolar canadiense", "Libra esterlina", "Franco", "Dolar australiano", "Dolar neozelandes"));
-        cbMoneda.setValue("Colon");
-        itemSelect = "Colon";
-        llenarListaNodos();
-        desarrollo();
-
     }
 
     @Override
@@ -301,167 +310,203 @@ public class CambioDivisasController extends Controller implements Initializable
 
     private void llenarImages() {
         if (itemSelect.equals("Colon")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            lbl1.setText("Eurodolar");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            lbl2.setText("Dolar estadounidense");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            lbl3.setText("Yen");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            lbl4.setText("Dolar canadiense");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            lbl5.setText("Libra esterlina");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            lbl6.setText("Franco");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            lbl7.setText("Dolar australiano");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-            lbl8.setText("Dolar neozelandes");
+            llenerImagenesOpcionColon();
         }
         if (itemSelect.equals("Eurodolar")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            lbl1.setText("Colon");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            lbl2.setText("Dolar estadounidense");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            lbl3.setText("Yen");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            lbl4.setText("Dolar canadiense");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            lbl5.setText("Libra esterlina");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            lbl6.setText("Franco");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            lbl7.setText("Dolar australiano");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-            lbl8.setText("Dolar neozelandes");
+            llenerImagenesOpcionEurodolar();
         }
         if (itemSelect.equals("Dolar estadounidense")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            lbl1.setText("Colon");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            lbl2.setText("Eurodolar");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            lbl3.setText("Yen");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            lbl4.setText("Dolar canadiense");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            lbl5.setText("Libra esterlina");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            lbl6.setText("Franco");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            lbl7.setText("Dolar australiano");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-            lbl8.setText("Dolar neozelandes");
+            llenerImagenesOpcionDolarEstadosunidense();
         }
         if (itemSelect.equals("Yen")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            lbl1.setText("Colon");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            lbl2.setText("Eurodolar");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            lbl3.setText("Dolar estadounidense");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            lbl4.setText("Dolar canadiense");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            lbl5.setText("Libra esterlina");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            lbl6.setText("Franco");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            lbl7.setText("Dolar australiano");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-            lbl8.setText("Dolar neozelandes");
+            llenerImagenesOpcionYen();
         }
         if (itemSelect.equals("Dolar canadiense")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            lbl1.setText("Colon");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            lbl2.setText("Eurodolar");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            lbl3.setText("Dolar estadounidense");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            lbl4.setText("Yen");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            lbl5.setText("Libra esterlina");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            lbl6.setText("Franco");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            lbl7.setText("Dolar australiano");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-            lbl8.setText("Dolar neozelandes");
+            llenerImagenesOpcionDolarCanadiense();
         }
         if (itemSelect.equals("Libra esterlina")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            lbl1.setText("Colon");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            lbl2.setText("Eurodolar");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            lbl3.setText("Dolar estadounidense");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            lbl4.setText("Yen");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            lbl5.setText("Dolar canadiense");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            lbl6.setText("Franco");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            lbl7.setText("Dolar australiano");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-            lbl8.setText("Dolar neozelandes");
+            llenerImagenesOpcionLibraEsterlina();
         }
         if (itemSelect.equals("Franco")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            lbl1.setText("Colon");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            lbl2.setText("Eurodolar");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            lbl3.setText("Dolar estadounidense");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            lbl4.setText("Yen");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            lbl5.setText("Dolar canadiense");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            lbl6.setText("Libra esterlina");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            lbl7.setText("Dolar australiano");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-            lbl8.setText("Dolar neozelandes");
+            llenerImagenesOpcionFranco();
         }
         if (itemSelect.equals("Dolar australiano")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            lbl1.setText("Colon");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            lbl2.setText("Eurodolar");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            lbl3.setText("Dolar estadounidense");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            lbl4.setText("Yen");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            lbl5.setText("Dolar canadiense");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            lbl6.setText("Libra esterlina");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            lbl7.setText("Franco");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
-            lbl8.setText("Dolar neozelandes");
+            llenerImagenesOpcionDolarAustraliano();
         }
         if (itemSelect.equals("Dolar neozelandes")) {
-            img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
-            lbl1.setText("Colon");
-            img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
-            lbl2.setText("Eurodolar");
-            img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
-            lbl3.setText("Dolar estadounidense");
-            img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
-            lbl4.setText("Yen");
-            img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
-            lbl5.setText("Dolar canadiense");
-            img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
-            lbl6.setText("Libra esterlina");
-            img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
-            lbl7.setText("Franco");
-            img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
-            lbl8.setText("Dolar australiano");
+            llenerImagenesOpcionDolarNeozelandes();
         }
+    }
+
+    private void llenerImagenesOpcionDolarNeozelandes() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        lbl1.setText("Colon");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        lbl2.setText("Eurodolar");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        lbl3.setText("Dolar estadounidense");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        lbl4.setText("Yen");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        lbl5.setText("Dolar canadiense");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        lbl6.setText("Libra esterlina");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        lbl7.setText("Franco");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        lbl8.setText("Dolar australiano");
+    }
+
+    private void llenerImagenesOpcionDolarAustraliano() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        lbl1.setText("Colon");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        lbl2.setText("Eurodolar");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        lbl3.setText("Dolar estadounidense");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        lbl4.setText("Yen");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        lbl5.setText("Dolar canadiense");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        lbl6.setText("Libra esterlina");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        lbl7.setText("Franco");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+        lbl8.setText("Dolar neozelandes");
+    }
+
+    private void llenerImagenesOpcionFranco() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        lbl1.setText("Colon");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        lbl2.setText("Eurodolar");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        lbl3.setText("Dolar estadounidense");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        lbl4.setText("Yen");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        lbl5.setText("Dolar canadiense");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        lbl6.setText("Libra esterlina");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        lbl7.setText("Dolar australiano");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+        lbl8.setText("Dolar neozelandes");
+    }
+
+    private void llenerImagenesOpcionLibraEsterlina() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        lbl1.setText("Colon");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        lbl2.setText("Eurodolar");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        lbl3.setText("Dolar estadounidense");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        lbl4.setText("Yen");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        lbl5.setText("Dolar canadiense");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        lbl6.setText("Franco");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        lbl7.setText("Dolar australiano");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+        lbl8.setText("Dolar neozelandes");
+    }
+
+    private void llenerImagenesOpcionDolarCanadiense() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        lbl1.setText("Colon");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        lbl2.setText("Eurodolar");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        lbl3.setText("Dolar estadounidense");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        lbl4.setText("Yen");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        lbl5.setText("Libra esterlina");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        lbl6.setText("Franco");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        lbl7.setText("Dolar australiano");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+        lbl8.setText("Dolar neozelandes");
+    }
+
+    private void llenerImagenesOpcionYen() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        lbl1.setText("Colon");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        lbl2.setText("Eurodolar");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        lbl3.setText("Dolar estadounidense");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        lbl4.setText("Dolar canadiense");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        lbl5.setText("Libra esterlina");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        lbl6.setText("Franco");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        lbl7.setText("Dolar australiano");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+        lbl8.setText("Dolar neozelandes");
+    }
+
+    private void llenerImagenesOpcionDolarEstadosunidense() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        lbl1.setText("Colon");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        lbl2.setText("Eurodolar");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        lbl3.setText("Yen");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        lbl4.setText("Dolar canadiense");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        lbl5.setText("Libra esterlina");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        lbl6.setText("Franco");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        lbl7.setText("Dolar australiano");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+        lbl8.setText("Dolar neozelandes");
+    }
+
+    private void llenerImagenesOpcionEurodolar() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/costa-rica.png"));
+        lbl1.setText("Colon");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        lbl2.setText("Dolar estadounidense");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        lbl3.setText("Yen");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        lbl4.setText("Dolar canadiense");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        lbl5.setText("Libra esterlina");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        lbl6.setText("Franco");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        lbl7.setText("Dolar australiano");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+        lbl8.setText("Dolar neozelandes");
+    }
+
+    private void llenerImagenesOpcionColon() {
+        img1.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/union-europea.png"));
+        lbl1.setText("Eurodolar");
+        img2.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/estados-unidos-de-america.png"));
+        lbl2.setText("Dolar estadounidense");
+        img3.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/japon.png"));
+        lbl3.setText("Yen");
+        img4.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/canada.png"));
+        lbl4.setText("Dolar canadiense");
+        img5.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/reino-unido.png"));
+        lbl5.setText("Libra esterlina");
+        img6.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/suiza.png"));
+        lbl6.setText("Franco");
+        img7.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/australia.png"));
+        lbl7.setText("Dolar australiano");
+        img8.setImage(new Image("org/una/aeropuertocliente/views/cambioDivisas/nueva-zelandia.png"));
+        lbl8.setText("Dolar neozelandes");
     }
 
     @FXML
@@ -550,348 +595,418 @@ public class CambioDivisasController extends Controller implements Initializable
 
         double monto = Double.valueOf(txtIngresarMonto.getText());
         if (itemSelect.equals("Colon")) {
-            if (selectImg.equals("Eurodolar")) {
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDEuros));
-
-            } else if (selectImg.equals("Dolar estadounidense")) {
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
-            } else if (selectImg.equals("Yen")) {
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDYen));
-            } else if (selectImg.equals("Dolar canadiense")) {
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDCanada));
-            } else if (selectImg.equals("Libra esterlina")) {
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDLibraEstaerlina));
-            } else if (selectImg.equals("Franco")) {
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDFranco));
-            } else if (selectImg.equals("Dolar australiano")) {
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDAustralia));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDNuevaZelanda));
-            }
+            llenerLabelMontoCambioOpcionColon(selectImg, monto);
 
         } else if (itemSelect.equals("Eurodolar")) {
-            if (selectImg.equals("Colon")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDCostaRica));
-            } else if (selectImg.equals("Dolar estadounidense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros)));
-            } else if (selectImg.equals("Yen")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDYen));
-            } else if (selectImg.equals("Dolar canadiense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDCanada));
-            } else if (selectImg.equals("Libra esterlina")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDLibraEstaerlina));
-            } else if (selectImg.equals("Franco")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDFranco));
-            } else if (selectImg.equals("Dolar australiano")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDAustralia));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDNuevaZelanda));
-            }
+            llenerLabelMontoCambioOpcionEurodolar(selectImg, monto);
 
         } else if (itemSelect.equals("Dolar estadounidense")) {
-            if (selectImg.equals("Colon")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
-            } else if (selectImg.equals("Eurodolar")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros)));
-            } else if (selectImg.equals("Yen")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen)));
-            } else if (selectImg.equals("Dolar canadiense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada)));
-            } else if (selectImg.equals("Libra esterlina")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina)));
-            } else if (selectImg.equals("Franco")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco)));
-            } else if (selectImg.equals("Dolar australiano")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia)));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda)));
-            }
+            llenerLabelMontoCambioOpcionDolarEstadounidense(selectImg, monto);
         } else if (itemSelect.equals("Yen")) {
-            if (selectImg.equals("Colon")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDCostaRica));
-            } else if (selectImg.equals("Dolar estadounidense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen)));
-            } else if (selectImg.equals("Eurodolar")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDEuros));
-            } else if (selectImg.equals("Dolar canadiense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDCanada));
-            } else if (selectImg.equals("Libra esterlina")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDLibraEstaerlina));
-            } else if (selectImg.equals("Franco")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDFranco));
-            } else if (selectImg.equals("Dolar australiano")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDAustralia));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDNuevaZelanda));
-            }
+            llenerLabelMontoCambioOpcionYen(selectImg, monto);
 
         } else if (itemSelect.equals("Dolar canadiense")) {
-            if (selectImg.equals("Colon")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDCostaRica));
-            } else if (selectImg.equals("Dolar estadounidense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada)));
-            } else if (selectImg.equals("Eurodolar")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDEuros));
-            } else if (selectImg.equals("Yen")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDYen));
-            } else if (selectImg.equals("Libra esterlina")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDLibraEstaerlina));
-            } else if (selectImg.equals("Franco")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDFranco));
-            } else if (selectImg.equals("Dolar australiano")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDAustralia));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDNuevaZelanda));
-            }
+            llenerLabelMontoCambioOpcionDolarCanadiense(selectImg, monto);
 
         } else if (itemSelect.equals("Libra esterlina")) {
-            if (selectImg.equals("Colon")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDCostaRica));
-            } else if (selectImg.equals("Dolar estadounidense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina)));
-            } else if (selectImg.equals("Eurodolar")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDEuros));
-            } else if (selectImg.equals("Dolar canadiense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDCanada));
-            } else if (selectImg.equals("Yen")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDYen));
-            } else if (selectImg.equals("Franco")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDFranco));
-            } else if (selectImg.equals("Dolar australiano")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDAustralia));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDNuevaZelanda));
-            }
+            llenerLabelMontoCambioOpcionLibraEsterlina(selectImg, monto);
 
         } else if (itemSelect.equals("Franco")) {
-            if (selectImg.equals("Colon")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDCostaRica));
-            } else if (selectImg.equals("Dolar estadounidense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco)));
-            } else if (selectImg.equals("Eurodolar")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDEuros));
-            } else if (selectImg.equals("Yen")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDYen));
-            } else if (selectImg.equals("Libra esterlina")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDLibraEstaerlina));
-            } else if (selectImg.equals("Dolar canadiense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDCanada));
-            } else if (selectImg.equals("Dolar australiano")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDAustralia));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDNuevaZelanda));
-            }
+            llenerLabelMontoCambioOpcionFranco(selectImg, monto);
 
         } else if (itemSelect.equals("Dolar australiano")) {
-            if (selectImg.equals("Colon")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDCostaRica));
-            } else if (selectImg.equals("Dolar estadounidense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia)));
-            } else if (selectImg.equals("Eurodolar")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDEuros));
-            } else if (selectImg.equals("Dolar canadiense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDCanada));
-            } else if (selectImg.equals("Yen")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDYen));
-            } else if (selectImg.equals("Franco")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDFranco));
-            } else if (selectImg.equals("Libra esterlina")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDLibraEstaerlina));
-            } else if (selectImg.equals("Dolar neozelandes")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDNuevaZelanda));
-            }
+            llenerLabelMontoCambioOpcionDolarAustraliano(selectImg, monto);
 
         } else if (itemSelect.equals("Dolar neozelandes")) {
-            if (selectImg.equals("Colon")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDCostaRica));
-            } else if (selectImg.equals("Dolar estadounidense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda)));
-            } else if (selectImg.equals("Eurodolar")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDEuros));
-            } else if (selectImg.equals("Yen")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDYen));
-            } else if (selectImg.equals("Libra esterlina")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDLibraEstaerlina));
-            } else if (selectImg.equals("Dolar canadiense")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDCanada));
-            } else if (selectImg.equals("Dolar australiano")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDAustralia));
-            } else if (selectImg.equals("Franco")) {
-
-                lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDFranco));
-            }
+            llenerLabelMontoCambioOpcionDolarNeozelandes(selectImg, monto);
 
         }
 
+    }
+
+    private void llenerLabelMontoCambioOpcionDolarNeozelandes(String selectImg, double monto) {
+        if (selectImg.equals("Colon")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDCostaRica));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda)));
+        } else if (selectImg.equals("Eurodolar")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDEuros));
+        } else if (selectImg.equals("Yen")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDYen));
+        } else if (selectImg.equals("Libra esterlina")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDLibraEstaerlina));
+        } else if (selectImg.equals("Dolar canadiense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDCanada));
+        } else if (selectImg.equals("Dolar australiano")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDAustralia));
+        } else if (selectImg.equals("Franco")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDFranco));
+        }
+    }
+
+    private void llenerLabelMontoCambioOpcionDolarAustraliano(String selectImg, double monto) {
+        if (selectImg.equals("Colon")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDCostaRica));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia)));
+        } else if (selectImg.equals("Eurodolar")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDEuros));
+        } else if (selectImg.equals("Dolar canadiense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDCanada));
+        } else if (selectImg.equals("Yen")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDYen));
+        } else if (selectImg.equals("Franco")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDFranco));
+        } else if (selectImg.equals("Libra esterlina")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDLibraEstaerlina));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia) * USDNuevaZelanda));
+        }
+    }
+
+    private void llenerLabelMontoCambioOpcionFranco(String selectImg, double monto) {
+        if (selectImg.equals("Colon")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDCostaRica));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco)));
+        } else if (selectImg.equals("Eurodolar")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDEuros));
+        } else if (selectImg.equals("Yen")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDYen));
+        } else if (selectImg.equals("Libra esterlina")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDLibraEstaerlina));
+        } else if (selectImg.equals("Dolar canadiense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDCanada));
+        } else if (selectImg.equals("Dolar australiano")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDAustralia));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco) * USDNuevaZelanda));
+        }
+    }
+
+    private void llenerLabelMontoCambioOpcionLibraEsterlina(String selectImg, double monto) {
+        if (selectImg.equals("Colon")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDCostaRica));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina)));
+        } else if (selectImg.equals("Eurodolar")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDEuros));
+        } else if (selectImg.equals("Dolar canadiense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDCanada));
+        } else if (selectImg.equals("Yen")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDYen));
+        } else if (selectImg.equals("Franco")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDFranco));
+        } else if (selectImg.equals("Dolar australiano")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDAustralia));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina) * USDNuevaZelanda));
+        }
+    }
+
+    private void llenerLabelMontoCambioOpcionDolarCanadiense(String selectImg, double monto) {
+        if (selectImg.equals("Colon")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDCostaRica));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada)));
+        } else if (selectImg.equals("Eurodolar")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDEuros));
+        } else if (selectImg.equals("Yen")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDYen));
+        } else if (selectImg.equals("Libra esterlina")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDLibraEstaerlina));
+        } else if (selectImg.equals("Franco")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDFranco));
+        } else if (selectImg.equals("Dolar australiano")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDAustralia));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada) * USDNuevaZelanda));
+        }
+    }
+
+    private void llenerLabelMontoCambioOpcionYen(String selectImg, double monto) {
+        if (selectImg.equals("Colon")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDCostaRica));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen)));
+        } else if (selectImg.equals("Eurodolar")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDEuros));
+        } else if (selectImg.equals("Dolar canadiense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDCanada));
+        } else if (selectImg.equals("Libra esterlina")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDLibraEstaerlina));
+        } else if (selectImg.equals("Franco")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDFranco));
+        } else if (selectImg.equals("Dolar australiano")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDAustralia));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen) * USDNuevaZelanda));
+        }
+    }
+
+    private void llenerLabelMontoCambioOpcionDolarEstadounidense(String selectImg, double monto) {
+        if (selectImg.equals("Colon")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
+        } else if (selectImg.equals("Eurodolar")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros)));
+        } else if (selectImg.equals("Yen")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDYen)));
+        } else if (selectImg.equals("Dolar canadiense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCanada)));
+        } else if (selectImg.equals("Libra esterlina")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDLibraEstaerlina)));
+        } else if (selectImg.equals("Franco")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDFranco)));
+        } else if (selectImg.equals("Dolar australiano")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDAustralia)));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda)));
+        }
+    }
+
+    private void llenerLabelMontoCambioOpcionEurodolar(String selectImg, double monto) {
+        if (selectImg.equals("Colon")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDCostaRica));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros)));
+        } else if (selectImg.equals("Yen")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDYen));
+        } else if (selectImg.equals("Dolar canadiense")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDCanada));
+        } else if (selectImg.equals("Libra esterlina")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDLibraEstaerlina));
+        } else if (selectImg.equals("Franco")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDFranco));
+        } else if (selectImg.equals("Dolar australiano")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDAustralia));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDEuros) * USDNuevaZelanda));
+        }
+    }
+
+    private void llenerLabelMontoCambioOpcionColon(String selectImg, double monto) {
+        if (selectImg.equals("Eurodolar")) {
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDEuros));
+        } else if (selectImg.equals("Dolar estadounidense")) {
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica)));
+        } else if (selectImg.equals("Yen")) {
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDYen));
+        } else if (selectImg.equals("Dolar canadiense")) {
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDCanada));
+        } else if (selectImg.equals("Libra esterlina")) {
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDLibraEstaerlina));
+        } else if (selectImg.equals("Franco")) {
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDFranco));
+        } else if (selectImg.equals("Dolar australiano")) {
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDAustralia));
+        } else if (selectImg.equals("Dolar neozelandes")) {
+            lblMontoCambio.setText(String.format("%.2f", (monto / USDCostaRica) * USDNuevaZelanda));
+        }
     }
 
     private void llenarMontosReportes() {
 
         double monto = Double.valueOf(txtIngresarMonto.getText());
         if (itemSelect.equals("Colon")) {
-            cambios = new ArrayList<>();
-            cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDCostaRica) * USDEuros));
-            cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDCostaRica)));
-            cambios.add("Yen:" + String.format("%.2f", (monto / USDCostaRica) * USDYen));
-            cambios.add("Dolarcanadiense:" + String.format("%.2f", (monto / USDCostaRica) * USDCanada));
-            cambios.add("Libraesterlina:" + String.format("%.2f", (monto / USDCostaRica) * USDLibraEstaerlina));
-            cambios.add("Franco:" + String.format("%.2f", (monto / USDCostaRica) * USDFranco));
-            cambios.add("Dolaraustraliano:" + String.format("%.2f", (monto / USDCostaRica) * USDAustralia));
-            cambios.add("Dolareozelandés:" + String.format("%.2f", (monto / USDCostaRica) * USDNuevaZelanda));
+            llenarListaReportesOpcionColon(monto);
 
         } else if (itemSelect.equals("Eurodolar")) {
-            cambios = new ArrayList<>();
-            cambios.add("Colon:" + String.format("%.2f", (monto / USDEuros) * USDCostaRica));
-            cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDEuros)));
-            cambios.add("Yen:" + String.format("%.2f", (monto / USDEuros) * USDYen));
-            cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDEuros) * USDCanada));
-            cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDEuros) * USDLibraEstaerlina));
-            cambios.add("Franco:" + String.format("%.2f", (monto / USDEuros) * USDFranco));
-            cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDEuros) * USDAustralia));
-            cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDEuros) * USDNuevaZelanda));
+            llenarListaReportesOpcionEurodolar(monto);
 
         } else if (itemSelect.equals("Dolar estadounidense")) {
-            cambios = new ArrayList<>();
-            cambios.add("Colon:" + String.format("%.2f", (monto / USDCostaRica)));
-            cambios.add("EuroDolar:" + String.format("%.2f", (monto / USDEuros)));
-            cambios.add("Yen:" + String.format("%.2f", (monto / USDYen)));
-            cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDCanada)));
-            cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDLibraEstaerlina)));
-            cambios.add("Franco:" + String.format("%.2f", (monto / USDFranco)));
-            cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDAustralia)));
-            cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDNuevaZelanda)));
+            llenarListaReportesOpcionDolarEstadounidense(monto);
 
         } else if (itemSelect.equals("Yen")) {
-            cambios = new ArrayList<>();
-            cambios.add("Colon:" + String.format("%.2f", (monto / USDYen) * USDCostaRica));
-            cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDYen)));
-            cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDYen) * USDEuros));
-            cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDYen) * USDCanada));
-            cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDYen) * USDLibraEstaerlina));
-            cambios.add("Franco:" + String.format("%.2f", (monto / USDYen) * USDFranco));
-            cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDYen) * USDAustralia));
-            cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDYen) * USDNuevaZelanda));
+            llenarListaReportesOpcionYen(monto);
 
         } else if (itemSelect.equals("Dolar canadiense")) {
-
-            cambios = new ArrayList<>();
-            cambios.add("Colon:" + String.format("%.2f", (monto / USDCanada) * USDCostaRica));
-            cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDCanada)));
-            cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDCanada) * USDEuros));
-            cambios.add("Yen:" + String.format("%.2f", (monto / USDCanada) * USDYen));
-            cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDCanada) * USDLibraEstaerlina));
-            cambios.add("Franco:" + String.format("%.2f", (monto / USDCanada) * USDFranco));
-            cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDCanada) * USDAustralia));
-            cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDCanada) * USDNuevaZelanda));
+            llenarListaReportesOpcionDolarCanadiense(monto);
 
         } else if (itemSelect.equals("Libra esterlina")) {
-            cambios = new ArrayList<>();
-            cambios.add("Colon:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDCostaRica));
-            cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDLibraEstaerlina)));
-            cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDEuros));
-            cambios.add("Yen:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDYen));
-            cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDCanada));
-            cambios.add("Franco:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDFranco));
-            cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDAustralia));
-            cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDNuevaZelanda));
+            llenarListaReportesOpcionLibraEsterlina(monto);
 
         } else if (itemSelect.equals("Franco")) {
-            cambios = new ArrayList<>();
-            cambios.add("Colon:" + String.format("%.2f", (monto / USDFranco) * USDCostaRica));
-            cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDFranco)));
-            cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDFranco) * USDEuros));
-            cambios.add("Yen:" + String.format("%.2f", (monto / USDFranco) * USDYen));
-            cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDFranco) * USDCanada));
-            cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDFranco) * USDLibraEstaerlina));
-            cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDFranco) * USDAustralia));
-            cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDFranco) * USDNuevaZelanda));
+            llenarListaReportesOpcionFranco(monto);
 
         } else if (itemSelect.equals("Dolar australiano")) {
-            cambios = new ArrayList<>();
-            cambios.add("Colon:" + String.format("%.2f", (monto / USDAustralia) * USDCostaRica));
-            cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDAustralia)));
-            cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDAustralia) * USDEuros));
-            cambios.add("Yen:" + String.format("%.2f", (monto / USDAustralia) * USDYen));
-            cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDAustralia) * USDCanada));
-            cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDAustralia) * USDLibraEstaerlina));
-            cambios.add("Franco:" + String.format("%.2f", (monto / USDAustralia) * USDFranco));
-            cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDAustralia) * USDNuevaZelanda));
+            llenarListaReportesOpcionDolarAustraliano(monto);
 
         } else if (itemSelect.equals("Dolar neozelandes")) {
-            cambios = new ArrayList<>();
-            cambios.add("Colon:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDCostaRica));
-            cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDNuevaZelanda)));
-            cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDEuros));
-            cambios.add("Yen:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDYen));
-            cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDCanada));
-            cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDLibraEstaerlina));
-            cambios.add("Franco:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDFranco));
-            cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDAustralia));
+            llenarListaReportesOpcionDolarNeozelandes(monto);
         }
 
+    }
+
+    private void llenarListaReportesOpcionDolarNeozelandes(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Colon:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDCostaRica));
+        cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDNuevaZelanda)));
+        cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDEuros));
+        cambios.add("Yen:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDYen));
+        cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDCanada));
+        cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDLibraEstaerlina));
+        cambios.add("Franco:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDFranco));
+        cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDNuevaZelanda) * USDAustralia));
+    }
+
+    private void llenarListaReportesOpcionDolarAustraliano(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Colon:" + String.format("%.2f", (monto / USDAustralia) * USDCostaRica));
+        cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDAustralia)));
+        cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDAustralia) * USDEuros));
+        cambios.add("Yen:" + String.format("%.2f", (monto / USDAustralia) * USDYen));
+        cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDAustralia) * USDCanada));
+        cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDAustralia) * USDLibraEstaerlina));
+        cambios.add("Franco:" + String.format("%.2f", (monto / USDAustralia) * USDFranco));
+        cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDAustralia) * USDNuevaZelanda));
+    }
+
+    private void llenarListaReportesOpcionFranco(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Colon:" + String.format("%.2f", (monto / USDFranco) * USDCostaRica));
+        cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDFranco)));
+        cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDFranco) * USDEuros));
+        cambios.add("Yen:" + String.format("%.2f", (monto / USDFranco) * USDYen));
+        cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDFranco) * USDCanada));
+        cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDFranco) * USDLibraEstaerlina));
+        cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDFranco) * USDAustralia));
+        cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDFranco) * USDNuevaZelanda));
+    }
+
+    private void llenarListaReportesOpcionLibraEsterlina(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Colon:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDCostaRica));
+        cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDLibraEstaerlina)));
+        cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDEuros));
+        cambios.add("Yen:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDYen));
+        cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDCanada));
+        cambios.add("Franco:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDFranco));
+        cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDAustralia));
+        cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDLibraEstaerlina) * USDNuevaZelanda));
+    }
+
+    private void llenarListaReportesOpcionDolarCanadiense(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Colon:" + String.format("%.2f", (monto / USDCanada) * USDCostaRica));
+        cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDCanada)));
+        cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDCanada) * USDEuros));
+        cambios.add("Yen:" + String.format("%.2f", (monto / USDCanada) * USDYen));
+        cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDCanada) * USDLibraEstaerlina));
+        cambios.add("Franco:" + String.format("%.2f", (monto / USDCanada) * USDFranco));
+        cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDCanada) * USDAustralia));
+        cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDCanada) * USDNuevaZelanda));
+    }
+
+    private void llenarListaReportesOpcionYen(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Colon:" + String.format("%.2f", (monto / USDYen) * USDCostaRica));
+        cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDYen)));
+        cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDYen) * USDEuros));
+        cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDYen) * USDCanada));
+        cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDYen) * USDLibraEstaerlina));
+        cambios.add("Franco:" + String.format("%.2f", (monto / USDYen) * USDFranco));
+        cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDYen) * USDAustralia));
+        cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDYen) * USDNuevaZelanda));
+    }
+
+    private void llenarListaReportesOpcionDolarEstadounidense(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Colon:" + String.format("%.2f", (monto / USDCostaRica)));
+        cambios.add("EuroDolar:" + String.format("%.2f", (monto / USDEuros)));
+        cambios.add("Yen:" + String.format("%.2f", (monto / USDYen)));
+        cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDCanada)));
+        cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDLibraEstaerlina)));
+        cambios.add("Franco:" + String.format("%.2f", (monto / USDFranco)));
+        cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDAustralia)));
+        cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDNuevaZelanda)));
+    }
+
+    private void llenarListaReportesOpcionEurodolar(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Colon:" + String.format("%.2f", (monto / USDEuros) * USDCostaRica));
+        cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDEuros)));
+        cambios.add("Yen:" + String.format("%.2f", (monto / USDEuros) * USDYen));
+        cambios.add("Dolar canadiense:" + String.format("%.2f", (monto / USDEuros) * USDCanada));
+        cambios.add("Libra esterlina:" + String.format("%.2f", (monto / USDEuros) * USDLibraEstaerlina));
+        cambios.add("Franco:" + String.format("%.2f", (monto / USDEuros) * USDFranco));
+        cambios.add("Dolar australiano:" + String.format("%.2f", (monto / USDEuros) * USDAustralia));
+        cambios.add("Dolar neozelandés:" + String.format("%.2f", (monto / USDEuros) * USDNuevaZelanda));
+    }
+
+    private void llenarListaReportesOpcionColon(double monto) {
+        cambios = new ArrayList<>();
+        cambios.add("Eurodolar:" + String.format("%.2f", (monto / USDCostaRica) * USDEuros));
+        cambios.add("Dolar estadounidense:" + String.format("%.2f", (monto / USDCostaRica)));
+        cambios.add("Yen:" + String.format("%.2f", (monto / USDCostaRica) * USDYen));
+        cambios.add("Dolarcanadiense:" + String.format("%.2f", (monto / USDCostaRica) * USDCanada));
+        cambios.add("Libraesterlina:" + String.format("%.2f", (monto / USDCostaRica) * USDLibraEstaerlina));
+        cambios.add("Franco:" + String.format("%.2f", (monto / USDCostaRica) * USDFranco));
+        cambios.add("Dolaraustraliano:" + String.format("%.2f", (monto / USDCostaRica) * USDAustralia));
+        cambios.add("Dolareozelandés:" + String.format("%.2f", (monto / USDCostaRica) * USDNuevaZelanda));
     }
 
     public void llenarListaNodos() {
