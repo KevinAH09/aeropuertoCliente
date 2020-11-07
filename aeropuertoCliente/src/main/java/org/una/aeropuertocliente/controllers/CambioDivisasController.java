@@ -197,29 +197,20 @@ public class CambioDivisasController extends Controller implements Initializable
             DOMImplementation implementation = builder.getDOMImplementation();
             Document document = implementation.createDocument(null, "AeropuertoUNA", null);
             document.setXmlVersion("1.0");
-
-            //Main Node
             Element raiz = document.getDocumentElement();
             Element itemMoneda = document.createElement("Moneda:" + cbMoneda.getValue());
             Element keyMonto = document.createElement("Monto:" + txtIngresarMonto.getText());
             itemMoneda.appendChild(keyMonto);
             raiz.appendChild(itemMoneda);
             Element intemDetalle = document.createElement("Cambios");
-            //Por cada key creamos un item que contendrá la key y el value
             llenarMontosReportes();
             for (int i = 0; i < cambios.size(); i++) {
-                //Item Node
-
-                //Key Node
                 Element keyNode = document.createElement("Cambio");
                 org.w3c.dom.Text nodeKeyValue = document.createTextNode(cambios.get(i));
                 keyNode.appendChild(nodeKeyValue);
-                //append keyNode and valueNode to itemNode
                 intemDetalle.appendChild(keyNode);
-                //append itemNode to raiz
-                raiz.appendChild(intemDetalle); //pegamos el elemento a la raiz "Documento"
+                raiz.appendChild(intemDetalle);
             }
-            //Generate XML
             Source source = new DOMSource(document);
             DirectoryChooser filChoser = new DirectoryChooser();
             File file = filChoser.showDialog(lblselect.getScene().getWindow());
@@ -243,10 +234,10 @@ public class CambioDivisasController extends Controller implements Initializable
         try {
             Date fec = new Date();
 
-            PDDocument pdf = new PDDocument();//crea la instancia
-            PDPage page = new PDPage();//crea la pagina
-            pdf.addPage(page);//agregamos la pagina al pdf
-            PDPageContentStream content = new PDPageContentStream(pdf, page);//aqui escribimos
+            PDDocument pdf = new PDDocument();
+            PDPage page = new PDPage();
+            pdf.addPage(page);
+            PDPageContentStream content = new PDPageContentStream(pdf, page);
 
             content.beginText();
             content.setFont(PDType1Font.COURIER, 11);
