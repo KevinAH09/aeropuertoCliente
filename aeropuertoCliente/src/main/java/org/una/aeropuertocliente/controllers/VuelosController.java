@@ -7,6 +7,7 @@ package org.una.aeropuertocliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -105,6 +106,8 @@ public class VuelosController extends Controller implements Initializable {
     public VuelosDTO data = new VuelosDTO();
     @FXML
     private JFXComboBox<String> cmbEstado;
+    @FXML
+    private JFXDatePicker datePikerFechainicio;
 
     /**
      * Initializes the controller class.
@@ -144,32 +147,37 @@ public class VuelosController extends Controller implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
                 if (t1 == "Id") {
+                    datePikerFechainicio.setVisible(false);
                     cmbEstado.setVisible(false);
                     txtFilter.setVisible(true);
                     txtFilter.setPromptText("Ingrese número correspondiente");
                 }
                 if (t1 == "Destino") {
+                    datePikerFechainicio.setVisible(false);
                     cmbEstado.setVisible(false);
                     txtFilter.setVisible(true);
                     txtFilter.setPromptText("Ingrese nombre del destino");
                 }
                 if (t1 == "Nombre Aerolinea") {
+                    datePikerFechainicio.setVisible(false);
                     cmbEstado.setVisible(false);
                     txtFilter.setVisible(true);
                     txtFilter.setPromptText("Ingrese nombre del Origen");
                 }
                 if (t1 == "Estado") {
                     cmbEstado.setVisible(true);
+                    datePikerFechainicio.setVisible(false);
                     txtFilter.setVisible(false);
                 }
 
                 if (t1 == "Fecha inicio") {
                     cmbEstado.setVisible(false);
-                    txtFilter.setVisible(true);
-                    txtFilter.setPromptText("Ingrese fecha(yyyy-mm-dd)");
+                    txtFilter.setVisible(false);
+                    datePikerFechainicio.setVisible(true);
                 }
 
                 if (t1 == "Matricula del Avión") {
+                    datePikerFechainicio.setVisible(false);
                     cmbEstado.setVisible(false);
                     txtFilter.setVisible(true);
                     txtFilter.setPromptText("Ingrese matrícula del avión");
@@ -303,16 +311,10 @@ public class VuelosController extends Controller implements Initializable {
 
             if (combFilter.getValue().equals("Fecha inicio") && !txtFilter.getText().isEmpty()) {
                 tableView.getItems().clear();
-
-                
-                String date1 = txtFilter.getText();
-                LocalDate localDate = LocalDate.parse(date1);
+                LocalDate localDate = datePikerFechainicio.getValue();
                 Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                System.out.println("date "+date);
                 String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
                 vuelosList = VuelosService.FechaInicio(sDate1);
-                System.out.println("org.una.aeropuertocliente.controllers.VuelosController.filtrar()"+vuelosList);
-                
                 if (vuelosList != null) {
                     tableView.setItems(FXCollections.observableArrayList(vuelosList));
                 } else {
