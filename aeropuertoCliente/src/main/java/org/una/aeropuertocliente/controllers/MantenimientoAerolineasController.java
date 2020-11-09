@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -44,8 +45,11 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.entitiesServices.AerolineasService;
 import org.una.aeropuertocliente.entitiesServices.AvionesService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
@@ -267,6 +271,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 aerolinea.setNombreResponsable(txtResponsable.getText());
                 aerolinea.setNombreAerolinea(txtNombre.getText());
                 if (AerolineasService.createAerolinea(aerolinea) == 201) {
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nueva aerolinea", new Date()));
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
                     PrincipalController.cambiarVistaPrincipal("aerolineas/Aerolineas");
                 } else {
@@ -287,6 +292,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 aerolinea.setNombreResponsable(txtResponsable.getText());
                 aerolinea.setNombreAerolinea(txtNombre.getText());
                 if (AerolineasService.updateAerolinea(aerolinea) == 200) {
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito aerolinea "+aerolinea.getId(), new Date()));
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "Se editó correctamente");
                     btnEditar.setDisable(false);
                     btnGuardar.setDisable(true);

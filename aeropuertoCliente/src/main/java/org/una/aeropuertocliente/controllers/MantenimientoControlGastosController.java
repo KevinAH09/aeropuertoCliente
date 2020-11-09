@@ -12,6 +12,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -30,9 +31,12 @@ import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.dtos.ControlesGastosDTO;
 import org.una.aeropuertocliente.dtos.DetallesControlesGastosDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
 import org.una.aeropuertocliente.entitiesServices.ControlGastosService;
 import org.una.aeropuertocliente.entitiesServices.DetallesControlesGastosService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
@@ -133,7 +137,7 @@ public class MantenimientoControlGastosController extends Controller implements 
         txtTipoServico.clear();
         txtDuracion.clear();
         txtPeridiocidad.clear();
-        
+
         llenarFormulario();
         indicarRequeridos();
         llenarListaNodos();
@@ -198,21 +202,22 @@ public class MantenimientoControlGastosController extends Controller implements 
 
     private void guardarEdicionYDetalleGasto(String validacion) throws NumberFormatException {
         if (validacion == null) {
-            
+
             controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
             controlesGastosDTO.setResponsable(txtResponsable.getText());
             controlesGastosDTO.setNumeroContrato(txtContrato.getText());
-            
+
             detallesGastosDTO.setObservacion(txtObservacion.getText());
             detallesGastosDTO.setTipoServicio(txtTipoServico.getText());
             detallesGastosDTO.setDuracion(Long.parseLong(txtDuracion.getText()));
             detallesGastosDTO.setPeriodicidad(Long.parseLong(txtPeridiocidad.getText()));
             detallesGastosDTO.setEstado(cmbEstado.getValue());
             detallesGastosDTO.setEstadoPago(cmbEstadoPago.getValue());
-            
+
             if (DetallesControlesGastosService.updateDetalleControlGasto(detallesGastosDTO) == 200) {
                 controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO);
                 if (ControlGastosService.updateControlGasto(controlesGastosDTO) == 200) {
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito control de gastos de mantenimineto " + controlesGastosDTO.getId(), new Date()));
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
                     PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
                 } else {
@@ -228,17 +233,18 @@ public class MantenimientoControlGastosController extends Controller implements 
 
     private void guardarNuevoGasto(String validacion) throws NumberFormatException {
         if (validacion == null) {
-            
+
             controlesGastosDTO = new ControlesGastosDTO();
             controlesGastosDTO.setEmpresaContratante(txtEmpresa.getText());
             controlesGastosDTO.setResponsable(txtResponsable.getText());
             controlesGastosDTO.setNumeroContrato(txtContrato.getText());
-            
+
             guardarNuevoDetalleGastos();
             if (detallesGastosDTO2 != null) {
                 controlesGastosDTO.setDetalleControlGastoId(detallesGastosDTO2);
-                
+
                 if (ControlGastosService.createControlGasto(controlesGastosDTO) == 201) {
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo control de gastos de mantenimineto", new Date()));
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
                     PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
                 } else {
@@ -260,7 +266,7 @@ public class MantenimientoControlGastosController extends Controller implements 
         detallesGastosDTO.setPeriodicidad(Long.parseLong(txtPeridiocidad.getText()));
         detallesGastosDTO.setEstado(cmbEstado.getValue());
         detallesGastosDTO.setEstadoPago(cmbEstadoPago.getValue());
-        
+
         for (AreasTrabajosDTO areasTrabajosDTO : areasList) {
             if (cmbAreas.getValue() == areasTrabajosDTO.getNombreAreaTrabajo()) {
                 detallesGastosDTO.setAreaTrabajoId(areasTrabajosDTO);

@@ -41,10 +41,13 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.dtos.BitacorasVuelosDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.VuelosDTO;
 import org.una.aeropuertocliente.entitiesServices.AvionesService;
 import org.una.aeropuertocliente.entitiesServices.BitacorasVuelosService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.VuelosService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
@@ -341,6 +344,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
                     AvionesService.updateAvion(aviones);
                     vuelos.setAvionId(aviones);
                     if (VuelosService.createVuelo(vuelos) == 201) {
+                        RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo vuelo", new Date()));
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Se guardó correctamente");
                         PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
 
@@ -434,6 +438,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
 
                 if (BitacorasVuelosService.updateBitacoraVuelo(bitacora) == 200) {
                     if (VuelosService.updateVuelo(vuelos) == 200) {
+                        RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito vuelo " + vuelos.getId(), new Date()));
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Se editó correctamente");
                         PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
                     } else {

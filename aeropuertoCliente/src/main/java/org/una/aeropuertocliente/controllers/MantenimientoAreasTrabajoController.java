@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -27,9 +28,12 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -135,6 +139,7 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
             areaTrabajoDTO.setDescripcion(txtDescripcion.getText());
             areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
             if (AreasTrabajosService.updateAreaTrabajo(areaTrabajoDTO) == 200) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito area de trabajo " + areaTrabajoDTO.getId(), new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
                 PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
             } else {
@@ -156,6 +161,7 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
             areaTrabajoDTO.setDescripcion(txtDescripcion.getText());
             areaTrabajoDTO.setNombreAreaTrabajo(txtNombre.getText());
             if (AreasTrabajosService.createAreaTrabajo(areaTrabajoDTO) == 201) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creó una area de trabajo", new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
                 PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
             } else {

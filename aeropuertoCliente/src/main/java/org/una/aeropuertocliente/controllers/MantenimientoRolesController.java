@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -27,9 +28,12 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.RolesDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.RolesService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -136,6 +140,7 @@ public class MantenimientoRolesController extends Controller implements Initiali
             roles.setDescripcion(txtDescripcion.getText());
             roles.setCodigo(txtCodigo.getText());
             if (RolesService.updateRol(roles) == 200) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito rol "+roles.getId(), new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
                 PrincipalController.cambiarVistaPrincipal("roles/Roles");
             } else {
@@ -157,6 +162,7 @@ public class MantenimientoRolesController extends Controller implements Initiali
             roles.setDescripcion(txtDescripcion.getText());
             roles.setCodigo(txtCodigo.getText());
             if (RolesService.createRol(roles) == 201) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo rol", new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
                 PrincipalController.cambiarVistaPrincipal("roles/Roles");
             } else {

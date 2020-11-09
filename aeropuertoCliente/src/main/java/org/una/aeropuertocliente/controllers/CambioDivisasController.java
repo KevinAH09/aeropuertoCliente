@@ -62,6 +62,9 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.una.aeropuertocliente.apiForex.TiposMonedasServices;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 import org.w3c.dom.DOMException;
@@ -211,7 +214,10 @@ public class CambioDivisasController extends Controller implements Initializable
         try {
             Document document = creaXML();
             guardaXML(document);
-
+            if (Token.getInstance() != null) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Genero reporte XML de divisas", new Date()));
+            }
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Archivo XML generado correctamente");
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
@@ -328,7 +334,10 @@ public class CambioDivisasController extends Controller implements Initializable
         try {
             PDDocument pdf = generarContenidoPDF();
             guardarPDF(pdf);
-
+            if (Token.getInstance() != null) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Genero reporte PDF de divisas", new Date()));
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Archivo PDF generado correctamente");
+            }
         } catch (IOException ex) {
             Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
         }

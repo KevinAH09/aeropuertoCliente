@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -46,7 +47,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
@@ -208,6 +211,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
             zonas.setCodigo(txtCodigo.getText());
             zonas.setNombreZona(txtNombre.getText());
             if (ZonasService.updateZona(zonas) == 200) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito zona " + zonas.getId(), new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Zona", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
@@ -229,6 +233,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
             zonas.setCodigo(txtCodigo.getText());
             zonas.setNombreZona(txtNombre.getText());
             if (ZonasService.createZona(zonas) == 201) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nueva zona", new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Zona", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
@@ -245,19 +250,19 @@ public class MantenimientoZonasController extends Controller implements Initiali
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
             notificar(0);
         }
-        
+
         if (cmbFiltro.getValue() == "Estado" && !cmbEstado2.getValue().isEmpty()) {
             filtrarPorEstado();
         }
-        
+
         if (cmbFiltro.getValue() == "Nombre" && !txtBusqueda.getText().isEmpty()) {
             filtrarPorNombre();
         }
-        
+
         if (cmbFiltro.getValue() == "Código" && !txtBusqueda.getText().isEmpty()) {
             filtrarPorCodigo();
         }
-        
+
         if (cmbFiltro.getValue() == "Id" && !txtBusqueda.getText().isEmpty()) {
             filtrarPorId();
         }

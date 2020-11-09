@@ -38,11 +38,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.RolesDTO;
 import org.una.aeropuertocliente.dtos.UsuariosDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.RolesService;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -241,6 +244,7 @@ public class MantenimientoUsuariosController implements Initializable {
             usuario.setJefeId(false);
         }
         if (UsuariosService.updateUsuario(usuario) == 200) {
+            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito usuario " + usuario.getId(), new Date()));
             new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
             PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
         } else {
@@ -273,6 +277,7 @@ public class MantenimientoUsuariosController implements Initializable {
         usuario.setContrasenaEncriptada(txtPassMostrado.getText());
         usuario = UsuariosService.createUsuario(usuario);
         if (usuario != null) {
+            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo usuario", new Date()));
             new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");

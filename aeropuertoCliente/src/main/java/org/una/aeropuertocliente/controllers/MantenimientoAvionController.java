@@ -12,6 +12,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -41,11 +42,14 @@ import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
 import org.una.aeropuertocliente.dtos.AvionesDTO;
 import org.una.aeropuertocliente.dtos.AvionesZonasDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.VuelosDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AvionesService;
 import org.una.aeropuertocliente.entitiesServices.AvionesZonasService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.VuelosService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
@@ -410,15 +414,16 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 avion.setTipoAvion(txtTipoAvion.getText());
                 avion.setAerolineaId((AerolineasDTO) AppContext.getInstance().get("aerolinea"));
                 if (AvionesService.createAvion(avion) == 201) {
+
                     AvionesDTO avionesDTO = new AvionesDTO();
                     avionesDTO = AvionesService.matriculaUnicaAvion(txtMatricula.getText());
-                    avionZona.avion = avionesDTO;
+                    avionZona.setAvion(avionesDTO);
                     avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
 
                     if (AvionesZonasService.createAvionZona(avionZona) == 201) {
+                        RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo avion", new Date()));
                         btnGuardarEditar.setDisable(true);
                         btnEditar.setDisable(false);
-
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aviones", ((Stage) txtMatricula.getScene().getWindow()), "Se guardó correctamente");
                     } else {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la zona del avion", ((Stage) txtMatricula.getScene().getWindow()), "No se guardó correctamente");
@@ -440,8 +445,8 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 }
                 avion.setMatricula(txtMatricula.getText());
                 avion.setTipoAvion(txtTipoAvion.getText());
-
                 if (AvionesService.updateAvion(avion) == 200) {
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito avion " + avion.getId(), new Date()));
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Avion", ((Stage) txtMatricula.getScene().getWindow()), "Se editó correctamente");
                     btnEditar.setDisable(false);
                     btnGuardarEditar.setDisable(true);
