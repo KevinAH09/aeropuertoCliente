@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -25,8 +26,11 @@ import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.ReportesService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -60,24 +64,21 @@ public class ReporteGastoMantController extends Controller implements Initializa
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        fechaFin.setVisible(false);
-        fechaIni.setVisible(false);
-        cbAreaTrabajo.setVisible(false);
-        txtEmpresa.setVisible(false);
-        cbEstadoPago.setVisible(false);
-        Callback<DatePicker, DateCell> dayFinCellFactory = dp -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                if (fechaIni.getValue() != null) {
-                    if (item.isBefore(fechaIni.getValue())) {
-                        setStyle("-fx-background-color: #ffc0cb;");
-                        Platform.runLater(() -> setDisable(true));
-                    }
-                }
-            }
-        };
-        fechaFin.setDayCellFactory(dayFinCellFactory);
+        desabilidatarComponentesVista();
+        validarFechaFin();
+        validarFechaIni();
+        lisArea = new ArrayList<>();
+        lisArea = AreasTrabajosService.allAreasTrabajos();
+        llenarComboBox();
+    }
+
+    private void llenarComboBox() {
+        cbAreaTrabajo.setItems(FXCollections.observableArrayList(lisArea));
+        cbEstadoPago.setItems(FXCollections.observableArrayList("Anulado", "Cancelado", "Pendiente"));
+        cbFiltro.setItems(FXCollections.observableArrayList("Rango de fechas", "Rango de fechas y area de trabajo", "Rango de fechas y estado de pago", "Rango de fechas y empresa"));
+    }
+
+    private void validarFechaIni() {
         Callback<DatePicker, DateCell> dayIniCellFactory = dp -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
@@ -91,12 +92,36 @@ public class ReporteGastoMantController extends Controller implements Initializa
             }
         };
         fechaIni.setDayCellFactory(dayIniCellFactory);
-        lisArea = new ArrayList<>();
-        lisArea = AreasTrabajosService.allAreasTrabajos();
+    }
 
-        cbAreaTrabajo.setItems(FXCollections.observableArrayList(lisArea));
-        cbEstadoPago.setItems(FXCollections.observableArrayList("Anulado", "Cancelado", "Pendiente"));
-        cbFiltro.setItems(FXCollections.observableArrayList("Rango de fechas", "Rango de fechas y area de trabajo", "Rango de fechas y estado de pago", "Rango de fechas y empresa"));
+    private void validarFechaFin() {
+        Callback<DatePicker, DateCell> dayFinCellFactory = dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (fechaIni.getValue() != null) {
+                    if (item.isBefore(fechaIni.getValue())) {
+                        setStyle("-fx-background-color: #ffc0cb;");
+                        Platform.runLater(() -> setDisable(true));
+                    }
+                }
+            }
+        };
+        fechaFin.setDayCellFactory(dayFinCellFactory);
+    }
+
+    private void desabilidatarComponentesVista() {
+        fechaFin.setVisible(false);
+        fechaIni.setVisible(false);
+        cbAreaTrabajo.setVisible(false);
+        txtEmpresa.setVisible(false);
+        cbEstadoPago.setVisible(false);
+        fechaFin.setValue(null);
+        fechaIni.setValue(null);
+        cbAreaTrabajo.setValue(null);
+        cbEstadoPago.setValue(null);
+        txtEmpresa.setText("");
+        cbFiltro.setValue("Filtrar reporte por:");
     }
 
     @FXML
@@ -130,45 +155,52 @@ public class ReporteGastoMantController extends Controller implements Initializa
 
     @FXML
     private void actionLimpiar(ActionEvent event) {
-        fechaFin.setVisible(false);
-        fechaIni.setVisible(false);
-        cbAreaTrabajo.setVisible(false);
-        txtEmpresa.setVisible(false);
-        cbEstadoPago.setVisible(false);
-        fechaFin.setValue(null);
-        fechaIni.setValue(null);
-        cbAreaTrabajo.setValue(null);
-        cbEstadoPago.setValue(null);
-        txtEmpresa.setText("");
-        cbFiltro.setValue("Filtrar reporte por:");
+        desabilidatarComponentesVista();
     }
 
     @FXML
     private void actionGenerar(ActionEvent event) {
         if (cbFiltro.getValue().equals("Rango de fechas")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null) {
-                ReportesService.reporteGastosMantFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
-            }
+            crearReporteFechas();
         } else if (cbFiltro.getValue().equals("Rango de fechas y area de trabajo")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAreaTrabajo.getValue() != null) {
-                ReportesService.reporteGastosMantFechasAreaTrabajo(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAreaTrabajo.getValue().getId().toString());
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
-            }
+            crearReporteFechasAreaTrabajo();
         } else if (cbFiltro.getValue().equals("Rango de fechas y estado de pago")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbEstadoPago.getValue() != null) {
-                ReportesService.reporteGastosMantFechasEstadoPago(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbEstadoPago.getValue());
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
-            }
+            crearReporteFechasEstadoPago();
         } else if (cbFiltro.getValue().equals("Rango de fechas y empresa")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null && !txtEmpresa.getText().isEmpty()) {
-                ReportesService.reporteGastosMantFechasEmpresa(fechaIni.getValue().toString(), fechaFin.getValue().toString(), txtEmpresa.getText());
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
-            }
+            crearReporteFechasEmpresa();
+        }
+    }
+
+    private void crearReporteFechasEmpresa() {
+        if (fechaFin.getValue() != null && fechaIni.getValue() != null && !txtEmpresa.getText().isEmpty()) {
+            ReportesService.reporteGastosMantFechasEmpresa(fechaIni.getValue().toString(), fechaFin.getValue().toString(), txtEmpresa.getText());
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+        }
+    }
+
+    private void crearReporteFechasEstadoPago() {
+        if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbEstadoPago.getValue() != null) {
+            ReportesService.reporteGastosMantFechasEstadoPago(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbEstadoPago.getValue());
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+        }
+    }
+
+    private void crearReporteFechasAreaTrabajo() {
+        if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAreaTrabajo.getValue() != null) {
+            ReportesService.reporteGastosMantFechasAreaTrabajo(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAreaTrabajo.getValue().getId().toString());
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+        }
+    }
+
+    private void crearReporteFechas() {
+        if (fechaFin.getValue() != null && fechaIni.getValue() != null) {
+            ReportesService.reporteGastosMantFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
+            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 

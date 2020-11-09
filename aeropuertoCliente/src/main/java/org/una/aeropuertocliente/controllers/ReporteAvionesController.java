@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -24,10 +25,13 @@ import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.AerolineasService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.ReportesService;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
+import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -60,24 +64,35 @@ public class ReporteAvionesController extends Controller implements Initializabl
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        desabilitarComponentesVista();
+        validarFechaFin();
+        validarFechaIni();
+        lisAerolineas = new ArrayList<>();
+        lisZonas = new ArrayList<>();
+        lisAerolineas = AerolineasService.allAerolineas();
+        lisZonas = ZonasService.allZonas();
+        llenarComboBox();
+    }
+
+    private void llenarComboBox() {
+        cbAerolineas.setItems(FXCollections.observableArrayList(lisAerolineas));
+        cbZonas.setItems(FXCollections.observableArrayList(lisZonas));
+        cbFiltro.setItems(FXCollections.observableArrayList("Rango de fechas", "Rango de fechas y aerolinea", "Rango de fechas y zona", "Rango de fechas, aerolinea y zona"));
+    }
+
+    private void desabilitarComponentesVista() {
         fechaFin.setVisible(false);
         fechaIni.setVisible(false);
         cbAerolineas.setVisible(false);
         cbZonas.setVisible(false);
+        fechaFin.setValue(null);
+        fechaIni.setValue(null);
+        cbAerolineas.setValue(null);
+        cbZonas.setValue(null);
+        cbFiltro.setValue("Filtrar reporte por:");
+    }
 
-        Callback<DatePicker, DateCell> dayFinCellFactory = dp -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                if (fechaIni.getValue() != null) {
-                    if (item.isBefore(fechaIni.getValue())) {
-                        setStyle("-fx-background-color: #ffc0cb;");
-                        Platform.runLater(() -> setDisable(true));
-                    }
-                }
-            }
-        };
-        fechaFin.setDayCellFactory(dayFinCellFactory);
+    private void validarFechaIni() {
         Callback<DatePicker, DateCell> dayIniCellFactory = dp -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
@@ -91,14 +106,22 @@ public class ReporteAvionesController extends Controller implements Initializabl
             }
         };
         fechaIni.setDayCellFactory(dayIniCellFactory);
-        lisAerolineas = new ArrayList<>();
-        lisZonas = new ArrayList<>();
-        lisAerolineas = AerolineasService.allAerolineas();
-        lisZonas = ZonasService.allZonas();
+    }
 
-        cbAerolineas.setItems(FXCollections.observableArrayList(lisAerolineas));
-        cbZonas.setItems(FXCollections.observableArrayList(lisZonas));
-        cbFiltro.setItems(FXCollections.observableArrayList("Rango de fechas", "Rango de fechas y aerolinea", "Rango de fechas y zona", "Rango de fechas, aerolinea y zona"));
+    private void validarFechaFin() {
+        Callback<DatePicker, DateCell> dayFinCellFactory = dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (fechaIni.getValue() != null) {
+                    if (item.isBefore(fechaIni.getValue())) {
+                        setStyle("-fx-background-color: #ffc0cb;");
+                        Platform.runLater(() -> setDisable(true));
+                    }
+                }
+            }
+        };
+        fechaFin.setDayCellFactory(dayFinCellFactory);
     }
 
     @FXML
@@ -128,43 +151,55 @@ public class ReporteAvionesController extends Controller implements Initializabl
 
     @FXML
     private void actionLimpiar(ActionEvent event) {
-        fechaFin.setVisible(false);
-        fechaIni.setVisible(false);
-        cbAerolineas.setVisible(false);
-        cbZonas.setVisible(false);
-        fechaFin.setValue(null);
-        fechaIni.setValue(null);
-        cbAerolineas.setValue(null);
-        cbZonas.setValue(null);
-        cbFiltro.setValue("Filtrar reporte por:");
+        desabilitarComponentesVista();
     }
 
     @FXML
     private void actionGenerar(ActionEvent event) {
         if (cbFiltro.getValue().equals("Rango de fechas")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null) {
-                ReportesService.reporteAvionesFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
-            }
+            crearReporteFechas();
         } else if (cbFiltro.getValue().equals("Rango de fechas y zona")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbZonas.getValue() != null) {
-                ReportesService.reporteAvionesFechasZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbZonas.getValue().getId().toString());
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
-            }
+            crearReporteFechasZona();
         } else if (cbFiltro.getValue().equals("Rango de fechas y aerolinea")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null) {
-                ReportesService.reporteAvionesFechasAerolinea(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString());
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
-            }
+            crearReporteFechasAerolinea();
         } else if (cbFiltro.getValue().equals("Rango de fechas, aerolinea y zona")) {
-            if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null && cbZonas.getValue() != null) {
-                ReportesService.reporteAvionesFechasAerolineaZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString(), cbZonas.getValue().getId().toString());
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
-            }
+            crearReporteFechasZonaAerolinea();
+        }
+    }
+
+    private void crearReporteFechasZonaAerolinea() {
+        if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null && cbZonas.getValue() != null) {
+            ReportesService.reporteAvionesFechasAerolineaZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString(), cbZonas.getValue().getId().toString());
+            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+        }
+    }
+
+    private void crearReporteFechasAerolinea() {
+        if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAerolineas.getValue() != null) {
+            ReportesService.reporteAvionesFechasAerolinea(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString());
+            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+        }
+    }
+
+    private void crearReporteFechasZona() {
+        if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbZonas.getValue() != null) {
+            ReportesService.reporteAvionesFechasZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbZonas.getValue().getId().toString());
+            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+        }
+    }
+
+    private void crearReporteFechas() {
+        if (fechaFin.getValue() != null && fechaIni.getValue() != null) {
+            ReportesService.reporteAvionesFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
+            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 
