@@ -16,31 +16,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,6 +54,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -58,6 +64,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.una.aeropuertocliente.apiForex.TiposMonedasServices;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -129,6 +136,7 @@ public class CambioDivisasController extends Controller implements Initializable
     double USDFranco;
     double USDYen;
     String itemSelect = null;
+    String nombreArchivo = "";
 
     /**
      * Initializes the controller class.
@@ -201,35 +209,8 @@ public class CambioDivisasController extends Controller implements Initializable
 
     void generarXML() {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            DOMImplementation implementation = builder.getDOMImplementation();
-            Document document = implementation.createDocument(null, "AeropuertoUNA", null);
-            document.setXmlVersion("1.0");
-            Element raiz = document.getDocumentElement();
-            Element itemMoneda = document.createElement("Moneda:" + cbMoneda.getValue());
-            Element keyMonto = document.createElement("Monto:" + txtIngresarMonto.getText());
-            itemMoneda.appendChild(keyMonto);
-            raiz.appendChild(itemMoneda);
-            Element intemDetalle = document.createElement("Cambios");
-            llenarMontosReportes();
-            for (int i = 0; i < cambios.size(); i++) {
-                Element keyNode = document.createElement("Cambio");
-                org.w3c.dom.Text nodeKeyValue = document.createTextNode(cambios.get(i));
-                keyNode.appendChild(nodeKeyValue);
-                intemDetalle.appendChild(keyNode);
-                raiz.appendChild(intemDetalle);
-            }
-            Source source = new DOMSource(document);
-            DirectoryChooser filChoser = new DirectoryChooser();
-            File file = filChoser.showDialog(lblselect.getScene().getWindow());
-            if (file != null) {
-                Result result = new StreamResult(file.getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/hola.xml");
-                Transformer transformer = TransformerFactory.newInstance().newTransformer();
-                transformer.transform(source, result);
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
-            }
+            Document document = creaXML();
+            guardaXML(document);
 
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,74 +219,180 @@ public class CambioDivisasController extends Controller implements Initializable
         }
     }
 
+    private void guardaXML(Document document) throws TransformerException, TransformerFactoryConfigurationError {
+        Source source = new DOMSource(document);
+        DirectoryChooser filChoser = new DirectoryChooser();
+        File file = filChoser.showDialog(lblselect.getScene().getWindow());
+        if (file != null) {
+            Result result = new StreamResult(file.getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/" + nombreArchivo + ".xml");
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.transform(source, result);
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
+        }
+    }
+
+    private Document creaXML() throws ParserConfigurationException, DOMException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        DOMImplementation implementation = builder.getDOMImplementation();
+        Document document = implementation.createDocument(null, "AeropuertoUNA", null);
+        document.setXmlVersion("1.0");
+        Element raiz = document.getDocumentElement();
+        Element itemMoneda = document.createElement("Moneda");
+        org.w3c.dom.Text nodeKeyMoneda = document.createTextNode(cbMoneda.getValue());
+        itemMoneda.appendChild(nodeKeyMoneda);
+        Element keyMonto = document.createElement("Monto");
+        org.w3c.dom.Text nodeKeyMonto = document.createTextNode(txtIngresarMonto.getText());
+        keyMonto.appendChild(nodeKeyMonto);
+        raiz.appendChild(itemMoneda);
+        raiz.appendChild(keyMonto);
+        Element intemDetalle = document.createElement("Cambios");
+        llenarMontosReportes();
+        for (int i = 0; i < cambios.size(); i++) {
+            Element keyNode = document.createElement("Cambio");
+            org.w3c.dom.Text nodeKeyValue = document.createTextNode(cambios.get(i));
+            keyNode.appendChild(nodeKeyValue);
+            intemDetalle.appendChild(keyNode);
+            raiz.appendChild(intemDetalle);
+        }
+        return document;
+    }
+
+    private void alertaIngresoNombre() {
+        nombreArchivo = "";
+        Dialog<Pair<String, String>> dialog = crearDialog();
+        ButtonType guardarButtonType = crearButtonType(dialog);
+        GridPane grid = crearGripPane();
+        JFXTextField nombreArcivo = crearTextFlied();
+        grid.add(nombreArcivo, 1, 0);
+        crearNodeDialog(dialog, guardarButtonType, nombreArcivo);
+        dialog.getDialogPane().setContent(grid);
+        crearFuncionalidadDialog(nombreArcivo, dialog, guardarButtonType);
+    }
+
+    private void crearFuncionalidadDialog(JFXTextField nombreArcivo, Dialog<Pair<String, String>> dialog, ButtonType guardarButtonType) {
+        Platform.runLater(() -> nombreArcivo.requestFocus());
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == guardarButtonType) {
+                return new Pair<>(nombreArcivo.getText(), "");
+            }
+            return null;
+        });
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        result.ifPresent(usernamePassword -> {
+            System.out.println(usernamePassword.getKey());
+            nombreArchivo = usernamePassword.getKey();
+        });
+    }
+
+    private void crearNodeDialog(Dialog<Pair<String, String>> dialog, ButtonType guardarButtonType, JFXTextField nombreArcivo) {
+        Node guardarButton = dialog.getDialogPane().lookupButton(guardarButtonType);
+        guardarButton.setDisable(true);
+        nombreArcivo.textProperty().addListener((observable, oldValue, newValue) -> {
+            guardarButton.setDisable(newValue.trim().isEmpty());
+        });
+    }
+
+    private JFXTextField crearTextFlied() {
+        JFXTextField nombreArcivo = new JFXTextField();
+        nombreArcivo.setPromptText("Nombre");
+        nombreArcivo.setLabelFloat(true);
+        nombreArcivo.setPrefWidth(150);
+        return nombreArcivo;
+    }
+
+    private GridPane crearGripPane() {
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        return grid;
+    }
+
+    private ButtonType crearButtonType(Dialog<Pair<String, String>> dialog) {
+        ButtonType guardarButtonType = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(guardarButtonType, ButtonType.CANCEL);
+        return guardarButtonType;
+    }
+
+    private Dialog<Pair<String, String>> crearDialog() {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Nombre archivo");
+        dialog.setHeaderText("Ingrese el nombre con el cual desea guardar el archivo");
+        return dialog;
+    }
+
     void generarPDF() {
 
         try {
-            Date fec = new Date();
-
-            PDDocument pdf = new PDDocument();
-            PDPage page = new PDPage();
-            pdf.addPage(page);
-            PDPageContentStream content = new PDPageContentStream(pdf, page);
-
-            content.beginText();
-            content.setFont(PDType1Font.COURIER, 11);
-            content.newLineAtOffset(85, 770);
-            content.showText("Arepuerto UNA");
-            content.endText();
-
-            content.beginText();
-            content.setFont(PDType1Font.COURIER, 11);
-            content.newLineAtOffset(85, 750);
-            content.showText("GENERADO:" + new SimpleDateFormat("dd-MM-yyyy").format(fec));
-            content.endText();
-
-            content.beginText();
-            content.setFont(PDType1Font.COURIER, 11);
-            content.newLineAtOffset(85, 730);
-            content.showText("REPORTE DE RESULTADOS DE CAMBIO DE DIVISAS");
-            content.endText();
-
-            content.beginText();
-            content.setFont(PDType1Font.COURIER, 11);
-            content.newLineAtOffset(85, 690);
-            content.showText("Moneda seleccionada: " + cbMoneda.getValue());
-            content.endText();
-
-            content.beginText();
-            content.setFont(PDType1Font.COURIER, 11);
-            content.newLineAtOffset(85, 670);
-            content.showText("Monto a consultar: " + txtIngresarMonto.getText());
-            content.endText();
-
-            content.beginText();
-            content.setFont(PDType1Font.COURIER, 11);
-            content.newLineAtOffset(85, 650);
-            content.showText("Resultados del cambio: ");
-            content.endText();
-            llenarMontosReportes();
-            int vari = 620;
-            for (int p = 0; p < cambios.size(); p++) {
-                content.beginText();
-                content.setFont(PDType1Font.COURIER, 11);
-                content.newLineAtOffset(100, vari);
-                content.showText(cambios.get(p));
-                content.endText();
-                vari = vari - 20;
-            }
-            content.close();
-            DirectoryChooser filChoser = new DirectoryChooser();
-            File file = filChoser.showDialog(lblselect.getScene().getWindow());
-            if (file != null) {
-                pdf.save(file.getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/hola.pdf");
-            } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
-            }
-            pdf.close();
+            PDDocument pdf = generarContenidoPDF();
+            guardarPDF(pdf);
 
         } catch (IOException ex) {
             Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void guardarPDF(PDDocument pdf) throws IOException {
+        DirectoryChooser filChoser = new DirectoryChooser();
+        File file = filChoser.showDialog(lblselect.getScene().getWindow());
+        if (file != null) {
+            pdf.save(file.getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/" + nombreArchivo + ".pdf");
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
+        }
+        pdf.close();
+    }
+
+    private PDDocument generarContenidoPDF() throws IOException {
+        Date fec = new Date();
+        PDDocument pdf = new PDDocument();
+        PDPage page = new PDPage();
+        pdf.addPage(page);
+        PDPageContentStream content = new PDPageContentStream(pdf, page);
+        content.beginText();
+        content.setFont(PDType1Font.COURIER, 11);
+        content.newLineAtOffset(85, 770);
+        content.showText("Arepuerto UNA");
+        content.endText();
+        content.beginText();
+        content.setFont(PDType1Font.COURIER, 11);
+        content.newLineAtOffset(85, 750);
+        content.showText("GENERADO:" + new SimpleDateFormat("dd-MM-yyyy").format(fec));
+        content.endText();
+        content.beginText();
+        content.setFont(PDType1Font.COURIER, 11);
+        content.newLineAtOffset(85, 730);
+        content.showText("REPORTE DE RESULTADOS DE CAMBIO DE DIVISAS");
+        content.endText();
+        content.beginText();
+        content.setFont(PDType1Font.COURIER, 11);
+        content.newLineAtOffset(85, 690);
+        content.showText("Moneda seleccionada: " + cbMoneda.getValue());
+        content.endText();
+        content.beginText();
+        content.setFont(PDType1Font.COURIER, 11);
+        content.newLineAtOffset(85, 670);
+        content.showText("Monto a consultar: " + txtIngresarMonto.getText());
+        content.endText();
+        content.beginText();
+        content.setFont(PDType1Font.COURIER, 11);
+        content.newLineAtOffset(85, 650);
+        content.showText("Resultados del cambio: ");
+        content.endText();
+        llenarMontosReportes();
+        int vari = 620;
+        for (int p = 0; p < cambios.size(); p++) {
+            content.beginText();
+            content.setFont(PDType1Font.COURIER, 11);
+            content.newLineAtOffset(100, vari);
+            content.showText(cambios.get(p));
+            content.endText();
+            vari = vari - 20;
+        }
+        content.close();
+        return pdf;
     }
 
     private void llenarImages() {
@@ -1066,8 +1153,14 @@ public class CambioDivisasController extends Controller implements Initializable
 
     @FXML
     private void actionExportXML(ActionEvent event) {
+
         if (!txtIngresarMonto.getText().isEmpty()) {
-            generarXML();
+            alertaIngresoNombre();
+            if (!nombreArchivo.isEmpty()) {
+                generarXML();
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Nombre no digitado.");
+            }
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Monto no digitado.");
         }
@@ -1075,8 +1168,14 @@ public class CambioDivisasController extends Controller implements Initializable
 
     @FXML
     private void actionExportPDF(ActionEvent event) {
+
         if (!txtIngresarMonto.getText().isEmpty()) {
-            generarPDF();
+            alertaIngresoNombre();
+            if (!nombreArchivo.isEmpty()) {
+                generarPDF();
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Nombre no digitado.");
+            }
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Monto no digitado.");
         }
