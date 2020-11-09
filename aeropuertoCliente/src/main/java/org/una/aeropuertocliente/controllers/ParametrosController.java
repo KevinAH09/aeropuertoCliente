@@ -12,6 +12,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
@@ -44,8 +45,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.ParametrosDTO;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.ZonasDTO;
 import org.una.aeropuertocliente.entitiesServices.ParametrosService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
@@ -188,6 +191,7 @@ public class ParametrosController extends Controller implements Initializable {
             parametros.setNombreParametro(txtNombre.getText());
             parametros.setValor(txtValor.getText());
             if (ParametrosService.updateParametro(parametros) == 200) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito parametro " + parametros.getId(), new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar parametro", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
@@ -209,6 +213,7 @@ public class ParametrosController extends Controller implements Initializable {
             parametros.setNombreParametro(txtNombre.getText());
             parametros.setValor(txtValor.getText());
             if (ParametrosService.createParametro(parametros) == 201) {
+                RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo parametro", new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar parametro", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
