@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -36,7 +37,9 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 import org.una.aeropuertocliente.dtos.AuthenticationRequest;
 import org.una.aeropuertocliente.dtos.AuthenticationResponse;
+import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.entitiesServices.LoginService;
+import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
@@ -120,6 +123,7 @@ public class LoginController extends Controller implements Initializable {
             if (authenticationResponse != null) {
                 Token.setInstance(authenticationResponse);
                 if (Token.getInstance().getUsuario().isEstado()) {
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Inicio de Sesion", new Date()));
                     FlowController.getInstance().goView("principal/Principal");
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "El usuario esta inactivo");

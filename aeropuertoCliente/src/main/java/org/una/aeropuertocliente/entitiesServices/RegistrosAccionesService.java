@@ -41,10 +41,10 @@ public class RegistrosAccionesService {
         }
         return dTO;
     }
-    public static int createRegistroAccion(RegistrosAccionesDTO update){
+    public static int createRegistroAccion(RegistrosAccionesDTO create){
         int codeResponse=0;
         try {
-            codeResponse = Conection.createObjectToConnection("registroAccion/",update);
+            codeResponse = Conection.createObjectToConnection("registroAccion/",create);
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -25,6 +25,13 @@ public class RegistrosAccionesDTO {
     public RegistrosAccionesDTO() {
     }
 
+    public RegistrosAccionesDTO(UsuariosDTO usuarioId, String accion, Date fechaRegistro) {
+        this.usuarioId = usuarioId;
+        this.accion = accion;
+        this.fechaRegistro = fechaRegistro;
+    }
+   
+    
     
     public Long getId() {
         return id;
