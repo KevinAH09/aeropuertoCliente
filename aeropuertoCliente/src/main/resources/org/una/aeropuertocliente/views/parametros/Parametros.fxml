@@ -83,15 +83,15 @@
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox prefHeight="250.0" prefWidth="200.0" spacing="20.0">
+                  <HBox alignment="CENTER" prefHeight="250.0" prefWidth="200.0" spacing="20.0" VBox.vgrow="ALWAYS">
                      <padding>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
                      </padding>
                      <children>
                         <VBox prefHeight="200.0" prefWidth="709.0" stylesheets="@../shared/table.css" HBox.hgrow="ALWAYS">
                            <children>
                               <Label fx:id="lblTable" prefHeight="20.0" prefWidth="98.0" />
-                              <TableView fx:id="tableParametros" prefHeight="220.0" prefWidth="681.0" stylesheets="@../shared/table.css">
+                              <TableView fx:id="tableParametros" prefHeight="220.0" prefWidth="681.0" stylesheets="@../shared/table.css" VBox.vgrow="ALWAYS">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>

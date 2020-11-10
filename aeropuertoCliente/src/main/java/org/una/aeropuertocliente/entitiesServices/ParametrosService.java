@@ -46,17 +46,18 @@ public class ParametrosService {
         }
         return listsDTOs;
     }
-    public static List<ParametrosDTO> nombreParametros(String nombre) {
 
-        List<ParametrosDTO> listsDTOs = new ArrayList<>();
+    public static ParametrosDTO nombreParametros(String nombre) {
+
+        ParametrosDTO dto = new ParametrosDTO();
         try {
-            listsDTOs = (List<ParametrosDTO>) Conection.listFromConnection("parametro/nombre_parametro/" + nombre, new TypeToken<ArrayList<ParametrosDTO>>() {
+            dto = (ParametrosDTO) Conection.oneConnection("parametro/nombre_parametro/" + nombre, new TypeToken<ArrayList<ParametrosDTO>>() {
             }.getType());
 
         } catch (IOException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return listsDTOs;
+        return dto;
     }
 
     public static ParametrosDTO idParametro(Long id) {

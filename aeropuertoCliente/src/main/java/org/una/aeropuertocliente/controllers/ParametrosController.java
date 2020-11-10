@@ -277,8 +277,9 @@ public class ParametrosController extends Controller implements Initializable {
 
     private void filtrarPorNombre() {
         limpiarTableView();
-        parametrosList = ParametrosService.nombreParametros(txtBusqueda.getText());
-        if (parametrosList != null) {
+        parametrosList = new ArrayList<>();
+        parametrosList.add(ParametrosService.nombreParametros(txtBusqueda.getText()));
+        if (parametrosList != null && parametrosList.isEmpty()) {
             llenarTableView();
             tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
         } else {
