@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,6 +23,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AerolineasDTO;
@@ -32,6 +39,7 @@ import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.ReportesService;
 import org.una.aeropuertocliente.entitiesServices.ZonasService;
 import org.una.aeropuertocliente.sharedService.Token;
+import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
@@ -58,6 +66,10 @@ public class ReporteAvionesController extends Controller implements Initializabl
 
     private List<AerolineasDTO> lisAerolineas = new ArrayList<>();
     private List<ZonasDTO> lisZonas = new ArrayList<>();
+    public List<Node> modDesarrollo = new ArrayList<>();
+    public List<String> modDesarrolloAxiliar = new ArrayList<>();
+    @FXML
+    private Label titulo;
 
     /**
      * Initializes the controller class.
@@ -72,6 +84,8 @@ public class ReporteAvionesController extends Controller implements Initializabl
         lisAerolineas = AerolineasService.allAerolineas();
         lisZonas = ZonasService.allZonas();
         llenarComboBox();
+        llenarListaNodos();
+        desarrollo();
     }
 
     private void llenarComboBox() {
@@ -206,6 +220,91 @@ public class ReporteAvionesController extends Controller implements Initializabl
     @Override
     public void initialize() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void llenarListaNodos() {
+        modDesarrollo.clear();
+        modDesarrolloAxiliar.clear();
+        modDesarrolloAxiliar.add(titulo.getText());
+        modDesarrolloAxiliar.add(btnGenerar.getText());
+        modDesarrolloAxiliar.add(btnLimpiar.getText());
+        modDesarrolloAxiliar.add(cbFiltro.getPromptText());
+        modDesarrolloAxiliar.add(cbAerolineas.getPromptText());
+        modDesarrolloAxiliar.add(cbZonas.getPromptText());
+        modDesarrolloAxiliar.add(fechaIni.getPromptText());
+        modDesarrolloAxiliar.add(fechaFin.getPromptText());
+        modDesarrollo.addAll(Arrays.asList(titulo, btnGenerar, btnLimpiar, cbFiltro, cbAerolineas, cbZonas, fechaIni, fechaFin));
+    }
+
+    public void desarrollo() {
+        String dato = "";
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            validarBooleanoTrue();
+        } else {
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXDatePicker) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXDatePicker) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof JFXDatePicker) {
+                dato = ((JFXDatePicker) node).getId();
+                ((JFXDatePicker) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                dato = ((Label) node).getId();
+                ((Label) node).setText(dato);
+            }
+        }
+    }
+
+    @FXML
+    private void modoDesarrollo(KeyEvent event) {
+        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            if (cntrlD.match(event)) {
+                boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+                if (validos1) {
+                    AppContext.getInstance().set("mod", false);
+                    desarrollo();
+                } else {
+                    AppContext.getInstance().set("mod", true);
+                    desarrollo();
+                }
+            }
+        }
     }
 
 }
