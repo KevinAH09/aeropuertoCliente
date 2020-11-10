@@ -103,16 +103,20 @@ public class UsuariosController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
-        cmbRoles.setItems(FXCollections.observableArrayList(RolesService.allRoles()));
-        cmbAreas.setItems(FXCollections.observableArrayList(AreasTrabajosService.allAreasTrabajos()));
-        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
+        llenarComboBox();
         notificar(1);
         asignarAccionComboboxFiltro();
         validarRol();
         llenarListaNodos();
         desarrollo();
 
+    }
+
+    private void llenarComboBox() {
+        cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        cmbRoles.setItems(FXCollections.observableArrayList(RolesService.allRoles()));
+        cmbAreas.setItems(FXCollections.observableArrayList(AreasTrabajosService.allAreasTrabajos()));
+        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Cedula", "Rol", "Area Trabajo"));
     }
 
     private void validarRol() {
