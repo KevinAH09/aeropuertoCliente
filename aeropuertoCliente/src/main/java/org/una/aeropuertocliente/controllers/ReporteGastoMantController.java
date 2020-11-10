@@ -64,6 +64,7 @@ public class ReporteGastoMantController extends Controller implements Initializa
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         desabilidatarComponentesVista();
         validarFechaFin();
         validarFechaIni();

@@ -51,7 +51,7 @@ public class ParametrosService {
 
         ParametrosDTO dto = new ParametrosDTO();
         try {
-            dto = (ParametrosDTO) Conection.oneConnection("parametro/nombre_parametro/" + nombre, new TypeToken<ArrayList<ParametrosDTO>>() {
+            dto = (ParametrosDTO) Conection.oneConnection("parametro/nombre_parametro/" + nombre, new TypeToken<ParametrosDTO>() {
             }.getType());
 
         } catch (IOException ex) {
