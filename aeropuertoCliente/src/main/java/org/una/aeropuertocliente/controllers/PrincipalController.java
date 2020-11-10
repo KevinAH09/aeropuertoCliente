@@ -6,22 +6,33 @@
 package org.una.aeropuertocliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
@@ -31,13 +42,22 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.una.aeropuertocliente.App;
+import org.una.aeropuertocliente.dtos.AuthenticationRequest;
+import org.una.aeropuertocliente.dtos.AuthenticationResponse;
+import org.una.aeropuertocliente.dtos.ParametrosDTO;
+import org.una.aeropuertocliente.entitiesServices.LoginService;
+import org.una.aeropuertocliente.entitiesServices.ParametrosService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
+import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -68,6 +88,8 @@ public class PrincipalController extends Controller implements Initializable {
     private Label lblVbox;
     public List<Node> modDesarrollo = new ArrayList<>();
     public List<String> modDesarrolloAxiliar = new ArrayList<>();
+    Date day = new Date();
+    Thread hilo = new Thread();
 
     /**
      * Initializes the controller class.
@@ -76,6 +98,13 @@ public class PrincipalController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         vboxPrincipalStatic = vboxPrincipal;
+        hilo = new Thread(runnable);
+        hilo.start();
+        FlowController.getInstance().getStage().setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+        day = new Date(new Date().getTime() + 60 * 1000);
     }
 
     @Override
@@ -95,6 +124,7 @@ public class PrincipalController extends Controller implements Initializable {
         Node imgInformacion = new ImageView(new Image("org/una/aeropuertocliente/views/principal/informacion.png"));
         Node imgAdmin = new ImageView(new Image("org/una/aeropuertocliente/views/principal/lengueta.png"));
         Node imgCambioDiv = new ImageView(new Image("org/una/aeropuertocliente/views/principal/intercambio.png"));
+        Node imgReportes = new ImageView(new Image("org/una/aeropuertocliente/views/principal/newspaper.png"));
         TreeItem<String> root = new TreeItem<>("Funciones");
         root.setGraphic(imgroot);
         root.setExpanded(true);
@@ -102,8 +132,7 @@ public class PrincipalController extends Controller implements Initializable {
         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             TreeItem<String> itemParametros = new TreeItem<>("Parametros del sistema");
             root.getChildren().add(itemParametros);
-            TreeItem<String> itemRegistroAcciones = new TreeItem<>("Registro de Acciones");
-            root.getChildren().add(itemRegistroAcciones);
+
         } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_AUDITOR")) {
             TreeItem<String> itemInformacion = new TreeItem<>("Informacion");
             itemInformacion.setGraphic(imgInformacion);
@@ -112,7 +141,7 @@ public class PrincipalController extends Controller implements Initializable {
             itemAdministracion.setGraphic(imgAdmin);
             root.getChildren().add(itemAdministracion);
             TreeItem<String> itemReporte = new TreeItem<>("Reportes");
-            itemAdministracion.setGraphic(imgAdmin);
+            itemReporte.setGraphic(imgReportes);
             root.getChildren().add(itemReporte);
             TreeItem<String> itemUsuarios = new TreeItem<>("Usuarios");
             itemInformacion.getChildren().add(itemUsuarios);
@@ -228,6 +257,7 @@ public class PrincipalController extends Controller implements Initializable {
     @FXML
 
     private void actionCerrarSesion(ActionEvent event) {
+        hilo.stop();
         FlowController.getInstance().goMain();
         FlowController.eliminar("login/Login");
         FlowController.getInstance().goView("login/Login");
@@ -253,6 +283,10 @@ public class PrincipalController extends Controller implements Initializable {
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
 //        if (cntrlD.match(event)) {
+//            this.stage.setOnCloseRequest(e -> {
+//                Platform.exit();
+//                System.exit(0);
+//            });
 //            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
 //            if (validos1) {
 //                AppContext.getInstance().set("mod", false);
@@ -306,5 +340,132 @@ public class PrincipalController extends Controller implements Initializable {
             }
         }
     }
+    public boolean consul = true;
+    public Runnable runnable = () -> {
 
+        while (consul) {
+            try {
+                System.out.println("Expiracion: " + day);
+                System.out.println("Actual: " + new Date());
+                if (new Date().after(day)) {
+                    Platform.runLater(() -> alertaConfirmacion());
+                    hilo.stop();
+                }
+                Thread.sleep(1000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private int tiempoExpiracion() {
+        ParametrosDTO parametro = ParametrosService.nombreParametros("expiracionToken");
+        if (parametro != null) {
+            System.out.println(parametro.getValor());
+            return Integer.valueOf(parametro.getValor()) * 3600;
+        }
+        return 3600;
+    }
+
+    private void alertaConfirmacion() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Sesión expirada");
+        alert.setHeaderText("Su sesión ha expirado, debe autenticarse de nuevo");
+        alert.setContentText("Desea autenticarse?, de no hacerlo se le redirigirá al inicio de sesión.");
+        ButtonType buttonTypeYes = new ButtonType("Sí", ButtonData.YES);
+        ButtonType buttonTypeNo = new ButtonType("No", ButtonData.NO);
+
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes) {
+            alertaIngreso();
+        } else {
+            FlowController.getInstance().goView("login/Login");
+        }
+    }
+
+    private void reingresar(String user, String pass) {
+        if (user != null && pass != null) {
+            Token.setInstance(null);
+            AuthenticationRequest authenticationRequest = new AuthenticationRequest(user, pass);
+            AuthenticationResponse authenticationResponse = LoginService.login(authenticationRequest);
+
+            if (authenticationResponse != null) {
+                Token.setInstance(authenticationResponse);
+                if (Token.getInstance().getUsuario().isEstado()) {
+                    System.out.println("El usuario se encuentra activo");
+                    day = new Date(new Date().getTime() + 60 * 1000);
+                    hilo = new Thread(runnable);
+                    hilo.start();
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "El usuario esta inactivo");
+                }
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+            }
+
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de inicio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "Datos incompletos");
+        }
+    }
+
+    private void alertaIngreso() {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Habilitar el modo desarrollador");
+        dialog.setHeaderText("Ingrese las credenciales del usuario administrador");
+
+        dialog.setGraphic(new ImageView(new Image("org/una/aeropuertocliente/views/shared/user.png")));
+
+        ButtonType loginButtonType = new ButtonType("Accesar", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        JFXTextField username = new JFXTextField();
+        username.setPromptText("Cédula");
+        username.setLabelFloat(true);
+        username.setPrefWidth(150);
+
+        JFXPasswordField password = new JFXPasswordField();
+        password.setPromptText("Contraseña");
+        password.setLabelFloat(true);
+        password.setPrefWidth(150);
+
+        grid.add(username, 1, 0);
+        grid.add(password, 1, 2);
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        username.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+        dialog.getDialogPane().setContent(grid);
+
+        Platform.runLater(() -> username.requestFocus());
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(username.getText(), password.getText());
+            } else {
+                FlowController.getInstance().goView("login/Login");
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        result.ifPresent(usernamePassword -> {
+            System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
+            System.out.println(Token.getInstance().getUsuario().getCedula());
+            if (Token.getInstance().getUsuario().getCedula().equals(usernamePassword.getKey())) {
+                reingresar(usernamePassword.getKey(), usernamePassword.getValue());
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Datos incoherentes", ((Stage) btnCerraSesion.getScene().getWindow()), "Debe ingresar las credenciales con las que inició anteriormente");
+                alertaIngreso();
+            }
+        });
+    }
 }

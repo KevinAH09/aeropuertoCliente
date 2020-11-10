@@ -146,6 +146,7 @@ org\una\aeropuertocliente\controllers\AvionesController$3.class
 org\una\aeropuertocliente\controllers\MantenimientoUsuariosController.class
 org\una\aeropuertocliente\dtos\DetallesControlesGastosDTO.class
 org\una\aeropuertocliente\entitiesServices\VuelosService$4.class
+org\una\aeropuertocliente\controllers\RegistroAccionesController.class
 org\una\aeropuertocliente\entitiesServices\AerolineasService$4.class
 org\una\aeropuertocliente\utils\FlowController.class
 org\una\aeropuertocliente\controllers\ParametrosController.class
