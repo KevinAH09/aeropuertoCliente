@@ -82,7 +82,7 @@ public class CambioContrasenaController extends Controller implements Initializa
             if (txtcontrasena.getText().equals(txtConfirmarcontrasena.getText())) {
                 usuDto.setContrasenaEncriptada(txtcontrasena.getText());
                 if (UsuariosService.updateContrasenaUsuario(usuDto) == 200) {
-                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Cambio la contraseña del usuario "+ usuDto.getId(), new Date()));
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Cambio la contraseña del usuario " + usuDto.getId(), new Date()));
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña se cambió correctamente");
                     ((Stage) btnCancelar.getScene().getWindow()).close();
                 } else {
@@ -168,14 +168,16 @@ public class CambioContrasenaController extends Controller implements Initializa
     @FXML
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
-        if (cntrlD.match(event)) {
-            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
-            if (validos1) {
-                AppContext.getInstance().set("mod", false);
-                desarrollo();
-            } else {
-                AppContext.getInstance().set("mod", true);
-                desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            if (cntrlD.match(event)) {
+                boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+                if (validos1) {
+                    AppContext.getInstance().set("mod", false);
+                    desarrollo();
+                } else {
+                    AppContext.getInstance().set("mod", true);
+                    desarrollo();
+                }
             }
         }
     }

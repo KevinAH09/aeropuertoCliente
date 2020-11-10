@@ -472,14 +472,16 @@ public class MantenimientoAvionController extends Controller implements Initiali
     @FXML
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
-        if (cntrlD.match(event)) {
-            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
-            if (validos1) {
-                AppContext.getInstance().set("mod", false);
-                desarrollo();
-            } else {
-                AppContext.getInstance().set("mod", true);
-                desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            if (cntrlD.match(event)) {
+                boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+                if (validos1) {
+                    AppContext.getInstance().set("mod", false);
+                    desarrollo();
+                } else {
+                    AppContext.getInstance().set("mod", true);
+                    desarrollo();
+                }
             }
         }
     }

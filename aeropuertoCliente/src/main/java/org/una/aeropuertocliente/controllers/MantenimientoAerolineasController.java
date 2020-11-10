@@ -292,7 +292,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                 aerolinea.setNombreResponsable(txtResponsable.getText());
                 aerolinea.setNombreAerolinea(txtNombre.getText());
                 if (AerolineasService.updateAerolinea(aerolinea) == 200) {
-                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito aerolinea "+aerolinea.getId(), new Date()));
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito aerolinea " + aerolinea.getId(), new Date()));
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "Se editó correctamente");
                     btnEditar.setDisable(false);
                     btnGuardar.setDisable(true);
@@ -532,14 +532,16 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     @FXML
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
-        if (cntrlD.match(event)) {
-            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
-            if (validos1) {
-                AppContext.getInstance().set("mod", false);
-                desarrollo();
-            } else {
-                AppContext.getInstance().set("mod", true);
-                desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            if (cntrlD.match(event)) {
+                boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+                if (validos1) {
+                    AppContext.getInstance().set("mod", false);
+                    desarrollo();
+                } else {
+                    AppContext.getInstance().set("mod", true);
+                    desarrollo();
+                }
             }
         }
     }

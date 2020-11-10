@@ -456,8 +456,7 @@ public class PrincipalController extends Controller implements Initializable {
             if (authenticationResponse != null) {
                 Token.setInstance(authenticationResponse);
                 if (Token.getInstance().getUsuario().isEstado()) {
-                    System.out.println("El usuario se encuentra activo");
-                    day = new Date(new Date().getTime() + 60 * 1000);
+                    day = new Date(new Date().getTime() + tiempoExpiracion() * 1000);
                     hilo = new Thread(runnable);
                     hilo.start();
                 } else {
