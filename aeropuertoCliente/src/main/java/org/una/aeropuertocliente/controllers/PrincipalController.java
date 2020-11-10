@@ -98,13 +98,14 @@ public class PrincipalController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         vboxPrincipalStatic = vboxPrincipal;
+        day = new Date(new Date().getTime() + tiempoExpiracion() * 1000);
         hilo = new Thread(runnable);
         hilo.start();
         FlowController.getInstance().getStage().setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
-        day = new Date(new Date().getTime() + 60 * 1000);
+
     }
 
     @Override
@@ -345,8 +346,6 @@ public class PrincipalController extends Controller implements Initializable {
 
         while (consul) {
             try {
-                System.out.println("Expiracion: " + day);
-                System.out.println("Actual: " + new Date());
                 if (new Date().after(day)) {
                     Platform.runLater(() -> alertaConfirmacion());
                     hilo.stop();

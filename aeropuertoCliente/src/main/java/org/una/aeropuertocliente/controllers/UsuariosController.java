@@ -41,6 +41,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
 import org.una.aeropuertocliente.dtos.RolesDTO;
@@ -120,7 +121,11 @@ public class UsuariosController extends Controller implements Initializable {
     }
 
     private void validarRol() {
-        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+        if ((boolean) AppContext.getInstance().get("ModoBuscarUsuario")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+            actionUsuariosClick();
+        } else if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
         } else {
@@ -326,7 +331,13 @@ public class UsuariosController extends Controller implements Initializable {
         tableUsuarios.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+                if ((boolean) AppContext.getInstance().get("ModoBuscarUsuario")) {
+                    if (mouseEvent.getClickCount() == 2 && tableUsuarios.selectionModelProperty().get().getSelectedItem() != null) {
+                        UsuariosDTO usuario = (UsuariosDTO) tableUsuarios.selectionModelProperty().get().getSelectedItem();
+                        AppContext.getInstance().set("usuId", usuario.getId());
+                        ((Stage) tableUsuarios.getScene().getWindow()).close();
+                    }
+                } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
                     if (mouseEvent.getClickCount() == 2 && tableUsuarios.selectionModelProperty().get().getSelectedItem() != null) {
                         UsuariosDTO usuario = (UsuariosDTO) tableUsuarios.selectionModelProperty().get().getSelectedItem();
                         AppContext.getInstance().set("usu", usuario);

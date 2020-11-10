@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -34,7 +35,9 @@ import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.sharedService.Token;
+import org.una.aeropuertocliente.utils.AppContext;
 import org.una.aeropuertocliente.utils.FlowController;
+import org.una.aeropuertocliente.utils.Mensaje;
 
 /**
  * FXML Controller class
@@ -73,19 +76,34 @@ public class RegistroAccionesController extends Controller implements Initializa
 
     @FXML
     private void actionBuscarUsuario(ActionEvent event) {
-
+        AppContext.getInstance().set("ModoBuscarUsuario", true);
         FlowController.getInstance().goViewInWindowModal("usuarios/Usuarios", ((Stage) btnBuscarUsuario.getScene().getWindow()), true);
+        if (AppContext.getInstance().get("usuId") != null) {
+            listRegistroAcciones = RegistrosAccionesService.UsuarioRegistrosAcciones((Long) AppContext.getInstance().get("usuId"));
+            if (listRegistroAcciones != null) {
+                llenarTableView();
+                tableRegistroAcciones.setItems(FXCollections.observableArrayList(listRegistroAcciones));
+            } else {
+                notificar(0);
+            }
+        }else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Buscar registros", ((Stage) fechaRegistro.getScene().getWindow()), "No selecciono ningun usuario");
+        }
     }
 
     @FXML
     private void actionFiltrarFecha(ActionEvent event) {
-        limpiarTableView();
-        listRegistroAcciones = RegistrosAccionesService.FechaRegistrosAcciones(fechaRegistro.getValue().toString());
-        if (listRegistroAcciones != null) {
-            llenarTableView();
-            tableRegistroAcciones.setItems(FXCollections.observableArrayList(listRegistroAcciones));
+        if (fechaRegistro.getValue() != null) {
+            limpiarTableView();
+            listRegistroAcciones = RegistrosAccionesService.FechaRegistrosAcciones(fechaRegistro.getValue().toString());
+            if (listRegistroAcciones != null) {
+                llenarTableView();
+                tableRegistroAcciones.setItems(FXCollections.observableArrayList(listRegistroAcciones));
+            } else {
+                notificar(0);
+            }
         } else {
-            notificar(0);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Buscar registros", ((Stage) fechaRegistro.getScene().getWindow()), "Seleccione una  fecha");
         }
 
     }
