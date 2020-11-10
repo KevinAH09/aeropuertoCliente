@@ -279,9 +279,9 @@ public class ParametrosController extends Controller implements Initializable {
         limpiarTableView();
         parametrosList = new ArrayList<>();
         parametrosList.add(ParametrosService.nombreParametros(txtBusqueda.getText()));
-        if (parametrosList != null && parametrosList.isEmpty()) {
+        if (parametrosList != null && !parametrosList.isEmpty()) {
             llenarTableView();
-            tableParametros.setItems(FXCollections.observableArrayList(parametrosFilt));
+            tableParametros.setItems(FXCollections.observableArrayList(parametrosList));
         } else {
             mensaje = "No se encontró coincidencias";
             notificar(0);
@@ -474,7 +474,7 @@ public class ParametrosController extends Controller implements Initializable {
         modDesarrolloAxiliar.add(btnFiltrar.getText());
         modDesarrolloAxiliar.add(btnCancelar.getText());
         modDesarrolloAxiliar.add(btnRegistrar.getText());
-        modDesarrollo.addAll(Arrays.asList(titulo, txtNombre, cmbEstado, txtDescripcion, txtBusqueda,
+        modDesarrollo.addAll(Arrays.asList(titulo, lblZonas, txtNombre, txtValor, cmbEstado, txtDescripcion, txtBusqueda,
                 cmbFiltro, cmbEstado2, btnFiltrar, btnCancelar, btnRegistrar));
     }
 
