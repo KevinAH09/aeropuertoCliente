@@ -91,6 +91,7 @@ public class RegistroAccionesController extends Controller implements Initializa
     private void actionBuscarUsuario(ActionEvent event) {
         AppContext.getInstance().set("ModoBuscarUsuario", true);
         FlowController.getInstance().goViewInWindowModal("usuarios/Usuarios", ((Stage) btnBuscarUsuario.getScene().getWindow()), true);
+        AppContext.getInstance().set("ModoBuscarUsuario", null);
         if (AppContext.getInstance().get("usuId") != null) {
             listRegistroAcciones = RegistrosAccionesService.UsuarioRegistrosAcciones((Long) AppContext.getInstance().get("usuId"));
             if (listRegistroAcciones != null) {

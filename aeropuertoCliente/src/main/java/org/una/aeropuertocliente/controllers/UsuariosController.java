@@ -121,7 +121,7 @@ public class UsuariosController extends Controller implements Initializable {
     }
 
     private void validarRol() {
-        if ((boolean) AppContext.getInstance().get("ModoBuscarUsuario")) {
+        if (AppContext.getInstance().get("ModoBuscarUsuario")!=null) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
             actionUsuariosClick();
@@ -331,7 +331,8 @@ public class UsuariosController extends Controller implements Initializable {
         tableUsuarios.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if ((boolean) AppContext.getInstance().get("ModoBuscarUsuario")) {
+                if (AppContext.getInstance().get("ModoBuscarUsuario")!=null) {
+                    
                     if (mouseEvent.getClickCount() == 2 && tableUsuarios.selectionModelProperty().get().getSelectedItem() != null) {
                         UsuariosDTO usuario = (UsuariosDTO) tableUsuarios.selectionModelProperty().get().getSelectedItem();
                         AppContext.getInstance().set("usuId", usuario.getId());

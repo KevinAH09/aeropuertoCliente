@@ -25,9 +25,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.una.aeropuertocliente.dtos.ParametrosDTO;
 import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.UsuariosDTO;
+import org.una.aeropuertocliente.entitiesServices.ParametrosService;
 import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
 import org.una.aeropuertocliente.sharedService.Token;
@@ -57,6 +60,14 @@ public class CambioContrasenaController extends Controller implements Initializa
     private List<Node> requeridos = new ArrayList<>();
     public List<Node> modDesarrollo = new ArrayList<>();
     public List<String> modDesarrolloAxiliar = new ArrayList<>();
+    private ParametrosDTO minimiCaracteres = new ParametrosDTO();
+    private ParametrosDTO caracteresEspeciales = new ParametrosDTO();
+    @FXML
+    private Text txtRegla1;
+    @FXML
+    private Text txtRegla2;
+    @FXML
+    private Text txtRegla3;
 
     /**
      * Initializes the controller class.
@@ -66,6 +77,7 @@ public class CambioContrasenaController extends Controller implements Initializa
         usuDto = (UsuariosDTO) AppContext.getInstance().get("usuarioContrasena");
         lblNombre.setText(usuDto.getNombreCompleto());
         lblCedula.setText(usuDto.getCedula());
+        llenarReglas();
         llenarListaNodos();
         desarrollo();
     }
@@ -75,20 +87,55 @@ public class CambioContrasenaController extends Controller implements Initializa
         ((Stage) btnCancelar.getScene().getWindow()).close();
     }
 
+    public void llenarReglas() {
+        minimiCaracteres = ParametrosService.nombreParametros("password");
+        caracteresEspeciales = ParametrosService.nombreParametros("caracteresPassword");
+        txtRegla1.setText("1) La contraseña tiene que tener minimo " + minimiCaracteres.getValor() + " caracteres y sin espacios");
+        txtRegla2.setText("2) La contraseña tiene que tener al menos un cararter especial como estos " + caracteresEspeciales.getValor());
+        txtRegla3.setText("3) La contraseña no debe contar con mas de 4 letras de su nombre");
+    }
+
+    public boolean validarContrasenaCaracteresEspeciales(String contra) {
+        for (int i = 0; i < contra.length(); i++) {
+            for (int j = 0; j < caracteresEspeciales.getValor().length(); j++) {
+                if (contra.charAt(i) == caracteresEspeciales.getValor().charAt(j)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean validarContrasenaCaracteresMinimos(String contra) {
+
+        if (contra.length() >= Integer.valueOf(minimiCaracteres.getValor())) {
+            return true;
+        }
+        return false;
+    }
+
     @FXML
     private void actionCambiar(ActionEvent event) {
         String validacion = validarRequeridos();
         if (validacion == null) {
-            if (txtcontrasena.getText().equals(txtConfirmarcontrasena.getText())) {
-                usuDto.setContrasenaEncriptada(txtcontrasena.getText());
-                if (UsuariosService.updateContrasenaUsuario(usuDto) == 200) {
-                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Cambio la contraseña del usuario " + usuDto.getId(), new Date()));
-                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña se cambió correctamente");
-                    ((Stage) btnCancelar.getScene().getWindow()).close();
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no se cambió correctamente");
-                }
 
+            if (txtcontrasena.getText().equals(txtConfirmarcontrasena.getText())) {
+                if (validarContrasenaCaracteresEspeciales(txtcontrasena.getText())) {
+                    if (validarContrasenaCaracteresMinimos(txtcontrasena.getText())) {
+                        usuDto.setContrasenaEncriptada(txtcontrasena.getText());
+                        if (UsuariosService.updateContrasenaUsuario(usuDto) == 200) {
+                            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Cambio la contraseña del usuario " + usuDto.getId(), new Date()));
+                            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña se cambió correctamente");
+                            ((Stage) btnCancelar.getScene().getWindow()).close();
+                        } else {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no se cambió correctamente");
+                        }
+                    }else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña tiene que tener mas de " + minimiCaracteres.getValor() +" caracteres");
+                    }
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no contiene " + caracteresEspeciales.getValor());
+                }
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "Las contraseñas no coinciden");
             }
