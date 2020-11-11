@@ -63,7 +63,7 @@
                   <HBox alignment="CENTER" prefHeight="70.0" prefWidth="560.0" spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Label fx:id="lblcmbRol" prefHeight="20.0" prefWidth="40.0" />
-                        <JFXComboBox fx:id="cmbRoles" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Rol" />
+                        <JFXComboBox fx:id="cmbRoles" labelFloat="true" onAction="#actionComboBoxRol" prefHeight="29.0" prefWidth="190.0" promptText="Rol" />
                         <Label fx:id="lblcmbJefe" prefHeight="20.0" prefWidth="40.0" />
                         <JFXComboBox fx:id="combJefe" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Es jefe?" />
                      </children>
@@ -76,7 +76,7 @@
                         <Label fx:id="lblcmbArea" prefHeight="20.0" prefWidth="29.0" />
                         <JFXComboBox fx:id="cmbArea" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Area de trabajo" />
                         <Label fx:id="lbltextPass" prefHeight="20.0" prefWidth="40.0" />
-                        <JFXTextField fx:id="txtPassMostrado" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Contraseña" />
+                        <JFXTextField fx:id="txtPassMostrado" labelFloat="true" onKeyReleased="#actionCloseContexMenu" onMouseClicked="#actionContexMenu" prefHeight="29.0" prefWidth="190.0" promptText="Contraseña" />
                      </children>
                      <padding>
                         <Insets left="10.0" right="10.0" />

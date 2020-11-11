@@ -24,9 +24,12 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -38,10 +41,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.una.aeropuertocliente.dtos.AreasTrabajosDTO;
+import org.una.aeropuertocliente.dtos.ParametrosDTO;
 import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
 import org.una.aeropuertocliente.dtos.RolesDTO;
 import org.una.aeropuertocliente.dtos.UsuariosDTO;
 import org.una.aeropuertocliente.entitiesServices.AreasTrabajosService;
+import org.una.aeropuertocliente.entitiesServices.ParametrosService;
 import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.entitiesServices.RolesService;
 import org.una.aeropuertocliente.entitiesServices.UsuariosService;
@@ -120,6 +125,11 @@ public class MantenimientoUsuariosController implements Initializable {
     private Label lblcmbJefe;
     public List<Node> modDesarrollo = new ArrayList<>();
     public List<String> modDesarrolloAxiliar = new ArrayList<>();
+    private ParametrosDTO minimiCaracteres = new ParametrosDTO();
+    private ParametrosDTO caracteresEspeciales = new ParametrosDTO();
+    final ContextMenu contexMenuReglasContrasena = new ContextMenu();
+    private String txtRegla1;
+    private String txtRegla2;
 
     /**
      * Initializes the controller class.
@@ -136,59 +146,70 @@ public class MantenimientoUsuariosController implements Initializable {
         llenarFormulario();
         indicarRequeridos();
         llenarListaNodos();
+        llenarReglas();
+        contexMenuReglasContrasena.setAutoHide(true);
+        cmbArea.setVisible(true);
         desarrollo();
     }
 
     private void llenarFormulario() {
         usuario = (UsuariosDTO) AppContext.getInstance().get("usu");
         if (usuario != null) {
-            txtPassMostrado.setText(usuario.getContrasenaEncriptada());
-            txtPassMostrado.setDisable(true);
-            txtPassMostrado.setVisible(false);
-            txtId.setText(usuario.getId().toString());
-            txtId.setDisable(true);
-            txtNombre.setText(usuario.getNombreCompleto());
-            txtFecha.setDisable(true);
-            txtFecha.setText(new SimpleDateFormat("dd-MM-yyyy").format(usuario.getFechaRegistro()));
-            txtCorreo.setText(usuario.getCorreo());
-            txtCedula.setText(usuario.getCedula());
-            if (usuario.isEstado()) {
-                cmbEstado.setValue("Activo");
-            } else {
-                cmbEstado.setValue("Inactivo");
-            }
-            if (usuario.isJefeId()) {
-                combJefe.setValue("Si");
-            } else {
-                combJefe.setValue("No");
-            }
-            if (usuario.getAreaTrabajoId() != null) {
-                cmbArea.setValue(usuario.getAreaTrabajoId().getNombreAreaTrabajo());
-            } else {
-                cmbArea.setDisable(true);
-            }
-            cmbRoles.setValue(usuario.getRolId().getCodigo());
-            btnCambiarContrasena.setDisable(false);
-            btnCambiarContrasena.setVisible(true);
+            llenarFormularioEdicion();
 
         } else {
-            txtId.setText("Nuevo");
-            txtId.setDisable(true);
-            txtFecha.setDisable(true);
-            txtFecha.setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-            cmbEstado.setDisable(true);
-            cmbEstado.setValue("Activo");
-            btnCambiarContrasena.setDisable(true);
-            btnCambiarContrasena.setVisible(false);
+            llenarFormularioCreacion();
 
         }
+    }
+
+    private void llenarFormularioCreacion() {
+        txtId.setText("Nuevo");
+        txtId.setDisable(true);
+        txtFecha.setDisable(true);
+        txtFecha.setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        cmbEstado.setDisable(true);
+        cmbEstado.setValue("Activo");
+        btnCambiarContrasena.setDisable(true);
+        btnCambiarContrasena.setVisible(false);
+    }
+
+    private void llenarFormularioEdicion() {
+        txtPassMostrado.setText(usuario.getContrasenaEncriptada());
+        txtPassMostrado.setDisable(true);
+        txtPassMostrado.setVisible(false);
+        txtId.setText(usuario.getId().toString());
+        txtId.setDisable(true);
+        txtNombre.setText(usuario.getNombreCompleto());
+        txtFecha.setDisable(true);
+        txtFecha.setText(new SimpleDateFormat("dd-MM-yyyy").format(usuario.getFechaRegistro()));
+        txtCorreo.setText(usuario.getCorreo());
+        txtCedula.setText(usuario.getCedula());
+        if (usuario.isEstado()) {
+            cmbEstado.setValue("Activo");
+        } else {
+            cmbEstado.setValue("Inactivo");
+        }
+        if (usuario.isJefeId()) {
+            combJefe.setValue("Si");
+        } else {
+            combJefe.setValue("No");
+        }
+        if (usuario.getAreaTrabajoId() != null) {
+            cmbArea.setValue(usuario.getAreaTrabajoId().getDescripcion());
+        } else {
+            cmbArea.setDisable(true);
+        }
+        cmbRoles.setValue(usuario.getRolId().getDescripcion());
+        btnCambiarContrasena.setDisable(false);
+        btnCambiarContrasena.setVisible(true);
     }
 
     private void cargarComboboxAreas(List<String> llenarComboBox) {
         listAreas = AreasTrabajosService.allAreasTrabajos();
         llenarComboBox.clear();
         for (AreasTrabajosDTO lisArea : listAreas) {
-            llenarComboBox.add(lisArea.getNombreAreaTrabajo());
+            llenarComboBox.add(lisArea.getDescripcion());
         }
         cmbArea.setItems(FXCollections.observableArrayList(llenarComboBox));
     }
@@ -196,19 +217,32 @@ public class MantenimientoUsuariosController implements Initializable {
     private void cargarComboboxRoles(List<String> llenarComboBox) {
         listRoles = RolesService.allRoles();
         for (RolesDTO listRole : listRoles) {
-            llenarComboBox.add(listRole.getCodigo());
+            llenarComboBox.add(listRole.getDescripcion());
         }
         cmbRoles.setItems(FXCollections.observableArrayList(llenarComboBox));
+    }
+
+    private boolean validarAreaTrabjao() {
+        if (!cmbRoles.getValue().equals("AUDITOR") && !cmbRoles.getValue().equals("ADMINISTRADOR")) {
+            if (cmbArea.getValue() == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @FXML
     private void onActionGuardar(ActionEvent event) {
         String validacion = validarRequeridos();
         if (validacion == null && validarEmail()) {
-            if ((UsuariosDTO) AppContext.getInstance().get("usu") == null) {
-                guardarNuevoUsuario();
-            } else {
-                guardarEdicionUsuario();
+            if (validarAreaTrabjao()) {
+                if ((UsuariosDTO) AppContext.getInstance().get("usu") == null) {
+                    guardarNuevoUsuario();
+                } else {
+                    guardarEdicionUsuario();
+                }
+            }else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El siguiente campo es requerido [Area Trabajo].");
             }
         } else {
             if (validacion != null) {
@@ -220,13 +254,24 @@ public class MantenimientoUsuariosController implements Initializable {
     }
 
     private void guardarEdicionUsuario() {
+        llenarUsuarioEditado();
+        if (UsuariosService.updateUsuario(usuario) == 200) {
+            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito usuario " + usuario.getId(), new Date()));
+            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
+            PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
+        }
+    }
+
+    private void llenarUsuarioEditado() {
         for (RolesDTO listRole : listRoles) {
-            if (listRole.getCodigo().equals(cmbRoles.getValue())) {
+            if (listRole.getDescripcion().equals(cmbRoles.getValue())) {
                 usuario.setRolId(listRole);
             }
         }
         for (AreasTrabajosDTO lisArea : listAreas) {
-            if (lisArea.getNombreAreaTrabajo().equals(cmbArea.getValue())) {
+            if (lisArea.getDescripcion().equals(cmbArea.getValue())) {
                 usuario.setAreaTrabajoId(lisArea);
             }
         }
@@ -243,16 +288,70 @@ public class MantenimientoUsuariosController implements Initializable {
         } else {
             usuario.setJefeId(false);
         }
-        if (UsuariosService.updateUsuario(usuario) == 200) {
-            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito usuario " + usuario.getId(), new Date()));
-            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
-            PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
-        } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
+    }
+
+    public void llenarReglas() {
+        minimiCaracteres = new ParametrosDTO();
+        caracteresEspeciales = new ParametrosDTO();
+        minimiCaracteres = ParametrosService.nombreParametros("password");
+        caracteresEspeciales = ParametrosService.nombreParametros("caracteresPassword");
+        if (minimiCaracteres.getId() != null) {
+            txtRegla1 = "1) La contraseña tiene que tener minimo " + minimiCaracteres.getValor() + " caracteres y sin espacios";
+        }
+        if (caracteresEspeciales.getId() != null) {
+            txtRegla2 = "2) La contraseña tiene que tener al menos un cararter especial como estos " + caracteresEspeciales.getValor();
         }
     }
 
+    public boolean validarContrasenaCaracteresEspeciales(String contra) {
+        if (caracteresEspeciales.getId() != null) {
+            for (int i = 0; i < contra.length(); i++) {
+                for (int j = 0; j < caracteresEspeciales.getValor().length(); j++) {
+                    if (contra.charAt(i) == caracteresEspeciales.getValor().charAt(j)) {
+                        return true;
+                    }
+                }
+            }
+
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validarContrasenaCaracteresMinimos(String contra) {
+        if (minimiCaracteres.getId() != null) {
+            if (contra.length() >= Integer.valueOf(minimiCaracteres.getValor())) {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
     private void guardarNuevoUsuario() {
+        if (validarContrasenaCaracteresMinimos(txtPassMostrado.getText())) {
+            if (validarContrasenaCaracteresEspeciales(txtPassMostrado.getText())) {
+
+                llenarUsuarioNuevo();
+                if (usuario != null) {
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo usuario", new Date()));
+                    new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
+                }
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "La contraseña no contiene " + caracteresEspeciales.getValor());
+
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "La contraseña tiene que tener mas de " + minimiCaracteres.getValor() + " caracteres");
+
+        }
+    }
+
+    private void llenarUsuarioNuevo() {
         usuario = new UsuariosDTO();
         for (RolesDTO listRole : listRoles) {
             if (listRole.getCodigo().equals(cmbRoles.getValue())) {
@@ -276,12 +375,6 @@ public class MantenimientoUsuariosController implements Initializable {
         }
         usuario.setContrasenaEncriptada(txtPassMostrado.getText());
         usuario = UsuariosService.createUsuario(usuario);
-        if (usuario != null) {
-            RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo usuario", new Date()));
-            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
-        } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
-        }
     }
 
     private AreasTrabajosDTO valueCbAreaTrabajo(String codigo) {
@@ -301,12 +394,11 @@ public class MantenimientoUsuariosController implements Initializable {
         if (AppContext.getInstance().get("UsuCambionPass") != null) {
             usuario = (UsuariosDTO) AppContext.getInstance().get("UsuCambionPass");
         }
-        System.out.println(usuario.getContrasenaEncriptada());
     }
 
     public void indicarRequeridos() {
         requeridos.clear();
-        requeridos.addAll(Arrays.asList(txtCedula, txtCorreo, txtPassMostrado, txtNombre, cmbArea, cmbRoles, combJefe, cmbEstado));
+        requeridos.addAll(Arrays.asList(txtCedula, txtCorreo, txtPassMostrado, txtNombre, cmbRoles, combJefe, cmbEstado));
     }
 
     public String validarRequeridos() {
@@ -440,6 +532,31 @@ public class MantenimientoUsuariosController implements Initializable {
                     desarrollo();
                 }
             }
+        }
+    }
+
+    @FXML
+    private void actionContexMenu(MouseEvent event) {
+        if (txtPassMostrado.getText().equals("")) {
+            contexMenuReglasContrasena.getItems().clear();
+            contexMenuReglasContrasena.getItems().add(
+                    new MenuItem(txtRegla1 + "\n" + txtRegla2));
+            contexMenuReglasContrasena.show(txtPassMostrado, Side.RIGHT, 10, 0);
+        }
+    }
+
+    @FXML
+    private void actionCloseContexMenu(KeyEvent event) {
+        contexMenuReglasContrasena.hide();
+    }
+
+    @FXML
+    private void actionComboBoxRol(ActionEvent event) {
+        if (cmbRoles.getValue().equals("AUDITOR") || cmbRoles.getValue().equals("ADMINISTRADOR")) {
+            cmbArea.setValue(null);
+            cmbArea.setVisible(false);
+        } else {
+            cmbArea.setVisible(true);
         }
     }
 
