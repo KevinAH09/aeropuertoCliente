@@ -460,36 +460,47 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     private void notificar(int num) {
         tableAviones.getItems().clear();
         if (num == 1) {
-            ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
-            Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView);
-            box.getChildren().add(lab);
-            tableAviones.setPlaceholder(box);
+            alertar1();
         }
         if (num == 0) {
-            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text(mensaje);
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView2);
-            box.getChildren().add(lab);
-            tableAviones.setPlaceholder(box);
+            alertar2();
         }
         if (num == 2) {
-            ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
-            Text lab = new Text("No hay aviones en esta aerolinea, porfavor regitrar aviones");
-            lab.setFill(Color.web("#0076a3"));
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-            box.getChildren().add(imageView2);
-            box.getChildren().add(lab);
-            tableAviones.setPlaceholder(box);
-
+            alertar3();
         }
+    }
+
+    private void alertar3() {
+        ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+        Text lab = new Text("No hay aviones en esta aerolinea, porfavor regitrar aviones");
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView2);
+        box.getChildren().add(lab);
+        tableAviones.setPlaceholder(box);
+    }
+
+    private void alertar2() {
+        ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+        Text lab = new Text(mensaje);
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView2);
+        box.getChildren().add(lab);
+        tableAviones.setPlaceholder(box);
+    }
+
+    private void alertar1() {
+        ImageView imageView = new ImageView(new Image("org/una/aeropuertocliente/views/shared/info.png"));
+        Text lab = new Text("Para mostrar datos en este apartado debe realizar el filtro correspondiente");
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView);
+        box.getChildren().add(lab);
+        tableAviones.setPlaceholder(box);
     }
 
     public void indicarRequeridos() {
@@ -571,47 +582,57 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    if (node == lblTable) {
-                        dato = tableAviones.getId();
-                        ((Label) node).setText(dato);
-                    } else {
-                        dato = ((Label) node).getId();
-                        ((Label) node).setText(dato);
-                    }
+            validarBooleanoTrue();
+        } else {
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                if (node == lblTable) {
+                    dato = tableAviones.getId();
+                    ((Label) node).setText(dato);
+                } else {
+                    dato = ((Label) node).getId();
+                    ((Label) node).setText(dato);
                 }
             }
-        } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
-                }
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
             }
         }
     }
