@@ -14,7 +14,7 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="36.0" prefWidth="430.0">
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="574.0">
                      <children>
                         <Label text="Cambio de contraseña" />
                      </children>
@@ -35,6 +35,18 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
                         <JFXTextField fx:id="txtConfirmarcontrasena" alignment="CENTER" prefHeight="44.0" prefWidth="340.0" promptText="Confirmar contraseña" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label text="Reglas para la contraseña:" />
+                              <Label fx:id="txtRegla1" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="570.0" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+                              <Label fx:id="txtRegla2" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="570.0" textAlignment="CENTER" />
+                              <Label fx:id="txtRegla3" alignment="CENTER" contentDisplay="CENTER" prefWidth="570.0" textAlignment="CENTER" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="55.0" prefWidth="643.0" spacing="20.0">
