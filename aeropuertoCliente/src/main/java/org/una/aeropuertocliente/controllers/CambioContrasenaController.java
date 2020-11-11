@@ -88,27 +88,40 @@ public class CambioContrasenaController extends Controller implements Initializa
     }
 
     public void llenarReglas() {
+        minimiCaracteres = new ParametrosDTO();
+        caracteresEspeciales = new ParametrosDTO();
         minimiCaracteres = ParametrosService.nombreParametros("password");
         caracteresEspeciales = ParametrosService.nombreParametros("caracteresPassword");
-        txtRegla1.setText("1) La contraseña tiene que tener minimo " + minimiCaracteres.getValor() + " caracteres y sin espacios");
-        txtRegla2.setText("2) La contraseña tiene que tener al menos un cararter especial como estos " + caracteresEspeciales.getValor());
-        txtRegla3.setText("3) La contraseña no debe contar con mas de 4 letras de su nombre");
+        if (minimiCaracteres.getId() != null) {
+            txtRegla1.setText("1) La contraseña tiene que tener minimo " + minimiCaracteres.getValor() + " caracteres y sin espacios");
+        }
+        if (caracteresEspeciales.getId() != null) {
+            txtRegla2.setText("2) La contraseña tiene que tener al menos un cararter especial como estos " + caracteresEspeciales.getValor());
+        }
     }
 
     public boolean validarContrasenaCaracteresEspeciales(String contra) {
-        for (int i = 0; i < contra.length(); i++) {
-            for (int j = 0; j < caracteresEspeciales.getValor().length(); j++) {
-                if (contra.charAt(i) == caracteresEspeciales.getValor().charAt(j)) {
-                    return true;
+        if (caracteresEspeciales.getId() != null) {
+            for (int i = 0; i < contra.length(); i++) {
+                for (int j = 0; j < caracteresEspeciales.getValor().length(); j++) {
+                    if (contra.charAt(i) == caracteresEspeciales.getValor().charAt(j)) {
+                        return true;
+                    }
                 }
             }
+
+        } else {
+            return true;
         }
         return false;
     }
 
     public boolean validarContrasenaCaracteresMinimos(String contra) {
-
-        if (contra.length() >= Integer.valueOf(minimiCaracteres.getValor())) {
+        if (minimiCaracteres.getId() != null) {
+            if (contra.length() >= Integer.valueOf(minimiCaracteres.getValor())) {
+                return true;
+            }
+        } else {
             return true;
         }
         return false;
@@ -130,8 +143,8 @@ public class CambioContrasenaController extends Controller implements Initializa
                         } else {
                             new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no se cambió correctamente");
                         }
-                    }else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña tiene que tener mas de " + minimiCaracteres.getValor() +" caracteres");
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña tiene que tener mas de " + minimiCaracteres.getValor() + " caracteres");
                     }
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no contiene " + caracteresEspeciales.getValor());
