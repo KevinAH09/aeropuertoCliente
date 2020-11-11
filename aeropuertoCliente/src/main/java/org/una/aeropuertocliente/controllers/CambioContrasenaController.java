@@ -84,6 +84,7 @@ public class CambioContrasenaController extends Controller implements Initializa
 
     @FXML
     private void actionCancelar(ActionEvent event) {
+        AppContext.getInstance().set("UsuCambionPass", null);
         ((Stage) btnCancelar.getScene().getWindow()).close();
     }
 
@@ -137,6 +138,8 @@ public class CambioContrasenaController extends Controller implements Initializa
                     if (validarContrasenaCaracteresMinimos(txtcontrasena.getText())) {
                         usuDto.setContrasenaEncriptada(txtcontrasena.getText());
                         if (UsuariosService.updateContrasenaUsuario(usuDto) == 200) {
+                            usuDto = UsuariosService.idUsuario(usuDto.getId());
+                            AppContext.getInstance().set("UsuCambionPass", usuDto);
                             RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Cambio la contraseña del usuario " + usuDto.getId(), new Date()));
                             new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña se cambió correctamente");
                             ((Stage) btnCancelar.getScene().getWindow()).close();

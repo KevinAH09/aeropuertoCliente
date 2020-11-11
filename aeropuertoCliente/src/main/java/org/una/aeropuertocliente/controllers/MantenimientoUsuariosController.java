@@ -298,6 +298,10 @@ public class MantenimientoUsuariosController implements Initializable {
 
         AppContext.getInstance().set("usuarioContrasena", usuario);
         FlowController.getInstance().goViewInWindowModal("cambioContrasena/cambioContrasena", ((Stage) txtCorreo.getScene().getWindow()), Boolean.TRUE);
+        if (AppContext.getInstance().get("UsuCambionPass") != null) {
+            usuario = (UsuariosDTO) AppContext.getInstance().get("UsuCambionPass");
+        }
+        System.out.println(usuario.getContrasenaEncriptada());
     }
 
     public void indicarRequeridos() {

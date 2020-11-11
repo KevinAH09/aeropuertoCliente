@@ -1,4 +1,3 @@
-
 package org.una.aeropuertocliente.utils;
 
 import java.io.FileInputStream;
@@ -6,12 +5,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
-
 public class AppContext {
 
     private static AppContext INSTANCE = null;
     private static HashMap<String, Object> context = new HashMap<>();
-     
+
     private AppContext() {
         cargarPropiedades();
     }
@@ -32,15 +30,15 @@ public class AppContext {
         }
         return INSTANCE;
     }
-    
-    private void cargarPropiedades(){
+
+    private void cargarPropiedades() {
         try {
             FileInputStream configFile;
             configFile = new FileInputStream("config/properties.ini");
             Properties appProperties = new Properties();
             appProperties.load(configFile);
             configFile.close();
-            if(appProperties.getProperty("propiedades.resturl")!=null){
+            if (appProperties.getProperty("propiedades.resturl") != null) {
                 this.set("resturl", appProperties.getProperty("propiedades.resturl"));
             }
         } catch (IOException io) {
@@ -53,27 +51,10 @@ public class AppContext {
         throw new CloneNotSupportedException();
     }
 
-    public Object get(String parameter){
-        
+    public Object get(String parameter) {
+
         Object object = context.get(parameter);
-        if(object == null && parameter.contains("Service"))
-        {
-            synchronized (AppContext.class) {
-                object = context.get(parameter);
-                if (object == null) {
-                    try {
-                        try {
-                            object = Class.forName("unaplanilla2.service."+parameter).newInstance();
-                            context.put(parameter, object);
-                        } catch (InstantiationException | IllegalAccessException ex) {
-                            System.out.println(ex);
-                        }
-                    } catch (ClassNotFoundException ex) {
-                        System.out.println(ex);
-                    }
-                }
-            } 
-        }        
+
         return object;
     }
 
