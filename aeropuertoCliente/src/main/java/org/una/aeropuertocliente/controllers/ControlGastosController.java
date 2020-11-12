@@ -131,33 +131,23 @@ public class ControlGastosController extends Controller implements Initializable
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
                 if (t1 == "Id") {
-                    fDesde.setVisible(false);
-                    fHasta.setVisible(false);
-                    txtBusqueda.setVisible(true);
+                    ocultarDatePicker();
                     txtBusqueda.setPromptText("Ingrese el  número correspondiente");
                 }
                 if (t1 == "Empresa") {
-                    fDesde.setVisible(false);
-                    fHasta.setVisible(false);
-                    txtBusqueda.setVisible(true);
+                    ocultarDatePicker();
                     txtBusqueda.setPromptText("Ingrese el nombre de la empresa");
                 }
                 if (t1 == "Contrato") {
-                    fDesde.setVisible(false);
-                    fHasta.setVisible(false);
-                    txtBusqueda.setVisible(true);
+                    ocultarDatePicker();
                     txtBusqueda.setPromptText("Ingrese el número de contrato");
                 }
                 if (t1 == "Tipo") {
-                    fDesde.setVisible(false);
-                    fHasta.setVisible(false);
-                    txtBusqueda.setVisible(true);
+                    ocultarDatePicker();
                     txtBusqueda.setPromptText("Ingrese el tipo de gasto");
                 }
                 if (t1 == "Estado") {
-                    fDesde.setVisible(false);
-                    fHasta.setVisible(false);
-                    txtBusqueda.setVisible(true);
+                    ocultarDatePicker();
                     txtBusqueda.setPromptText("Ingrese el estado del gasto");
                 }
 
@@ -170,6 +160,12 @@ public class ControlGastosController extends Controller implements Initializable
 
         }
         );
+    }
+
+    private void ocultarDatePicker() {
+        fDesde.setVisible(false);
+        fHasta.setVisible(false);
+        txtBusqueda.setVisible(true);
     }
 
     @FXML
