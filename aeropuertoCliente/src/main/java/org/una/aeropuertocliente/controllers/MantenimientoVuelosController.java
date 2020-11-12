@@ -273,6 +273,13 @@ public class MantenimientoVuelosController extends Controller implements Initial
             radioCargoCombustible.setSelected(false);
 
         }
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnGuardar.setVisible(true);
+            btnGuardar.setDisable(false);
+        } else {
+            btnGuardar.setVisible(true);
+            btnGuardar.setDisable(true);
+        }
         indicarRequeridos();
         llenarListaNodos();
         desarrollo();
@@ -570,7 +577,7 @@ public class MantenimientoVuelosController extends Controller implements Initial
                 dato = modDesarrolloAxiliar.get(i);
                 ((JFXRadioButton) modDesarrollo.get(i)).setText(dato);
             }
-            
+
         }
     }
 
@@ -592,12 +599,12 @@ public class MantenimientoVuelosController extends Controller implements Initial
             if (node instanceof Label) {
                 dato = ((Label) node).getId();
                 ((Label) node).setText(dato);
-                
+
             }
             if (node instanceof JFXRadioButton) {
                 dato = ((JFXRadioButton) node).getId();
                 ((JFXRadioButton) node).setText(dato);
-                
+
             }
         }
     }

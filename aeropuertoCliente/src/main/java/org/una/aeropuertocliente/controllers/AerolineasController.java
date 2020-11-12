@@ -89,9 +89,17 @@ public class AerolineasController extends Controller implements Initializable {
     private Label lblTable;
     @FXML
     private JFXComboBox<String> cmbEstado;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnRegistrarAvion.setVisible(true);
+            btnRegistrarAvion.setDisable(true);
+        } else {
+            btnRegistrarAvion.setVisible(true);
+            btnRegistrarAvion.setDisable(false);
+        }
+
         if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
             btnRegistrarAvion.setVisible(false);
             btnRegistrarAvion.setDisable(true);
@@ -104,8 +112,7 @@ public class AerolineasController extends Controller implements Initializable {
         llenarAerolineas();
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         combFilter.setItems(FXCollections.observableArrayList("Id", "Nombre Responsable", "Nombre Aerolinea", "Estado"));
-        asignarAccionComboboxFiltro(
-        );
+        asignarAccionComboboxFiltro();
         llenarListaNodos();
         desarrollo();
     }
@@ -212,7 +219,7 @@ public class AerolineasController extends Controller implements Initializable {
         tableview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
                     if (mouseEvent.getClickCount() == 2 && tableview.selectionModelProperty().get().getSelectedItem() != null) {
                         aerolinea = (AerolineasDTO) tableview.selectionModelProperty().get().getSelectedItem();
                         AppContext.getInstance().set("aerolinea", aerolinea);
@@ -300,7 +307,7 @@ public class AerolineasController extends Controller implements Initializable {
     private void filtrarPorId() throws NumberFormatException {
         tableview.getItems().clear();
         aerolineaFil = AerolineasService.idAerolinea(Long.valueOf(txtFilter.getText()));
-        
+
         if (aerolineaFil != null) {
             tableview.setItems(FXCollections.observableArrayList(aerolineaFil));
         } else {

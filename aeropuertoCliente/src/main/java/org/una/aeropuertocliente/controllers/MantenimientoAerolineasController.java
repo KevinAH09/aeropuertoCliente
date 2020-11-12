@@ -131,6 +131,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         aerolinea = (AerolineasDTO) AppContext.getInstance().get("aerolinea");
         combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula", "Tipo de avión", "Estado", "Nombre aerolinea"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
@@ -188,7 +189,20 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         indicarRequeridos();
         llenarListaNodos();
         desarrollo();
+    
+
+    if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+        btnEditar.setVisible(true);
+        btnEditar.setDisable(false);
+        btnRegistrar.setDisable(false);
+        btnRegistrar.setVisible(true);
+    }else {
+        btnEditar.setVisible(true);
+        btnEditar.setDisable(true);
+        btnRegistrar.setDisable(true);
+        btnRegistrar.setVisible(true);
     }
+}
 
     private void asignarAccionComboboxFiltro() {
         combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -219,7 +233,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                     txtFilter.setPromptText("Ingrese nombre de la aerolinea");
                 }
             }
-            
+
         }
         );
     }
@@ -410,7 +424,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
             if (avionesList.get(i).getAerolineaId().getNombreAerolinea().equals(txtFilter.getText())) {
                 avionesList2 = AvionesService.aerolinea(avionesList.get(i).getAerolineaId().getId());
             }
-            
+
         }
         if (!avionesList2.isEmpty()) {
             tableAviones.setItems(FXCollections.observableArrayList(avionesList2));
@@ -472,7 +486,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
     private void filtrarPorId() throws NumberFormatException {
         tableAviones.getItems().clear();
         avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
-        
+
         if (avionesFil != null) {
             tableAviones.setItems(FXCollections.observableArrayList(avionesFil));
         } else {

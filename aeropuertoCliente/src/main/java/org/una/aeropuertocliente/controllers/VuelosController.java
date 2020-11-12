@@ -144,6 +144,13 @@ public class VuelosController extends Controller implements Initializable {
             txtmatricula.setDisable(true);
             tableView.setDisable(true);
         }
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnRegistrarVuelos.setVisible(true);
+            btnRegistrarVuelos.setDisable(false);
+        } else {
+            btnRegistrarVuelos.setVisible(true);
+            btnRegistrarVuelos.setDisable(true);
+        }
         asignarAccionComboboxFiltro();
         llenarListaNodos();
         desarrollo();
@@ -199,17 +206,19 @@ public class VuelosController extends Controller implements Initializable {
         tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount() == 2 && tableView.selectionModelProperty().get().getSelectedItem() != null) {
-                    VuelosDTO vuelo = (VuelosDTO) tableView.selectionModelProperty().get().getSelectedItem();
-                    AppContext.getInstance().set("VueloAMantenimientoVuelo", vuelo);
-                    if (Objetoaviones != null) {
-                        AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
+                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+                    if (mouseEvent.getClickCount() == 2 && tableView.selectionModelProperty().get().getSelectedItem() != null) {
+                        VuelosDTO vuelo = (VuelosDTO) tableView.selectionModelProperty().get().getSelectedItem();
+                        AppContext.getInstance().set("VueloAMantenimientoVuelo", vuelo);
+                        if (Objetoaviones != null) {
+                            AppContext.getInstance().set("AvionAMantenimientoVuelo", Objetoaviones);
+                        }
+                        PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
                     }
-                    PrincipalController.cambiarVistaPrincipal("mantenimientoVuelos/MantenimientoVuelos");
                 }
-
             }
-        });
+        }
+        );
     }
 
     private void llenarVuelos() {
@@ -314,7 +323,7 @@ public class VuelosController extends Controller implements Initializable {
             if (vuelosList.get(i).getAvionId().getMatricula().equals(txtFilter.getText())) {
                 vuelosList2 = VuelosService.vuelos(vuelosList.get(i).getAvionId().getId());
             }
-            
+
         }
         if (!vuelosList2.isEmpty()) {
             tableView.setItems(FXCollections.observableArrayList(vuelosList2));

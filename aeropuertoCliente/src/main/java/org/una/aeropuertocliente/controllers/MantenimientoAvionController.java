@@ -210,6 +210,13 @@ public class MantenimientoAvionController extends Controller implements Initiali
             btnEditar.setDisable(true);
             btnGuardarEditar.setVisible(true);
         }
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnEditar.setVisible(true);
+            btnEditar.setDisable(false);
+        } else {
+            btnEditar.setVisible(true);
+            btnEditar.setDisable(true);
+        }
         indicarRequeridos();
         llenarListaNodos();
         desarrollo();
