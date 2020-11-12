@@ -362,6 +362,10 @@ public class PrincipalController extends Controller implements Initializable {
 
     @FXML
     private void actionTamano(MouseEvent event) {
+        ancgor.setMaxWidth((double) AppContext.getInstance().get("whit"));
+        ancgor.setMinWidth((double) AppContext.getInstance().get("whit"));
+        ancgor.setMaxHeight((double) AppContext.getInstance().get("heig"));
+        ancgor.setMinHeight((double) AppContext.getInstance().get("heig"));
     }
 
     public static void cambiarVistaPrincipal(String ruta) {
