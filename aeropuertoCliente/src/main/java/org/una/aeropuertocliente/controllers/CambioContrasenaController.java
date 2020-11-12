@@ -77,6 +77,9 @@ public class CambioContrasenaController extends Controller implements Initializa
         usuDto = (UsuariosDTO) AppContext.getInstance().get("usuarioContrasena");
         lblNombre.setText(usuDto.getNombreCompleto());
         lblCedula.setText(usuDto.getCedula());
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnCambiar.setDisable(true);
+        }
         llenarReglas();
         llenarListaNodos();
         desarrollo();

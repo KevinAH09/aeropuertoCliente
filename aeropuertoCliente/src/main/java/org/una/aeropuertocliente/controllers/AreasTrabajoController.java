@@ -102,7 +102,8 @@ public class AreasTrabajoController extends Controller implements Initializable 
     }
 
     private void validarRol() {
-        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")
+                || !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
         } else {

@@ -121,11 +121,11 @@ public class UsuariosController extends Controller implements Initializable {
     }
 
     private void validarRol() {
-        if (AppContext.getInstance().get("ModoBuscarUsuario")!=null) {
+        if (AppContext.getInstance().get("ModoBuscarUsuario") != null) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
             actionUsuariosClick();
-        } else if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+        } else if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
         } else {
@@ -331,8 +331,8 @@ public class UsuariosController extends Controller implements Initializable {
         tableUsuarios.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (AppContext.getInstance().get("ModoBuscarUsuario")!=null) {
-                    
+                if (AppContext.getInstance().get("ModoBuscarUsuario") != null) {
+
                     if (mouseEvent.getClickCount() == 2 && tableUsuarios.selectionModelProperty().get().getSelectedItem() != null) {
                         UsuariosDTO usuario = (UsuariosDTO) tableUsuarios.selectionModelProperty().get().getSelectedItem();
                         AppContext.getInstance().set("usuId", usuario.getId());

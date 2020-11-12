@@ -86,6 +86,9 @@ public class ReporteAvionesController extends Controller implements Initializabl
         llenarComboBox();
         llenarListaNodos();
         desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnGenerar.setDisable(true);
+        }
     }
 
     private void llenarComboBox() {

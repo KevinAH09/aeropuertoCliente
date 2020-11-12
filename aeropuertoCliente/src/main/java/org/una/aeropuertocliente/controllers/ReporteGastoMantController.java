@@ -85,6 +85,9 @@ public class ReporteGastoMantController extends Controller implements Initializa
         llenarComboBox();
         llenarListaNodos();
         desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnGenerar.setDisable(true);
+        }
     }
 
     private void llenarComboBox() {

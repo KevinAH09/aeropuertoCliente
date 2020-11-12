@@ -92,6 +92,9 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
         llenarFormulario();
         llenarListaNodos();
         desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnRegistrar.setDisable(true);
+        }
     }
 
     private void llenarFormulario() {

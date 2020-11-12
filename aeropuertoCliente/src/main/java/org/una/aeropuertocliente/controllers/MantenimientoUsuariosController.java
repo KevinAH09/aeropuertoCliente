@@ -150,6 +150,9 @@ public class MantenimientoUsuariosController implements Initializable {
         contexMenuReglasContrasena.setAutoHide(true);
         cmbArea.setVisible(true);
         desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnGuardar.setDisable(true);
+        }
     }
 
     private void llenarFormulario() {

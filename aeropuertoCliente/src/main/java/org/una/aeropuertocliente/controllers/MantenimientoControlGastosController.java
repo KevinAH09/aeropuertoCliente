@@ -142,6 +142,9 @@ public class MantenimientoControlGastosController extends Controller implements 
         indicarRequeridos();
         llenarListaNodos();
         desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnRegistrar.setDisable(true);
+        }
     }
 
     private void cargarComboboxAreas() {

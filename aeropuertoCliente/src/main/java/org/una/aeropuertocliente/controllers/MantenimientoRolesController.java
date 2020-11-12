@@ -94,6 +94,9 @@ public class MantenimientoRolesController extends Controller implements Initiali
         llenarFormulario();
         llenarListaNodos();
         desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnRegistrar.setDisable(true);
+        }
     }
 
     private void llenarFormulario() {

@@ -110,12 +110,13 @@ public class ControlGastosController extends Controller implements Initializable
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Empresa", "Intervalo Fechas", "Contrato", "Estado", "Tipo"));
         asignarAccionComboboxFiltro();
         notificar(1);
+        validarRol();
         llenarListaNodos();
         desarrollo();
     }
 
     private void validarRol() {
-        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")||Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             actionControlClick();
             btnRegistrar.setVisible(true);
             btnRegistrar.setDisable(false);
