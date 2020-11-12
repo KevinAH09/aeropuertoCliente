@@ -322,7 +322,7 @@ public class UsuariosController extends Controller implements Initializable {
             return new SimpleStringProperty("no tiene");
         });
         tableUsuarios.getColumns().addAll(colId, colNombre, colEstado, colCedula, colCorreo, colFecha, colRol, colArea);
-        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             agregarBtnTableView();
         }
     }

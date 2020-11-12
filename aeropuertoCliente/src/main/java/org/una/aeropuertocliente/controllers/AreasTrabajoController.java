@@ -94,11 +94,19 @@ public class AreasTrabajoController extends Controller implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         validarRol();
-        actionZonasClick();
+
         notificar(1);
         asignarAccionCombobox();
         llenarListaNodos();
         desarrollo();
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnRegistrar.setVisible(false);
+            btnRegistrar.setDisable(true);
+        } else {
+            actionZonasClick();
+            btnRegistrar.setVisible(true);
+            btnRegistrar.setDisable(false);
+        }
     }
 
     private void validarRol() {
@@ -190,7 +198,9 @@ public class AreasTrabajoController extends Controller implements Initializable 
             return new SimpleStringProperty("Inactivo");
         });
         tableAreas.getColumns().addAll(colId, colNombre, colDescrpcion, colEstado);
-        agregarBtnTableView();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            agregarBtnTableView();
+        }
 
     }
 

@@ -116,7 +116,7 @@ public class ControlGastosController extends Controller implements Initializable
     }
 
     private void validarRol() {
-        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")||Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             actionControlClick();
             btnRegistrar.setVisible(true);
             btnRegistrar.setDisable(false);
@@ -304,7 +304,7 @@ public class ControlGastosController extends Controller implements Initializable
         TableColumn<ControlesGastosDTO, String> colArea = new TableColumn("Area");
         colArea.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDetalleControlGastoId().getAreaTrabajoId().getNombreAreaTrabajo()));
         tableGastos.getColumns().addAll(colId, colEmpresa, colContrato, colResponsable, colFecha, colTipo, colEstado, colArea);
-        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR")) {
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             agregarBtnTableView();
         }
     }

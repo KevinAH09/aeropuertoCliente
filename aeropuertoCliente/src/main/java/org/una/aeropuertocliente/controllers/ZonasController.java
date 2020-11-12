@@ -92,13 +92,15 @@ public class ZonasController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        actionZonasClick();
         notificar(1);
         cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Estado", "Nombre", "Código"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         asignarAccionComboboxFiltro();
         llenarListaNodos();
         desarrollo();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            actionZonasClick();
+        }
     }
 
     private void asignarAccionComboboxFiltro() {
@@ -233,7 +235,9 @@ public class ZonasController extends Controller implements Initializable {
         TableColumn<ZonasDTO, String> colDescripcion = new TableColumn("Descripcion");
         colDescripcion.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getDescripcion()));
         tableZonas.getColumns().addAll(colId, colNombre, colEstado, colCodigo, colDescripcion);
-        agregarBtnTableView();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            agregarBtnTableView();
+        }
 
     }
 
