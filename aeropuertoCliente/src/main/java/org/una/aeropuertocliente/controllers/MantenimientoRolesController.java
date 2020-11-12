@@ -219,7 +219,7 @@ public class MantenimientoRolesController extends Controller implements Initiali
         modDesarrolloAxiliar.add(cmbEstado.getPromptText());
         modDesarrolloAxiliar.add(btnCancelar.getText());
         modDesarrolloAxiliar.add(btnRegistrar.getText());
-        modDesarrollo.addAll(Arrays.asList(titulo, txtId, txtDescripcion, cmbEstado, btnCancelar, btnRegistrar));
+        modDesarrollo.addAll(Arrays.asList(titulo,txtCodigo, txtId, txtDescripcion, cmbEstado, btnCancelar, btnRegistrar));
     }
 
     public void desarrollo() {
