@@ -95,6 +95,12 @@ public class AvionesController extends Controller implements Initializable {
         llenarAviones();
         combFilter.setItems(FXCollections.observableArrayList("Id", "Matrícula", "Tipo de avión", "Estado", "Nombre aerolinea"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
+        asignarAccionComboboxFiltro();
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void asignarAccionComboboxFiltro() {
         combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
@@ -126,8 +132,6 @@ public class AvionesController extends Controller implements Initializable {
 
         }
         );
-        llenarListaNodos();
-        desarrollo();
     }
 
     @FXML
@@ -137,76 +141,96 @@ public class AvionesController extends Controller implements Initializable {
             notificar(0);
         } else {
             if (combFilter.getValue() == "Id" && !txtFilter.getText().isEmpty()) {
-                tableAvion.getItems().clear();
-                avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
-                if (avionesFil != null) {
-                    tableAvion.setItems(FXCollections.observableArrayList(avionesFil));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                filtrarPorId();
             }
             if (combFilter.getValue() == "Estado" && !txtFilter.getText().isEmpty()) {
-                if (cmbEstado.getValue().equals("Activo")) {
-                    tableAvion.getItems().clear();
-                    avionesList = AvionesService.estado(true);
-                    if (avionesList != null) {
-                        tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-                    } else {
-                        mensaje = "No se encontró coincidencias";
-                        notificar(0);
-                    }
-                }
-                if (cmbEstado.getValue() == "Inactivo") {
-                    tableAvion.getItems().clear();
-                    avionesList = AvionesService.estado(false);
-                    if (avionesList != null) {
-                        tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-                    } else {
-                        mensaje = "No se encontró coincidencias";
-                        notificar(0);
-                    }
-                }
+                filtrarPorEstado();
             }
             if (combFilter.getValue() == "Matrícula" && !txtFilter.getText().isEmpty()) {
-                tableAvion.getItems().clear();
-                avionesList = AvionesService.matricula(txtFilter.getText());
-                if (avionesList != null) {
-                    tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                filtrarPorMatricula();
             }
             if (combFilter.getValue() == "Tipo de avión" && !txtFilter.getText().isEmpty()) {
-                tableAvion.getItems().clear();
-                avionesList = AvionesService.TipoAvion(txtFilter.getText());
-                if (avionesList != null) {
-                    tableAvion.setItems(FXCollections.observableArrayList(avionesList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                filtrarPorTipoAvion();
             }
             if (combFilter.getValue() == "Nombre aerolinea" && !txtFilter.getText().isEmpty()) {
-
-                tableAvion.getItems().clear();
-                avionesList = AvionesService.allAviones();
-                for (int i = 0; i < avionesList.size(); i++) {
-                    if (avionesList.get(i).getAerolineaId().getNombreAerolinea().equals(txtFilter.getText())) {
-                        avionesList2 = AvionesService.aerolinea(avionesList.get(i).getAerolineaId().getId());
-                    }
-
-                }
-                if (!avionesList2.isEmpty()) {
-                    tableAvion.setItems(FXCollections.observableArrayList(avionesList2));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                filtrarPorAerolinea();
             }
+            
         }
 
+    }
+
+    private void filtrarPorAerolinea() {
+        tableAvion.getItems().clear();
+        avionesList = AvionesService.allAviones();
+        for (int i = 0; i < avionesList.size(); i++) {
+            if (avionesList.get(i).getAerolineaId().getNombreAerolinea().equals(txtFilter.getText())) {
+                avionesList2 = AvionesService.aerolinea(avionesList.get(i).getAerolineaId().getId());
+            }
+
+        }
+        if (!avionesList2.isEmpty()) {
+            tableAvion.setItems(FXCollections.observableArrayList(avionesList2));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorTipoAvion() {
+        tableAvion.getItems().clear();
+        avionesList = AvionesService.TipoAvion(txtFilter.getText());
+        if (avionesList != null) {
+            tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorMatricula() {
+        tableAvion.getItems().clear();
+        avionesList = AvionesService.matricula(txtFilter.getText());
+        if (avionesList != null) {
+            tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorEstado() {
+        if (cmbEstado.getValue().equals("Activo")) {
+            tableAvion.getItems().clear();
+            avionesList = AvionesService.estado(true);
+            if (avionesList != null) {
+                tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+            } else {
+                mensaje = "No se encontró coincidencias";
+                notificar(0);
+            }
+        }
+        if (cmbEstado.getValue() == "Inactivo") {
+            tableAvion.getItems().clear();
+            avionesList = AvionesService.estado(false);
+            if (avionesList != null) {
+                tableAvion.setItems(FXCollections.observableArrayList(avionesList));
+            } else {
+                mensaje = "No se encontró coincidencias";
+                notificar(0);
+            }
+        }
+    }
+
+    private void filtrarPorId() throws NumberFormatException {
+        tableAvion.getItems().clear();
+        avionesFil = AvionesService.idAvion(Long.valueOf(txtFilter.getText()));
+        if (avionesFil != null) {
+            tableAvion.setItems(FXCollections.observableArrayList(avionesFil));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
     }
 
     private void notificar(int num) {

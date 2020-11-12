@@ -8,10 +8,11 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="560.0" stylesheets="@../shared/Style2.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.aeropuertocliente.controllers.AerolineasController">
    <children>
       <StackPane onKeyPressed="#modoDesarrollo" prefHeight="520.0" prefWidth="560.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -25,8 +26,13 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="98.0" prefWidth="550.0">
                      <children>
-                        <Label fx:id="labTxtFild" prefHeight="21.0" prefWidth="40.0" />
-                        <JFXTextField fx:id="txtFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su búsqueda" />
+                        <Pane prefHeight="79.0" prefWidth="225.0">
+                           <children>
+                              <Label fx:id="labTxtFild" layoutX="-6.0" layoutY="37.0" prefHeight="21.0" prefWidth="40.0" />
+                              <JFXTextField fx:id="txtFilter" labelFloat="true" layoutX="34.0" layoutY="35.0" prefHeight="29.0" prefWidth="190.0" promptText="Ingrese su búsqueda" />
+                              <JFXComboBox fx:id="cmbEstado" layoutX="36.0" layoutY="37.0" prefHeight="26.0" prefWidth="187.0" promptText="Estado" visible="false" />
+                           </children>
+                        </Pane>
                         <Label fx:id="labComb" prefHeight="21.0" prefWidth="43.0" />
                         <JFXComboBox fx:id="combFilter" labelFloat="true" prefHeight="29.0" prefWidth="190.0" promptText="Tipo de búsqueda" />
                         <Label fx:id="labBtnFiltrar" prefHeight="21.0" prefWidth="32.0" />

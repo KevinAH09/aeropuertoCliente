@@ -144,6 +144,12 @@ public class VuelosController extends Controller implements Initializable {
             txtmatricula.setDisable(true);
             tableView.setDisable(true);
         }
+        asignarAccionComboboxFiltro();
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void asignarAccionComboboxFiltro() {
         combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
@@ -187,8 +193,6 @@ public class VuelosController extends Controller implements Initializable {
 
         }
         );
-        llenarListaNodos();
-        desarrollo();
     }
 
     private void actionVueloClick() {
@@ -281,81 +285,105 @@ public class VuelosController extends Controller implements Initializable {
             notificar(0);
         } else {
             if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
-                tableView.getItems().clear();
-                vuelosFil = VuelosService.idVuelo(Long.valueOf(txtFilter.getText()));
-                if (vuelosFil != null) {
-                    tableView.setItems(FXCollections.observableArrayList(vuelosFil));
-                } else {
-                    notificar(0);
-                }
+                filtrarPorId();
             }
             if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-                if (cmbEstado.getValue() == "Activo") {
-                    tableView.getItems().clear();
-                    vuelosList = VuelosService.estado(true);
-                    if (vuelosList != null) {
-                        tableView.setItems(FXCollections.observableArrayList(vuelosList));
-                    } else {
-                        notificar(0);
-                    }
-                }
-                if (cmbEstado.getValue() == "Inactivo") {
-                    tableView.getItems().clear();
-                    vuelosList = VuelosService.estado(false);
-                    if (vuelosList != null) {
-                        tableView.setItems(FXCollections.observableArrayList(vuelosList));
-                    } else {
-                        notificar(0);
-                    }
-                }
+                filtrarPorEstado();
             }
 
             if (combFilter.getValue().equals("Fecha inicio") && !txtFilter.getText().isEmpty()) {
-                tableView.getItems().clear();
-                LocalDate localDate = datePikerFechainicio.getValue();
-                Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
-                vuelosList = VuelosService.FechaInicio(sDate1);
-                if (vuelosList != null) {
-                    tableView.setItems(FXCollections.observableArrayList(vuelosList));
-                } else {
-                    notificar(0);
-                }
+                filtrarPorFechaInicio();
             }
 
             if (combFilter.getValue().equals("Destino") && !txtFilter.getText().isEmpty()) {
-                tableView.getItems().clear();
-                vuelosList = VuelosService.Destino(txtFilter.getText());
-                if (vuelosList != null) {
-                    tableView.setItems(FXCollections.observableArrayList(vuelosList));
-                } else {
-                    notificar(0);
-                }
+                filtrarPorDestino();
             }
             if (combFilter.getValue().equals("Origen") && !txtFilter.getText().isEmpty()) {
-                tableView.getItems().clear();
-                vuelosList = VuelosService.Origen(txtFilter.getText());
-                if (vuelosList != null) {
-                    tableView.setItems(FXCollections.observableArrayList(vuelosList));
-                } else {
-                    notificar(0);
-                }
+                filtrarPorOrigen();
             }
             if (combFilter.getValue().equals("Matricula del Avión") && !txtFilter.getText().isEmpty()) {
-                tableView.getItems().clear();
-                vuelosList = VuelosService.allVuelos();
-                for (int i = 0; i < vuelosList.size(); i++) {
-                    if (vuelosList.get(i).getAvionId().getMatricula().equals(txtFilter.getText())) {
-                        vuelosList2 = VuelosService.vuelos(vuelosList.get(i).getAvionId().getId());
-                    }
-
-                }
-                if (!vuelosList2.isEmpty()) {
-                    tableView.setItems(FXCollections.observableArrayList(vuelosList2));
-                } else {
-                    notificar(0);
-                }
+                filtrarPorMatriculaAvion();
             }
+        }
+    }
+
+    private void filtrarPorMatriculaAvion() {
+        tableView.getItems().clear();
+        vuelosList = VuelosService.allVuelos();
+        for (int i = 0; i < vuelosList.size(); i++) {
+            if (vuelosList.get(i).getAvionId().getMatricula().equals(txtFilter.getText())) {
+                vuelosList2 = VuelosService.vuelos(vuelosList.get(i).getAvionId().getId());
+            }
+            
+        }
+        if (!vuelosList2.isEmpty()) {
+            tableView.setItems(FXCollections.observableArrayList(vuelosList2));
+        } else {
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorOrigen() {
+        tableView.getItems().clear();
+        vuelosList = VuelosService.Origen(txtFilter.getText());
+        if (vuelosList != null) {
+            tableView.setItems(FXCollections.observableArrayList(vuelosList));
+        } else {
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorDestino() {
+        tableView.getItems().clear();
+        vuelosList = VuelosService.Destino(txtFilter.getText());
+        if (vuelosList != null) {
+            tableView.setItems(FXCollections.observableArrayList(vuelosList));
+        } else {
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorFechaInicio() {
+        tableView.getItems().clear();
+        LocalDate localDate = datePikerFechainicio.getValue();
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        vuelosList = VuelosService.FechaInicio(sDate1);
+        if (vuelosList != null) {
+            tableView.setItems(FXCollections.observableArrayList(vuelosList));
+        } else {
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorEstado() {
+        if (cmbEstado.getValue() == "Activo") {
+            tableView.getItems().clear();
+            vuelosList = VuelosService.estado(true);
+            if (vuelosList != null) {
+                tableView.setItems(FXCollections.observableArrayList(vuelosList));
+            } else {
+                notificar(0);
+            }
+        }
+        if (cmbEstado.getValue() == "Inactivo") {
+            tableView.getItems().clear();
+            vuelosList = VuelosService.estado(false);
+            if (vuelosList != null) {
+                tableView.setItems(FXCollections.observableArrayList(vuelosList));
+            } else {
+                notificar(0);
+            }
+        }
+    }
+
+    private void filtrarPorId() throws NumberFormatException {
+        tableView.getItems().clear();
+        vuelosFil = VuelosService.idVuelo(Long.valueOf(txtFilter.getText()));
+        if (vuelosFil != null) {
+            tableView.setItems(FXCollections.observableArrayList(vuelosFil));
+        } else {
+            notificar(0);
         }
     }
 

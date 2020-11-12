@@ -87,6 +87,8 @@ public class AerolineasController extends Controller implements Initializable {
     private Label titulo;
     @FXML
     private Label lblTable;
+    @FXML
+    private JFXComboBox<String> cmbEstado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -100,28 +102,42 @@ public class AerolineasController extends Controller implements Initializable {
         aerolinea = null;
         actionAerolineaClick();
         llenarAerolineas();
+        cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         combFilter.setItems(FXCollections.observableArrayList("Id", "Nombre Responsable", "Nombre Aerolinea", "Estado"));
+        asignarAccionComboboxFiltro(
+        );
+        llenarListaNodos();
+        desarrollo();
+    }
+
+    private void asignarAccionComboboxFiltro() {
         combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
                 if (t1 == "Id") {
                     txtFilter.setPromptText("Ingrese número correspondiente");
+                    cmbEstado.setVisible(false);
+                    txtFilter.setVisible(true);
                 }
                 if (t1 == "Nombre Responsable") {
                     txtFilter.setPromptText("Ingrese nombre del responsable");
+                    cmbEstado.setVisible(false);
+                    txtFilter.setVisible(true);
                 }
                 if (t1 == "Nombre Aerolinea") {
                     txtFilter.setPromptText("Ingrese nombre de la aeroliena");
+                    cmbEstado.setVisible(false);
+                    txtFilter.setVisible(true);
                 }
                 if (t1 == "Estado") {
                     txtFilter.setPromptText("Ingrese estado");
+                    cmbEstado.setVisible(true);
+                    txtFilter.setVisible(false);
                 }
             }
 
         }
         );
-        llenarListaNodos();
-        desarrollo();
     }
 
     private void limpiarTableView() {
@@ -217,63 +233,79 @@ public class AerolineasController extends Controller implements Initializable {
         } else {
 
             if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
-                tableview.getItems().clear();
-                aerolineaFil = AerolineasService.idAerolinea(Long.valueOf(txtFilter.getText()));
-
-                if (aerolineaFil != null) {
-                    tableview.setItems(FXCollections.observableArrayList(aerolineaFil));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                filtrarPorId();
             }
             if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-                if (txtFilter.getText().equals("Activo")) {
-                    tableview.getItems().clear();
-                    aerolineaList = AerolineasService.estadoAerolinea(true);
-                    if (aerolineaList != null) {
-                        tableview.setItems(FXCollections.observableArrayList(aerolineaList));
-                    } else {
-                        mensaje = "No se encontró coincidencias";
-                        notificar(0);
-                    }
-                }
-                if (txtFilter.getText().equals("Inactivo")) {
-                    tableview.getItems().clear();
-                    aerolineaList = AerolineasService.estadoAerolinea(false);
-                    if (aerolineaList != null) {
-                        tableview.setItems(FXCollections.observableArrayList(aerolineaList));
-                    } else {
-                        mensaje = "No se encontró coincidencias";
-                        notificar(0);
-                    }
-                }
-                if (aerolineaList == null) {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                filtrarPorEstado();
             }
             if (combFilter.getValue().equals("Nombre Responsable") && !txtFilter.getText().isEmpty()) {
-                tableview.getItems().clear();
-                aerolineaList = AerolineasService.nombreResponsable(txtFilter.getText());
-                tableview.setItems(FXCollections.observableArrayList(aerolineaList));
-                if (aerolineaList != null) {
-                    tableview.setItems(FXCollections.observableArrayList(aerolineaList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                filtrarPorResponsable();
             }
             if (combFilter.getValue().equals("Nombre Aerolinea") && !txtFilter.getText().isEmpty()) {
-                tableview.getItems().clear();
-                aerolineaList = AerolineasService.nombreAerolinea(txtFilter.getText());
-                if (aerolineaList != null) {
-                    tableview.setItems(FXCollections.observableArrayList(aerolineaList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                filtrarPorAerolinea();
             }
+        }
+    }
+
+    private void filtrarPorAerolinea() {
+        tableview.getItems().clear();
+        aerolineaList = AerolineasService.nombreAerolinea(txtFilter.getText());
+        if (aerolineaList != null) {
+            tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorResponsable() {
+        tableview.getItems().clear();
+        aerolineaList = AerolineasService.nombreResponsable(txtFilter.getText());
+        tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+        if (aerolineaList != null) {
+            tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorEstado() {
+        if (cmbEstado.getValue() == "Activo") {
+            tableview.getItems().clear();
+            aerolineaList = AerolineasService.estadoAerolinea(true);
+            if (aerolineaList != null) {
+                tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+            } else {
+                mensaje = "No se encontró coincidencias";
+                notificar(0);
+            }
+        }
+        if (cmbEstado.getValue() == "Inactivo") {
+            tableview.getItems().clear();
+            aerolineaList = AerolineasService.estadoAerolinea(false);
+            if (aerolineaList != null) {
+                tableview.setItems(FXCollections.observableArrayList(aerolineaList));
+            } else {
+                mensaje = "No se encontró coincidencias";
+                notificar(0);
+            }
+        }
+        if (aerolineaList == null) {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorId() throws NumberFormatException {
+        tableview.getItems().clear();
+        aerolineaFil = AerolineasService.idAerolinea(Long.valueOf(txtFilter.getText()));
+        
+        if (aerolineaFil != null) {
+            tableview.setItems(FXCollections.observableArrayList(aerolineaFil));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
         }
     }
 
