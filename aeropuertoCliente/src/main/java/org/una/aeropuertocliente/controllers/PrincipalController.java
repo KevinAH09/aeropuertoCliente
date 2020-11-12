@@ -113,6 +113,7 @@ public class PrincipalController extends Controller implements Initializable {
         TreeItem<String> root = crearTreeItemRoot();
         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             crearTreeItemParametros(root);
+            crearFuncionesAuditor(root);
         } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_AUDITOR")) {
             crearFuncionesAuditor(root);
         } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GERENTE")) {
