@@ -103,6 +103,7 @@ public class PrincipalController extends Controller implements Initializable {
 
         vboxPrincipalStatic = vboxPrincipal;
         crearHiloTokenExpiracion();
+        actionTamano(null);
 
     }
 
