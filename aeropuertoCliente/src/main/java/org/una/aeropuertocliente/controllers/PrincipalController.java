@@ -112,8 +112,7 @@ public class PrincipalController extends Controller implements Initializable {
         agregarImagenFondo();
         TreeItem<String> root = crearTreeItemRoot();
         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
-            crearTreeItemParametros(root);
-            crearFuncionesAuditor(root);
+            crearTreeItemAdministrador(root);
         } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_AUDITOR")) {
             crearFuncionesAuditor(root);
         } else if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GERENTE")) {
@@ -231,9 +230,22 @@ public class PrincipalController extends Controller implements Initializable {
         crearTreeItemRegistroAcciones(itemInformacion);
     }
 
-    private void crearTreeItemParametros(TreeItem<String> root) {
+    private void crearTreeItemAdministrador(TreeItem<String> root) {
+         TreeItem<String> itemInformacion = crearTreeItemInformacion(root);
+        TreeItem<String> itemAdministracion = crearTreeItemAdministracion(root);
+        TreeItem<String> itemReporte = crearTreeItemReportes(root);
         TreeItem<String> itemParametros = new TreeItem<>("Parametros del sistema");
-        root.getChildren().add(itemParametros);
+        itemAdministracion.getChildren().add(itemParametros);
+        crearTreeItemUsuarios(itemInformacion);
+        crearTreeItemRoles(itemInformacion);
+        crearTreeItemAreaTrabajo(itemInformacion);
+        crearTreeItemAerolineas(itemInformacion);
+        crearTreeItemZonas(itemInformacion);
+        crearTreeItemRocorridoAviones(itemReporte);
+        crearTreeItemReporteGastosMantenimiento(itemReporte);
+        crearTreeItemControlGastosMantenimiento(itemAdministracion);
+        crearTreeItemVuelos(itemAdministracion);
+        crearTreeItemRegistroAcciones(itemInformacion);
     }
 
     private void crearTreeItemRegistroAcciones(TreeItem<String> itemInformacion) {
