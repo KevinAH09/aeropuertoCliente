@@ -123,6 +123,9 @@ public class LoginController extends Controller implements Initializable {
             if (authenticationResponse != null) {
                 Token.setInstance(authenticationResponse);
                 if (Token.getInstance().getUsuario().isEstado()) {
+                    if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+                        AppContext.getInstance().set("mod", false);
+                    }
                     RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Inicio de Sesion", new Date()));
                     FlowController.getInstance().goView("principal/Principal");
                 } else {
@@ -191,6 +194,10 @@ public class LoginController extends Controller implements Initializable {
                     dato = ((JFXTextField) node).getId();
                     ((JFXTextField) node).setPromptText(dato);
                 }
+                if (node instanceof JFXPasswordField) {
+                    dato = ((JFXPasswordField) node).getId();
+                    ((JFXPasswordField) node).setPromptText(dato);
+                }
                 if (node instanceof JFXButton) {
                     dato = ((JFXButton) node).getId();
                     ((JFXButton) node).setText(dato);
@@ -201,6 +208,10 @@ public class LoginController extends Controller implements Initializable {
                 if (modDesarrollo.get(i) instanceof JFXTextField) {
                     dato = modDesarrolloAxiliar.get(i);
                     ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+                }
+                if (modDesarrollo.get(i) instanceof JFXPasswordField) {
+                    dato = modDesarrolloAxiliar.get(i);
+                    ((JFXPasswordField) modDesarrollo.get(i)).setPromptText(dato);
                 }
                 if (modDesarrollo.get(i) instanceof JFXButton) {
                     dato = modDesarrolloAxiliar.get(i);

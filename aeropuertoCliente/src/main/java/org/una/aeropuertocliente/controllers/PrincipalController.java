@@ -231,7 +231,7 @@ public class PrincipalController extends Controller implements Initializable {
     }
 
     private void crearTreeItemAdministrador(TreeItem<String> root) {
-         TreeItem<String> itemInformacion = crearTreeItemInformacion(root);
+        TreeItem<String> itemInformacion = crearTreeItemInformacion(root);
         TreeItem<String> itemAdministracion = crearTreeItemAdministracion(root);
         TreeItem<String> itemReporte = crearTreeItemReportes(root);
         TreeItem<String> itemParametros = new TreeItem<>("Parametros del sistema");
@@ -349,6 +349,12 @@ public class PrincipalController extends Controller implements Initializable {
 
     private void actionCerrarSesion(ActionEvent event) {
         hilo.stop();
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+            if (validos1) {
+                AppContext.getInstance().set("mod", false);
+            }
+        }
         FlowController.getInstance().goMain();
         FlowController.eliminar("login/Login");
         FlowController.getInstance().goView("login/Login");
