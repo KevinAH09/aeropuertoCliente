@@ -23,7 +23,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="30.0" prefWidth="701.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label text="Cambio de divisas" />
+                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="141.0" text="Cambio de divisas" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0" VBox.vgrow="ALWAYS">
