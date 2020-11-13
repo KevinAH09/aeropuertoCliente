@@ -356,6 +356,7 @@ public class PrincipalController extends Controller implements Initializable {
                 AppContext.getInstance().set("mod", false);
             }
         }
+        Token.setInstance(null);
         FlowController.getInstance().goMain();
         FlowController.eliminar("login/Login");
         FlowController.getInstance().goView("login/Login");
@@ -399,31 +400,41 @@ public class PrincipalController extends Controller implements Initializable {
         String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof Label) {
-                    if (node == lblVbox) {
-                        dato = vboxPrincipal.getId();
-                        ((Label) node).setText(dato);
-                    }
-                    if (node == lblTree) {
-                        dato = treeAcciones.getId();
-                        ((Label) node).setText(dato);
-                    }
-                }
-            }
+            validarBooleanTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            validarBooleanFalse();
+        }
+    }
+
+    private void validarBooleanFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof Label) {
+                if (node == lblVbox) {
+                    dato = vboxPrincipal.getId();
+                    ((Label) node).setText(dato);
                 }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
+                if (node == lblTree) {
+                    dato = treeAcciones.getId();
+                    ((Label) node).setText(dato);
                 }
             }
         }

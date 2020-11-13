@@ -145,6 +145,8 @@ public class CambioDivisasController extends Controller implements Initializable
     double USDYen;
     String itemSelect = null;
     String nombreArchivo = "";
+    @FXML
+    private Label titulo;
 
     /**
      * Initializes the controller class.
@@ -1115,9 +1117,10 @@ public class CambioDivisasController extends Controller implements Initializable
         modDesarrolloAxiliar.clear();
         modDesarrolloAxiliar.add(cbMoneda.getPromptText());
         modDesarrolloAxiliar.add(txtIngresarMonto.getPromptText());
+        modDesarrolloAxiliar.add(titulo.getText());
         modDesarrolloAxiliar.add(btnExportarPDF.getText());
         modDesarrolloAxiliar.add(btnExportarXML.getText());
-        modDesarrollo.addAll(Arrays.asList(cbMoneda, txtIngresarMonto, btnExportarPDF, btnExportarXML));
+        modDesarrollo.addAll(Arrays.asList(cbMoneda, txtIngresarMonto, titulo, btnExportarPDF, btnExportarXML));
     }
 
     public void desarrollo() {
@@ -1210,7 +1213,8 @@ public class CambioDivisasController extends Controller implements Initializable
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
         if (cntrlD.match(event)) {
             if (Token.getInstance().getUsuario() != null) {
-                if (Token.getInstance().getUsuario().getRolId().getCodigo() == "ROLE_ADMIN") {
+                System.out.println(Token.getInstance().getUsuario().getRolId().getCodigo());
+                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
                     cambiarModo();
                 } else {
                     alertaIngreso();
@@ -1243,41 +1247,19 @@ public class CambioDivisasController extends Controller implements Initializable
     }
 
     private void alertaIngreso() {
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Habilitar el modo desarrollador");
-        dialog.setHeaderText("Ingrese las credenciales del usuario administrador");
-
-        dialog.setGraphic(new ImageView(new Image("org/una/aeropuertocliente/views/shared/user.png")));
-
-        ButtonType loginButtonType = new ButtonType("Accesar", ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        JFXTextField username = new JFXTextField();
-        username.setPromptText("Cédula");
-        username.setLabelFloat(true);
-        username.setPrefWidth(150);
-
-        JFXPasswordField password = new JFXPasswordField();
-        password.setPromptText("Contraseña");
-        password.setLabelFloat(true);
-        password.setPrefWidth(150);
-
+        Dialog<Pair<String, String>> dialog = crearDialog2();
+        ButtonType loginButtonType = crearButtonDialog(dialog);
+        GridPane grid = crearGridPaneDialog();
+        JFXTextField username = crearTXTUserDialog();
+        JFXPasswordField password = crearTXTPassDialog();
+        crearNodeButtonDialog(dialog, loginButtonType, username);
         grid.add(username, 1, 0);
         grid.add(password, 1, 2);
-
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-        loginButton.setDisable(true);
-
-        username.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(newValue.trim().isEmpty());
-        });
         dialog.getDialogPane().setContent(grid);
+        crearFuncionabilidadDialog(username, dialog, loginButtonType, password);
+    }
 
+    private void crearFuncionabilidadDialog(JFXTextField username, Dialog<Pair<String, String>> dialog, ButtonType loginButtonType, JFXPasswordField password) {
         Platform.runLater(() -> username.requestFocus());
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == loginButtonType) {
@@ -1291,6 +1273,52 @@ public class CambioDivisasController extends Controller implements Initializable
             System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
             IngresarModoDesarrollador(usernamePassword.getKey(), usernamePassword.getValue());
         });
+    }
+
+    private void crearNodeButtonDialog(Dialog<Pair<String, String>> dialog, ButtonType loginButtonType, JFXTextField username) {
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        username.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+    }
+
+    private JFXPasswordField crearTXTPassDialog() {
+        JFXPasswordField password = new JFXPasswordField();
+        password.setPromptText("Contraseña");
+        password.setLabelFloat(true);
+        password.setPrefWidth(150);
+        return password;
+    }
+
+    private JFXTextField crearTXTUserDialog() {
+        JFXTextField username = new JFXTextField();
+        username.setPromptText("Cédula");
+        username.setLabelFloat(true);
+        username.setPrefWidth(150);
+        return username;
+    }
+
+    private GridPane crearGridPaneDialog() {
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        return grid;
+    }
+
+    private ButtonType crearButtonDialog(Dialog<Pair<String, String>> dialog) {
+        ButtonType loginButtonType = new ButtonType("Accesar", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+        return loginButtonType;
+    }
+     private Dialog<Pair<String, String>> crearDialog2() {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Habilitar el modo desarrollador");
+        dialog.setHeaderText("Ingrese las credenciales del usuario administrador");
+        dialog.setGraphic(new ImageView(new Image("org/una/aeropuertocliente/views/shared/user.png")));
+        return dialog;
     }
 
     private void IngresarModoDesarrollador(String user, String pass) {
