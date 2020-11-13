@@ -258,25 +258,29 @@ public class LoginController extends Controller implements Initializable {
 
     @FXML
     private void modoDesarrollo(KeyEvent event) {
-        KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
+       KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
         if (cntrlD.match(event)) {
-            if (Token.getInstance().getUsuario() != null) {
+            if (Token.getInstance() != null) {
                 if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
                     cambiarModo();
                 } else {
                     alertaIngreso();
+                    if (Token.getInstance() != null) {
+                        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
+                            cambiarModo();
+                        } else {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnIngresar.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                        }
+                    }
+                }
+            } else {
+                alertaIngreso();
+                if (Token.getInstance() != null) {
                     if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                         cambiarModo();
                     } else {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnIngresar.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                     }
-                }
-            } else {
-                alertaIngreso();
-                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
-                    cambiarModo();
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnIngresar.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                 }
             }
         }

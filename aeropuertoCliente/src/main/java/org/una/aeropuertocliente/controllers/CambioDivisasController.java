@@ -1212,24 +1212,27 @@ public class CambioDivisasController extends Controller implements Initializable
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
         if (cntrlD.match(event)) {
-            if (Token.getInstance().getUsuario() != null) {
-                System.out.println(Token.getInstance().getUsuario().getRolId().getCodigo());
+            if (Token.getInstance() != null) {
                 if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
                     cambiarModo();
                 } else {
                     alertaIngreso();
-                    if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
-                        cambiarModo();
-                    } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnExportarXML.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                    if (Token.getInstance() != null) {
+                        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
+                            cambiarModo();
+                        } else {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnExportarPDF.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                        }
                     }
                 }
             } else {
                 alertaIngreso();
-                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
-                    cambiarModo();
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnExportarXML.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                if (Token.getInstance() != null) {
+                    if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
+                        cambiarModo();
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnExportarPDF.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                    }
                 }
             }
         }
@@ -1313,7 +1316,8 @@ public class CambioDivisasController extends Controller implements Initializable
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
         return loginButtonType;
     }
-     private Dialog<Pair<String, String>> crearDialog2() {
+
+    private Dialog<Pair<String, String>> crearDialog2() {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Habilitar el modo desarrollador");
         dialog.setHeaderText("Ingrese las credenciales del usuario administrador");

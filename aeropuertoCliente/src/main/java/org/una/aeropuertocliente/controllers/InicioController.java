@@ -68,6 +68,7 @@ public class InicioController extends Controller implements Initializable {
         AppContext.getInstance().set("mod", mod);
         llenarListaNodos();
         desarrollo();
+        Token.setInstance(null);
     }
 
     @FXML
@@ -127,23 +128,27 @@ public class InicioController extends Controller implements Initializable {
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
         if (cntrlD.match(event)) {
-            if (Token.getInstance().getUsuario() != null) {
+            if (Token.getInstance() != null) {
                 if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
                     cambiarModo();
                 } else {
                     alertaIngreso();
+                    if (Token.getInstance() != null) {
+                        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
+                            cambiarModo();
+                        } else {
+                            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnSalir.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                        }
+                    }
+                }
+            } else {
+                alertaIngreso();
+                if (Token.getInstance() != null) {
                     if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                         cambiarModo();
                     } else {
                         new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnSalir.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                     }
-                }
-            } else {
-                alertaIngreso();
-                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
-                    cambiarModo();
-                } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnSalir.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                 }
             }
         }
@@ -250,10 +255,12 @@ public class InicioController extends Controller implements Initializable {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "El usuario esta inactivo");
                 }
             } else {
+                Token.setInstance(null);
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
             }
 
         } else {
+            Token.setInstance(null);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Error de inicio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "Datos incompletos");
         }
     }
