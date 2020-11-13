@@ -7,6 +7,7 @@ package org.una.aeropuertocliente.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +32,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -62,7 +64,10 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.una.aeropuertocliente.apiForex.TiposMonedasServices;
+import org.una.aeropuertocliente.dtos.AuthenticationRequest;
+import org.una.aeropuertocliente.dtos.AuthenticationResponse;
 import org.una.aeropuertocliente.dtos.RegistrosAccionesDTO;
+import org.una.aeropuertocliente.entitiesServices.LoginService;
 import org.una.aeropuertocliente.entitiesServices.RegistrosAccionesService;
 import org.una.aeropuertocliente.sharedService.Token;
 import org.una.aeropuertocliente.utils.AppContext;
@@ -1119,43 +1124,53 @@ public class CambioDivisasController extends Controller implements Initializable
         String dato = "";
         boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
         if (validos1) {
-            for (Node node : modDesarrollo) {
-                if (node instanceof JFXTextField) {
-                    dato = ((JFXTextField) node).getId();
-                    ((JFXTextField) node).setPromptText(dato);
-                }
-                if (node instanceof JFXButton) {
-                    dato = ((JFXButton) node).getId();
-                    ((JFXButton) node).setText(dato);
-                }
-                if (node instanceof JFXComboBox) {
-                    dato = ((JFXComboBox) node).getId();
-                    ((JFXComboBox) node).setPromptText(dato);
-                }
-                if (node instanceof Label) {
-                    dato = ((Label) node).getId();
-                    ((Label) node).setText(dato);
-
-                }
-            }
+            validarBooleanoTrue();
         } else {
-            for (int i = 0; i < modDesarrollo.size(); i++) {
-                if (modDesarrollo.get(i) instanceof JFXButton) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXButton) modDesarrollo.get(i)).setText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXTextField) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof JFXComboBox) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
-                }
-                if (modDesarrollo.get(i) instanceof Label) {
-                    dato = modDesarrolloAxiliar.get(i);
-                    ((Label) modDesarrollo.get(i)).setText(dato);
-                }
+            validarBooleanoFalse();
+        }
+    }
+
+    private void validarBooleanoFalse() {
+        String dato;
+        for (int i = 0; i < modDesarrollo.size(); i++) {
+            if (modDesarrollo.get(i) instanceof JFXButton) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXButton) modDesarrollo.get(i)).setText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXTextField) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXTextField) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof JFXComboBox) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((JFXComboBox) modDesarrollo.get(i)).setPromptText(dato);
+            }
+            if (modDesarrollo.get(i) instanceof Label) {
+                dato = modDesarrolloAxiliar.get(i);
+                ((Label) modDesarrollo.get(i)).setText(dato);
+            }
+        }
+    }
+
+    private void validarBooleanoTrue() {
+        String dato;
+        for (Node node : modDesarrollo) {
+            if (node instanceof JFXTextField) {
+                dato = ((JFXTextField) node).getId();
+                ((JFXTextField) node).setPromptText(dato);
+            }
+            if (node instanceof JFXButton) {
+                dato = ((JFXButton) node).getId();
+                ((JFXButton) node).setText(dato);
+            }
+            if (node instanceof JFXComboBox) {
+                dato = ((JFXComboBox) node).getId();
+                ((JFXComboBox) node).setPromptText(dato);
+            }
+            if (node instanceof Label) {
+                dato = ((Label) node).getId();
+                ((Label) node).setText(dato);
+
             }
         }
     }
@@ -1193,17 +1208,110 @@ public class CambioDivisasController extends Controller implements Initializable
     @FXML
     private void modoDesarrollo(KeyEvent event) {
         KeyCombination cntrlD = new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_DOWN);
-        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
-            if (cntrlD.match(event)) {
-                boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
-                if (validos1) {
-                    AppContext.getInstance().set("mod", false);
-                    desarrollo();
+        if (cntrlD.match(event)) {
+            if (Token.getInstance().getUsuario() != null) {
+                if (Token.getInstance().getUsuario().getRolId().getCodigo() == "ROLE_ADMIN") {
+                    cambiarModo();
                 } else {
-                    AppContext.getInstance().set("mod", true);
-                    desarrollo();
+                    alertaIngreso();
+                    if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
+                        cambiarModo();
+                    } else {
+                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnExportarXML.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                    }
+                }
+            } else {
+                alertaIngreso();
+                if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
+                    cambiarModo();
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnExportarXML.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                 }
             }
+        }
+    }
+
+    private void cambiarModo() {
+        boolean validos1 = (Boolean) AppContext.getInstance().get("mod");
+        if (validos1) {
+            AppContext.getInstance().set("mod", false);
+            desarrollo();
+        } else {
+            AppContext.getInstance().set("mod", true);
+            desarrollo();
+        }
+    }
+
+    private void alertaIngreso() {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Habilitar el modo desarrollador");
+        dialog.setHeaderText("Ingrese las credenciales del usuario administrador");
+
+        dialog.setGraphic(new ImageView(new Image("org/una/aeropuertocliente/views/shared/user.png")));
+
+        ButtonType loginButtonType = new ButtonType("Accesar", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        JFXTextField username = new JFXTextField();
+        username.setPromptText("Cédula");
+        username.setLabelFloat(true);
+        username.setPrefWidth(150);
+
+        JFXPasswordField password = new JFXPasswordField();
+        password.setPromptText("Contraseña");
+        password.setLabelFloat(true);
+        password.setPrefWidth(150);
+
+        grid.add(username, 1, 0);
+        grid.add(password, 1, 2);
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        username.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+        dialog.getDialogPane().setContent(grid);
+
+        Platform.runLater(() -> username.requestFocus());
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(username.getText(), password.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        result.ifPresent(usernamePassword -> {
+            System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
+            IngresarModoDesarrollador(usernamePassword.getKey(), usernamePassword.getValue());
+        });
+    }
+
+    private void IngresarModoDesarrollador(String user, String pass) {
+        if (user != null && pass != null) {
+            Token.setInstance(null);
+            AuthenticationRequest authenticationRequest = new AuthenticationRequest(user, pass);
+            AuthenticationResponse authenticationResponse = LoginService.login(authenticationRequest);
+
+            if (authenticationResponse != null) {
+                Token.setInstance(authenticationResponse);
+                if (Token.getInstance().getUsuario().isEstado()) {
+                    System.out.println("El usuario se encuentra activo");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "El usuario esta inactivo");
+                }
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+            }
+
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de inicio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "Datos incompletos");
         }
     }
 
