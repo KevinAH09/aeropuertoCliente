@@ -233,26 +233,30 @@ public class AerolineasController extends Controller implements Initializable {
 
     @FXML
     private void filtrar(ActionEvent event) {
+        limpiarTableView();
+        llenarAerolineas();
+        if (combFilter.getValue() != null) {
+            if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
+                filtrarPorId();
+            } else if (combFilter.getValue() == "Estado" && cmbEstado.getValue() != null) {
+                filtrarPorEstado();
+            } else if (combFilter.getValue().equals("Nombre Responsable") && !txtFilter.getText().isEmpty()) {
+                filtrarPorResponsable();
+            } else if (combFilter.getValue().equals("Nombre Aerolinea") && !txtFilter.getText().isEmpty()) {
+                filtrarPorAerolinea();
+            } else {
+                limpiarTableView();
+                mensaje = "Campos vacíos en el apartado de búsqueda";
+                System.out.println("todo null");
+                notificar(0);
+            }
 
-        if (txtFilter.getText().isEmpty() || combFilter.getValue() == null || cmbEstado.getValue() == null) {
+        } else {
             limpiarTableView();
-            mensaje = "Campos vacíos en el apartado de búsqueda";
-            System.out.println("todo null");
+            mensaje = "Seleccione un tipo de busqueca";
             notificar(0);
         }
-        if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
-            filtrarPorId();
-        }
-        if (combFilter.getValue() == "Estado" && !cmbEstado.getValue().isEmpty()) {
-            System.out.println("hola");
-            filtrarPorEstado();
-        }
-        if (combFilter.getValue().equals("Nombre Responsable") && !txtFilter.getText().isEmpty()) {
-            filtrarPorResponsable();
-        }
-        if (combFilter.getValue().equals("Nombre Aerolinea") && !txtFilter.getText().isEmpty()) {
-            filtrarPorAerolinea();
-        }
+
     }
 
     private void filtrarPorAerolinea() {
@@ -280,7 +284,7 @@ public class AerolineasController extends Controller implements Initializable {
     }
 
     private void filtrarPorEstado() {
-         if(cmbEstado.getValue().equals("Activo")) {
+        if (cmbEstado.getValue().equals("Activo")) {
             aerolineaList = AerolineasService.estadoAerolinea(true);
             if (aerolineaList != null) {
                 limpiarTableView();
