@@ -439,7 +439,7 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     avionesDTO = AvionesService.matriculaUnicaAvion(txtMatricula.getText());
                     avionZona.setAvion(avionesDTO);
                     avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
-                    
+
                     if (AvionesZonasService.createAvionZona(avionZona) == 201) {
                         RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo avion", new Date()));
                         btnGuardarEditar.setDisable(true);
@@ -468,17 +468,21 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 if (AvionesService.updateAvion(avion) == 200) {
                     avionZona.setAvion(avion);
                     avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
-                    if (AvionesZonasService.createAvionZona(avionZona) == 201) {
-                        RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito avion " + avion.getId(), new Date()));
-                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Avion", ((Stage) txtMatricula.getScene().getWindow()), "Se editó correctamente");
-                        btnEditar.setDisable(false);
-                        btnGuardarEditar.setDisable(true);
-                        btnVolver.setDisable(false);
-                        btnZona.setDisable(true);
-                        txtTipoAvion.setDisable(true);
-                        txtMatricula.setDisable(true);
-                        combEstado.setDisable(true);
+                    AvionesZonasDTO avionZonareciente = AvionesZonasService.zonaReciente(avion.getId());
+                    if (avionZonareciente != null) {
+                        if (avionZona.getZona().getId() != avionZonareciente.getZona().getId()) {
+                            AvionesZonasService.createAvionZona(avionZona);
+                        }
                     }
+                    RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito avion " + avion.getId(), new Date()));
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Avion", ((Stage) txtMatricula.getScene().getWindow()), "Se editó correctamente");
+                    btnEditar.setDisable(false);
+                    btnGuardarEditar.setDisable(true);
+                    btnVolver.setDisable(false);
+                    btnZona.setDisable(true);
+                    txtTipoAvion.setDisable(true);
+                    txtMatricula.setDisable(true);
+                    combEstado.setDisable(true);
                 } else {
                     new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Avion", ((Stage) txtMatricula.getScene().getWindow()), "No se editó correctamente");
                 }
