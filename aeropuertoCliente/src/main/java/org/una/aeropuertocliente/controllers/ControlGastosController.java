@@ -116,7 +116,7 @@ public class ControlGastosController extends Controller implements Initializable
     }
 
     private void validarRol() {
-        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") && Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             actionControlClick();
             btnRegistrar.setVisible(true);
             btnRegistrar.setDisable(false);

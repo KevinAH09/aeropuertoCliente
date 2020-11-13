@@ -166,7 +166,7 @@ public class MantenimientoZonasController extends Controller implements Initiali
     }
 
     private void validarRol() {
-        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || 
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") && 
                 !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);

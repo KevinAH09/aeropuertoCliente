@@ -99,7 +99,7 @@ public class AreasTrabajoController extends Controller implements Initializable 
         asignarAccionCombobox();
         llenarListaNodos();
         desarrollo();
-        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") && !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
         } else {

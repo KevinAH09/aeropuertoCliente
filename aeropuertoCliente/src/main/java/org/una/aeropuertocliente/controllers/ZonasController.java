@@ -98,7 +98,7 @@ public class ZonasController extends Controller implements Initializable {
         asignarAccionComboboxFiltro();
         llenarListaNodos();
         desarrollo();
-        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+        if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") && Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             actionZonasClick();
         }
     }

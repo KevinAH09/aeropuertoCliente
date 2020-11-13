@@ -125,7 +125,7 @@ public class UsuariosController extends Controller implements Initializable {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
             actionUsuariosClick();
-        } else if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") || !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+        } else if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_GESTOR") && !Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
             btnRegistrar.setVisible(false);
             btnRegistrar.setDisable(true);
         } else {
