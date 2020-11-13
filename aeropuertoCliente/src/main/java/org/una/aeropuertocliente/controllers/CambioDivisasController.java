@@ -1215,10 +1215,8 @@ public class CambioDivisasController extends Controller implements Initializable
             if (Token.getInstance().getUsuario() != null) {
                 System.out.println(Token.getInstance().getUsuario().getRolId().getCodigo());
                 if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
-                    System.out.println("PARTE1");
                     cambiarModo();
                 } else {
-                    System.out.println("PARTE2");
                     alertaIngreso();
                     if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                         cambiarModo();
@@ -1227,7 +1225,6 @@ public class CambioDivisasController extends Controller implements Initializable
                     }
                 }
             } else {
-                System.out.println("PARTE3");
                 alertaIngreso();
                 if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                     cambiarModo();
@@ -1250,7 +1247,7 @@ public class CambioDivisasController extends Controller implements Initializable
     }
 
     private void alertaIngreso() {
-        Dialog<Pair<String, String>> dialog = crearDialog();
+        Dialog<Pair<String, String>> dialog = crearDialog2();
         ButtonType loginButtonType = crearButtonDialog(dialog);
         GridPane grid = crearGridPaneDialog();
         JFXTextField username = crearTXTUserDialog();
@@ -1316,8 +1313,7 @@ public class CambioDivisasController extends Controller implements Initializable
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
         return loginButtonType;
     }
-
-    private Dialog<Pair<String, String>> crearDialog() {
+     private Dialog<Pair<String, String>> crearDialog2() {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Habilitar el modo desarrollador");
         dialog.setHeaderText("Ingrese las credenciales del usuario administrador");
