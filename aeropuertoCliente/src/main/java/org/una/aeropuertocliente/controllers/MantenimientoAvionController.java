@@ -467,11 +467,13 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 avion.setTipoAvion(txtTipoAvion.getText());
                 if (AvionesService.updateAvion(avion) == 200) {
                     avionZona.setAvion(avion);
-                    avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
-                    AvionesZonasDTO avionZonareciente = AvionesZonasService.zonaReciente(avion.getId());
-                    if (avionZonareciente != null) {
-                        if (avionZona.getZona().getId() != avionZonareciente.getZona().getId()) {
-                            AvionesZonasService.createAvionZona(avionZona);
+                    if (AppContext.getInstance().get("zon") != null) {
+                        avionZona.setZona((ZonasDTO) AppContext.getInstance().get("zon"));
+                        AvionesZonasDTO avionZonareciente = AvionesZonasService.zonaReciente(avion.getId());
+                        if (avionZonareciente != null) {
+                            if (avionZona.getZona().getId() != avionZonareciente.getZona().getId()) {
+                                AvionesZonasService.createAvionZona(avionZona);
+                            }
                         }
                     }
                     RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito avion " + avion.getId(), new Date()));
