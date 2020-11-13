@@ -235,7 +235,7 @@ public class AerolineasController extends Controller implements Initializable {
 
         if ((combFilter.getValue() == null || txtFilter.getText().isEmpty())) {
             limpiarTableView();
-            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+            mensaje = "Campos vacíos en el apartado de búsqueda";
             notificar(0);
         } else {
 

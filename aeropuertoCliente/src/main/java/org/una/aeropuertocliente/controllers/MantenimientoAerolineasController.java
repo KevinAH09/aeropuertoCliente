@@ -176,7 +176,7 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
             notificar(2);
             txtNombre.setDisable(false);
-            txtId.setDisable(true);
+            txtId.setDisable(false);
             txtResponsable.setDisable(false);
             cmbEstado.setDisable(true);
             btnRegistrar.setDisable(true);
