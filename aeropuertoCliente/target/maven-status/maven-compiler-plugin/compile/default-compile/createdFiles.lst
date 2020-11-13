@@ -99,7 +99,6 @@ org\una\aeropuertocliente\apiForex\TiposMonedasServices$5.class
 org\una\aeropuertocliente\controllers\Controller.class
 org\una\aeropuertocliente\controllers\VuelosController$2.class
 org\una\aeropuertocliente\entitiesServices\VuelosService.class
-org\una\aeropuertocliente\entitiesServices\serviceCambiosDivisas.class
 org\una\aeropuertocliente\controllers\LoginController.class
 org\una\aeropuertocliente\controllers\UsuariosController$3.class
 org\una\aeropuertocliente\entitiesServices\UsuariosService$8.class

@@ -463,7 +463,7 @@ public class ParametrosController extends Controller implements Initializable {
         modDesarrollo.clear();
         modDesarrolloAxiliar.clear();
         modDesarrolloAxiliar.add(titulo.getText());
-        modDesarrolloAxiliar.add(lblZonas.getText());
+        modDesarrolloAxiliar.add(lblTable.getText());
         modDesarrolloAxiliar.add(txtNombre.getPromptText());
         modDesarrolloAxiliar.add(txtValor.getPromptText());
         modDesarrolloAxiliar.add(cmbEstado.getPromptText());
@@ -474,7 +474,7 @@ public class ParametrosController extends Controller implements Initializable {
         modDesarrolloAxiliar.add(btnFiltrar.getText());
         modDesarrolloAxiliar.add(btnCancelar.getText());
         modDesarrolloAxiliar.add(btnRegistrar.getText());
-        modDesarrollo.addAll(Arrays.asList(titulo, lblZonas, txtNombre, txtValor, cmbEstado, txtDescripcion, txtBusqueda,
+        modDesarrollo.addAll(Arrays.asList(titulo, lblTable, txtNombre, txtValor, cmbEstado, txtDescripcion, txtBusqueda,
                 cmbFiltro, cmbEstado2, btnFiltrar, btnCancelar, btnRegistrar));
     }
 
