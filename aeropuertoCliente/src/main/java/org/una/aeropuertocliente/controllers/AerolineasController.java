@@ -89,6 +89,7 @@ public class AerolineasController extends Controller implements Initializable {
     private Label lblTable;
     @FXML
     private JFXComboBox<String> cmbEstado;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -233,24 +234,24 @@ public class AerolineasController extends Controller implements Initializable {
     @FXML
     private void filtrar(ActionEvent event) {
 
-        if ((combFilter.getValue() == null || txtFilter.getText().isEmpty())) {
+        if (txtFilter.getText().isEmpty() || combFilter.getValue() == null || cmbEstado.getValue() == null) {
             limpiarTableView();
             mensaje = "Campos vacíos en el apartado de búsqueda";
+            System.out.println("todo null");
             notificar(0);
-        } else {
-
-            if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
-                filtrarPorId();
-            }
-            if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
-                filtrarPorEstado();
-            }
-            if (combFilter.getValue().equals("Nombre Responsable") && !txtFilter.getText().isEmpty()) {
-                filtrarPorResponsable();
-            }
-            if (combFilter.getValue().equals("Nombre Aerolinea") && !txtFilter.getText().isEmpty()) {
-                filtrarPorAerolinea();
-            }
+        }
+        if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
+            filtrarPorId();
+        }
+        if (combFilter.getValue() == "Estado" && !cmbEstado.getValue().isEmpty()) {
+            System.out.println("hola");
+            filtrarPorEstado();
+        }
+        if (combFilter.getValue().equals("Nombre Responsable") && !txtFilter.getText().isEmpty()) {
+            filtrarPorResponsable();
+        }
+        if (combFilter.getValue().equals("Nombre Aerolinea") && !txtFilter.getText().isEmpty()) {
+            filtrarPorAerolinea();
         }
     }
 
@@ -267,6 +268,7 @@ public class AerolineasController extends Controller implements Initializable {
 
     private void filtrarPorResponsable() {
         tableview.getItems().clear();
+
         aerolineaList = AerolineasService.nombreResponsable(txtFilter.getText());
         tableview.setItems(FXCollections.observableArrayList(aerolineaList));
         if (aerolineaList != null) {
@@ -278,10 +280,11 @@ public class AerolineasController extends Controller implements Initializable {
     }
 
     private void filtrarPorEstado() {
-        if (cmbEstado.getValue() == "Activo") {
-            tableview.getItems().clear();
+         if(cmbEstado.getValue().equals("Activo")) {
             aerolineaList = AerolineasService.estadoAerolinea(true);
             if (aerolineaList != null) {
+                limpiarTableView();
+                llenarAerolineas();
                 tableview.setItems(FXCollections.observableArrayList(aerolineaList));
             } else {
                 mensaje = "No se encontró coincidencias";
