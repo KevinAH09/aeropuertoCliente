@@ -109,11 +109,11 @@ public class LoginController extends Controller implements Initializable {
     private void actionIngresar(ActionEvent event) {
         if (txtPassMostrado.isVisible()) {
             pass = txtPassMostrado.getText();
+            txtPassOculto.setText(pass);
         } else {
             pass = txtPassOculto.getText();
+            txtPassMostrado.setText(pass);
         }
-        txtPassMostrado.setText(txtPassOculto.getText());
-        txtPassOculto.setText(txtPassMostrado.getText());
         String validacion = validarRequeridos();
         if (validacion == null) {
 
