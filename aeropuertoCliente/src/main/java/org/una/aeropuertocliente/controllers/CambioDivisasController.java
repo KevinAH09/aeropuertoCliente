@@ -217,7 +217,7 @@ public class CambioDivisasController extends Controller implements Initializable
             if (Token.getInstance() != null) {
                 RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Genero reporte XML de divisas", new Date()));
             }
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Archivo XML generado correctamente");
+            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Archivo XML generado correctamente");
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
@@ -336,7 +336,7 @@ public class CambioDivisasController extends Controller implements Initializable
             guardarPDF(pdf);
             if (Token.getInstance() != null) {
                 RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Genero reporte PDF de divisas", new Date()));
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Archivo PDF generado correctamente");
+                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Archivo PDF generado correctamente");
             }
         } catch (IOException ex) {
             Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
