@@ -196,7 +196,7 @@ public class PrincipalController extends Controller implements Initializable {
         TreeItem<String> itemInformacion = crearTreeItemInformacion(root);
         crearTreeItemAreaTrabajo(itemInformacion);
         TreeItem<String> itemAdministracion = crearTreeItemAdministracion(root);
-        TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Gastos de manteniento");
+        TreeItem<String> itemGastoMantenimientos = new TreeItem<>("Control Gastos de manteniento");
         itemAdministracion.getChildren().add(itemGastoMantenimientos);
     }
 
