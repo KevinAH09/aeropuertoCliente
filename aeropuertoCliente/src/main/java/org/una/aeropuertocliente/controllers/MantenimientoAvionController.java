@@ -183,6 +183,13 @@ public class MantenimientoAvionController extends Controller implements Initiali
                 ZonasDTO zon;
                 zon = (ZonasDTO) AppContext.getInstance().get("zon");
                 txtZona.setText(zon.getNombreZona());
+                btnZona.setDisable(false);
+                txtTipoAvion.setDisable(false);
+                txtMatricula.setDisable(false);
+                combEstado.setDisable(false);
+                btnEditar.setDisable(true);
+                btnGuardarEditar.setDisable(false);
+                btnVolver.setDisable(true);
             }
 
         } else {
