@@ -119,7 +119,7 @@ public class VuelosController extends Controller implements Initializable {
         Objetoaviones = (AvionesDTO) AppContext.getInstance().get("avionAVuelos");
 
         actionVueloClick();
-        combFilter.setItems(FXCollections.observableArrayList("Id", "Destino", "Origen", "Estado", "Matricula del Avión", "Fecha inicio"));
+        combFilter.setItems(FXCollections.observableArrayList("Id", "Destino", "Origen", "Estado", "Fecha inicio"));
         cmbEstado.setItems(FXCollections.observableArrayList("Activo", "Inactivo"));
         txtTipoAvion.setText("");
         txtmatricula.setText("");
@@ -188,13 +188,6 @@ public class VuelosController extends Controller implements Initializable {
                     cmbEstado.setVisible(false);
                     txtFilter.setVisible(false);
                     datePikerFechainicio.setVisible(true);
-                }
-
-                if (t1 == "Matricula del Avión") {
-                    datePikerFechainicio.setVisible(false);
-                    cmbEstado.setVisible(false);
-                    txtFilter.setVisible(true);
-                    txtFilter.setPromptText("Ingrese matrícula del avión");
                 }
             }
 
@@ -290,29 +283,34 @@ public class VuelosController extends Controller implements Initializable {
 
     @FXML
     private void filtrar(ActionEvent event) {
-        if (combFilter.getValue().isEmpty() || txtFilter.getText().isEmpty()) {
-            notificar(0);
-        } else {
+        
+        
+        tableView.getItems().clear();
+        tableView.getColumns().clear();
+        llenarVuelos();
+        if (combFilter.getValue() != null) {
             if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
                 filtrarPorId();
-            }
-            if (combFilter.getValue().equals("Estado") && !txtFilter.getText().isEmpty()) {
+            } else if (combFilter.getValue() == "Estado" && cmbEstado.getValue() != null) {
                 filtrarPorEstado();
-            }
-
-            if (combFilter.getValue().equals("Fecha inicio") && !txtFilter.getText().isEmpty()) {
-                filtrarPorFechaInicio();
-            }
-
-            if (combFilter.getValue().equals("Destino") && !txtFilter.getText().isEmpty()) {
-                filtrarPorDestino();
-            }
-            if (combFilter.getValue().equals("Origen") && !txtFilter.getText().isEmpty()) {
+            } else if (combFilter.getValue().equals("Origen") && !txtFilter.getText().isEmpty()) {
                 filtrarPorOrigen();
-            }
-            if (combFilter.getValue().equals("Matricula del Avión") && !txtFilter.getText().isEmpty()) {
+            } else if (combFilter.getValue().equals("Destino") && !txtFilter.getText().isEmpty()) {
+                filtrarPorDestino();
+            } else if (combFilter.getValue().equals("Fecha inicio") && datePikerFechainicio.getValue()!=null) {
+                filtrarPorFechaInicio();
+            } else if (combFilter.getValue().equals("Matricula del Avión") && !txtFilter.getText().isEmpty()) {
                 filtrarPorMatriculaAvion();
+            } else {
+                tableView.getItems().clear();
+                tableView.getColumns().clear();
+                notificar(3);
             }
+
+        } else {
+            tableView.getItems().clear();
+            tableView.getColumns().clear();
+            notificar(0);
         }
     }
 
@@ -358,6 +356,7 @@ public class VuelosController extends Controller implements Initializable {
         Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         String sDate1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
         vuelosList = VuelosService.FechaInicio(sDate1);
+        System.out.println("org.una.aeropuertocliente.controllers.VuelosController.filtrarPorFechaInicio()"+vuelosList);
         if (vuelosList != null) {
             tableView.setItems(FXCollections.observableArrayList(vuelosList));
         } else {
@@ -429,13 +428,26 @@ public class VuelosController extends Controller implements Initializable {
         }
         if (num == 2) {
             alertar3();
-
+        }
+        if(num == 3){
+            alertar4();
         }
     }
 
     private void alertar3() {
         ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
         Text lab = new Text("No hay vuelos en este avion");
+        lab.setFill(Color.web("#0076a3"));
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageView2);
+        box.getChildren().add(lab);
+        tableView.setPlaceholder(box);
+    }
+    
+    private void alertar4() {
+        ImageView imageView2 = new ImageView(new Image("org/una/aeropuertocliente/views/shared/warning.png"));
+        Text lab = new Text("Campos vacíos en el apartado de búsqueda");
         lab.setFill(Color.web("#0076a3"));
         VBox box = new VBox();
         box.setAlignment(Pos.CENTER);

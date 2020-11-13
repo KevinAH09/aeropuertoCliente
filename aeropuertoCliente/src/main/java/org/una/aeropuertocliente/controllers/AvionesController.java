@@ -136,28 +136,34 @@ public class AvionesController extends Controller implements Initializable {
 
     @FXML
     private void filtrar(ActionEvent event) {
-        if (combFilter.getValue() == null || txtFilter.getText().isEmpty()) {
-            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
-            notificar(0);
-        } else {
-            if (combFilter.getValue() == "Id" && !txtFilter.getText().isEmpty()) {
-                filtrarPorId();
-            }
-            if (combFilter.getValue() == "Estado" && !txtFilter.getText().isEmpty()) {
-                filtrarPorEstado();
-            }
-            if (combFilter.getValue() == "Matrícula" && !txtFilter.getText().isEmpty()) {
-                filtrarPorMatricula();
-            }
-            if (combFilter.getValue() == "Tipo de avión" && !txtFilter.getText().isEmpty()) {
-                filtrarPorTipoAvion();
-            }
-            if (combFilter.getValue() == "Nombre aerolinea" && !txtFilter.getText().isEmpty()) {
-                filtrarPorAerolinea();
-            }
-            
-        }
 
+        tableAvion.getItems().clear();
+        tableAvion.getColumns().clear();
+        llenarAviones();
+        if (combFilter.getValue() != null) {
+            if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
+                filtrarPorId();
+            } else if (combFilter.getValue() == "Estado" && cmbEstado.getValue() != null) {
+                filtrarPorEstado();
+            } else if (combFilter.getValue().equals("Matrícula") && !txtFilter.getText().isEmpty()) {
+                filtrarPorMatricula();
+            } else if (combFilter.getValue().equals("Tipo de avión") && !txtFilter.getText().isEmpty()) {
+                filtrarPorTipoAvion();
+            } else if (combFilter.getValue().equals("Nombre aerolinea") && !txtFilter.getText().isEmpty()) {
+                filtrarPorAerolinea();
+            } else {
+                tableAvion.getItems().clear();
+                tableAvion.getColumns().clear();
+                mensaje = "Campos vacíos en el apartado de búsqueda";
+                notificar(0);
+            }
+
+        } else {
+            tableAvion.getItems().clear();
+            tableAvion.getColumns().clear();
+            mensaje = "Seleccione un tipo de busqueca";
+            notificar(0);
+        }
     }
 
     private void filtrarPorAerolinea() {

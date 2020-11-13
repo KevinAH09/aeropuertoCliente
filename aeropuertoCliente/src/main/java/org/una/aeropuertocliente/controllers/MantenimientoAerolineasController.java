@@ -189,20 +189,19 @@ public class MantenimientoAerolineasController extends Controller implements Ini
         indicarRequeridos();
         llenarListaNodos();
         desarrollo();
-    
 
-    if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
-        btnEditar.setVisible(true);
-        btnEditar.setDisable(false);
-        btnRegistrar.setDisable(false);
-        btnRegistrar.setVisible(true);
-    }else {
-        btnEditar.setVisible(true);
-        btnEditar.setDisable(true);
-        btnRegistrar.setDisable(true);
-        btnRegistrar.setVisible(true);
+        if (!Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN")) {
+            btnEditar.setVisible(true);
+            btnEditar.setDisable(false);
+            btnRegistrar.setDisable(false);
+            btnRegistrar.setVisible(true);
+        } else {
+            btnEditar.setVisible(true);
+            btnEditar.setDisable(true);
+            btnRegistrar.setDisable(true);
+            btnRegistrar.setVisible(true);
+        }
     }
-}
 
     private void asignarAccionComboboxFiltro() {
         combFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -394,26 +393,33 @@ public class MantenimientoAerolineasController extends Controller implements Ini
 
     @FXML
     private void filtrar(ActionEvent event) {
-        if (combFilter.getValue() == null || txtFilter.getText().isEmpty()) {
-            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
-            notificar(0);
-        } else {
 
-            if (combFilter.getValue() == "Id" && !txtFilter.getText().isEmpty()) {
+        tableAviones.getItems().clear();
+        tableAviones.getColumns().clear();
+        llenarAviones();
+        if (combFilter.getValue() != null) {
+            if (combFilter.getValue().equals("Id") && !txtFilter.getText().isEmpty()) {
                 filtrarPorId();
-            }
-            if (combFilter.getValue() == "Estado" && !txtFilter.getText().isEmpty()) {
+            } else if (combFilter.getValue() == "Estado" && cmbEstado.getValue() != null) {
                 filtrarPorEstado();
-            }
-            if (combFilter.getValue() == "Matrícula" && !txtFilter.getText().isEmpty()) {
+            } else if (combFilter.getValue().equals("Matrícula") && !txtFilter.getText().isEmpty()) {
                 filtrarPorMatricula();
-            }
-            if (combFilter.getValue() == "Tipo de avión" && !txtFilter.getText().isEmpty()) {
+            } else if (combFilter.getValue().equals("Tipo de avión") && !txtFilter.getText().isEmpty()) {
                 filtrarPorTipoAvion();
-            }
-            if (combFilter.getValue() == "Nombre aerolinea" && !txtFilter.getText().isEmpty()) {
+            } else if (combFilter.getValue().equals("Nombre aerolinea") && !txtFilter.getText().isEmpty()) {
                 Aerolinea();
+            } else {
+                tableAviones.getItems().clear();
+                tableAviones.getColumns().clear();
+                mensaje = "Campos vacíos en el apartado de búsqueda";
+                notificar(0);
             }
+
+        } else {
+            tableAviones.getItems().clear();
+            tableAviones.getColumns().clear();
+            mensaje = "Seleccione un tipo de busqueca";
+            notificar(0);
         }
     }
 

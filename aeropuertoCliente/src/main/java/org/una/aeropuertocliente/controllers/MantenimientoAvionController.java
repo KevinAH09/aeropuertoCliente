@@ -238,66 +238,91 @@ public class MantenimientoAvionController extends Controller implements Initiali
 
     @FXML
     private void btnFiltrar(ActionEvent event) {
-        if (combFiltro.getValue() == null || txtFiltrar.getText() == null) {
-            mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
-            notificar(0);
-        } else {
+        tableview.getItems().clear();
+        tableview.getColumns().clear();
+        llenarVuelos();
+        if (combFiltro.getValue() != null) {
             if (combFiltro.getValue().equals("Id") && !txtFiltrar.getText().isEmpty()) {
+                filtrarPorId();
+            } else if (combFiltro.getValue() == "Estado" && cmbEstado.getValue() != null) {
+                filtrarPorEstado();
+            } else if (combFiltro.getValue().equals("Origen") && !txtFiltrar.getText().isEmpty()) {
+                filtrarPorOrigen();
+            } else if (combFiltro.getValue().equals("Destino") && !txtFiltrar.getText().isEmpty()) {
+                filtrarPorDestino();
+            } else {
                 tableview.getItems().clear();
-                vueloFil = VuelosService.idVuelo(Long.valueOf(txtFiltrar.getText()));
-                if (vueloFil != null) {
-                    tableview.setItems(FXCollections.observableArrayList(vueloFil));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+                tableview.getColumns().clear();
+                mensaje = "Campos vacíos en el apartado de búsqueda";
+                System.out.println("todo null");
+                notificar(0);
             }
-            if (combFiltro.getValue().equals("Estado") && !txtFiltrar.getText().isEmpty()) {
-                if (cmbEstado.getValue().equals("Activo")) {
-                    tableview.getItems().clear();
-                    vuelosList = VuelosService.estado(true);
-                    if (vuelosList != null) {
-                        tableview.setItems(FXCollections.observableArrayList(vuelosList));
-                    } else {
-                        mensaje = "No se encontró coincidencias";
-                        notificar(0);
-                    }
-                }
-                if (cmbEstado.getValue().equals("Inactivo")) {
-                    tableview.getItems().clear();
-                    vuelosList = VuelosService.estado(false);
-                    if (vuelosList != null) {
-                        tableview.setItems(FXCollections.observableArrayList(vuelosList));
-                    } else {
-                        mensaje = "No se encontró coincidencias";
-                        notificar(0);
-                    }
-                }
-                if (vuelosList == null) {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+
+        } else {
+            tableview.getItems().clear();
+            tableview.getColumns().clear();
+            mensaje = "Seleccione un tipo de busqueca";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorDestino() {
+        tableview.getItems().clear();
+        vuelosList = VuelosService.Destino(txtFiltrar.getText());
+        if (vuelosList != null) {
+            tableview.setItems(FXCollections.observableArrayList(vuelosList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorOrigen() {
+        tableview.getItems().clear();
+        vuelosList = VuelosService.Origen(txtFiltrar.getText());
+        if (vuelosList != null) {
+            tableview.setItems(FXCollections.observableArrayList(vuelosList));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorEstado() {
+        if (cmbEstado.getValue().equals("Activo")) {
+            tableview.getItems().clear();
+            vuelosList = VuelosService.estado(true);
+            if (vuelosList != null) {
+                tableview.setItems(FXCollections.observableArrayList(vuelosList));
+            } else {
+                mensaje = "No se encontró coincidencias";
+                notificar(0);
             }
-            if (combFiltro.getValue().equals("Origen") && !txtFiltrar.getText().isEmpty()) {
-                tableview.getItems().clear();
-                vuelosList = VuelosService.Origen(txtFiltrar.getText());
-                if (vuelosList != null) {
-                    tableview.setItems(FXCollections.observableArrayList(vuelosList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
+        }
+        if (cmbEstado.getValue().equals("Inactivo")) {
+            tableview.getItems().clear();
+            vuelosList = VuelosService.estado(false);
+            if (vuelosList != null) {
+                tableview.setItems(FXCollections.observableArrayList(vuelosList));
+            } else {
+                mensaje = "No se encontró coincidencias";
+                notificar(0);
             }
-            if (combFiltro.getValue().equals("Destino") && !txtFiltrar.getText().isEmpty()) {
-                tableview.getItems().clear();
-                vuelosList = VuelosService.Destino(txtFiltrar.getText());
-                if (vuelosList != null) {
-                    tableview.setItems(FXCollections.observableArrayList(vuelosList));
-                } else {
-                    mensaje = "No se encontró coincidencias";
-                    notificar(0);
-                }
-            }
+        }
+        if (vuelosList == null) {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
+        }
+    }
+
+    private void filtrarPorId() throws NumberFormatException {
+        tableview.getItems().clear();
+        vueloFil = VuelosService.idVuelo(Long.valueOf(txtFiltrar.getText()));
+        if (vueloFil != null) {
+            tableview.setItems(FXCollections.observableArrayList(vueloFil));
+        } else {
+            mensaje = "No se encontró coincidencias";
+            notificar(0);
         }
     }
 
