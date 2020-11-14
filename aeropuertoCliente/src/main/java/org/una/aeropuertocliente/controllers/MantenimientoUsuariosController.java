@@ -244,14 +244,14 @@ public class MantenimientoUsuariosController implements Initializable {
                 } else {
                     guardarEdicionUsuario();
                 }
-            }else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El siguiente campo es requerido [Area Trabajo].");
+            } else {
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El siguiente campo es requerido [Area Trabajo].");
             }
         } else {
             if (validacion != null) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), validacion);
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), validacion);
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El correo no tiene el formato example@dominio.cr");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El correo tiene que tener el formato example@dominio.cr");
             }
         }
     }
@@ -263,7 +263,7 @@ public class MantenimientoUsuariosController implements Initializable {
             new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
             PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "Hubo problemas al guardar usuario");
         }
     }
 
@@ -341,15 +341,16 @@ public class MantenimientoUsuariosController implements Initializable {
                 if (usuario != null) {
                     RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo usuario", new Date()));
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
+                    PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "La contraseña no contiene " + caracteresEspeciales.getValor());
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "La contraseña no contiene " + caracteresEspeciales.getValor());
 
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "La contraseña tiene que tener mas de " + minimiCaracteres.getValor() + " caracteres");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "La contraseña tiene que tener mas de " + minimiCaracteres.getValor() + " caracteres");
 
         }
     }
@@ -357,12 +358,12 @@ public class MantenimientoUsuariosController implements Initializable {
     private void llenarUsuarioNuevo() {
         usuario = new UsuariosDTO();
         for (RolesDTO listRole : listRoles) {
-            if (listRole.getCodigo().equals(cmbRoles.getValue())) {
+            if (listRole.getDescripcion().equals(cmbRoles.getValue())) {
                 usuario.setRolId(listRole);
             }
         }
         for (AreasTrabajosDTO lisArea : listAreas) {
-            if (lisArea.getNombreAreaTrabajo().equals(cmbArea.getValue())) {
+            if (lisArea.getDescripcion().equals(cmbArea.getValue())) {
                 usuario.setAreaTrabajoId(lisArea);
             }
         }
