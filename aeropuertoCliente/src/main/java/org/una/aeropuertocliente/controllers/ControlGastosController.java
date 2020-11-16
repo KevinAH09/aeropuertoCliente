@@ -101,13 +101,16 @@ public class ControlGastosController extends Controller implements Initializable
     private Label lblHasta;
     @FXML
     private JFXDatePicker fHasta;
+    @FXML
+    private JFXComboBox<String> cmbEstado;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Empresa", "Intervalo Fechas", "Contrato", "Estado", "Tipo"));
+        cmbFiltro.setItems(FXCollections.observableArrayList("Id", "Empresa", "Intervalo Fechas", "Contrato", "Estado Pago", "Tipo"));
+        cmbEstado.setItems(FXCollections.observableArrayList("Anulado", "Cancelado", "Pendiente"));
         asignarAccionComboboxFiltro();
         notificar(1);
         validarRol();
@@ -147,14 +150,16 @@ public class ControlGastosController extends Controller implements Initializable
                     ocultarDatePicker();
                     txtBusqueda.setPromptText("Ingrese el tipo de gasto");
                 }
-                if (t1 == "Estado") {
+                if (t1 == "Estado Pago") {
                     ocultarDatePicker();
-                    txtBusqueda.setPromptText("Ingrese el estado del gasto");
+                    cmbEstado.setVisible(true);
+                    txtBusqueda.setVisible(false);
                 }
 
                 if (t1 == "Intervalo Fechas") {
                     fDesde.setVisible(true);
                     fHasta.setVisible(true);
+                    cmbEstado.setVisible(false);
                     txtBusqueda.setVisible(false);
                 }
             }
@@ -166,6 +171,7 @@ public class ControlGastosController extends Controller implements Initializable
     private void ocultarDatePicker() {
         fDesde.setVisible(false);
         fHasta.setVisible(false);
+        cmbEstado.setVisible(false);
         txtBusqueda.setVisible(true);
     }
 
@@ -174,6 +180,7 @@ public class ControlGastosController extends Controller implements Initializable
         if (txtBusqueda.getText().isEmpty() || cmbFiltro.getValue() == null) {
             limpiarTableView();
             mensaje = "Por favor debe ingresar un datos en el campo de búsqueda";
+            System.out.println("#12121");
             notificar(0);
         }
 
@@ -193,7 +200,7 @@ public class ControlGastosController extends Controller implements Initializable
             filtrarPorTipoGasto();
         }
 
-        if (cmbFiltro.getValue() == "Estado" && !txtBusqueda.getText().isEmpty()) {
+        if (cmbFiltro.getValue() == "Estado Pago" && cmbEstado.getValue()!=null) {
             filtrarPorEstado();
         }
 
@@ -221,9 +228,11 @@ public class ControlGastosController extends Controller implements Initializable
 
     private void filtrarPorEstado() {
         limpiarTableView();
-        gastosList = ControlGastosService.estadoControlesGastos(txtBusqueda.getText());
+        gastosList = ControlGastosService.estadoControlesGastos(cmbEstado.getValue());
         if (gastosList != null) {
             llenarTableView();
+            System.out.println("ENTAR");
+            System.out.println(gastosList);
             tableGastos.setItems(FXCollections.observableArrayList(gastosList));
         } else {
             mensaje = "No se encontró coincidencias";

@@ -23,7 +23,7 @@
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="lblZonas" prefHeight="17.0" prefWidth="30.0" />
-                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="148.0" text="Control de Gastos">
+                        <Label fx:id="titulo" prefHeight="20.0" prefWidth="154.0" text="Control de Gastos">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -40,6 +40,7 @@
                               <JFXDatePicker fx:id="fDesde" defaultColor="#181e1e" layoutX="40.0" layoutY="22.0" prefHeight="29.0" prefWidth="92.0" promptText="Desde" visible="false" />
                               <Label fx:id="lblHasta" layoutX="132.0" layoutY="27.0" prefHeight="20.0" prefWidth="22.0" visible="false" />
                               <JFXDatePicker fx:id="fHasta" defaultColor="#181e1e" layoutX="155.0" layoutY="21.0" prefHeight="29.0" prefWidth="92.0" promptText="Hasta" visible="false" />
+                              <JFXComboBox fx:id="cmbEstado" layoutX="53.0" layoutY="18.0" prefHeight="26.0" prefWidth="190.0" visible="false" />
                            </children>
                         </Pane>
                         <Label fx:id="lblCmbFiltro" prefHeight="20.0" prefWidth="30.0" />
