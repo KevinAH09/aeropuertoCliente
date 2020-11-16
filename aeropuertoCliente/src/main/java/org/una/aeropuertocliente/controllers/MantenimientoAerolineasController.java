@@ -292,11 +292,11 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
                     PrincipalController.cambiarVistaPrincipal("aerolineas/Aerolineas");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar la Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "No se pudo guardar");
                 }
 
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtNombre.getScene().getWindow()), validacion);
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear los datos", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
 
         } else {
@@ -316,10 +316,10 @@ public class MantenimientoAerolineasController extends Controller implements Ini
                     btnRegistrar.setDisable(false);
                     btnVolverAerolinea.setDisable(false);
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar la Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "No se editó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al editar la Aerolinea", ((Stage) txtNombre.getScene().getWindow()), "No se editó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtNombre.getScene().getWindow()), validacion);
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear los datos", ((Stage) txtNombre.getScene().getWindow()), validacion);
             }
         }
     }

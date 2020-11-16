@@ -224,13 +224,13 @@ public class MantenimientoControlGastosController extends Controller implements 
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
                     PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se pudo guardar");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
         }
     }
 
@@ -251,13 +251,13 @@ public class MantenimientoControlGastosController extends Controller implements 
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Controles de gastos", ((Stage) txtContrato.getScene().getWindow()), "Se guardó correctamente");
                     PrincipalController.cambiarVistaPrincipal("controlGastos/ControlGastos");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar Area de trabajo", ((Stage) txtContrato.getScene().getWindow()), "No se pudo guardar");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar Detalle control de gastos", ((Stage) txtContrato.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear los datos", ((Stage) txtContrato.getScene().getWindow()), validacion);
         }
     }
 

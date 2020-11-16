@@ -147,10 +147,10 @@ public class MantenimientoRolesController extends Controller implements Initiali
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
                 PrincipalController.cambiarVistaPrincipal("roles/Roles");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), validacion);
         }
     }
 
@@ -169,10 +169,10 @@ public class MantenimientoRolesController extends Controller implements Initiali
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "Se guardó correctamente");
                 PrincipalController.cambiarVistaPrincipal("roles/Roles");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar rol", ((Stage) txtCodigo.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear rol", ((Stage) txtCodigo.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear rol", ((Stage) txtCodigo.getScene().getWindow()), validacion);
         }
     }
 

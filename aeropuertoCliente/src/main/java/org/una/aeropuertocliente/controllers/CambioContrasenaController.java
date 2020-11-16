@@ -147,19 +147,19 @@ public class CambioContrasenaController extends Controller implements Initializa
                             new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña se cambió correctamente");
                             ((Stage) btnCancelar.getScene().getWindow()).close();
                         } else {
-                            new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no se cambió correctamente");
+                            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no se pudo cambiar");
                         }
                     } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña tiene que tener mas de " + minimiCaracteres.getValor() + " caracteres");
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña debe contener mas de " + minimiCaracteres.getValor() + " caracteres");
                     }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no contiene " + caracteresEspeciales.getValor());
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "La contraseña no contiene " + caracteresEspeciales.getValor());
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "Las contraseñas no coinciden");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), "Las contraseñas no coinciden");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Cambiar contraseña", ((Stage) txtcontrasena.getScene().getWindow()), validacion);
         }
     }
 

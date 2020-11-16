@@ -189,7 +189,7 @@ public class ReporteAvionesController extends Controller implements Initializabl
             ReportesService.reporteAvionesFechasAerolineaZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString(), cbZonas.getValue().getId().toString());
             RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 
@@ -198,7 +198,7 @@ public class ReporteAvionesController extends Controller implements Initializabl
             ReportesService.reporteAvionesFechasAerolinea(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAerolineas.getValue().getId().toString());
             RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 
@@ -207,7 +207,7 @@ public class ReporteAvionesController extends Controller implements Initializabl
             ReportesService.reporteAvionesFechasZona(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbZonas.getValue().getId().toString());
             RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 
@@ -216,7 +216,7 @@ public class ReporteAvionesController extends Controller implements Initializabl
             ReportesService.reporteAvionesFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
             RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 

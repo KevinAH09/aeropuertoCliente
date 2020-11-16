@@ -476,16 +476,16 @@ public class MantenimientoAvionController extends Controller implements Initiali
                         RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo avion", new Date()));
                         btnGuardarEditar.setDisable(true);
                         btnEditar.setDisable(false);
-                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aviones", ((Stage) txtMatricula.getScene().getWindow()), "Se guardó correctamente");
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Aviones", ((Stage) txtMatricula.getScene().getWindow()), "Se ha guardado");
                     } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la zona del avion", ((Stage) txtMatricula.getScene().getWindow()), "No se guardó correctamente");
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar la zona del avion", ((Stage) txtMatricula.getScene().getWindow()), "No se pudo guardar");
                     }
 
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar los Aviones", ((Stage) txtMatricula.getScene().getWindow()), "No se guardó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar los Aviones", ((Stage) txtMatricula.getScene().getWindow()), "No se pudo guardar");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtMatricula.getScene().getWindow()), validacion);
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear los datos", ((Stage) txtMatricula.getScene().getWindow()), validacion);
             }
 
         } else {
@@ -518,10 +518,10 @@ public class MantenimientoAvionController extends Controller implements Initiali
                     txtMatricula.setDisable(true);
                     combEstado.setDisable(true);
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Avion", ((Stage) txtMatricula.getScene().getWindow()), "No se editó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al editar el Avion", ((Stage) txtMatricula.getScene().getWindow()), "No se editó correctamente");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtMatricula.getScene().getWindow()), validacion);
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear los datos", ((Stage) txtMatricula.getScene().getWindow()), validacion);
             }
         }
     }

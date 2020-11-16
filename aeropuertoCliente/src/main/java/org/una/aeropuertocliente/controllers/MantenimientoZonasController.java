@@ -216,10 +216,10 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito zona " + zonas.getId(), new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Zona", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
         }
     }
 
@@ -238,10 +238,10 @@ public class MantenimientoZonasController extends Controller implements Initiali
                 RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nueva zona", new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Zona", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar la Zona", ((Stage) txtNombre.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear Zona", ((Stage) txtNombre.getScene().getWindow()), validacion);
         }
     }
 

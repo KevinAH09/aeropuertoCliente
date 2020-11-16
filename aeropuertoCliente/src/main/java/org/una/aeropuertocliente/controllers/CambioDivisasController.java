@@ -241,7 +241,7 @@ public class CambioDivisasController extends Controller implements Initializable
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.transform(source, result);
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
         }
     }
 
@@ -356,7 +356,7 @@ public class CambioDivisasController extends Controller implements Initializable
         if (file != null) {
             pdf.save(file.getAbsoluteFile().getPath().replaceAll("\\\\", "/") + "/" + nombreArchivo + ".pdf");
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Carpeta no seleccionada.");
         }
         pdf.close();
     }
@@ -665,7 +665,7 @@ public class CambioDivisasController extends Controller implements Initializable
             llenarImgSelect(monedaSelect);
             lblselect.setText(monedaSelect);
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al calcular monto", (Stage) lblselect.getScene().getWindow(), "Monto no digitado");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al calcular monto", (Stage) lblselect.getScene().getWindow(), "Monto no digitado");
         }
 
     }
@@ -1186,10 +1186,10 @@ public class CambioDivisasController extends Controller implements Initializable
             if (!nombreArchivo.isEmpty()) {
                 generarXML();
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Nombre no digitado.");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Nombre no digitado.");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Monto no digitado.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar XML", ((Stage) btnExportarPDF.getScene().getWindow()), "Monto no digitado.");
         }
     }
 
@@ -1201,10 +1201,10 @@ public class CambioDivisasController extends Controller implements Initializable
             if (!nombreArchivo.isEmpty()) {
                 generarPDF();
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Nombre no digitado.");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Nombre no digitado.");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Monto no digitado.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Monto no digitado.");
         }
     }
 
@@ -1221,7 +1221,7 @@ public class CambioDivisasController extends Controller implements Initializable
                         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                             cambiarModo();
                         } else {
-                            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnExportarPDF.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de activación de modo desarrollador", ((Stage) btnExportarPDF.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                         }
                     }
                 }
@@ -1231,7 +1231,7 @@ public class CambioDivisasController extends Controller implements Initializable
                     if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                         cambiarModo();
                     } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnExportarPDF.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de activación de modo desarrollador", ((Stage) btnExportarPDF.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                     }
                 }
             }
@@ -1336,14 +1336,14 @@ public class CambioDivisasController extends Controller implements Initializable
                 if (Token.getInstance().getUsuario().isEstado()) {
                     System.out.println("El usuario se encuentra activo");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "El usuario esta inactivo");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "El usuario esta inactivo");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
             }
 
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de inicio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "Datos incompletos");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de inicio de Sesion", ((Stage) btnExportarXML.getScene().getWindow()), "Datos incompletos");
         }
     }
 

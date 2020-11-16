@@ -356,10 +356,10 @@ public class MantenimientoVuelosController extends Controller implements Initial
                         PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
 
                     } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el vuelo", ((Stage) txtAvion.getScene().getWindow()), "No se guardó correctamente");
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar el vuelo", ((Stage) txtAvion.getScene().getWindow()), "No se pudo guardar");
                     }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar la Bitácora", ((Stage) txtAvion.getScene().getWindow()), "No se guardó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar la Bitácora", ((Stage) txtAvion.getScene().getWindow()), "No se pudo guardar");
                 }
             } else {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtAvion.getScene().getWindow()), validacion);
@@ -449,14 +449,14 @@ public class MantenimientoVuelosController extends Controller implements Initial
                         new Mensaje().showModal(Alert.AlertType.INFORMATION, "Editar Vuelo", ((Stage) txtAvion.getScene().getWindow()), "Se editó correctamente");
                         PrincipalController.cambiarVistaPrincipal("vuelos/Vuelos");
                     } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el Vuelo", ((Stage) txtAvion.getScene().getWindow()), "No se editó correctamente");
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al editar el Vuelo", ((Stage) txtAvion.getScene().getWindow()), "No se editó ");
                     }
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error al editar el bitácora", ((Stage) txtAvion.getScene().getWindow()), "No se editó correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al editar el bitácora", ((Stage) txtAvion.getScene().getWindow()), "No se editó ");
                 }
 
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear los datos", ((Stage) txtAvion.getScene().getWindow()), validacion);
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear los datos", ((Stage) txtAvion.getScene().getWindow()), validacion);
             }
         }
     }

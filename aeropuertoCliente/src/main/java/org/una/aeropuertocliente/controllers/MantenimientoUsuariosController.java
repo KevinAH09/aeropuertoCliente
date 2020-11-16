@@ -260,7 +260,7 @@ public class MantenimientoUsuariosController implements Initializable {
         llenarUsuarioEditado();
         if (UsuariosService.updateUsuario(usuario) == 200) {
             RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito usuario " + usuario.getId(), new Date()));
-            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
+            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardó");
             PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
         } else {
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "Hubo problemas al guardar usuario");
@@ -343,7 +343,7 @@ public class MantenimientoUsuariosController implements Initializable {
                     new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario se guardo correctamente");
                     PrincipalController.cambiarVistaPrincipal("usuarios/Usuarios");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardo correctamente");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "El usuario no se guardó");
                 }
             } else {
                 new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar usuario", ((Stage) txtCorreo.getScene().getWindow()), "La contraseña no contiene " + caracteresEspeciales.getValor());

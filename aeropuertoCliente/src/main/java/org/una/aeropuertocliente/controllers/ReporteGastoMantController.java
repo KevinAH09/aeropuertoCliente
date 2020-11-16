@@ -193,7 +193,7 @@ public class ReporteGastoMantController extends Controller implements Initializa
         if (fechaFin.getValue() != null && fechaIni.getValue() != null && !txtEmpresa.getText().isEmpty()) {
             ReportesService.reporteGastosMantFechasEmpresa(fechaIni.getValue().toString(), fechaFin.getValue().toString(), txtEmpresa.getText());
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 
@@ -201,7 +201,7 @@ public class ReporteGastoMantController extends Controller implements Initializa
         if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbEstadoPago.getValue() != null) {
             ReportesService.reporteGastosMantFechasEstadoPago(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbEstadoPago.getValue());
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 
@@ -209,7 +209,7 @@ public class ReporteGastoMantController extends Controller implements Initializa
         if (fechaFin.getValue() != null && fechaIni.getValue() != null && cbAreaTrabajo.getValue() != null) {
             ReportesService.reporteGastosMantFechasAreaTrabajo(fechaIni.getValue().toString(), fechaFin.getValue().toString(), cbAreaTrabajo.getValue().getId().toString());
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 
@@ -218,7 +218,7 @@ public class ReporteGastoMantController extends Controller implements Initializa
             ReportesService.reporteGastosMantFechas(fechaIni.getValue().toString(), fechaFin.getValue().toString());
             RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo reporte de recorrido aviones", new Date()));
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Generar reporte", ((Stage) btnLimpiar.getScene().getWindow()), "Campos vacios, por favor completarlos.");
         }
     }
 

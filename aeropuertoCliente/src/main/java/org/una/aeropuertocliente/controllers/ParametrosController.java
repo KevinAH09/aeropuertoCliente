@@ -194,10 +194,10 @@ public class ParametrosController extends Controller implements Initializable {
                 RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Edito parametro " + parametros.getId(), new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar parametro", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
         }
     }
 
@@ -216,10 +216,10 @@ public class ParametrosController extends Controller implements Initializable {
                 RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Creo nuevo parametro", new Date()));
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar parametro", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar el parametro", ((Stage) txtNombre.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear el parametro", ((Stage) txtNombre.getScene().getWindow()), validacion);
         }
     }
 

@@ -101,7 +101,7 @@ public class RegistroAccionesController extends Controller implements Initializa
                 notificar(0);
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Buscar registros", ((Stage) fechaRegistro.getScene().getWindow()), "No selecciono ningun usuario");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Buscar registros", ((Stage) fechaRegistro.getScene().getWindow()), "No selecciono ningun usuario");
         }
     }
 
@@ -117,7 +117,7 @@ public class RegistroAccionesController extends Controller implements Initializa
                 notificar(0);
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Buscar registros", ((Stage) fechaRegistro.getScene().getWindow()), "Seleccione una  fecha");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Buscar registros", ((Stage) fechaRegistro.getScene().getWindow()), "Seleccione una  fecha");
         }
 
     }

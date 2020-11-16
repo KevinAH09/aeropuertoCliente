@@ -137,7 +137,7 @@ public class InicioController extends Controller implements Initializable {
                         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                             cambiarModo();
                         } else {
-                            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnSalir.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de activación de modo desarrollador", ((Stage) btnSalir.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                         }
                     }
                 }
@@ -147,7 +147,7 @@ public class InicioController extends Controller implements Initializable {
                     if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                         cambiarModo();
                     } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnSalir.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de activación de modo desarrollador", ((Stage) btnSalir.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                     }
                 }
             }
@@ -252,16 +252,16 @@ public class InicioController extends Controller implements Initializable {
                 if (Token.getInstance().getUsuario().isEstado()) {
                     System.out.println("El usuario se encuentra activo");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "El usuario esta inactivo");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "El usuario esta inactivo");
                 }
             } else {
                 Token.setInstance(null);
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "La contraseña o cédula estan incorecctas");
             }
 
         } else {
             Token.setInstance(null);
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de inicio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "Datos incompletos");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de inicio de Sesion", ((Stage) btnSalir.getScene().getWindow()), "Datos incompletos");
         }
     }
 }

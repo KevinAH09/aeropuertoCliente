@@ -146,10 +146,10 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
                 PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se pudo  guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
         }
     }
 
@@ -168,10 +168,10 @@ public class MantenimientoAreasTrabajoController extends Controller implements I
                 new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "Se guardó correctamente");
                 PrincipalController.cambiarVistaPrincipal("areasTrabajo/AreasTrabajo");
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se guardó correctamente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al guardar Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), "No se pudo guardar");
             }
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error al crear Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error al crear Area de trabajo", ((Stage) txtNombre.getScene().getWindow()), validacion);
         }
     }
 

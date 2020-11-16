@@ -129,14 +129,14 @@ public class LoginController extends Controller implements Initializable {
                     RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Inicio de Sesion", new Date()));
                     FlowController.getInstance().goView("principal/Principal");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "El usuario esta inactivo");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "El usuario esta inactivo");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
             }
 
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), validacion);
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) txtPassOculto.getScene().getWindow()), validacion);
         }
     }
 
@@ -269,7 +269,7 @@ public class LoginController extends Controller implements Initializable {
                         if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                             cambiarModo();
                         } else {
-                            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnIngresar.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de activación de modo desarrollador", ((Stage) btnIngresar.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                         }
                     }
                 }
@@ -279,7 +279,7 @@ public class LoginController extends Controller implements Initializable {
                     if (Token.getInstance().getUsuario().getRolId().getCodigo().equals("ROLE_ADMIN") && Token.getInstance() != null) {
                         cambiarModo();
                     } else {
-                        new Mensaje().showModal(Alert.AlertType.ERROR, "Error de activación de modo desarrollador", ((Stage) btnIngresar.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
+                        new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de activación de modo desarrollador", ((Stage) btnIngresar.getScene().getWindow()), "El usuario con el que intenta ingresar no es administrador");
                     }
                 }
             }
@@ -297,14 +297,14 @@ public class LoginController extends Controller implements Initializable {
                 if (Token.getInstance().getUsuario().isEstado()) {
                     System.out.println("El usuario se encuentra activo");
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnIngresar.getScene().getWindow()), "El usuario esta inactivo");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) btnIngresar.getScene().getWindow()), "El usuario esta inactivo");
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnIngresar.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) btnIngresar.getScene().getWindow()), "La contraseña o cedula estan incorectas");
             }
 
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de inicio de Sesion", ((Stage) btnIngresar.getScene().getWindow()), "Datos incompletos");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de inicio de Sesion", ((Stage) btnIngresar.getScene().getWindow()), "Datos incompletos");
         }
     }
 
