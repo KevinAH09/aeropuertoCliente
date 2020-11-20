@@ -343,8 +343,8 @@ public class CambioDivisasController extends Controller implements Initializable
             guardarPDF(pdf);
             if (Token.getInstance() != null) {
                 RegistrosAccionesService.createRegistroAccion(new RegistrosAccionesDTO(Token.getInstance().getUsuario(), "Genero reporte PDF de divisas", new Date()));
-                new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Archivo PDF generado correctamente");
             }
+            new Mensaje().showModal(Alert.AlertType.CONFIRMATION, "Generar PDF", ((Stage) btnExportarPDF.getScene().getWindow()), "Archivo PDF generado correctamente");
         } catch (IOException ex) {
             Logger.getLogger(CambioDivisasController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -695,7 +695,6 @@ public class CambioDivisasController extends Controller implements Initializable
     }
 
     private void llenarMonto(String selectImg) {
-
         double monto = Double.valueOf(txtIngresarMonto.getText());
         if (itemSelect.equals("Colon")) {
             llenerLabelMontoCambioOpcionColon(selectImg, monto);
@@ -722,7 +721,6 @@ public class CambioDivisasController extends Controller implements Initializable
 
         } else if (itemSelect.equals("Dolar neozelandes")) {
             llenerLabelMontoCambioOpcionDolarNeozelandes(selectImg, monto);
-
         }
 
     }
@@ -750,7 +748,6 @@ public class CambioDivisasController extends Controller implements Initializable
 
             lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDAustralia));
         } else if (selectImg.equals("Franco")) {
-
             lblMontoCambio.setText(String.format("%.2f", (monto / USDNuevaZelanda) * USDFranco));
         }
     }
