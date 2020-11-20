@@ -133,7 +133,7 @@ public class PrincipalController extends Controller implements Initializable {
     }
 
     private void crearHiloTokenExpiracion() {
-        day = new Date(new Date().getTime() + tiempoExpiracion() * 1000);
+        day = new Date(new Date().getTime() + 10 * 1000);
         hilo = new Thread(runnable);
         hilo.start();
         FlowController.getInstance().getStage().setOnCloseRequest(e -> {
@@ -495,14 +495,17 @@ public class PrincipalController extends Controller implements Initializable {
                     hilo = new Thread(runnable);
                     hilo.start();
                 } else {
-                    new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "El usuario esta inactivo");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "El usuario esta inactivo");
+                    alertaIngreso();
                 }
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Error de incio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de incio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "La contraseña o cedula estan incorecctas");
+                alertaIngreso();
             }
 
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Error de inicio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "Datos incompletos");
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Error de inicio de Sesion", ((Stage) btnCerraSesion.getScene().getWindow()), "Datos incompletos");
+            alertaIngreso();
         }
     }
 
@@ -537,7 +540,7 @@ public class PrincipalController extends Controller implements Initializable {
             if (Token.getInstance().getUsuario().getCedula().equals(usernamePassword.getKey())) {
                 reingresar(usernamePassword.getKey(), usernamePassword.getValue());
             } else {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Datos incoherentes", ((Stage) btnCerraSesion.getScene().getWindow()), "Debe ingresar las credenciales con las que inició anteriormente");
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Datos incoherentes", ((Stage) btnCerraSesion.getScene().getWindow()), "Debe ingresar las credenciales con las que inició anteriormente");
                 alertaIngreso();
             }
         });
