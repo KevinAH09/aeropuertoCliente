@@ -133,7 +133,7 @@ public class PrincipalController extends Controller implements Initializable {
     }
 
     private void crearHiloTokenExpiracion() {
-        day = new Date(new Date().getTime() + 10 * 1000);
+        day = new Date(new Date().getTime() + tiempoExpiracion() * 1000);
         hilo = new Thread(runnable);
         hilo.start();
         FlowController.getInstance().getStage().setOnCloseRequest(e -> {
